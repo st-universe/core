@@ -486,7 +486,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
 {{ _self.fleetAction('B_DEACTIVATE_SYSTEM', shipId, icon, title, type) }}
 {% endmacro %}
 
-{% macro fleetAction(action, shipId, icon, title, type) %}
+{% macro fleetAction(action, shipId, icon, title, type = null) %}
 <a href="javascript:void(0);"
     onClick="actionToInnerContent('{{ action }}', 'id={{ shipId }}&isfleet=1&type={{ type }}&sstr={{ SESSIONSTRING }}');">
     <img src="/assets/buttons/{{ icon }}.png" name="fl_{{ icon }}" title="{{ title }}" />
