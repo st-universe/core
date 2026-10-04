@@ -1,4 +1,4 @@
-{% macro alliance_avatar(alliance, style) %}
+{% macro alliance_avatar(alliance, style = '') %}
 {% if alliance.getAvatar %}
 <img src="{{ ASSET_PATHS.alliance }}/{{ alliance.getAvatar }}.png" {% if style %}style="{{ style }}" {% endif %} />
 {% endif %}
