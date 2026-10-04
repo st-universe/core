@@ -27,7 +27,7 @@
 {% endmacro %}
 
 
-{% macro shiplist_body(wrapper, IS_ADMIN) %}
+{% macro shiplist_body(wrapper, IS_ADMIN = false) %}
 {% from 'html/macros.twig' import onClickSpacecraft %}
 {% set ship = wrapper.get %}
 {% set condition = ship.getCondition %}

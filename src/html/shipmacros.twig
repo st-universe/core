@@ -1,4 +1,4 @@
-{% macro shipimage(ship, IS_ADMIN) %}
+{% macro shipimage(ship, IS_ADMIN = false) %}
 {% set rumpid = ship.getRumpId %}
 {% set rumpname = ship.getRumpName %}
 {% set user = ship.getUser %}
@@ -32,7 +32,7 @@
 
 {% endmacro %}
 
-{% macro spacecraftImageWithoutWarp(ship, IS_ADMIN) %}
+{% macro spacecraftImageWithoutWarp(ship, IS_ADMIN = false) %}
 {% if ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and IS_ADMIN %}
 {{ _self.spacecraft3DModel(ship) }}
 {% else %}
