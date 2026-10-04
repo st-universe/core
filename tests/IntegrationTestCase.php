@@ -46,6 +46,7 @@ abstract class IntegrationTestCase extends StuTestCase
     #[\Override]
     public function setUp(): void
     {
+        // StuLogger::logf('IntegrationTestCase::setUp() called for %s - %s', get_class($this), $this->nameWithDataSet());
         $this->clearTickLocks();
         $this->initializeSchemaAndTestdataIfNeeded();
         $this->setupTestSession();
