@@ -13,21 +13,11 @@ final class ExtensionSyncTest extends StuTestCase
     #[\Override]
     protected function setUp(): void
     {
-        $this->root = sys_get_temp_dir() . '/stu-sync-test-' . bin2hex(random_bytes(8));
-        mkdir($this->root, 0750, true);
+        if (PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('The sync integration test requires a Unix-like operating system.');
+        }
 
-        $shell = @proc_open(['sh', '-c', 'exit 0'], [
-            0 => ['pipe', 'r'],
-            1 => ['pipe', 'w'],
-            2 => ['pipe', 'w'],
-        ], $pipes);
-        if (!is_resource($shell)) {
-            self::markTestSkipped('The sync integration test requires sh.');
-        }
-        foreach ($pipes as $pipe) {
-            fclose($pipe);
-        }
-        proc_close($shell);
+        $this->root = sys_get_temp_dir() . '/stu-sync-test-' . bin2hex(random_bytes(8));
 
         mkdir($this->root . '/commands', 0750, true);
         mkdir($this->root . '/config');
