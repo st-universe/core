@@ -8,7 +8,7 @@ use Stu\StuTestCase;
 
 final class ExtensionSyncTest extends StuTestCase
 {
-    private string $root;
+    private ?string $root = null;
 
     #[\Override]
     protected function setUp(): void
@@ -62,6 +62,9 @@ SH;
 
     protected function tearDown(): void
     {
+        if ($this->root === null) {
+            return;
+        }
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($this->root, \FilesystemIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::CHILD_FIRST
