@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Orm\Repository;
 
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
@@ -39,7 +40,7 @@ class UserRepositoryTest extends StuTestCase
         $user = $this->mock(User::class);
 
         $this->entityManager->shouldReceive('find')
-            ->with(User::class, UserConstants::USER_NOONE, null, null)
+            ->with(User::class, UserConstants::USER_NOONE, LockMode::NONE, null)
             ->once()
             ->andReturn($user);
 
