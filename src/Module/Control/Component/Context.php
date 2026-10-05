@@ -15,8 +15,8 @@ use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\User;
 
-final class Context implements ControllerContext {
-
+final class Context implements ControllerContext
+{
     public function __construct(
         private readonly GameControllerInterface $game,
         private readonly GameData $gameData,
@@ -26,7 +26,8 @@ final class Context implements ControllerContext {
     ) {}
 
     #[\Override]
-    public function getGame(): GameControllerInterface {
+    public function getGame(): GameControllerInterface
+    {
         return $this->game;
     }
 
@@ -72,7 +73,8 @@ final class Context implements ControllerContext {
     }
 
     #[\Override]
-    public function getUser(): User {
+    public function getUser(): User
+    {
         return $this->game->getUser();
     }
 }

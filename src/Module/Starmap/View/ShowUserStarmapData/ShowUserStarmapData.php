@@ -116,11 +116,11 @@ final class ShowUserStarmapData implements ViewControllerInterface
                 'height' => $layer->getHeight()
             ],
             'fields' => array_map(
-                fn(ExploreableStarMapInterface $field): array => $this->normalizeField($field, $layer),
+                fn (ExploreableStarMapInterface $field): array => $this->normalizeField($field, $layer),
                 $fields
             ),
             'spacecrafts' => array_map(
-                fn(array $row): array => $this->normalizeSpacecraft(
+                fn (array $row): array => $this->normalizeSpacecraft(
                     $row,
                     $user,
                     $canSeeAllianceShips,
@@ -207,7 +207,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
             'territoryOwnerHtml' => $territoryOwner['html'] ?? null,
             'hasEffects' => $item->hasEffects(),
             'effects' => array_map(
-                static fn(FieldTypeEffectEnum $effect): string => $effect->value,
+                static fn (FieldTypeEffectEnum $effect): string => $effect->value,
                 $field->getEffects()
             ),
             'isImpassable' => $item->isImpassable()
@@ -271,7 +271,7 @@ final class ShowUserStarmapData implements ViewControllerInterface
 
         return implode("\n", array_filter(
             explode("\n", $tooltip),
-            fn(string $line): bool => trim($line) !== $lineToRemove
+            fn (string $line): bool => trim($line) !== $lineToRemove
         ));
     }
 

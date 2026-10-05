@@ -26,11 +26,11 @@ use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRump3DModel;
 use Stu\Orm\Entity\SpacecraftRumpBaseValues;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
-use Stu\Orm\Repository\BuildingRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRepositoryInterface;
@@ -491,7 +491,7 @@ final class CreateRump implements ActionControllerInterface
                 $this->entityManager->remove($moduleLevel);
             }
         } else {
-            $moduleLevel ??= (new ShipRumpModuleLevel())->setRump($rump);
+            $moduleLevel ??= new ShipRumpModuleLevel()->setRump($rump);
             foreach ($data->get('module_levels')->all() as $typeId => $values) {
                 $type = SpacecraftModuleTypeEnum::from((int) $typeId);
                 $moduleLevel
@@ -513,7 +513,7 @@ final class CreateRump implements ActionControllerInterface
             if (!$modelData instanceof RumpCreatorData) {
                 throw new LogicException('3D model configuration does not exist');
             }
-            $model ??= (new SpacecraftRump3DModel())->setRump($rump);
+            $model ??= new SpacecraftRump3DModel()->setRump($rump);
             $model
                 ->setWidth($modelData->get('width'))
                 ->setHeight($modelData->get('height'))
@@ -527,7 +527,7 @@ final class CreateRump implements ActionControllerInterface
                 throw new LogicException('Commodity does not exist');
             }
             $this->entityManager->persist(
-                (new ShipRumpCost())
+                new ShipRumpCost()
                     ->setRumpId($rump->getId())
                     ->setSpacecraftRump($rump)
                     ->setCommodityId($cost['commodity_id'])
@@ -538,7 +538,7 @@ final class CreateRump implements ActionControllerInterface
 
         foreach ($data->get('module_special_ids')->all() as $moduleSpecialId) {
             $this->entityManager->persist(
-                (new ShipRumpModuleSpecial())
+                new ShipRumpModuleSpecial()
                     ->setRumpId($rump->getId())
                     ->setModuleSpecialId($moduleSpecialId)
             );
@@ -546,7 +546,7 @@ final class CreateRump implements ActionControllerInterface
 
         foreach ($data->get('building_function_ids')->all() as $buildingFunctionId) {
             $this->entityManager->persist(
-                (new ShipRumpBuildingFunction())
+                new ShipRumpBuildingFunction()
                     ->setRumpId($rump->getId())
                     ->setBuildingFunction(BuildingFunctionEnum::from($buildingFunctionId))
             );
@@ -554,7 +554,7 @@ final class CreateRump implements ActionControllerInterface
 
         foreach ($data->get('special_ability_ids')->all() as $specialAbilityId) {
             $this->entityManager->persist(
-                (new ShipRumpSpecial())
+                new ShipRumpSpecial()
                     ->setRumpId($rump->getId())
                     ->setSpacecraftRump($rump)
                     ->setSpecialId($specialAbilityId)
@@ -563,7 +563,7 @@ final class CreateRump implements ActionControllerInterface
 
         if ($data->get('colonization_building_id') !== null) {
             $this->entityManager->persist(
-                (new ShipRumpColonizationBuilding())
+                new ShipRumpColonizationBuilding()
                     ->setRumpId($rump->getId())
                     ->setBuildingId($data->get('colonization_building_id'))
             );
@@ -628,7 +628,7 @@ final class CreateRump implements ActionControllerInterface
 
     private function createBaseValues(SpacecraftRump $rump, RumpCreatorData $data): SpacecraftRumpBaseValues
     {
-        $baseValues = (new SpacecraftRumpBaseValues())
+        $baseValues = new SpacecraftRumpBaseValues()
             ->setRump($rump);
 
         $this->applyBaseValues($baseValues, $data);
@@ -732,10 +732,10 @@ final class CreateRump implements ActionControllerInterface
     {
         $entries = array_values(array_filter(
             $this->databaseEntryRepository->getByCategoryId($categoryId),
-            fn(DatabaseEntry $entry): bool => $entry->getTypeId() === DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP
+            fn (DatabaseEntry $entry): bool => $entry->getTypeId() === DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP
                 && $entry->getId() !== $excludedEntryId
         ));
-        usort($entries, fn(DatabaseEntry $a, DatabaseEntry $b): int => [$a->getSort(), $a->getId()] <=> [$b->getSort(), $b->getId()]);
+        usort($entries, fn (DatabaseEntry $a, DatabaseEntry $b): int => [$a->getSort(), $a->getId()] <=> [$b->getSort(), $b->getId()]);
 
         return new RumpCreatorData($entries);
     }

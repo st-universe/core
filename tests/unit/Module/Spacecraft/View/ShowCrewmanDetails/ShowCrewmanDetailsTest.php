@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowCrewmanDetails;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Mockery\MockInterface;
 use Mockery;
+use Mockery\MockInterface;
 use request;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\Crew;

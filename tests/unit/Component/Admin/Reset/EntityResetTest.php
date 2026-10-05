@@ -173,6 +173,6 @@ class EntityResetTest extends StuTestCase
             $query->shouldReceive('execute')->once();
         }
 
-        (new EntityReset($this->entityManager))->reset($this->interactor);
+        new EntityReset($this->entityManager)->reset($this->interactor);
     }
 }

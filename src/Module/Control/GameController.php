@@ -70,7 +70,8 @@ final class GameController implements GameControllerInterface
     }
 
     #[\Override]
-    public function main(ModuleEnum $module, GameRequest $gameRequest): void {
+    public function main(ModuleEnum $module, GameRequest $gameRequest): void
+    {
         $this->gameData->viewContext[ViewContextMetadataTypeEnum::MODULE_VIEW->value] = $module;
 
         $this->gameRequest = $gameRequest;

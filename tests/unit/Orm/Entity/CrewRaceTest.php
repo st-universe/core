@@ -10,7 +10,7 @@ final class CrewRaceTest extends StuTestCase
 {
     public function testUsesCustomCrewImagePathForUserCreatedRace(): void
     {
-        $subject = (new CrewRace())
+        $subject = new CrewRace()
             ->setGfxPath('TEST_RASSE')
             ->setCreatorUserId(42);
 
@@ -19,14 +19,14 @@ final class CrewRaceTest extends StuTestCase
 
     public function testUsesAssetCrewImagePathForStandardRace(): void
     {
-        $subject = (new CrewRace())->setGfxPath('TEST_RASSE');
+        $subject = new CrewRace()->setGfxPath('TEST_RASSE');
 
         self::assertSame('/assets/crew/TEST_RASSE/w/1_6.png', $subject->getImagePath('w', 6));
     }
 
     public function testNormalizesFactionIds(): void
     {
-        $subject = (new CrewRace())->setFactionIds([1, 2, 1]);
+        $subject = new CrewRace()->setFactionIds([1, 2, 1]);
 
         self::assertSame([1, 2], $subject->getFactionIds());
         self::assertTrue($subject->hasFactionId(2));
@@ -35,7 +35,7 @@ final class CrewRaceTest extends StuTestCase
 
     public function testRejectedRaceHasModeratorId(): void
     {
-        $subject = (new CrewRace())
+        $subject = new CrewRace()
             ->setAccepted(false)
             ->setAcceptedUserId(8);
 

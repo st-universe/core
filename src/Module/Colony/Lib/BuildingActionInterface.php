@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Module\Control\Component\ControllerContext;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\PlanetField;
 
 interface BuildingActionInterface

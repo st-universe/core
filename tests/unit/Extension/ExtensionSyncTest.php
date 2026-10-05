@@ -19,44 +19,44 @@ final class ExtensionSyncTest extends StuTestCase
 
         $this->root = sys_get_temp_dir() . '/stu-sync-test-' . bin2hex(random_bytes(8));
 
-        mkdir($this->root . '/commands', 0750, true);
+        mkdir($this->root . '/commands', 0o750, true);
         mkdir($this->root . '/config');
         mkdir($this->root . '/.git');
         copy(dirname(__DIR__, 3) . '/sync.sh', $this->root . '/sync.sh');
         file_put_contents($this->root . '/config/config.json', '{}');
         file_put_contents($this->root . '/syncFailure.mail', 'test');
         $script = <<<'SH'
-#!/bin/sh
-command=$(basename "$0")
-printf '%s %s\n' "$command" "$*" >> "$PWD/trace"
-case "$command" in
-  git)
-    if [ "$1" = rev-parse ]; then
-      case "$2" in
-        --git-path) echo '.git/stu-sync.lock' ;;
-        @) echo 'same' ;;
-        *) echo "${FAKE_REMOTE:-same}" ;;
-      esac
-    fi
-    ;;
-  php)
-    if [ "$1" = bin/deploy-extensions.php ] && [ "$2" != --restart ]; then
-      exit "${FAKE_EXTENSION_RESULT:-0}"
-    fi
-    ;;
-  make)
-    if [ "$1" = migrateDatabase ] && [ -f fail-migration ]; then
-      exit 1
-    fi
-    ;;
-  jq) echo '{}' ;;
-  sponge) cat > "$1" ;;
-  sendmail) cat > /dev/null ;;
-esac
-SH;
+            #!/bin/sh
+            command=$(basename "$0")
+            printf '%s %s\n' "$command" "$*" >> "$PWD/trace"
+            case "$command" in
+              git)
+                if [ "$1" = rev-parse ]; then
+                  case "$2" in
+                    --git-path) echo '.git/stu-sync.lock' ;;
+                    @) echo 'same' ;;
+                    *) echo "${FAKE_REMOTE:-same}" ;;
+                  esac
+                fi
+                ;;
+              php)
+                if [ "$1" = bin/deploy-extensions.php ] && [ "$2" != --restart ]; then
+                  exit "${FAKE_EXTENSION_RESULT:-0}"
+                fi
+                ;;
+              make)
+                if [ "$1" = migrateDatabase ] && [ -f fail-migration ]; then
+                  exit 1
+                fi
+                ;;
+              jq) echo '{}' ;;
+              sponge) cat > "$1" ;;
+              sendmail) cat > /dev/null ;;
+            esac
+            SH;
         foreach (['git', 'php', 'make', 'jq', 'sponge', 'sendmail'] as $command) {
             file_put_contents($this->root . '/commands/' . $command, $script);
-            chmod($this->root . '/commands/' . $command, 0750);
+            chmod($this->root . '/commands/' . $command, 0o750);
         }
     }
 

@@ -25,8 +25,7 @@ class ComponentSetup implements ComponentSetupInterface
     public function setup(): void
     {
         $user = $this->session->getUser();
-        if ($user === null)
-        {
+        if ($user === null) {
             return;
         }
 

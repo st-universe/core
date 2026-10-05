@@ -17,9 +17,8 @@ final class UserlistEntry
         private User $user,
         private ?CrewCountRetrieverInterface $crewCountRetriever = null,
         private ?CrewLimitCalculatorInterface $crewLimitCalculator = null,
-        private ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository = null)
-    {
-    }
+        private ?SpacecraftRumpRepositoryInterface $spacecraftRumpRepository = null
+    ) {}
 
     public function getUser(): User
     {

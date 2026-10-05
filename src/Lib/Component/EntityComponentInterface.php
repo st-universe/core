@@ -16,5 +16,6 @@ interface EntityComponentInterface
     public function setTemplateVariables(
         $entity,
         TemplateInterface $template,
-        User $user): void;
+        User $user
+    ): void;
 }

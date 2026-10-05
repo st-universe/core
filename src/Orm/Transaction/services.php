@@ -21,7 +21,7 @@ use function DI\get;
 return [
     ConnectionFactoryInterface::class => autowire(ConnectionFactory::class)
         ->constructorParameter('extensions', get(ExtensionRegistry::class)),
-    Connection::class => fn(ContainerInterface $c): Connection =>
+    Connection::class => fn (ContainerInterface $c): Connection =>
         $c->get(ConnectionFactoryInterface::class)
             ->createConnection(),
     Configuration::class => function (ContainerInterface $c): Configuration {
@@ -39,7 +39,7 @@ return [
         return $emConfig;
     },
     EntityManagerFactoryInterface::class => autowire(EntityManagerFactory::class),
-    EntityManagerInterface::class => fn(ContainerInterface $c): EntityManagerInterface => new ReopeningEntityManager(
+    EntityManagerInterface::class => fn (ContainerInterface $c): EntityManagerInterface => new ReopeningEntityManager(
         $c->get(EntityManagerFactoryInterface::class),
         $c->get(Configuration::class),
         $c->get(LoggerUtilFactoryInterface::class)

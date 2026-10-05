@@ -179,4 +179,3 @@ class BuildingReactivationHandlerTest extends StuTestCase
         $this->assertSame(2, $activateCalls);
     }
 }
-

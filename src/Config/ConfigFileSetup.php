@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
-use RuntimeException;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
+use RuntimeException;
 
 class ConfigFileSetup
 {

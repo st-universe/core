@@ -10,7 +10,6 @@ use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\Component\View\ViewControllerContext;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;

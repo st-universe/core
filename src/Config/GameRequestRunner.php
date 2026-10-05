@@ -8,14 +8,13 @@ use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
-use Stu\Component\Game\RedirectionException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameSessionInitializerInterface;
 use Stu\Orm\Entity\GameRequest;
-use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
+use Stu\Orm\Repository\GameTurnRepositoryInterface;
 
 final class GameRequestRunner implements GameRequestRunnerInterface
 {

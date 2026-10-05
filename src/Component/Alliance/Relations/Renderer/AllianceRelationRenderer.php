@@ -8,7 +8,6 @@ use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use Stu\Orm\Entity\Alliance;
-use Stu\Orm\Entity\Relation;
 
 /**
  * Renders the relations between alliances

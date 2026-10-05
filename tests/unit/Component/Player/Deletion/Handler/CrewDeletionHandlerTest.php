@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;

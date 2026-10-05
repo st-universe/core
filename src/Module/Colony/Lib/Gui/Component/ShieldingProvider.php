@@ -7,8 +7,8 @@ use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\TemplateInterface;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ShieldingProvider implements PlanetFieldHostComponentInterface

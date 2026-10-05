@@ -128,11 +128,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT u FROM %s u
+                    'SELECT u FROM %s u
                     JOIN u.registration ur
                     WITH u = ur.user
                     WHERE ur.email = :email',
-                User::class
+                    User::class
                 )
             )
             ->setParameter('email', $email)
@@ -163,11 +163,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                'SELECT u FROM %s u
+                    'SELECT u FROM %s u
                         JOIN u.registration ur
                         WITH u = ur.user
                         WHERE ur.login = :login',
-                User::class
+                    User::class
                 )
             )
             ->setParameter('login', $loginName)

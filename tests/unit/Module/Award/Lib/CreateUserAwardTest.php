@@ -70,7 +70,7 @@ class CreateUserAwardTest extends StuTestCase
     {
         $user = $this->mock(User::class);
         $award = $this->createAward(50, 7, 'Kazon Top 10');
-        $existingAward = (new UserAward())->setCount(null);
+        $existingAward = new UserAward()->setCount(null);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -96,7 +96,7 @@ class CreateUserAwardTest extends StuTestCase
     {
         $user = $this->mock(User::class);
         $award = $this->createAward(50, 7, 'Kazon Top 10');
-        $existingAward = (new UserAward())->setCount(2);
+        $existingAward = new UserAward()->setCount(2);
 
         $user->shouldReceive('getId')
             ->withNoArgs()
@@ -121,7 +121,7 @@ class CreateUserAwardTest extends StuTestCase
 
     private function createAward(int $id, int $prestige, string $description): Award
     {
-        return (new Award())
+        return new Award()
             ->setId($id)
             ->setPrestige($prestige)
             ->setDescription($description);

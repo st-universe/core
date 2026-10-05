@@ -26,6 +26,6 @@ class AdminSessionGuardTest extends StuTestCase
             ->once()
             ->andReturn([42]);
 
-        (new AdminSessionGuard($sessionStarter, $session, $stuConfig))->check();
+        new AdminSessionGuard($sessionStarter, $session, $stuConfig)->check();
     }
 }

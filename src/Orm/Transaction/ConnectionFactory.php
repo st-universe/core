@@ -11,8 +11,8 @@ use Doctrine\DBAL\Logging\Middleware;
 use Doctrine\DBAL\Tools\DsnParser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Logging\Sql\SqlLogger;
-use Stu\Module\Config\StuConfigInterface;
 use Stu\Extension\ExtensionRegistry;
+use Stu\Module\Config\StuConfigInterface;
 
 class ConnectionFactory implements ConnectionFactoryInterface
 {

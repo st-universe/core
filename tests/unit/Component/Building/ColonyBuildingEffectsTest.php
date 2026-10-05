@@ -326,4 +326,3 @@ class ColonyBuildingEffectsTest extends StuTestCase
         $this->subject->clearReactivationMarkers($field, $host);
     }
 }
-

@@ -11,7 +11,6 @@ use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
-use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\Spacecraft;
@@ -169,7 +168,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
 
         $userIds = $this->getUserIds($userId, $spacecraftIds, $targetUserId, $checkForEntityLock);
-        
+
         $startTime = microtime(true);
 
         if ($checkForEntityLock && !$this->config->getDbSettings()->useSqlite()) {
@@ -227,7 +226,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             'user %3d - Found following userIds to lock: %s',
             $userId,
             implode(', ', $userIds)
-            ), LogTypeEnum::USER_LOCK);
+        ), LogTypeEnum::USER_LOCK);
 
         $userIds = array_values(array_unique(array_map('intval', $userIds)));
         sort($userIds, SORT_NUMERIC);

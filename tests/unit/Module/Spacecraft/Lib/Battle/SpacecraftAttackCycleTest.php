@@ -19,7 +19,6 @@ use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class SpacecraftAttackCycleTest extends StuTestCase

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DisplayNotOwner;
 
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameController;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameController;
 
 final class DisplayNotOwner implements ActionControllerInterface
 {

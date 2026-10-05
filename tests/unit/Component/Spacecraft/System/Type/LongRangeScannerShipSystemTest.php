@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;

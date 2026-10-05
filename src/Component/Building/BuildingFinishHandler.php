@@ -52,7 +52,7 @@ final class BuildingFinishHandler
             ? $this->buildingReactivationHandler->handleAfterUpgradeFinish(
                 $field,
                 $wasActivated,
-                fn(PlanetField $reactivationField): bool => $this->buildingActivationHandler->activate($reactivationField)
+                fn (PlanetField $reactivationField): bool => $this->buildingActivationHandler->activate($reactivationField)
             )
             : 0;
 

@@ -19,8 +19,8 @@ use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
-use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 final class InterceptShip implements ActionControllerInterface
 {

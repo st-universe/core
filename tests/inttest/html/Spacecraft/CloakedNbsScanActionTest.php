@@ -11,7 +11,7 @@ class CloakedNbsScanActionTest extends TwigTestCase
 {
     public function testCloakedUnwarpedShipCanOpenLimitedScanFromNbs(): void
     {
-        $source = new class {
+        $source = new class () {
             public function getId(): int
             {
                 return 42;
@@ -38,7 +38,7 @@ class CloakedNbsScanActionTest extends TwigTestCase
             }
         };
 
-        $wrapper = new class($source) {
+        $wrapper = new class ($source) {
             public function __construct(private readonly object $source) {}
 
             public function get(): object
@@ -47,7 +47,7 @@ class CloakedNbsScanActionTest extends TwigTestCase
             }
         };
 
-        $target = new class {
+        $target = new class () {
             public function getId(): int
             {
                 return 43;
@@ -80,7 +80,7 @@ class CloakedNbsScanActionTest extends TwigTestCase
 
             public function getRump(): object
             {
-                return new class {
+                return new class () {
                     public function get3DModel(): ?string
                     {
                         return null;

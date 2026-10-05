@@ -71,7 +71,7 @@ final class QuickPmCrewExperienceTest extends StuTestCase
         $this->stationRepository->shouldReceive('find')->with(20)->once()->andReturn($target);
         $this->playerRelationDeterminator->shouldReceive('isFriend')->with($sender, $targetUser)->once()->andReturn(false);
         $this->eventDispatcher->shouldReceive('dispatch')
-            ->withArgs(static fn(CrewExperienceEvent $event): bool => $event->getSpacecraft() === $source
+            ->withArgs(static fn (CrewExperienceEvent $event): bool => $event->getSpacecraft() === $source
                 && $event->getTrigger() === SkillEnhancementEnum::FOREIGN_CONTACT_MESSAGE)
             ->once()
             ->andReturnUsing(static fn (object $event): object => $event);
@@ -109,7 +109,7 @@ final class QuickPmCrewExperienceTest extends StuTestCase
         $this->colonyRepository->shouldReceive('find')->with(20)->once()->andReturn($target);
         $this->playerRelationDeterminator->shouldReceive('isFriend')->with($sender, $targetUser)->once()->andReturn(false);
         $this->eventDispatcher->shouldReceive('dispatch')
-            ->withArgs(static fn(CrewExperienceEvent $event): bool => $event->getSpacecraft() === $source
+            ->withArgs(static fn (CrewExperienceEvent $event): bool => $event->getSpacecraft() === $source
                 && $event->getTrigger() === SkillEnhancementEnum::FOREIGN_CONTACT_MESSAGE)
             ->once()
             ->andReturnUsing(static fn (object $event): object => $event);

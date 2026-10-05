@@ -18,7 +18,7 @@ final class GameSetup implements GameSetupInterface
     public function setTemplateAndComponents(string $viewTemplate, ViewControllerContext $context): void
     {
         $context->setTemplateVar('VIEW_TEMPLATE', $viewTemplate);
-        
+
         if (request::has('switch')) {
             $context->setTemplateFile('html/view/breadcrumbAndView.twig');
         } else {

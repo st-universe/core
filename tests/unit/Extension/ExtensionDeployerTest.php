@@ -168,7 +168,7 @@ final class ExtensionDeployerTest extends StuTestCase
         }
         if (in_array('init', $command, true)) {
             $release = $command[array_key_last($command)];
-            mkdir($release . '/server', 0750, true);
+            mkdir($release . '/server', 0o750, true);
         }
         if (in_array('checkout', $command, true)) {
             $release = $directory;

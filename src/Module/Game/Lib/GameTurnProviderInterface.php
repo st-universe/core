@@ -6,7 +6,7 @@ namespace Stu\Module\Game\Lib;
 
 use Stu\Orm\Entity\GameTurn;
 
-interface GameTurnProviderInterface {
-
+interface GameTurnProviderInterface
+{
     public function getCurrentRound(): GameTurn;
 }

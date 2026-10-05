@@ -10,20 +10,17 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\OrbitShipWrappersRetrieverInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Lib\Colony\PlanetFieldHostProviderInterface;
-use Stu\Module\Template\TemplateInterface;
-use Stu\Orm\Entity\User;
+use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Spacecraft\Lib\PassiveRepairPreviewWrapper;
 use Stu\Module\Spacecraft\Lib\ShipRepairCost;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
-
-use Stu\Module\Commodity\CommodityTypeConstants;
 
 final class ShipRepairProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private readonly ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private readonly PlanetFieldHostProviderInterface $planetFieldHostProvider, private readonly ColonyFunctionManagerInterface $colonyFunctionManager, private readonly OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever, private readonly RepairUtilInterface $repairUtil)
-    {
-    }
+    public function __construct(private readonly ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository, private readonly PlanetFieldHostProviderInterface $planetFieldHostProvider, private readonly ColonyFunctionManagerInterface $colonyFunctionManager, private readonly OrbitShipWrappersRetrieverInterface $orbitShipWrappersRetriever, private readonly RepairUtilInterface $repairUtil) {}
 
     /** @param Colony $entity */
     #[\Override]

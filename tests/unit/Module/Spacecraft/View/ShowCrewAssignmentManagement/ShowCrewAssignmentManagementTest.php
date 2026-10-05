@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowCrewAssignmentManagement;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Mockery\MockInterface;
 use Mockery;
 use Mockery\Matcher\Closure;
+use Mockery\MockInterface;
 use request;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;

@@ -8,10 +8,10 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Module\Control\Component\ControllerContext;
 use Stu\Module\Control\ViewContextMetadataTypeEnum;
 
-interface ViewControllerContext extends ControllerContext {
-
+interface ViewControllerContext extends ControllerContext
+{
     public function getViewContextMetadata(ViewContextMetadataTypeEnum $type): mixed;
-    
+
     public function setViewTemplate(string $viewTemplate): void;
 
     public function setTemplateFile(string $tpl): void;

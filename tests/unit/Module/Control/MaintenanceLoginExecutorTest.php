@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-use Mockery;
 use request;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -28,7 +27,7 @@ class MaintenanceLoginExecutorTest extends StuTestCase
         $gameState->shouldNotReceive('getGameState');
         $session->shouldNotReceive('logout');
 
-        $result = (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker))
+        $result = new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker)
             ->executeIfRequired(ModuleEnum::GAME, $game);
 
         $this->assertFalse($result);
@@ -46,7 +45,7 @@ class MaintenanceLoginExecutorTest extends StuTestCase
         $gameState->shouldReceive('getGameState')->once()->andReturn(GameStateEnum::MAINTENANCE);
         $callbackExecution->shouldReceive('execute')->with(ModuleEnum::INDEX, $game)->once();
 
-        $result = (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker))
+        $result = new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker)
             ->executeIfRequired(ModuleEnum::INDEX, $game);
 
         $this->assertTrue($result);
@@ -71,7 +70,7 @@ class MaintenanceLoginExecutorTest extends StuTestCase
 
         static::expectException(MaintenanceGameStateException::class);
 
-        (new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker))
+        new MaintenanceLoginExecutor($callbackExecution, $gameState, $session, $roleChecker)
             ->executeIfRequired(ModuleEnum::INDEX, $game);
     }
 }

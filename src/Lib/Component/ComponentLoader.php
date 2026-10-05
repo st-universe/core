@@ -61,14 +61,14 @@ final class ComponentLoader implements ComponentLoaderInterface
 
         $this->javascriptExecution
             ->addExecuteJS(sprintf(
-            "updateComponent('%s', '/%s?%s=1&component=%s%s'%s);",
-            $id,
-            ModuleEnum::GAME->getPhpPage(),
-            ShowComponent::VIEW_IDENTIFIER,
-            $id,
-            $componentUpdate->getComponentParameters() ?? '',
-            $refreshParam
-        ), JavascriptExecutionTypeEnum::AFTER_RENDER);
+                "updateComponent('%s', '/%s?%s=1&component=%s%s'%s);",
+                $id,
+                ModuleEnum::GAME->getPhpPage(),
+                ShowComponent::VIEW_IDENTIFIER,
+                $id,
+                $componentUpdate->getComponentParameters() ?? '',
+                $refreshParam
+            ), JavascriptExecutionTypeEnum::AFTER_RENDER);
     }
 
     #[\Override]

@@ -39,12 +39,12 @@ class InitTest extends StuTestCase
     /** @param class-string $className */
     private function getStaticProperty(string $className, string $propertyName): mixed
     {
-        return (new ReflectionClass($className))->getProperty($propertyName)->getValue();
+        return new ReflectionClass($className)->getProperty($propertyName)->getValue();
     }
 
     /** @param class-string $className */
     private function setStaticProperty(string $className, string $propertyName, mixed $value): void
     {
-        (new ReflectionClass($className))->getProperty($propertyName)->setValue(null, $value);
+        new ReflectionClass($className)->getProperty($propertyName)->setValue(null, $value);
     }
 }

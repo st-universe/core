@@ -22,8 +22,6 @@ use Stu\Module\Database\View\ColonyProductionWorthRanking\ColonyProductionWorthR
 use Stu\Module\Database\View\ColonyWorthRanking\ColonyWorthRanking;
 use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
 use Stu\Module\Database\View\CrewRanking\CrewRanking;
-use Stu\Module\Database\View\ShowCrewManagement\ShowCrewManagement;
-use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequest;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
 use Stu\Module\Database\View\DatabaseEntry\ShowDatabaseEntry;
@@ -43,6 +41,8 @@ use Stu\Module\Database\View\ShowColonySurface\ShowColonySurfaceRequestInterface
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocations;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequest;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequestInterface;
+use Stu\Module\Database\View\ShowCrewManagement\ShowCrewManagement;
+use Stu\Module\Database\View\ShowCrewRaceModeration\ShowCrewRaceModeration;
 use Stu\Module\Database\View\ShowPirateRound\ShowPirateRound;
 use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
 use Stu\Module\Database\View\ShowStatistics\ShowStatistics;

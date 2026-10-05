@@ -78,7 +78,7 @@ final class DockFleet implements ActionControllerInterface
                 InteractionCheckType::EXPECT_TARGET_ON_SAME_SIDE_OF_FINISHED_WEB
             ])
             ->check($context->getInfo())) {
-                return;
+            return;
         }
 
         $this->fleetDock($wrapper, $targetFleet, $context);

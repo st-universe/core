@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Realtime;
 
 use Redis;
-use Throwable;
 use Stu\Module\Config\StuConfigInterface;
+use Throwable;
 
 final class RealtimeRedisFactory
 {

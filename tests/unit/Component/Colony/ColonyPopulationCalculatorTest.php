@@ -46,10 +46,10 @@ class ColonyPopulationCalculatorTest extends StuTestCase
             ->andReturn($faction->value);
 
         $colony = new Colony();
-        $changeable = (new ColonyChangeable($colony))
+        $changeable = new ColonyChangeable($colony)
             ->setWorkers($population)
             ->setMaxBev($maxPopulation);
-        $colonyClass = (new ColonyClass())->setBevGrowthRate(1);
+        $colonyClass = new ColonyClass()->setBevGrowthRate(1);
         $colony->setUser($user)
             ->setChangeable($changeable)
             ->setColonyClass($colonyClass);

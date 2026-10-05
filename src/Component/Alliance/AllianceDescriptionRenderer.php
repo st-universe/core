@@ -54,7 +54,7 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
     private function getReplacementVars(): array
     {
         return [
-            'ALLIANCE_HOMEPAGE_LINK' => static fn(Alliance $alliance): string => sprintf(
+            'ALLIANCE_HOMEPAGE_LINK' => static fn (Alliance $alliance): string => sprintf(
                 '<a href="%s" target="_blank">%s</a>',
                 $alliance->getHomepage(),
                 'Zur Allianz-Homepage'
@@ -70,17 +70,17 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
                     )
                     : '';
             },
-            'ALLIANCE_PRESIDENT' => static fn(Alliance $alliance): string => (
+            'ALLIANCE_PRESIDENT' => static fn (Alliance $alliance): string => (
                 $alliance->getFounder()->getUser()?->getName() ?? 'Unbesetzt'
             ),
-            'ALLIANCE_VICEPRESIDENT' => static fn(Alliance $alliance): string => (
+            'ALLIANCE_VICEPRESIDENT' => static fn (Alliance $alliance): string => (
                 $alliance->getSuccessor()?->getUser()?->getName() ?? 'Unbesetzt'
             ),
-            'ALLIANCE_FOREIGNMINISTER' => static fn(Alliance $alliance): string => (
+            'ALLIANCE_FOREIGNMINISTER' => static fn (Alliance $alliance): string => (
                 $alliance->getDiplomatic()?->getUser()?->getName() ?? 'Unbesetzt'
             ),
             'ALLIANCE_DIPLOMATIC_RELATIONS' =>
-                fn(Alliance $alliance): string => $this->allianceRelationRenderer->render(
+                fn (Alliance $alliance): string => $this->allianceRelationRenderer->render(
                     $this->allianceRelationRepository->getActiveByAlliance($alliance->getId()),
                     self::RELATION_IMAGE_WIDTH,
                     self::RELATION_IMAGE_HEIGHT

@@ -77,7 +77,7 @@ final class CommunicationProvider implements ViewComponentProviderInterface
         ));
 
         $availableVersions = $this->knPostArchivRepository->getAvailableVersions();
-        $formattedVersions = array_map(fn(string $version): array => [
+        $formattedVersions = array_map(fn (string $version): array => [
             'version' => $version,
             'display' => $this->formatVersion($version)
         ], $availableVersions);

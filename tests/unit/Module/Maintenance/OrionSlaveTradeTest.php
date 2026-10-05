@@ -78,8 +78,18 @@ final class OrionSlaveTradeTest extends StuTestCase
         $random->shouldReceive('array_rand')->times(9)->andReturn(0);
         $random->shouldReceive('rand')->with(1, 30)->once()->andReturn(1);
         $random->shouldReceive('rand')->with(1, 100)->times(12)->andReturn(
-            100, 100, 100, 100, 1, 100,
-            100, 50, $stageThreeRoll, 50, $stageFourRoll, 50
+            100,
+            100,
+            100,
+            100,
+            1,
+            100,
+            100,
+            50,
+            $stageThreeRoll,
+            50,
+            $stageFourRoll,
+            50
         );
         $random->shouldReceive('rand')->with(0, 3)->times(3)->andReturn(3);
         foreach ([CrewSkillLevelEnum::JUNIOR_LIEUTENANT, $stageThreeRank, $stageFourRank] as $rank) {
@@ -107,7 +117,7 @@ final class OrionSlaveTradeTest extends StuTestCase
 
         $subject->handle();
 
-        self::assertFalse((new Crew())->isSlave());
+        self::assertFalse(new Crew()->isSlave());
         self::assertCount(3, $auctions);
         self::assertSame($stageThreeRank, $crews[1]->getRank());
         self::assertSame($stageFourRank, $crews[2]->getRank());

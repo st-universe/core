@@ -10,13 +10,12 @@ use Stu\Component\Game\ModuleEnum;
 
 final class GameRunner
 {
-
     public static function runModule(ModuleEnum $module): void
     {
         Init::run(function (ContainerInterface $dic) use ($module): void {
             $dic->get(EntityManagerInterface::class)
                 ->wrapInTransaction(
-                    fn() => $dic->get(GameRequestRunnerInterface::class)->run($module)
+                    fn () => $dic->get(GameRequestRunnerInterface::class)->run($module)
                 );
         });
     }

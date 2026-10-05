@@ -31,7 +31,7 @@ class GameResponseFinalizerTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
 
-        $result = (new GameResponseFinalizer($twigPage, $componentSetup, $renderer))
+        $result = new GameResponseFinalizer($twigPage, $componentSetup, $renderer)
             ->finalize($game, $gameRequest);
 
         $this->assertSame('rendered response', $result);

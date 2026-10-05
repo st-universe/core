@@ -69,10 +69,10 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
         $resultingUserIds = $this->getEntityManager()
             ->createQuery(sprintf(
-            'SELECT DISTINCT sp.user_id
+                'SELECT DISTINCT sp.user_id
                 FROM %s sp
                 WHERE sp.id IN (:spacecraftIds)',
-            Spacecraft::class
+                Spacecraft::class
             ))
             ->setParameter('spacecraftIds', $spacecraftIds)
             ->getResult();
@@ -89,7 +89,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
 
         $result = array_merge($resultingUserIds, $resultingDockedStationUserIds);
 
-        $userIds = array_map(fn(array $row): int => (int) $row['user_id'], $result);
+        $userIds = array_map(fn (array $row): int => (int) $row['user_id'], $result);
 
         sort($userIds, SORT_NUMERIC);
 
@@ -426,7 +426,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             'spacecraftId' => $spacecraft->getId()
         ])->getResult();
 
-        $filteredSpacecrafts = array_filter($spacecrafts, fn(Spacecraft $ship): bool =>
+        $filteredSpacecrafts = array_filter($spacecrafts, fn (Spacecraft $ship): bool =>
             !$ship->getSystemState(SpacecraftSystemTypeEnum::WARPDRIVE) &&
             !$ship->getSystemState(SpacecraftSystemTypeEnum::SHIELDS) && (
                 $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::WARPCORE) || $ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SINGULARITY_REACTOR)

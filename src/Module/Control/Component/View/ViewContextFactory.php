@@ -13,8 +13,8 @@ use Stu\Module\Control\JavascriptExecutionInterface;
 use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Twig\TwigPageInterface;
 
-final class ViewContextFactory implements ViewViewContextFactoryInterface {
-
+final class ViewContextFactory implements ViewViewContextFactoryInterface
+{
     public function __construct(
         private readonly ContextFactoryInterface $contextFactory,
         private readonly TwigPageInterface $twigPage,
@@ -23,7 +23,8 @@ final class ViewContextFactory implements ViewViewContextFactoryInterface {
         private readonly SessionStringFactoryInterface $sessionStringFactory
     ) {}
 
-    public function createViewContext(GameControllerInterface $game, ModuleEnum $module): ViewContext {
+    public function createViewContext(GameControllerInterface $game, ModuleEnum $module): ViewContext
+    {
 
         return new ViewContext(
             $this->contextFactory->createContext($game),

@@ -6,8 +6,8 @@ use request;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Template\TemplateInterface;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 

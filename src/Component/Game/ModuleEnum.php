@@ -106,7 +106,8 @@ enum ModuleEnum: string
         };
     }
 
-    public function doSessionCheck(): bool {
+    public function doSessionCheck(): bool
+    {
         return $this !== self::INDEX;
     }
 }

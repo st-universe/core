@@ -100,7 +100,7 @@ final class IonStormMapGeneration implements HistoryTickHandlerInterface
 
     private function editExistingGif(string $gifPath, GdImage $img): void
     {
-        $gif = (new Imagick($gifPath))->coalesceImages();
+        $gif = new Imagick($gifPath)->coalesceImages();
         $this->removeOldFrames($gif);
         $this->addFrameAndWriteGifToFile($gifPath, $img, $gif);
     }

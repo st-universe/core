@@ -18,7 +18,7 @@ class GameUserRoleCheckerTest extends StuTestCase
         $session->shouldReceive('getUser')->once()->andReturnNull();
         $stuConfig->shouldNotReceive('getGameSettings');
 
-        $this->assertFalse((new GameUserRoleChecker($session, $stuConfig))->isAdmin());
+        $this->assertFalse(new GameUserRoleChecker($session, $stuConfig)->isAdmin());
     }
 
     public function testIsAdminReturnsTrueForConfiguredAdmin(): void
@@ -30,7 +30,7 @@ class GameUserRoleCheckerTest extends StuTestCase
         $user->shouldReceive('getId')->once()->andReturn(42);
         $stuConfig->shouldReceive('getGameSettings->getAdminIds')->once()->andReturn([42]);
 
-        $this->assertTrue((new GameUserRoleChecker($session, $stuConfig))->isAdmin());
+        $this->assertTrue(new GameUserRoleChecker($session, $stuConfig)->isAdmin());
     }
 
     public function testIsAdminReturnsFalseForUnconfiguredUser(): void
@@ -42,7 +42,7 @@ class GameUserRoleCheckerTest extends StuTestCase
         $user->shouldReceive('getId')->once()->andReturn(42);
         $stuConfig->shouldReceive('getGameSettings->getAdminIds')->once()->andReturn([7]);
 
-        $this->assertFalse((new GameUserRoleChecker($session, $stuConfig))->isAdmin());
+        $this->assertFalse(new GameUserRoleChecker($session, $stuConfig)->isAdmin());
     }
 
     public function testIsNpcReturnsFalseWithoutUser(): void
@@ -51,7 +51,7 @@ class GameUserRoleCheckerTest extends StuTestCase
         $stuConfig = $this->mock(StuConfigInterface::class);
         $session->shouldReceive('getUser')->once()->andReturnNull();
 
-        $this->assertFalse((new GameUserRoleChecker($session, $stuConfig))->isNpc());
+        $this->assertFalse(new GameUserRoleChecker($session, $stuConfig)->isNpc());
     }
 
     public function testIsNpcReflectsUserRole(): void
@@ -62,6 +62,6 @@ class GameUserRoleCheckerTest extends StuTestCase
         $session->shouldReceive('getUser')->once()->andReturn($user);
         $user->shouldReceive('isNpc')->once()->andReturnTrue();
 
-        $this->assertTrue((new GameUserRoleChecker($session, $stuConfig))->isNpc());
+        $this->assertTrue(new GameUserRoleChecker($session, $stuConfig)->isNpc());
     }
 }

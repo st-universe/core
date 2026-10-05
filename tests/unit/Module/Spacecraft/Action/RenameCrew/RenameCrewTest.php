@@ -8,7 +8,6 @@ use Mockery\MockInterface;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowRenameCrew\ShowRenameCrew;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\User;

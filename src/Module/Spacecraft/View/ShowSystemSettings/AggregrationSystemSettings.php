@@ -77,10 +77,10 @@ class AggregrationSystemSettings implements SystemSettingsProviderInterface
             }
         }
 
-        $mode1Commodities = array_filter($mode1Commodities, fn(array $entry): bool => $entry[1] !== null
+        $mode1Commodities = array_filter($mode1Commodities, fn (array $entry): bool => $entry[1] !== null
         && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId()));
 
-        $mode2Commodities = array_filter($mode2Commodities, fn(array $entry): bool => $entry[1] !== null
+        $mode2Commodities = array_filter($mode2Commodities, fn (array $entry): bool => $entry[1] !== null
         && $this->buildingCommodityRepository->canProduceCommodity($userId, $entry[1]->getId()));
 
         $chosencommodity = $aggregationsystem->getCommodityId();

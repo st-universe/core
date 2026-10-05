@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Game\Component;
 
 use Stu\Lib\Component\ComponentInterface;
-use Stu\Module\Template\TemplateInterface;
-use Stu\Orm\Entity\User;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Module\Template\StatusBarColorEnum;
 use Stu\Module\Template\StatusBarFactoryInterface;
+use Stu\Module\Template\TemplateInterface;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use OutOfBoundsException;
-use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Anomaly\Type\AnomalyHandlerInterface;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Module\Logging\LogTypeEnum;
 use Stu\Module\Logging\StuLogger;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;

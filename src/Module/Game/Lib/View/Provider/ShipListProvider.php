@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Stu\Extension\ExtensionHooks;
 use Stu\Component\Game\GameEnum;
+use Stu\Extension\ExtensionHooks;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;

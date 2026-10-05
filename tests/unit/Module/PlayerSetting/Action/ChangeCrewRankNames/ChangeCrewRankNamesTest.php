@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeCrewRankNames;
 
-use Mockery\MockInterface;
 use Mockery;
+use Mockery\MockInterface;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;

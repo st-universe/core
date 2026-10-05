@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Interaction\Member;
 
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
