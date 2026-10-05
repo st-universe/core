@@ -215,4 +215,3 @@ final class ClaimQuestReward implements ActionControllerInterface
         return true;
     }
 }
-

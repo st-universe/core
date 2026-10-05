@@ -61,7 +61,7 @@ return [
         }
         return new ArrayAdapter();
     },
-    SqlLogger::class => fn(): SqlLogger => new SqlLogger(
+    SqlLogger::class => fn (): SqlLogger => new SqlLogger(
         StuLogger::getLogger(LogTypeEnum::DBAL)
     ),
     GameControllerInterface::class => autowire(GameController::class)

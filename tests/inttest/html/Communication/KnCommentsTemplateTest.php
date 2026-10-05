@@ -30,7 +30,7 @@ class KnCommentsTemplateTest extends TwigTestCase
         $template = $this->getContainer()->get(Environment::class)->load('html/communication/knComments.twig');
 
         return $template->render([
-            'POST' => new class {
+            'POST' => new class () {
                 public function getId(): int
                 {
                     return 42;

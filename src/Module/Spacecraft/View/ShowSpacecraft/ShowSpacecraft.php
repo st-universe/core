@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSpacecraft;
 
-use Stu\Extension\ExtensionHooks;
 use InvalidArgumentException;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
@@ -13,6 +12,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
+use Stu\Extension\ExtensionHooks;
 use Stu\Lib\Map\NavPanel\NavPanel;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Lib\Trait\LayerExplorationTrait;

@@ -30,7 +30,7 @@ class DefaultViewsControllerTest extends TwigTestCase
         return $definedImplementations
             ->map(fn (ViewControllerInterface $viewController): array => [$definedImplementations->indexOf($viewController)])
             ->filter(fn (array $array): bool => str_ends_with($array[0], '-DEFAULT_VIEW') && !str_starts_with($array[0], 'GAME_VIEWS'))
-            ->filter(fn(array $array): bool => $array[0] === 'COMMUNICATION_VIEWS-DEFAULT_VIEW')
+            ->filter(fn (array $array): bool => $array[0] === 'COMMUNICATION_VIEWS-DEFAULT_VIEW')
             ->toArray();
     }
 

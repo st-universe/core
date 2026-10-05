@@ -67,7 +67,7 @@ class IonStormMapGenerationTest extends StuTestCase
         $method = $this->getMethod($this->subject, 'editExistingGif');
         $method->invoke($this->subject, $this->gifPath, $newFrame);
 
-        $frames = (new Imagick($this->gifPath))->coalesceImages();
+        $frames = new Imagick($this->gifPath)->coalesceImages();
 
         self::assertSame(168, $frames->getNumberImages());
 

@@ -12,8 +12,8 @@ use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\User;
 
-interface ControllerContext extends TemplateInterface {
-
+interface ControllerContext extends TemplateInterface
+{
     public function getGame(): GameControllerInterface;
 
     public function getInfo(): InformationWrapper;

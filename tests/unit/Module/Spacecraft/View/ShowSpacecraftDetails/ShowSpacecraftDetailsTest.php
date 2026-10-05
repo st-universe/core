@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\View\ShowSpacecraftDetails;
 
-use Mockery\MockInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery\MockInterface;
 use request;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
@@ -60,8 +60,8 @@ class ShowSpacecraftDetailsTest extends StuTestCase
         $guest = $this->mock(User::class);
         $ownerCrew = $this->mock(Crew::class);
         $guestCrew = $this->mock(Crew::class);
-        $ownerAssignment = (new CrewAssignment())->setCrew($ownerCrew)->setSlot(CrewTypeEnum::CREWMAN);
-        $guestAssignment = (new CrewAssignment())->setCrew($guestCrew)->setSlot(CrewTypeEnum::CREWMAN);
+        $ownerAssignment = new CrewAssignment()->setCrew($ownerCrew)->setSlot(CrewTypeEnum::CREWMAN);
+        $guestAssignment = new CrewAssignment()->setCrew($guestCrew)->setSlot(CrewTypeEnum::CREWMAN);
 
         $userId = 42;
         $stationId = 23;

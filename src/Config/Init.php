@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use DI\ContainerBuilder;
-use Psr\Container\ContainerInterface;
 use Noodlehaus\ConfigInterface;
+use Psr\Container\ContainerInterface;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Twig\TwigHelper;

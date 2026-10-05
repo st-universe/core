@@ -125,7 +125,7 @@ final class RelationPermissionRepository extends EntityRepository implements
     {
         $pendingPermissions = array_filter(
             $relation->getRelationPermissions()->toArray(),
-            static fn(RelationPermission $permission): bool => $permission->isPending()
+            static fn (RelationPermission $permission): bool => $permission->isPending()
         );
         if ($pendingPermissions === []) {
             return false;

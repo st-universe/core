@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-use Stu\Lib\UserLockedException;
 use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\UserLockedException;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLock;
 use Stu\StuTestCase;
@@ -21,7 +21,7 @@ class UserLockCheckerTest extends StuTestCase
         $user->shouldReceive('isLocked')->once()->andReturnFalse();
         $session->shouldNotReceive('logout');
 
-        (new UserLockChecker($session))->check($user);
+        new UserLockChecker($session)->check($user);
     }
 
     public function testCheckLogsOutAndThrowsForLockedUser(): void
@@ -38,6 +38,6 @@ class UserLockCheckerTest extends StuTestCase
 
         static::expectException(UserLockedException::class);
 
-        (new UserLockChecker($session))->check($user);
+        new UserLockChecker($session)->check($user);
     }
 }

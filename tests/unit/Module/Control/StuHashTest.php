@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Control;
 
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\StuTestCase;
 

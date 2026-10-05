@@ -43,7 +43,7 @@ class SystemDamageTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn($station);
 
-        $system = (new SpacecraftSystem())
+        $system = new SpacecraftSystem()
             ->setSystemType(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->setStatus(25)
             ->setMode(SpacecraftSystemModeEnum::MODE_ON);

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Game\Lib\View\Provider;
 
-use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
 use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\PlayerSetting\Lib\UserSettingEnum;

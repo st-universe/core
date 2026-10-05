@@ -8,7 +8,6 @@ use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Game\Component\GameComponentEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\StuTestCase;
 
 class GameSetupTest extends StuTestCase
@@ -28,7 +27,7 @@ class GameSetupTest extends StuTestCase
             ->once();
         $componentRegistration->shouldNotReceive('registerComponent');
 
-        (new GameSetup($componentRegistration))
+        new GameSetup($componentRegistration)
             ->setTemplateAndComponents('view-template', $game);
     }
 
@@ -63,7 +62,7 @@ class GameSetupTest extends StuTestCase
                 ->andReturnSelf();
         }
 
-        (new GameSetup($componentRegistration))
+        new GameSetup($componentRegistration)
             ->setTemplateAndComponents('view-template', $game);
     }
 }

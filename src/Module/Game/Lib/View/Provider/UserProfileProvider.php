@@ -88,7 +88,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
             $user->getAlliance() === null
                 ? array_values(array_filter(
                     $this->userRelationRepository->getByUserAndAlliance($user, null),
-                    static fn(Relation $relation): bool => !$relation->isPending()
+                    static fn (Relation $relation): bool => !$relation->isPending()
                 ))
                 : []
         );
@@ -111,7 +111,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
         if ($alliance !== null) {
             $unfilteredScans = array_merge(...$alliance->getMembers()->map(
-                fn(User $user) => $user->getColonyScans()->toArray()
+                fn (User $user) => $user->getColonyScans()->toArray()
             ));
         } else {
             $unfilteredScans = $visitor->getColonyScans()->toArray();
@@ -119,7 +119,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
         $filteredScans = array_filter(
             $unfilteredScans,
-            fn(ColonyScan $scan): bool => $scan->getColonyUserId() === $user->getId()
+            fn (ColonyScan $scan): bool => $scan->getColonyUserId() === $user->getId()
         );
 
         $scansByColony = [];
@@ -131,7 +131,7 @@ final class UserProfileProvider implements ViewComponentProviderInterface
 
         $latestScans = [];
         foreach ($scansByColony as $scans) {
-            usort($scans, fn($a, $b): int => $b->getDate() <=> $a->getDate());
+            usort($scans, fn ($a, $b): int => $b->getDate() <=> $a->getDate());
             $latestScans[] = $scans[0];
         }
 

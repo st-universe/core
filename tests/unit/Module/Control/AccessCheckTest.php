@@ -35,7 +35,7 @@ class AccessCheckTest extends StuTestCase
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->gameUserRoleChecker = $this->mock(GameUserRoleCheckerInterface::class);
         $this->session = $this->mock(SessionInterface::class);
-        
+
         $this->info = $this->mock(InformationInterface::class);
 
         $this->subject = new AccessCheck(
@@ -189,7 +189,7 @@ class AccessCheckTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(AccessGrantedFeatureEnum::COLONY_SANDBOX);
-        
+
         $this->session->shouldReceive('getUser')
             ->withNoArgs()
             ->once()

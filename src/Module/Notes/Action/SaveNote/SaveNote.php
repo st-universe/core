@@ -6,8 +6,8 @@ namespace Stu\Module\Notes\Action\SaveNote;
 
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameController;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameController;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class SaveNote implements ActionControllerInterface

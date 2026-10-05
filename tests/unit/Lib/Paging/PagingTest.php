@@ -35,7 +35,7 @@ class PagingTest extends StuTestCase
 
     public function testCreatePagingResetsInvalidMarkAndBuildsFirstPageNavigation(): void
     {
-        $paging = (new PagingFactory())->createPaging(250, 25, 37);
+        $paging = new PagingFactory()->createPaging(250, 25, 37);
 
         self::assertSame('?mark=%d', $paging->getUrlPattern());
 
@@ -50,7 +50,7 @@ class PagingTest extends StuTestCase
 
     public function testCreatePagingAddsPreviousAndNextLinksForMiddlePage(): void
     {
-        $paging = (new PagingFactory())->createPaging(100, 25, 25, '/view.php?mode=all', 'nav');
+        $paging = new PagingFactory()->createPaging(100, 25, 25, '/view.php?mode=all', 'nav');
 
         $labels = array_map(static fn (Page $page): string => $page->getLabel(), $paging->getPages());
         self::assertSame(['<<', '<', '1', '2', '3', '4', '>', '>>'], $labels);
@@ -64,7 +64,7 @@ class PagingTest extends StuTestCase
 
     public function testCreatePagingOmitsNextLinksOnLastPage(): void
     {
-        $paging = (new PagingFactory())->createPaging(100, 25, 75, '/final.php');
+        $paging = new PagingFactory()->createPaging(100, 25, 75, '/final.php');
 
         $labels = array_map(static fn (Page $page): string => $page->getLabel(), $paging->getPages());
         self::assertSame(['<<', '<', '2', '3', '4'], $labels);

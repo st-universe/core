@@ -235,8 +235,8 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $user = $this->mock(User::class);
         $spacecraft = $this->mock(Spacecraft::class);
         $otherSpacecraft = $this->mock(Spacecraft::class);
-        $assignment = (new CrewAssignment())->setSpacecraft($spacecraft)->setSlot(CrewTypeEnum::CREWMAN);
-        $swapAssignment = (new CrewAssignment())->setSpacecraft($otherSpacecraft)->setSlot(CrewTypeEnum::TACTIC);
+        $assignment = new CrewAssignment()->setSpacecraft($spacecraft)->setSlot(CrewTypeEnum::CREWMAN);
+        $swapAssignment = new CrewAssignment()->setSpacecraft($otherSpacecraft)->setSlot(CrewTypeEnum::TACTIC);
 
         $this->game->shouldReceive('setView')->with(ShowCrewAssignmentManagement::VIEW_IDENTIFIER)->once();
         $this->game->shouldReceive('getUser')->andReturn($user);

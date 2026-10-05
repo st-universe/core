@@ -13,7 +13,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\NPC\View\ShowNPCQuests\ShowNPCQuests;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\NPCQuest;
-use Stu\Orm\Entity\NPCQuestLog;
 use Stu\Orm\Repository\NPCQuestLogRepositoryInterface;
 use Stu\Orm\Repository\NPCQuestRepositoryInterface;
 

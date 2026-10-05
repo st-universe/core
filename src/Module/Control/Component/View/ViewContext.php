@@ -17,8 +17,8 @@ use Stu\Module\Game\Lib\GameSetupInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\User;
 
-class ViewContext implements ViewControllerContext {
-
+class ViewContext implements ViewControllerContext
+{
     private String $viewIdentifier;
 
     public function __construct(
@@ -29,12 +29,11 @@ class ViewContext implements ViewControllerContext {
         private readonly GameSetupInterface $gameSetup,
         private readonly JavascriptExecutionInterface $javascriptExecution,
         private readonly SessionStringFactoryInterface $sessionStringFactory
-    )
-    {
-    }
+    ) {}
 
     #[\Override]
-    public function getGame(): GameControllerInterface {
+    public function getGame(): GameControllerInterface
+    {
         return $this->context->getGame();
     }
 
@@ -143,17 +142,20 @@ class ViewContext implements ViewControllerContext {
     }
 
     #[\Override]
-    public function getUser(): User {
+    public function getUser(): User
+    {
         return $this->context->getUser();
     }
-        
+
     #[\Override]
-    public function getModule(): ModuleEnum {
+    public function getModule(): ModuleEnum
+    {
         return $this->module;
     }
-        
+
     #[\Override]
-    public function getViewIdentifier(): string {
+    public function getViewIdentifier(): string
+    {
         return $this->viewIdentifier;
     }
 

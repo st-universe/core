@@ -22,7 +22,7 @@ class GameSessionInitializerTest extends StuTestCase
         $session->shouldReceive('getUser')->once()->andReturn($user);
         $sessionLogin->shouldNotReceive('checkLoginCookie');
 
-        $result = (new GameSessionInitializer($session, $sessionLogin))
+        $result = new GameSessionInitializer($session, $sessionLogin)
             ->initialize(ModuleEnum::GAME);
 
         $this->assertSame($user, $result);
@@ -37,7 +37,7 @@ class GameSessionInitializerTest extends StuTestCase
         $session->shouldReceive('getUser')->once()->andReturnNull();
         $sessionLogin->shouldReceive('checkLoginCookie')->once();
 
-        $result = (new GameSessionInitializer($session, $sessionLogin))
+        $result = new GameSessionInitializer($session, $sessionLogin)
             ->initialize(ModuleEnum::INDEX);
 
         $this->assertNull($result);

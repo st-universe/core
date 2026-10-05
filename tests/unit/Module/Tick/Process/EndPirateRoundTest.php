@@ -112,7 +112,7 @@ class EndPirateRoundTest extends StuTestCase
             })
             ->times(10);
 
-        $method = (new \ReflectionClass($this->subject))->getMethod('distributeAwardRewards');
+        $method = new \ReflectionClass($this->subject)->getMethod('distributeAwardRewards');
         $method->invoke($this->subject, 123);
 
         $this->assertSame(
@@ -143,6 +143,6 @@ class EndPirateRoundTest extends StuTestCase
 
     private function createAward(int $id): Award
     {
-        return (new Award())->setId($id);
+        return new Award()->setId($id);
     }
 }

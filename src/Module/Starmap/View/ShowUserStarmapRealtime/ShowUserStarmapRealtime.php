@@ -131,7 +131,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'id'
         ));
         $spacecrafts = array_values(array_filter(array_map(
-            fn(array $row): ?array => $this->normalizeVisibleSpacecraft(
+            fn (array $row): ?array => $this->normalizeVisibleSpacecraft(
                 $row,
                 $user,
                 $canSeeAllianceShips,

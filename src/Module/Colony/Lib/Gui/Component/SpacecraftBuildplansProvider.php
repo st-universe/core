@@ -5,8 +5,8 @@ namespace Stu\Module\Colony\Lib\Gui\Component;
 use request;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Template\TemplateInterface;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 

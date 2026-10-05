@@ -60,7 +60,7 @@ class NpcLogTradeMessageLoggerTest extends StuTestCase
             ->once()
             ->andReturn($entry);
         $this->npcLogRepository->shouldReceive('save')
-            ->with(Mockery::on(fn(NPCLog $savedEntry): bool => $savedEntry->getText() === 'Sender (101) -> Npc (10): test text'
+            ->with(Mockery::on(fn (NPCLog $savedEntry): bool => $savedEntry->getText() === 'Sender (101) -> Npc (10): test text'
                 && $savedEntry->getSourceUserId() === 10
                 && $savedEntry->getAdminView() === true))
             ->once();

@@ -7,8 +7,8 @@ namespace Stu\Module\Research\Action\CancelResearch;
 use request;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\AuthenticatedActionController;
-use Stu\Module\Control\GameController;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameController;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 

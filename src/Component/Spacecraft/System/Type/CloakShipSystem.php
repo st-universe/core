@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
-use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;

@@ -16,7 +16,7 @@ class GameModuleAccessCheckerTest extends StuTestCase
         $roleChecker->shouldNotReceive('isAdmin');
 
         $this->assertTrue(
-            (new GameModuleAccessChecker($roleChecker))->isAllowed(ModuleEnum::GAME)
+            new GameModuleAccessChecker($roleChecker)->isAllowed(ModuleEnum::GAME)
         );
     }
 
@@ -27,7 +27,7 @@ class GameModuleAccessCheckerTest extends StuTestCase
         $roleChecker->shouldReceive('isAdmin')->once()->andReturnFalse();
 
         $this->assertFalse(
-            (new GameModuleAccessChecker($roleChecker))->isAllowed(ModuleEnum::NPC)
+            new GameModuleAccessChecker($roleChecker)->isAllowed(ModuleEnum::NPC)
         );
     }
 
@@ -37,7 +37,7 @@ class GameModuleAccessCheckerTest extends StuTestCase
         $roleChecker->shouldReceive('isAdmin')->once()->andReturnTrue();
 
         $this->assertTrue(
-            (new GameModuleAccessChecker($roleChecker))->isAllowed(ModuleEnum::ADMIN)
+            new GameModuleAccessChecker($roleChecker)->isAllowed(ModuleEnum::ADMIN)
         );
     }
 }

@@ -229,7 +229,7 @@ class SpacecraftBuildplan
     {
         $array = $this->modules->toArray();
 
-        uasort($array, fn(BuildplanModule $a, BuildplanModule $b): int => $a->getModuleType()->getOrder() <=> $b->getModuleType()->getOrder());
+        uasort($array, fn (BuildplanModule $a, BuildplanModule $b): int => $a->getModuleType()->getOrder() <=> $b->getModuleType()->getOrder());
 
         return new ArrayCollection($array);
     }

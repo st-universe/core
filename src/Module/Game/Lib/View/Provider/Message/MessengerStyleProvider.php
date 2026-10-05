@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Game\Lib\View\Provider\Message;
 
-use RuntimeException;
 use request;
+use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Paging\PagingFactory;
@@ -40,7 +40,7 @@ class MessengerStyleProvider implements ViewComponentProviderInterface
         if ($category === null) {
             throw new RuntimeException('main PM category not found');
         }
-            
+
         $mark = request::indInt('mark');
         if ($mark < 0 || $mark % self::CONVERSATION_LIMIT !== 0) {
             $mark = 0;

@@ -6,8 +6,8 @@ namespace Stu\Module\Research\Action\StartResearch;
 
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameController;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameController;
 use Stu\Module\Game\Component\GameComponentEnum;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;

@@ -7,7 +7,6 @@ use Stu\Config\Init;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Module\Control\Component\ControllerContext;
-use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Orm\Entity\CrewAssignment;
 
 trait SpacecraftCrewTrait

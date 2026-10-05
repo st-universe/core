@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
+use Stu\Component\Faction\FactionEnum;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Colony;
 

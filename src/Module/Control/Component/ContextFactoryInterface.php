@@ -6,7 +6,7 @@ namespace Stu\Module\Control\Component;
 
 use Stu\Module\Control\GameControllerInterface;
 
-interface ContextFactoryInterface {
-
+interface ContextFactoryInterface
+{
     public function createContext(GameControllerInterface $game): ControllerContext;
 }

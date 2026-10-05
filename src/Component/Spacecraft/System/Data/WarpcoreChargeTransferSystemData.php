@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System\Data;
 
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
-use Stu\Module\Template\StatusBarFactoryInterface;
-use Stu\Orm\Repository\SpacecraftSystemRepositoryInterface;
 
 class WarpcoreChargeTransferSystemData extends AbstractSystemData
 {

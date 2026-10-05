@@ -6,7 +6,7 @@ namespace Stu\Module\Control\Component\Action;
 
 use Stu\Module\Control\GameControllerInterface;
 
-interface ActionContextFactoryInterface {
-
+interface ActionContextFactoryInterface
+{
     public function createActionContext(GameControllerInterface $game): ActionControllerContext;
 }

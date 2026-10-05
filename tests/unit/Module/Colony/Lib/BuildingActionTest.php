@@ -6,8 +6,8 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Stu\Component\Building\ColonyBuildingEffects;
 use Stu\Component\Building\BuildingManagerInterface;
+use Stu\Component\Building\ColonyBuildingEffects;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -324,9 +324,9 @@ class BuildingActionTest extends StuTestCase
     {
         $game = $this->mock(ControllerContext::class);
         $field = $this->mock(PlanetField::class);
-        $building = (new Building())->setName('WERFTHUB');
+        $building = new Building()->setName('WERFTHUB');
         $building->getCommodities()->add(
-            (new BuildingCommodity())
+            new BuildingCommodity()
                 ->setCommodityId(CommodityTypeConstants::COMMODITY_EFFECT_SHIPYARD_LOGISTICS)
                 ->setAmount(5)
         );

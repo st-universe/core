@@ -69,17 +69,17 @@ class DealsBidAuctionTest extends ActionControllerTestCase
 
     public function testHandleDoesNotAllowHighestBidderToLowerMaxBid(): void
     {
-        $user = (new User())->setPrestige(1_000)->setUsername('Bidder');
+        $user = new User()->setPrestige(1_000)->setUsername('Bidder');
         $this->setPrivateProperty($user, 'id', 42);
 
-        $auction = (new Deals())
+        $auction = new Deals()
             ->setAuction(true)
             ->setAuctionAmount(651)
             ->setwantPrestige(1)
             ->setStart(1)
             ->setEnd(100);
 
-        $highestBid = (new AuctionBid())
+        $highestBid = new AuctionBid()
             ->setUser($user)
             ->setMaxAmount(1_000)
             ->setAuction($auction);

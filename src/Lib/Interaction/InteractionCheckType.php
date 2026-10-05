@@ -19,7 +19,7 @@ enum InteractionCheckType
     case EXPECT_SOURCE_UNBLOCKED;
     case EXPECT_SPACECRAFT_BEAMABLE;
 
-        // TARGET
+    // TARGET
     case EXPECT_TARGET_NOT_NPC;
     case EXPECT_TARGET_UNSHIELDED;
     case EXPECT_TARGET_UNCLOAKED;

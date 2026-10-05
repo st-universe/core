@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Relation;
 
 use Stu\Component\Alliance\Enum\RelationPermissionEnum;
-use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;

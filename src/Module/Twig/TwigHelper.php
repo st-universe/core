@@ -215,7 +215,7 @@ class TwigHelper
         );
         $this->environment->addFunction($hasAlliancePermissionFunction);
 
-        $isShow3DModelFunction = new TwigFunction('isShow3DModel', fn(User $user): bool => $this->userSettingsProvider->isShow3DModel($user));
+        $isShow3DModelFunction = new TwigFunction('isShow3DModel', fn (User $user): bool => $this->userSettingsProvider->isShow3DModel($user));
         $this->environment->addFunction($isShow3DModelFunction);
     }
 

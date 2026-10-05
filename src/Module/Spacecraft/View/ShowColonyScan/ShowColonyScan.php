@@ -13,7 +13,6 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\MatrixScannerShipSystem;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
-use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;

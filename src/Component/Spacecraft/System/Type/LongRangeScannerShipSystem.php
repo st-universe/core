@@ -6,8 +6,8 @@ namespace Stu\Component\Spacecraft\System\Type;
 
 use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;

@@ -6,9 +6,9 @@ namespace Stu\Module\Game\Component;
 
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Lib\Component\ComponentInterface;
-use Stu\Module\Template\TemplateInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
+use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;

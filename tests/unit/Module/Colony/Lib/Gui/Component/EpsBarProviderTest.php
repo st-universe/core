@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;

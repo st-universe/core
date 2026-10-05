@@ -90,7 +90,7 @@ class ApplyDamageTest extends StuTestCase
         $station->setCondition($condition);
         $station->setMaxHull(1000);
 
-        $torpedoStorageSystem = (new SpacecraftSystem())
+        $torpedoStorageSystem = new SpacecraftSystem()
             ->setSystemType(SpacecraftSystemTypeEnum::TORPEDO_STORAGE)
             ->setStatus(25)
             ->setMode(SpacecraftSystemModeEnum::MODE_ON);

@@ -8,8 +8,8 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Template\TemplateInterface;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\User;
 
 final class StorageProvider implements PlanetFieldHostComponentInterface
 {

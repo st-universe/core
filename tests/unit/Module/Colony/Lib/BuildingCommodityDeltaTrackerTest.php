@@ -6,8 +6,8 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCommodity;

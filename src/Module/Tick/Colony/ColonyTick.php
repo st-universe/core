@@ -5,7 +5,6 @@ namespace Stu\Module\Tick\Colony;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use RuntimeException;
-use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;

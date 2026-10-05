@@ -8,11 +8,11 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonySandbox;
+use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\PlanetField;
-use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class Shipyard implements BuildingActionHandlerInterface

@@ -76,4 +76,3 @@ final class BuildingCommodityDeltaTracker
         return $this->commodityProductionDeltas[$hostId][$commodityId] ?? 0;
     }
 }
-

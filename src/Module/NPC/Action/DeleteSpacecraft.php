@@ -49,7 +49,7 @@ final class DeleteSpacecraft implements ActionControllerInterface
                 'trim',
                 explode(',', $spacecraftIdInput)
             ),
-            fn($id): bool => is_numeric($id) && $id > 0
+            fn ($id): bool => is_numeric($id) && $id > 0
         );
         if ($spacecraftIds === []) {
             $context->getInfo()->addInformation("Es wurden keine gültigen Spacecraft-IDs gefunden");

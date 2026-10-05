@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stu\Lib\Paging;
@@ -9,12 +10,11 @@ class Paging
      * @var array<int, Page>
      */
     private array $pages;
-    
+
     public function __construct(
         private readonly string $urlPattern,
-        private readonly ?string $style)
-    {
-    }
+        private readonly ?string $style
+    ) {}
 
     /**
      * @return array<int, Page>

@@ -12,34 +12,39 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\User;
 
-class ActionContext implements ActionControllerContext {
-
+class ActionContext implements ActionControllerContext
+{
     public function __construct(
         private readonly ControllerContext $context
     ) {}
 
     #[\Override]
-    public function getGame(): GameControllerInterface {
+    public function getGame(): GameControllerInterface
+    {
         return $this->context->getGame();
     }
 
     #[\Override]
-    public function getInfo(): InformationWrapper {
+    public function getInfo(): InformationWrapper
+    {
         return $this->context->getInfo();
     }
 
     #[\Override]
-    public function getUser(): User {
+    public function getUser(): User
+    {
         return $this->context->getUser();
     }
 
     #[\Override]
-    public function setView(ModuleEnum|string $view): void {
+    public function setView(ModuleEnum|string $view): void
+    {
         $this->context->setView($view);
     }
 
     #[\Override]
-    public function setViewContext(ViewContextMetadataTypeEnum $type, mixed $value): void {
+    public function setViewContext(ViewContextMetadataTypeEnum $type, mixed $value): void
+    {
         $this->context->setViewContext($type, $value);
     }
 
@@ -50,12 +55,14 @@ class ActionContext implements ActionControllerContext {
     }
 
     #[\Override]
-    public function getSessionString(): string {
+    public function getSessionString(): string
+    {
         return $this->context->getSessionString();
     }
 
     #[\Override]
-    public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void {
+    public function addExecuteJS(string $value, JavascriptExecutionTypeEnum $when = JavascriptExecutionTypeEnum::BEFORE_RENDER): void
+    {
         $this->context->addExecuteJS($value, $when);
     }
 }

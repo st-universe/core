@@ -11,7 +11,6 @@ use Stu\Module\Twig\TwigPageInterface;
 
 class ContextFactory implements ContextFactoryInterface
 {
-
     public function __construct(
         private readonly TwigPageInterface $twigPage,
         private readonly JavascriptExecutionInterface $javascriptExecution,

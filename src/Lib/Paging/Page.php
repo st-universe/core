@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stu\Lib\Paging;
@@ -9,9 +10,8 @@ class Page
         private readonly Paging $paging,
         private readonly string $label,
         private readonly int $mark,
-        private readonly string $cssclass)
-    {
-    }
+        private readonly string $cssclass
+    ) {}
 
     public function getLabel(): string
     {

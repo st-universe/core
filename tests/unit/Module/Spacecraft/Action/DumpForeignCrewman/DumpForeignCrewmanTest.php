@@ -11,7 +11,6 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Crew\SpacecraftLeaverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
-use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewAssignment;

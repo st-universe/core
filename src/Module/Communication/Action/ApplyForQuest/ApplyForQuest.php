@@ -68,7 +68,7 @@ final class ApplyForQuest implements ActionControllerInterface
         ]);
 
         if ($existingQuestUser !== null) {
-            switch($existingQuestUser->getMode()) {
+            switch ($existingQuestUser->getMode()) {
                 case QuestUserModeEnum::ACTIVE_MEMBER:
                     $context->getInfo()->addInformation('Du bist bereits aktiver Teilnehmer dieser Quest');
                     return;

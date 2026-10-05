@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
-use Stu\Lib\UserLockedException;
 use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\UserLockedException;
 use Stu\Orm\Entity\User;
 
 final class UserLockChecker implements UserLockCheckerInterface

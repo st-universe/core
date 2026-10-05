@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\AddKnPost;
 
 use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameController;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameController;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;

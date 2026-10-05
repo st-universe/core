@@ -126,4 +126,3 @@ final class BuildingActivationHandler
             : $host->getChangeable();
     }
 }
-

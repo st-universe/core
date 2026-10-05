@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;

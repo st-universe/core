@@ -95,7 +95,7 @@ abstract class IntegrationTestCase extends StuTestCase
     private function getViewControllerModuleInfo(string|ControllerInterface $viewController): array
     {
         $className = is_string($viewController) ? $viewController : $viewController::class;
-        $namespaceParts = explode('\\', (new ReflectionClass($className))->getNamespaceName());
+        $namespaceParts = explode('\\', new ReflectionClass($className)->getNamespaceName());
 
         if (($namespaceParts[0] ?? null) !== 'Stu' || ($namespaceParts[1] ?? null) !== 'Module' || !isset($namespaceParts[2])) {
             throw new \InvalidArgumentException(sprintf('Cannot determine module folder for %s', $className));

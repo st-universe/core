@@ -11,7 +11,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Logging\LogLevelEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
