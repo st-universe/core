@@ -68,7 +68,7 @@
     "bnf/phpstan-psr-container": "^1.0",
     "carthage-software/mago": "^1.0.0-beta.34",
     "enlightn/security-checker": "^2.0",
-    "friendsofphp/php-cs-fixer": "^3.13",
+    "friendsofphp/php-cs-fixer": "^3.95.27",
     "mikey179/vfsstream": "1.6.12",
     "mockery/mockery": "^1.1",
     "phpstan/extension-installer": "^1.4.3",
