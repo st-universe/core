@@ -8,7 +8,7 @@ use Stu\Extension\ExtensionDeployer;
 use Stu\Extension\ExtensionInstaller;
 use Stu\Extension\ExtensionRestarter;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 try {
     ConfigFileSetup::initConfigStage(ConfigStageEnum::PRODUCTION);

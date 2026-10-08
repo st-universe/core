@@ -34,7 +34,6 @@ final class ShipyardProvider implements PlanetFieldHostComponentInterface
             return;
         }
 
-        $user = $user;
         $userId = $user->getId();
 
         $template->setTemplateVar(
