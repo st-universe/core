@@ -64,7 +64,7 @@ class PirateReaction implements PirateReactionInterface
     ): void {
 
         // check if fleet already defeated
-        if ($this->isDefeated($pirateFleetBattleParty, 40)) {
+        if ($this->isDefeated($pirateFleetBattleParty)) {
             $this->logger->logf('pirateFleet %s has no ships left, no reaction triggered', $pirateFleetBattleParty->getFleetName());
             return;
         }
@@ -95,7 +95,7 @@ class PirateReaction implements PirateReactionInterface
 
         $alternativeBehaviour = $this->action($behaviourType, $pirateFleetBattleParty, $reactionMetadata, $triggerSpacecraft);
 
-        if ($this->isDefeated($pirateFleetBattleParty, 41)) {
+        if ($pirateFleetBattleParty->isDefeated()) {
             $this->logger->log('pirateFleet was destroyed during action, no further reaction');
             return;
         }
@@ -111,7 +111,7 @@ class PirateReaction implements PirateReactionInterface
             ));
             $this->action($alternativeBehaviour, $pirateFleetBattleParty, $reactionMetadata, $triggerSpacecraft);
 
-            if ($this->isDefeated($pirateFleetBattleParty, 42)) {
+            if ($this->isDefeatedSecondTry($pirateFleetBattleParty)) {
                 $this->logger->log('pirateFleet was destroyed during alternative action, no further reaction');
                 return;
             }
@@ -124,7 +124,12 @@ class PirateReaction implements PirateReactionInterface
         $this->action(PirateBehaviourEnum::DEACTIVATE_SHIELDS, $pirateFleetBattleParty, $reactionMetadata, null);
     }
 
-    private function isDefeated(PirateFleetBattleParty $pirateFleetBattleParty, ?int $salt = null): bool
+    private function isDefeated(PirateFleetBattleParty $pirateFleetBattleParty): bool
+    {
+        return $pirateFleetBattleParty->isDefeated();
+    }
+
+    private function isDefeatedSecondTry(PirateFleetBattleParty $pirateFleetBattleParty): bool
     {
         return $pirateFleetBattleParty->isDefeated();
     }

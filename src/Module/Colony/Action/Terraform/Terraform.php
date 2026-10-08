@@ -119,7 +119,6 @@ final class Terraform implements ActionControllerInterface
                 continue;
             }
 
-            $commodityId = $obj->getCommodityId();
             $storage = $storages->get($obj->getCommodityId());
             if ($storage === null) {
                 $context->getInfo()->addInformationf(

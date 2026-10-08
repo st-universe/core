@@ -21,7 +21,6 @@ class ColonyProductionPreviewWrapper
 
         $ret = [];
         foreach ($bcommodities as $commodityId => $prod) {
-            $commodityId = $prod->getCommodityId();
             if (array_key_exists($commodityId, $this->production)) {
 
                 $ret[$commodityId] = clone $this->production[$commodityId];

@@ -41,7 +41,7 @@ final class AdventDoorHandler implements AnomalyHandlerInterface
         $this->storageRepository->truncateByCommodity(CommodityTypeConstants::COMMODITY_ADVENT_POINT);
 
         for ($i = 0; $i < self::ADVENT_DOOR_AMOUNT; $i++) {
-            $subspaceEllipses[] = $this->anomalyCreation->create(
+            $this->anomalyCreation->create(
                 AnomalyTypeEnum::SPECIAL_ADVENT_DOOR,
                 $this->getRandomMap()
             );

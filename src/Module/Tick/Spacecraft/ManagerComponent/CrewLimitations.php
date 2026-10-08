@@ -50,7 +50,7 @@ final class CrewLimitations implements ManagerComponentInterface
 
             $userId = $user->getId();
 
-            [$crewToQuit, $crewOnColonies, $crewOnShips, $crewAtTradeposts] = $this->getCrewLimitData($user);
+            $crewToQuit = $this->getCrewLimitData($user)[0];
 
             if ($crewToQuit === 0) {
                 continue;
