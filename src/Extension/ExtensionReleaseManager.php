@@ -97,7 +97,7 @@ final class ExtensionReleaseManager
             throw new RuntimeException('Downloaded repository is not an extracted module');
         }
 
-        $manifest = require $release . '/module.php';
+        $manifest = ExtensionManifestLoader::load($release . '/module.php');
         if (!is_array($manifest) || ($manifest['id'] ?? null) !== $id || ($manifest['apiVersion'] ?? null) !== ExtensionRegistry::API_VERSION) {
             throw new RuntimeException('Downloaded module has an incompatible manifest');
         }
