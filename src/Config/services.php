@@ -7,8 +7,6 @@ namespace Stu\Config;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
-use JsonMapper\JsonMapperFactory;
-use JsonMapper\JsonMapperInterface;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -16,6 +14,8 @@ use Psr\Container\ContainerInterface;
 use Stu\Component\Cache\CacheProvider;
 use Stu\Component\Cache\CacheProviderInterface;
 use Stu\Component\Logging\Sql\SqlLogger;
+use Stu\Lib\Json\JsonMapperInterface;
+use Stu\Lib\Json\JsonMapperWrapper;
 use Stu\Lib\ParserWithImage;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
@@ -77,7 +77,7 @@ return [
         $parser->addCodeDefinitionSet(new StuBbCodeWithImageDefinitionSet());
         return new ParserWithImage($parser);
     },
-    JsonMapperInterface::class => fn (): JsonMapperInterface => new JsonMapperFactory()->bestFit(),
+    JsonMapperInterface::class => fn (): JsonMapperInterface => new JsonMapperWrapper(),
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
         $bench->start();

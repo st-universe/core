@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
-use JsonMapper\JsonMapperInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Anomaly\AnomalyException;
@@ -20,6 +19,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationFactoryInterface;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Json\JsonMapperInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;

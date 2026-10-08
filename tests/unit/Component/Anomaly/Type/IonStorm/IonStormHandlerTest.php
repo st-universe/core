@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly\Type\IonStorm;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stu\Component\Anomaly\AnomalyCreationInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationFactoryInterface;
+use Stu\Lib\Json\JsonMapperInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Component\Spacecraft\System;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use JsonMapper\JsonMapperFactory;
-use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
+use Stu\Lib\Json\JsonMapperInterface;
+use Stu\Lib\Json\JsonMapperWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Template\StatusBarFactoryInterface;
 use Stu\Orm\Entity\Ship;
@@ -34,7 +34,7 @@ class SystemDataDeserializerTest extends StuTestCase
     {
         //injected
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
-        $this->jsonMapper = new JsonMapperFactory()->bestFit();
+        $this->jsonMapper = new JsonMapperWrapper();
 
         $this->ship = $this->mock(Ship::class);
         $this->shipSystem = $this->mock(SpacecraftSystem::class);
