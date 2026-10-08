@@ -39,9 +39,10 @@ final class ExtensionDeployerTest extends StuTestCase
         $settings = $this->settings();
         $settings['demo']['enabled'] = false;
         $settings['local'] = ['enabled' => true, 'path' => '../local'];
-        $deployer = new ExtensionDeployer($this->root, function (): string {
+        $installer = new ExtensionInstaller($this->root, function (): string {
             self::fail('No deployment commands expected');
         });
+        $deployer = new ExtensionDeployer($installer);
         self::assertSame(['changed' => false, 'messages' => []], $deployer->deploy($settings));
         self::assertDirectoryDoesNotExist($this->root . '/var');
     }
@@ -49,10 +50,11 @@ final class ExtensionDeployerTest extends StuTestCase
     public function testAccessFailureSkipsModuleAndThrottlesRetries(): void
     {
         $calls = 0;
-        $deployer = new ExtensionDeployer($this->root, function () use (&$calls): string {
+        $installer = new ExtensionInstaller($this->root, function () use (&$calls): string {
             $calls++;
             throw new RuntimeException('Access denied');
         });
+        $deployer = new ExtensionDeployer($installer);
         $result = $deployer->deploy($this->settings());
         self::assertFalse($result['changed']);
         self::assertStringContainsString('demo skipped: Access denied', $result['messages'][0]);
@@ -64,7 +66,8 @@ final class ExtensionDeployerTest extends StuTestCase
     public function testInstallationLoadsThroughRegistryAndUnchangedRevisionIsNotDownloadedAgain(): void
     {
         $this->requireSymlinkSupport();
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         self::assertSame('npm', $this->commands[5][0]);
         self::assertContains('--ignore-scripts', $this->commands[5]);
@@ -82,17 +85,19 @@ final class ExtensionDeployerTest extends StuTestCase
     public function testFailedUpdateKeepsExistingReleaseAndRemovesIncompleteDownload(): void
     {
         $this->requireSymlinkSupport();
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         $current = realpath($this->root . '/var/extensions/demo/current');
         $this->revision = str_repeat('b', 40);
-        $failing = new ExtensionDeployer($this->root, function (array $command, string $directory): string {
+        $failing = new ExtensionInstaller($this->root, function (array $command, string $directory): string {
             if ($command[0] === 'npm') {
                 throw new RuntimeException('Dependency installation failed');
             }
             return $this->runCommand($command, $directory);
         });
-        self::assertFalse($failing->deploy($this->settings(), true)['changed']);
+        $failingDeployer = new ExtensionDeployer($failing);
+        self::assertFalse($failingDeployer->deploy($this->settings(), true)['changed']);
         clearstatcache(true);
         self::assertSame($current, realpath($this->root . '/var/extensions/demo/current'));
         self::assertCount(1, glob($this->root . '/var/extensions/demo/release-*'));
@@ -101,7 +106,9 @@ final class ExtensionDeployerTest extends StuTestCase
     public function testChangedRevisionReplacesSymlinkAndOptionalRestartUsesArguments(): void
     {
         $this->requireSymlinkSupport();
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
+        $restarter = new ExtensionRestarter($this->root, $this->runCommand(...));
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         $previous = readlink($this->root . '/var/extensions/demo/current');
         $this->revision = str_repeat('b', 40);
@@ -109,7 +116,7 @@ final class ExtensionDeployerTest extends StuTestCase
         self::assertNotSame($previous, readlink($this->root . '/var/extensions/demo/current'));
         $settings = $this->settings();
         $settings['demo']['deployment']['restartCommand'] = ['systemctl', '--user', 'try-restart', 'demo.service'];
-        self::assertSame(['failed' => false, 'messages' => ['[extensions] demo restarted']], $deployer->restart($settings));
+        self::assertSame(['failed' => false, 'messages' => ['[extensions] demo restarted']], $restarter->restart($settings));
         self::assertSame($settings['demo']['deployment']['restartCommand'], $this->commands[array_key_last($this->commands)]);
     }
 
@@ -117,7 +124,8 @@ final class ExtensionDeployerTest extends StuTestCase
     {
         $settings = $this->settings();
         $settings['demo']['path'] = '../local';
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
         self::assertFalse($deployer->deploy($settings)['changed']);
         self::assertSame([], $this->commands);
     }
@@ -125,7 +133,8 @@ final class ExtensionDeployerTest extends StuTestCase
     public function testConfiguredBranchControlsUpdatesIndependentlyOfCore(): void
     {
         $this->requireSymlinkSupport();
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
         $settings = $this->settings();
         self::assertTrue($deployer->deploy($settings)['changed']);
         self::assertSame('refs/heads/dev', $this->commands[0][4]);
@@ -145,7 +154,8 @@ final class ExtensionDeployerTest extends StuTestCase
     {
         $settings = $this->settings();
         unset($settings['demo']['deployment']['branch']);
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
         $result = $deployer->deploy($settings);
         self::assertFalse($result['changed']);
         self::assertStringContainsString('Invalid deployment branch', $result['messages'][0]);
@@ -191,7 +201,8 @@ final class ExtensionDeployerTest extends StuTestCase
     public function testExpiredIntervalFetchesNewBranchRevision(): void
     {
         $this->requireSymlinkSupport();
-        $deployer = new ExtensionDeployer($this->root, $this->runCommand(...));
+        $installer = new ExtensionInstaller($this->root, $this->runCommand(...));
+        $deployer = new ExtensionDeployer($installer);
         self::assertTrue($deployer->deploy($this->settings())['changed']);
         $this->revision = str_repeat('b', 40);
         self::assertFalse($deployer->deploy($this->settings())['changed']);
