@@ -164,7 +164,7 @@ class SystemDataDeserializerTest extends StuTestCase
         $cache = new ArrayCollection();
 
         // call two times to check if cache works
-        $eps = $this->subject->getSpecificShipSystem(
+        $this->subject->getSpecificShipSystem(
             $this->ship,
             SpacecraftSystemTypeEnum::EPS,
             EpsSystemData::class,

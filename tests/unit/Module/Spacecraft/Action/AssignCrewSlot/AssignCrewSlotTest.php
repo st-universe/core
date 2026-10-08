@@ -62,7 +62,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $spacecraft = $this->mock(Spacecraft::class);
         $crew = $this->mock(Crew::class);
         $crewAssignment = $this->mock(CrewAssignment::class);
-        $config = $this->createCrewConfiguration($spacecraft, 1);
+        $config = $this->createCrewConfiguration($spacecraft);
 
         request::setMockVars(['id' => 42, 'crewid' => 23, 'slot' => CrewTypeEnum::TACTIC->value]);
 
@@ -93,7 +93,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
         $otherCrew = $this->mock(Crew::class);
         $crewAssignment = $this->mock(CrewAssignment::class);
         $otherCrewAssignment = $this->mock(CrewAssignment::class);
-        $config = $this->createCrewConfiguration($spacecraft, 1);
+        $config = $this->createCrewConfiguration($spacecraft);
 
         request::setMockVars(['id' => 42, 'crewid' => 23, 'slot' => CrewTypeEnum::TACTIC->value]);
 
@@ -256,7 +256,7 @@ final class AssignCrewSlotTest extends ActionControllerTestCase
     /**
      * @return MockInterface&ShipRumpCategoryRoleCrew
      */
-    private function createCrewConfiguration(Spacecraft $spacecraft, int $capacity): ShipRumpCategoryRoleCrew
+    private function createCrewConfiguration(MockInterface&Spacecraft $spacecraft): ShipRumpCategoryRoleCrew
     {
         $rump = $this->mock(SpacecraftRump::class);
         $category = $this->mock(ShipRumpCategory::class);

@@ -23,9 +23,7 @@ final class JsonMapperWrapper implements JsonMapperInterface
      */
     public function mapObjectFromString(string $json, $object)
     {
-        /** @var T $result */
-        $result = $this->wrapped->map(json_decode($json), $object);
-        
-        return $result;
+        /** @return T $result */
+        return $this->wrapped->map(json_decode($json), $object);
     }
 }
