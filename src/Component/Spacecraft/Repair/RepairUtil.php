@@ -237,13 +237,11 @@ final class RepairUtil implements RepairUtilInterface
     {
         $engineerCount = 0;
 
-        $nextNumber = 1;
         foreach ($ship->getCrewAssignments() as $shipCrew) {
             if (
                 $shipCrew->getSlot() === CrewTypeEnum::TECHNICAL
                 //&& $shipCrew->getRepairTask() === null
             ) {
-                $nextNumber++;
                 $engineerCount++;
             }
         }
