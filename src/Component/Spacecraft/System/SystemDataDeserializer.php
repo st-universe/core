@@ -3,9 +3,9 @@
 namespace Stu\Component\Spacecraft\System;
 
 use Doctrine\Common\Collections\Collection;
-use JsonMapper\JsonMapperInterface;
 use RuntimeException;
 use Stu\Component\Spacecraft\System\Data\ShipSystemDataFactoryInterface;
+use Stu\Lib\Json\JsonMapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Spacecraft;
 
