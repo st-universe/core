@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib\Transfer;
 
 use JsonException;
-use RuntimeException;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Wrapper\StorageEntityWrapperInterface;
@@ -32,10 +31,10 @@ final class IndividualCrewTransferExecutor
         try {
             $placements = json_decode($placementsJson, true, 32, JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw new RuntimeException('validated crew placements could not be decoded', 0, $exception);
+            throw new CrewPlacementException('validated crew placements could not be decoded', 0, $exception);
         }
         if (!is_array($placements)) {
-            throw new RuntimeException('validated crew placements are not a list');
+            throw new CrewPlacementException('validated crew placements are not a list');
         }
 
         $user = $source->getUser();
@@ -47,10 +46,10 @@ final class IndividualCrewTransferExecutor
         foreach ($placements as $input) {
             $placement = IndividualCrewPlacement::fromInput($input);
             if ($placement === null) {
-                throw new RuntimeException('validated crew placement is invalid');
+                throw new CrewPlacementException('validated crew placement is invalid');
             }
             if (!isset($assignments[$placement->id])) {
-                throw new RuntimeException('validated crew assignment is missing');
+                throw new CrewPlacementException('validated crew assignment is missing');
             }
             $location = $assignments[$placement->id];
             if ($placement->side !== $location->side || $placement->slot !== $location->slot->value) {

@@ -6,7 +6,7 @@ namespace Stu\Config;
 
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
-use RuntimeException;
+use Stu\Module\Config\StuConfigException;
 
 class ConfigFileSetup
 {
@@ -28,7 +28,7 @@ class ConfigFileSetup
     public static function getConfigFileSetup(): array
     {
         if (self::$configFiles === null) {
-            throw new RuntimeException('no config stage initialized!');
+            throw new StuConfigException('no config stage initialized!');
         }
         return self::$configFiles;
     }
