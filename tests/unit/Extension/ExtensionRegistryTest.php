@@ -10,6 +10,32 @@ use Stu\StuTestCase;
 
 final class ExtensionRegistryTest extends StuTestCase
 {
+    public function testRegistryCanReadManifestAfterInstallerHasLoadedIt(): void
+    {
+        $root = sys_get_temp_dir() . '/stu-extension-registry-' . bin2hex(random_bytes(8));
+        $moduleDirectory = $root . '/demo';
+        mkdir($moduleDirectory, 0750, true);
+        $manifestFile = $moduleDirectory . '/module.php';
+        file_put_contents($manifestFile, '<?php return ' . var_export([
+            'id' => 'demo',
+            'apiVersion' => ExtensionRegistry::API_VERSION,
+        ], true) . ';');
+
+        try {
+            self::assertIsArray(ExtensionManifestLoader::load($manifestFile));
+
+            $config = new Config([]);
+            $config->set('extensions', ['demo' => ['enabled' => true, 'path' => 'demo']]);
+            $registry = new ExtensionRegistry($config, $root);
+
+            self::assertSame('demo', $registry->get('demo')['id']);
+        } finally {
+            unlink($manifestFile);
+            rmdir($moduleDirectory);
+            rmdir($root);
+        }
+    }
+
     public function testCoreNeedsNoExtension(): void
     {
         $registry = new ExtensionRegistry(new Config([]), '/missing');
