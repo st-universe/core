@@ -5641,16 +5641,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.47.5",
+            "version": "1.53.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "3d6c87dccaa74b4048b90e208abe7f2832114f2e"
+                "reference": "c6ebcdbc65ab5c2d73f1a2a8c9959e81c4887cfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/3d6c87dccaa74b4048b90e208abe7f2832114f2e",
-                "reference": "3d6c87dccaa74b4048b90e208abe7f2832114f2e",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/c6ebcdbc65ab5c2d73f1a2a8c9959e81c4887cfb",
+                "reference": "c6ebcdbc65ab5c2d73f1a2a8c9959e81c4887cfb",
                 "shasum": ""
             },
             "require": {
@@ -5692,7 +5692,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.47.5"
+                "source": "https://github.com/carthage-software/mago/tree/1.53.0"
             },
             "funding": [
                 {
@@ -5700,7 +5700,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-02T16:54:06+00:00"
+            "time": "2026-10-08T02:18:45+00:00"
         },
         {
             "name": "clue/ndjson-react",
