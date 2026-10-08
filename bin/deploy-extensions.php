@@ -5,15 +5,19 @@ declare(strict_types=1);
 use Stu\Config\ConfigFileSetup;
 use Stu\Config\ConfigStageEnum;
 use Stu\Extension\ExtensionDeployer;
+use Stu\Extension\ExtensionInstaller;
+use Stu\Extension\ExtensionRestarter;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 try {
     ConfigFileSetup::initConfigStage(ConfigStageEnum::PRODUCTION);
     $extensions = ConfigFileSetup::load()->get('extensions', []);
-    $deployer = new ExtensionDeployer(dirname(__DIR__));
+    $installer = new ExtensionInstaller(dirname(__DIR__));
+    $deployer = new ExtensionDeployer($installer);
+    $restarter = new ExtensionRestarter(dirname(__DIR__));
     if (in_array('--restart', $argv, true)) {
-        $result = $deployer->restart($extensions) + ['changed' => false];
+        $result = $restarter->restart($extensions) + ['changed' => false];
     } else {
         $result = $deployer->deploy($extensions, in_array('--force', $argv, true));
     }
