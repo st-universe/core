@@ -18,8 +18,6 @@ final class SocialProvider implements PlanetFieldHostComponentInterface
         TemplateInterface $template,
         User $user
     ): void {
-        $user = $user;
-
         $template->setTemplateVar(
             'POPULATION_CALCULATOR',
             $this->colonyLibFactory->createColonyPopulationCalculator($entity)

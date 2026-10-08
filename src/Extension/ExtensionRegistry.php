@@ -27,7 +27,7 @@ final class ExtensionRegistry
             if ($directory === false || !is_file($directory . '/module.php')) {
                 continue;
             }
-            $manifest = require $directory . '/module.php';
+            $manifest = require_once $directory . '/module.php';
             if (!is_array($manifest) || ($manifest['id'] ?? null) !== $id || ($manifest['apiVersion'] ?? null) !== self::API_VERSION) {
                 throw new RuntimeException(sprintf('Incompatible extension manifest: %s', $id));
             }
