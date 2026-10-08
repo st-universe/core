@@ -32,7 +32,6 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
             return;
         }
 
-        $type ??= $torpedoStorage->getTorpedo();
         if ($torpedoStorage->getStorage()->getAmount() + $changeAmount === 0) {
             $this->clearTorpedo->clearTorpedoStorage($wrapper, $torpedoStorage);
         } else {

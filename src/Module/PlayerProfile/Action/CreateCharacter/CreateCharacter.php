@@ -57,10 +57,6 @@ final class CreateCharacter implements ActionControllerInterface
 
         $imageName = substr($imageNameWithExtension, 0, -4);
 
-
-
-        $uploadPath = $this->config->get('game.character_avatar_path') . $imageNameWithExtension;
-
         $uploadDir = $this->config->get('game.character_avatar_path');
         $uploadPath = $uploadDir . '/' . $imageNameWithExtension;
 

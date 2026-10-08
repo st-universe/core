@@ -71,13 +71,11 @@ final class ManageShuttles implements ActionControllerInterface
         $shuttlecount = request::postArrayFatal('shuttlecount');
 
         $shuttles = [];
-        $currentlyStored = 0;
 
         foreach ($ship->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $smi = new ShuttleManagementItem($stor->getCommodity());
                 $smi->setCurrentLoad($stor->getAmount());
-                $currentlyStored += $stor->getAmount();
 
                 $shuttles[$stor->getCommodity()->getId()] = $smi;
             }

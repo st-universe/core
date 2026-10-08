@@ -33,7 +33,6 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             if (!$pm->isEmpty() && $userId !== $offer->getUserId()) {
                 $this->sendMessage($userId, $pm);
                 $pm = new InformationWrapper();
-                $userId = 0;
                 $postId = 0;
             }
 

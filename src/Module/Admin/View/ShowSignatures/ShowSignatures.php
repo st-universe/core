@@ -28,8 +28,6 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->setTemplateFile('html/admin/signatureScan.twig');
 
-        $signatureRange = [];
-
         $layer = $this->layerRepository->find($layerId);
         if ($layer === null) {
             $game->getInfo()->addInformation(sprintf('layerId %d existiert nicht', $layerId));
