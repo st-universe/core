@@ -56,6 +56,7 @@
     "mpscholten/request-parser": "^1.5",
     "netresearch/jsonmapper": "^6",
     "php-di/php-di": "^7",
+    "sebastian/diff": "^9",
     "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "symfony/cache": "^8",
@@ -78,7 +79,6 @@
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^13.4.1",
     "rector/rector": "^2.0",
-    "sebastian/diff": "^9",
     "spatie/phpunit-snapshot-assertions": "^5.1"
   },
   "extra": {
