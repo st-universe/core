@@ -1,0 +1,43 @@
+name: Production Dependency Check
+
+on:
+  push:
+    branches: [ dev, master ]
+  pull_request:
+    branches: [ dev, master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest']
+        php: [8.5]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: redis
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v6
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install Dependencies (ignore platform)
+        uses: nick-invision/retry@v4
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: composer install -a --no-dev --no-interaction --no-progress --ignore-platform-req=php
+
+      - name: Verify autoloader
+        run: php -r "require 'vendor/autoload.php'; echo 'Autoloader is working';"
