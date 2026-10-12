@@ -55,6 +55,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         }
 
         $field->setBuilding($building);
+        $field->setRotation(0);
 
         $colony->getChangeable()->setWorkless($building->getHousing());
         $colony->getChangeable()->setEps($building->getEpsStorage());

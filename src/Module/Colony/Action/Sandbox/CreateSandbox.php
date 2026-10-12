@@ -66,6 +66,7 @@ final class CreateSandbox implements
                 ->setColonySandbox($sandbox)
                 ->setFieldId($fieldId)
                 ->setBuilding($building)
+                ->setRotation($field->getRotation())
                 ->setIntegrity($building === null ? 0 : $building->getIntegrity())
                 ->setFieldType($field->getFieldType())
                 ->setActive($field->getActive());

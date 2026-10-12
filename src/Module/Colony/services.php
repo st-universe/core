@@ -51,6 +51,7 @@ use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
 use Stu\Module\Colony\Action\RetrofitShip\RetrofitShip;
+use Stu\Module\Colony\Action\RotateBuilding\RotateBuilding;
 use Stu\Module\Colony\Action\Sandbox\CreateSandbox;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Module\Colony\Action\SetPopulationLimit\SetPopulationLimit;
@@ -260,6 +261,7 @@ return [
         RemoveBuilding::ACTION_IDENTIFIER => autowire(RemoveBuilding::class),
         RepairBuilding::ACTION_IDENTIFIER => autowire(RepairBuilding::class),
         RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
+        RotateBuilding::ACTION_IDENTIFIER => autowire(RotateBuilding::class),
         ScrollBuildMenu::ACTION_IDENTIFIER => autowire(ScrollBuildMenu::class),
         SetPopulationLimit::ACTION_IDENTIFIER => autowire(SetPopulationLimit::class),
         StartAirfieldShip::ACTION_IDENTIFIER => autowire(StartAirfieldShip::class),

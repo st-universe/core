@@ -151,6 +151,60 @@ function fieldMouseClick(element, fieldId, buildingId, buildingName) {
 function showField(element, fieldId) {
 	updatePopupAtElement(element, '/colony.php?fid=' + fieldId + '&SHOW_FIELD=1');
 }
+
+var buildingRotationPending = false;
+
+function rotateBuilding(fieldId, direction) {
+	if (buildingRotationPending) {
+		return;
+	}
+
+	buildingRotationPending = true;
+	document.querySelectorAll('.building-rotation').forEach(button => button.disabled = true);
+	const sessionInput = document.querySelector('#popupContent input[name="sstr"]');
+	const popupField = document.getElementById('fieldaction');
+	const finishRotation = function () {
+		buildingRotationPending = false;
+		document.querySelectorAll('.building-rotation').forEach(button => button.disabled = false);
+	};
+
+	new Ajax.Updater({ success: 'popupContent' }, '/colony.php', {
+		method: 'post',
+		parameters: {
+			B_ROTATE_BUILDING: 1,
+			fid: fieldId,
+			direction: direction,
+			sstr: sessionInput ? sessionInput.value : sstr
+		},
+		evalScripts: true,
+		insertion: function (receiver, responseText) {
+			if (document.getElementById('fieldaction') === popupField) {
+				receiver.update(responseText);
+			}
+		},
+		onComplete: function (response) {
+			const updatedSessionInput = document.querySelector('#popupContent input[name="sstr"]');
+			if (updatedSessionInput) {
+				sstr = updatedSessionInput.value;
+			}
+			enablePopupDrag();
+
+			if (response.request.success()) {
+				document.querySelectorAll('.building-rotation').forEach(button => button.disabled = true);
+				new Ajax.Updater('COLONY_SURFACE', '/colony.php' + createHostUri('SHOW_SURFACE', '&buildingid=' + selectedbuilding), {
+					method: 'get',
+					evalScripts: true,
+					onComplete: finishRotation,
+					onException: finishRotation
+				});
+			} else {
+				finishRotation();
+			}
+		},
+		onException: finishRotation
+	});
+}
+
 function buildOnField(action, fieldId, buildingId) {
 
 	if (buildingId) {

@@ -9,7 +9,7 @@
     <div style="{{ style }}" class="{{ fieldCssClass }}">
         {% if field.hasBuilding %}
         {% set buildingId = field.getBuilding.getId %}
-        {% set buildingType = field.getBuilding.getBuildingType %}
+        {% set rotation = field.getRotation %}
         {% set buildingName = field.getBuilding.getName %}
 
         {% if field.isUnderConstruction %}
@@ -21,7 +21,7 @@
                 style="width: 40px; height: 40px; background-image: url(/assets/generated/buildings/{{ field.getPictureType }}{{ dayNightPrefix }}.png)">
                 <div style="height: 40px; overflow: hidden; width: {{ field.getOverlayWidth }}px;"><img
                         style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
-                        src="/assets/generated/buildings/{{ buildingId }}/{{ buildingType }}a{{ dayNightPrefix }}.png" />
+                        src="/assets/generated/buildings/{{ buildingId }}/{{ rotation }}a{{ dayNightPrefix }}.png" />
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
                 onmouseout="fieldMouseOut(this,{{ fieldType }})">
                 <div><img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
-                        src="/assets/generated/buildings/{{ buildingId }}/{{ buildingType }}{{ field.getBuildingState }}{{ dayNightPrefix }}.png" />
+                        src="/assets/generated/buildings/{{ field.getPictureType }}{{ dayNightPrefix }}.png" />
                 </div>
             </div>
         </div>

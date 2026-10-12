@@ -84,6 +84,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $building = $alt_building !== null ? $alt_building->getAlternativeBuilding() : $upgrade->getBuilding();
 
         $isActive = $field->isActive();
+        $rotation = $field->getRotation();
         $this->buildingAction->remove($field, $context, true);
 
         if ($host instanceof Colony) {
@@ -93,6 +94,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         }
 
         $field->setBuilding($building);
+        $field->setRotation($rotation);
         $field->setActivateAfterBuild($isActive);
 
         $context->addExecuteJS(sprintf("refreshHost('%s');", $context->getSessionString()));

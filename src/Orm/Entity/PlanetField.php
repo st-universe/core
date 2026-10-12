@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use InvalidArgumentException;
 use RuntimeException;
 use Stu\Orm\Repository\PlanetFieldRepository;
 
@@ -43,6 +44,9 @@ class PlanetField
 
     #[Column(type: 'integer')]
     private int $aktiv = 0;
+
+    #[Column(type: 'integer', options: ['default' => 0])]
+    private int $rotation = 0;
 
     #[Column(type: 'boolean')]
     private bool $activate_after_build = true;
@@ -119,6 +123,21 @@ class PlanetField
     public function setActive(int $aktiv): PlanetField
     {
         $this->aktiv = $aktiv;
+        return $this;
+    }
+
+    public function getRotation(): int
+    {
+        return $this->rotation;
+    }
+
+    public function setRotation(int $rotation): PlanetField
+    {
+        if (!in_array($rotation, [0, 90, 180, 270], true)) {
+            throw new InvalidArgumentException('Rotation must be 0, 90, 180 or 270');
+        }
+
+        $this->rotation = $rotation;
         return $this;
     }
 
@@ -248,6 +267,7 @@ class PlanetField
         $this->setBuilding(null);
         $this->setIntegrity(0);
         $this->setActive(0);
+        $this->setRotation(0);
     }
 
     public function getHost(): Colony|ColonySandbox
@@ -311,7 +331,7 @@ class PlanetField
 
     public function getPictureType(): string
     {
-        return $this->getBuildingId() . "/" . ($this->getBuilding()?->getBuildingType() ?? 'UNDEFINED') . $this->getBuildingState();
+        return $this->getBuildingId() . "/" . ($this->hasBuilding() ? $this->getRotation() : 'UNDEFINED') . $this->getBuildingState();
     }
 
     public function isColonizeAble(): bool
