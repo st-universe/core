@@ -14,6 +14,7 @@ final class ShowInformation implements ViewControllerInterface
     #[\Override]
     public function handle(ViewControllerContext $game): void
     {
+        $game->addExecuteJS(sprintf("sstr = '%s';", $game->getSessionString()));
         $game->showMacro('html/systeminformationAndJsBeforeAfterRender.twig');
     }
 }

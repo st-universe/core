@@ -230,7 +230,7 @@ function performActionAndUpdateResult(action, params) {
 
 	new Ajax.Updater('result', '/colony.php', {
 		method: 'post',
-		parameters: `${action}=1&${params}`,
+		parameters: `${action}=1&SHOW_INFORMATION=1&${params}`,
 		evalScripts: true,
 		onSuccess: function (transport) {
 			var counter = document.getElementById("counter");
