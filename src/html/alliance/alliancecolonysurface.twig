@@ -46,7 +46,7 @@
                 <div
                     style="background-image: url(assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png); width: 40px; height: 40px;">
                     <img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
-                        src="assets/generated/buildings/{{ field.getBuildingId }}/{{ field.getBuilding.getBuildingType }}{{ field.getBuildingState }}{{ dayNightPrefix }}.png" />
+                        src="assets/generated/buildings/{{ field.getPictureType }}{{ dayNightPrefix }}.png" />
                 </div>
             </div>
             {% endif %}

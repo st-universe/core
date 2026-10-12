@@ -153,6 +153,7 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         $field->setBuilding($building);
+        $field->setRotation(0);
         $field->setActivateAfterBuild(true);
 
         $context->addExecuteJS(sprintf("refreshHost('%s');", $context->getSessionString()));

@@ -60,6 +60,9 @@ class Building
     #[Column(type: 'boolean')]
     private bool $view = false;
 
+    #[Column(type: 'boolean', options: ['default' => false])]
+    private bool $rotation = false;
+
     #[Column(type: 'integer')]
     private int $buildtime = 0;
 
@@ -229,6 +232,17 @@ class Building
     public function setView(bool $view): Building
     {
         $this->view = $view;
+        return $this;
+    }
+
+    public function isRotatable(): bool
+    {
+        return $this->rotation;
+    }
+
+    public function setRotation(bool $rotation): Building
+    {
+        $this->rotation = $rotation;
         return $this;
     }
 

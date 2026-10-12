@@ -141,6 +141,7 @@ final class ColonySurface implements ColonySurfaceInterface
             $fields[$fieldId]->setIntegrity(0);
             $fields[$fieldId]->setFieldType((int) $type);
             $fields[$fieldId]->setActive(0);
+            $fields[$fieldId]->setRotation(0);
 
             $this->planetFieldRepository->save($fields[$fieldId]);
         }
