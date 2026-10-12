@@ -19,6 +19,7 @@
     <td{% if crew.getUser.getId == USER_ID %} class="crew-assignment-detail-link"
         onclick="switchInnerContent('SHOW_CREWMAN_DETAILS', 'Crewman Details', 'id={{ crewId }}&sstr={{ SESSIONSTRING }}', '/ship.php');"{% endif %}>
         <div>{{ CREW_RANK_NAMES[crewId] }}</div>
+        {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': crew.getUser.getFactionId, 'rank': crew.getRank} only %}
     </td>
     <td style="vertical-align: middle;">
         {% set CREW = crew %}

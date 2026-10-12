@@ -19,6 +19,22 @@ enum CrewSkillLevelEnum: string
     case CREWMAN = 'CREWMAN';
     case CADET = 'CADET';
 
+    public function getRankNumber(): int
+    {
+        return match ($this) {
+            self::CADET => 0,
+            self::CREWMAN => 1,
+            self::ENSIGN => 2,
+            self::JUNIOR_LIEUTENANT => 3,
+            self::LIEUTENANT => 4,
+            self::LIEUTENANT_COMMANDER => 5,
+            self::COMMANDER => 6,
+            self::CAPTAIN => 7,
+            self::COMMODORE => 8,
+            self::ADMIRAL => 9
+        };
+    }
+
     public function getNeededExpertise(): int
     {
         return match ($this) {

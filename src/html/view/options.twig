@@ -124,9 +124,15 @@
             </tr>
             {% for rank in CREW_RANKS %}
             <tr>
-                <td>{{ rank.getDescription(FEDERATION_ID) }}</td>
+                <td>
+                    {{ rank.getDescription(FEDERATION_ID) }}
+                    {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': FEDERATION_ID, 'rank': rank} only %}
+                </td>
                 {% if SHOW_FACTION_CREW_RANKS %}
-                <td>{{ rank.getDescription(REAL_USER.getFactionId) }}</td>
+                <td>
+                    {{ rank.getDescription(REAL_USER.getFactionId) }}
+                    {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': REAL_USER.getFactionId, 'rank': rank} only %}
+                </td>
                 {% endif %}
                 <td><input type="text" name="crew_rank_names[{{ rank.value }}]"
                         value="{{ CUSTOM_CREW_RANK_NAMES[rank.value]|default('') }}" maxlength="64" class="text" /></td>

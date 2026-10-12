@@ -27,6 +27,7 @@
         <div>
             <div class="crew-assignment-name">{{ crew.getName|bbcode }}</div>
             <div>{{ rankName }}</div>
+            {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': crew.getUser.getFactionId, 'rank': crew.getRank} only %}
         </div>
     </div>
     {% if showOwnerInfo %}

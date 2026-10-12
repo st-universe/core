@@ -3657,6 +3657,13 @@ label.linkbutton:hover {
   background: var(--color-28);
 }
 
+.crew-rank-pin {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
 .spacecraft-details-columns {
   display: grid;
   gap: 10px;
@@ -3736,7 +3743,8 @@ label.linkbutton:hover {
   object-fit: contain;
 }
 
-.crew-transfer-side .crew-assignment-card-main > div {
+.crew-assignment-card-main > div,
+.crew-management-card-header > div {
   min-width: 0;
 }
 
@@ -3897,7 +3905,7 @@ label.linkbutton:hover {
   gap: 4px;
 }
 
-.crew-assignment-card-main img {
+.crew-assignment-card-main > img {
   height: 28px;
   object-fit: contain;
   width: 28px;

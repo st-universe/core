@@ -15,7 +15,10 @@
                 <img src="{{ crew.getRace.getImagePath(crew.getGenderShort, crewImageType) }}" />
             </td>
             <td>Rang</td>
-            <td>{{ CREW_RANK_NAMES[crew.getRank.value] }}</td>
+            <td>
+                {{ CREW_RANK_NAMES[crew.getRank.value] }}
+                {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': crew.getUser.getFactionId, 'rank': crew.getRank} only %}
+            </td>
         </tr>
         <tr>
             <td>Name</td>
@@ -104,7 +107,10 @@
             {{ skill.getPosition.getDescription }}
             {% endif %}
         </td>
-        <td>{{ CREW_RANK_NAMES[skill.getRank.value] }}</td>
+        <td>
+            {{ CREW_RANK_NAMES[skill.getRank.value] }}
+            {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': crew.getUser.getFactionId, 'rank': skill.getRank} only %}
+        </td>
         <td>
             {{ skill.getExpertise }}
             {% if nextSkillRank %}

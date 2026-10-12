@@ -98,6 +98,7 @@
                             </div>
                         </div>
                         <div class="crew-management-rank">{{ CREW_RANK_NAMES[crew.getRank.value] }}</div>
+                        {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': crew.getUser.getFactionId, 'rank': crew.getRank} only %}
                     </div>
                 </div>
 
@@ -142,7 +143,10 @@
                     {% for skill in crew.getSkills %}
                     <div class="crew-management-skill">
                         <span>{{ skill.getPosition.getDescription }}</span>
-                        <span>{{ CREW_RANK_NAMES[skill.getRank.value] }}</span>
+                        <span>
+                            {{ CREW_RANK_NAMES[skill.getRank.value] }}
+                            {% include 'html/spacecraft/crewRankPin.twig' with {'factionId': crew.getUser.getFactionId, 'rank': skill.getRank} only %}
+                        </span>
                         <strong>{{ skill.getExpertise }} XP</strong>
                     </div>
                     {% else %}
