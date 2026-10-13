@@ -18,7 +18,7 @@
             id="field{{ fieldId }}">
             <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
                 onmouseout="fieldMouseOut(this,{{ fieldType }})"
-                style="width: 40px; height: 40px; background-image: url(/assets/generated/buildings/{{ field.getPictureType }}{{ dayNightPrefix }}.png)">
+                style="width: 40px; height: 40px; background-image: url(/assets/generated/buildings/{{ getPlanetFieldPictureType(field) }}{{ dayNightPrefix }}.png)">
                 <div style="height: 40px; overflow: hidden; width: {{ field.getOverlayWidth }}px;"><img
                         style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
                         src="/assets/generated/buildings/{{ buildingId }}/{{ rotation }}a{{ dayNightPrefix }}.png" />
@@ -32,7 +32,7 @@
             <div onmouseover="fieldMouseOver(this,{{ buildingId }},{{ fieldType }})"
                 onmouseout="fieldMouseOut(this,{{ fieldType }})">
                 <div><img style="width: 40px; height: 40px;" title="{{ field|planetFieldTitle }}"
-                        src="/assets/generated/buildings/{{ field.getPictureType }}{{ dayNightPrefix }}.png" />
+                        src="/assets/generated/buildings/{{ getPlanetFieldPictureType(field) }}{{ dayNightPrefix }}.png" />
                 </div>
             </div>
         </div>

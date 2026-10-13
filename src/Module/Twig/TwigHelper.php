@@ -18,6 +18,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemWrapper;
 use Stu\Component\Spacecraft\System\SpacecraftSystemWrapperFactoryInterface;
 use Stu\Lib\Colony\DayNight\DayNightBorder;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
+use Stu\Lib\Colony\PlanetFieldImage;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
@@ -181,6 +182,9 @@ class TwigHelper
 
         $dayNightPrefixFunction = new TwigFunction('getDayNightPrefix', fn (PlanetField $field): string => DayNightBorder::getDayNightPrefix($field, $this->stuTime->time()));
         $this->environment->addFunction($dayNightPrefixFunction);
+
+        $planetFieldPictureTypeFunction = new TwigFunction('getPlanetFieldPictureType', PlanetFieldImage::getPictureType(...));
+        $this->environment->addFunction($planetFieldPictureTypeFunction);
 
         $maskEmailFunction = new TwigFunction('maskEmail', fn (string $email): string => $this->maskEmail($email));
         $this->environment->addFunction($maskEmailFunction);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Twig;
 
 use ReflectionProperty;
+use Stu\Lib\Colony\PlanetFieldImage;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
@@ -162,6 +163,7 @@ class ColonySurfaceRotationTest extends StuTestCase
     {
         $twig = new Environment(new FilesystemLoader('src'));
         $twig->addFunction(new TwigFunction('getDayNightPrefix', fn (): string => $dayNightPrefix));
+        $twig->addFunction(new TwigFunction('getPlanetFieldPictureType', PlanetFieldImage::getPictureType(...)));
 
         foreach (['planetFieldTitle', 'planetFieldTypeDescription', 'htmlSafe', 'formatSeconds', 'stuDateTime', 'addPlusCharacter', 'formatProductionValue'] as $filter) {
             $twig->addFilter(new TwigFilter($filter, fn (): string => ''));
