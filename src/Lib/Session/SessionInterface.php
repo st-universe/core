@@ -8,7 +8,7 @@ use Stu\Orm\Entity\User;
 
 interface SessionInterface
 {
-    public function createSession(): void;
+    public function createSession(bool $adminContext = false): void;
 
     public function getUser(): ?User;
 

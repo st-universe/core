@@ -19,7 +19,7 @@ class AdminSessionGuardTest extends StuTestCase
         $user = $this->mock(User::class);
 
         $sessionStarter->shouldReceive('start')->once();
-        $session->shouldReceive('createSession')->once();
+        $session->shouldReceive('createSession')->with(true)->once();
         $session->shouldReceive('getUser')->once()->andReturn($user);
         $user->shouldReceive('getId')->once()->andReturn(42);
         $stuConfig->shouldReceive('getGameSettings->getAdminIds')

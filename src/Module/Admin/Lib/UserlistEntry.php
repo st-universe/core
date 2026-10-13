@@ -6,6 +6,7 @@ namespace Stu\Module\Admin\Lib;
 
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\User;
@@ -43,6 +44,39 @@ final class UserlistEntry
             return _("greenyellow");
         }
         return '#dddddd';
+    }
+
+    public function getVacationStatus(): ?string
+    {
+        if (!$this->user->isVacationMode()) {
+            return null;
+        }
+
+        return $this->user->isVacationRequestOldEnough()
+            ? _('Aktiv')
+            : _('Beantragt (48 Stunden Wartezeit)');
+    }
+
+    public function getPendingVacationActivationDate(): ?int
+    {
+        if (!$this->user->isVacationMode() || $this->user->isVacationRequestOldEnough()) {
+            return null;
+        }
+
+        return $this->user->getVacationRequestDate() + UserConstants::VACATION_DELAY_IN_SECONDS;
+    }
+
+    public function getDeletionStatus(): ?string
+    {
+        $deletionMark = $this->user->getRegistration()->getDeletionMark();
+
+        return match ($deletionMark) {
+            0, UserConstants::DELETION_FORBIDDEN => null,
+            UserConstants::DELETION_REQUESTED => _('Angefragt, Bestätigung ausstehend'),
+            UserConstants::DELETION_CONFIRMED => _('Zur Löschung vorgemerkt (bestätigt)'),
+            UserConstants::DELETION_EXECUTED => _('Löschung ausgeführt'),
+            default => sprintf(_('Unbekannter Löschstatus (%d)'), $deletionMark),
+        };
     }
 
     public function getCrewOnShips(): int

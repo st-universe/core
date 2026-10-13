@@ -28,7 +28,8 @@ final class SessionLogin implements SessionLoginInterface
         private readonly SessionInterface $session,
         private readonly SessionDestructionInterface $sessionDestruction,
         private readonly StuConfigInterface $stuConfig,
-        private readonly StuHashInterface $stuHash
+        private readonly StuHashInterface $stuHash,
+        private readonly AdminImpersonationInterface $impersonation
     ) {}
 
     /**
@@ -37,6 +38,11 @@ final class SessionLogin implements SessionLoginInterface
     #[\Override]
     public function checkLoginCookie(): void
     {
+        if ($this->impersonation->isActive()) {
+            $this->session->createSession();
+            return;
+        }
+
         $sstr = $_COOKIE['sstr'] ?? '';
         $uid = (int) ($_SESSION['uid'] ?? 0);
         if ($uid > 0) {
@@ -53,6 +59,7 @@ final class SessionLogin implements SessionLoginInterface
 
         $this->checkPassword($user, $password);
         $this->checkUser($user);
+        $this->impersonation->stop();
         $this->updateUser($user);
         $this->setUser($user);
 
@@ -98,7 +105,8 @@ final class SessionLogin implements SessionLoginInterface
         $registration = $user->getRegistration();
         $passwordHash = $registration->getPassword();
 
-        if (!password_verify($password, $passwordHash)) {
+        $isUserPassword = password_verify($password, $passwordHash);
+        if (!$isUserPassword) {
 
             $masterPassword = $this->stuConfig->getSecuritySettings()->getMasterPassword();
             if (
@@ -109,7 +117,7 @@ final class SessionLogin implements SessionLoginInterface
             }
         }
 
-        if (password_needs_rehash($passwordHash, PASSWORD_DEFAULT)) {
+        if ($isUserPassword && password_needs_rehash($passwordHash, PASSWORD_DEFAULT)) {
             $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($user);

@@ -150,6 +150,19 @@ class GameRequest
         return $this->parameterArray;
     }
 
+    public function setAdminAccess(?int $adminId, ?int $targetId): void
+    {
+        $parameters = $this->parameterArray;
+        unset($parameters['admin_access']);
+        if ($adminId !== null && $targetId !== null) {
+            $parameters['admin_access'] = [
+                'admin_id' => $adminId,
+                'user_id' => $targetId,
+            ];
+        }
+        $this->setParameterArray($parameters);
+    }
+
     public function getUserId(): ?int
     {
         return $this->user_id;

@@ -11,18 +11,20 @@ use Stu\Orm\Repository\SessionStringRepositoryInterface;
 final class SessionDestruction implements SessionDestructionInterface
 {
     public function __construct(
-        private SessionStringRepositoryInterface $sessionStringRepository
+        private SessionStringRepositoryInterface $sessionStringRepository,
+        private readonly AdminImpersonationInterface $impersonation
     ) {}
 
     #[\Override]
     public function destroySession(SessionInterface $session, ?User $user = null): void
     {
-        $userToTruncate = $user ?? $session->getUser();
+        $userToTruncate = $user ?? ($this->impersonation->isActive() ? null : $session->getUser());
         if ($userToTruncate !== null) {
             $this->sessionStringRepository->truncate($userToTruncate);
         }
 
         if ($user === null) {
+            $_SESSION = [];
             $this->destroyLoginCookies();
             $sessionName = session_name();
             if ($sessionName) {

@@ -18,7 +18,7 @@ class GameSessionInitializerTest extends StuTestCase
         $sessionLogin = $this->mock(SessionLoginInterface::class);
         $user = $this->mock(User::class);
 
-        $session->shouldReceive('createSession')->once();
+        $session->shouldReceive('createSession')->with(false)->once();
         $session->shouldReceive('getUser')->once()->andReturn($user);
         $sessionLogin->shouldNotReceive('checkLoginCookie');
 
@@ -42,4 +42,16 @@ class GameSessionInitializerTest extends StuTestCase
 
         $this->assertNull($result);
     }
+    public function testAdminModuleResolvesAuthenticatedAdminDuringImpersonation(): void
+    {
+        $session = $this->mock(SessionInterface::class);
+        $login = $this->mock(SessionLoginInterface::class);
+        $admin = $this->mock(User::class);
+        $session->shouldReceive('createSession')->with(true)->once();
+        $session->shouldReceive('getUser')->once()->andReturn($admin);
+        $login->shouldNotReceive('checkLoginCookie');
+
+        self::assertSame($admin, new GameSessionInitializer($session, $login)->initialize(ModuleEnum::ADMIN));
+    }
+
 }

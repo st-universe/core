@@ -9,6 +9,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Exception\SessionInvalidException;
+use Stu\Lib\Session\AdminImpersonationInterface;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameSessionInitializerInterface;
@@ -28,7 +29,8 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly GameRequestSaverInterface $gameRequestSaver,
         private readonly GameTurnRepositoryInterface $gameTurnRepository,
-        private readonly RegistrationReferralTrackerInterface $registrationReferralTracker
+        private readonly RegistrationReferralTrackerInterface $registrationReferralTracker,
+        private readonly AdminImpersonationInterface $impersonation
     ) {}
 
     #[\Override]
@@ -50,6 +52,7 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         try {
             $user = $this->gameSessionInitializer->initialize($module);
             $gameRequest->setUserId($user);
+            $gameRequest->setAdminAccess($this->impersonation->getAdminId(), $this->impersonation->getTargetId());
             $this->gameController->main($module, $gameRequest);
         } catch (SessionInvalidException) {
             $errorOccured = true;
@@ -72,7 +75,9 @@ final class GameRequestRunner implements GameRequestRunnerInterface
         $gameRequest = $this->gameRequestRepository->prototype();
         $gameRequest->setTime(time());
         $gameRequest->setTurnId($this->gameTurnRepository->getCurrent());
-        $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
+        $parameters = request::isPost() ? request::postvars() : request::getvars();
+        unset($parameters['admin_access']);
+        $gameRequest->setParameterArray($parameters);
         $gameRequest->setRequestId($this->uuidGenerator->genV4());
 
         return $gameRequest;

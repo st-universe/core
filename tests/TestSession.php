@@ -31,7 +31,7 @@ class TestSession implements SessionInterface
         return $this;
     }
 
-    public function createSession(bool $session_check = true): void
+    public function createSession(bool $adminContext = false): void
     {
         // nothing to do here
     }

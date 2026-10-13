@@ -48,6 +48,8 @@ use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\SetGameState;
 use Stu\Module\Admin\Action\SpawnPirateFleet;
+use Stu\Module\Admin\Action\StartImpersonation;
+use Stu\Module\Admin\Action\StopImpersonation;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequest;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequestInterface;
@@ -99,6 +101,8 @@ return [
     EditBorderRequestInterface::class => autowire(EditBorderRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
+        StartImpersonation::ACTION_IDENTIFIER => autowire(StartImpersonation::class),
+        StopImpersonation::ACTION_IDENTIFIER => autowire(StopImpersonation::class),
         EditEffects::ACTION_IDENTIFIER => autowire(EditEffects::class),
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
         EditSystemType::ACTION_IDENTIFIER => autowire(EditSystemType::class),

@@ -4287,3 +4287,29 @@ label.linkbutton:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.adminAccessBanner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 111111112;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: #503600;
+  color: #fff1c2;
+  border-top: 2px solid #e7ac38;
+  flex-wrap: wrap;
+}
+
+body:has(> .adminAccessBanner) {
+  padding-bottom: 5rem;
+}
+
+.adminAccessBanner form {
+  margin: 0;
+  flex-shrink: 0;
+}

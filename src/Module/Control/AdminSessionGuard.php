@@ -22,7 +22,7 @@ final class AdminSessionGuard implements AdminSessionGuardInterface
     public function check(): void
     {
         $this->sessionStarter->start();
-        $this->session->createSession();
+        $this->session->createSession(true);
 
         $user = $this->session->getUser();
         $adminIds = $this->stuConfig->getGameSettings()->getAdminIds();
