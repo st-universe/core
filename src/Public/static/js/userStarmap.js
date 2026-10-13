@@ -77,6 +77,8 @@
 			imageUrl: root.dataset.imageUrl,
 			dataUrl: root.dataset.dataUrl,
 			realtimeUrl: root.dataset.realtimeUrl,
+			scanUrl: root.dataset.scanUrl,
+			sessionString: root.dataset.sessionString,
 			layerId: Number(root.dataset.layerId),
 			layerWidth: Number(root.dataset.layerWidth),
 			layerHeight: Number(root.dataset.layerHeight),
@@ -134,6 +136,15 @@
 			realtimeStaticSpacecraftIds: new Set(),
 			sensorCoverageRuns: [],
 			sensorCoverageKeys: new Set(),
+			sensorSources: new Map(),
+			scanEnergyCost: 15,
+			scanSnapshots: new Map(),
+			identifiedEnemyIds: new Set(),
+			connectionId: "",
+			scanSourceByField: new Map(),
+			scanPending: false,
+			scanMessage: "",
+			scanMessageKey: null,
 			contactAnimations: new Map(),
 			contactAnimationFrame: 0,
 			visibleRuns: [],
@@ -338,6 +349,10 @@
 			state.showSensorContacts = this.checked;
 			if (!state.showSensorContacts) {
 				applySensorSpacecrafts(state, []);
+				state.identifiedEnemyIds.clear();
+				if (state.realtimeSocket && state.realtimeSocket.readyState === 1) {
+					state.realtimeSocket.send(JSON.stringify({ type: "resetTracking" }));
+				}
 			}
 			if (state.showSensorContacts && state.realtimeSocket && !state.realtimeConnecting) {
 				enableRealtimeContacts(state);
@@ -483,6 +498,7 @@
 			hasDetails,
 			isSensorContact: Boolean(spacecraft.isSensorContact),
 			isCloakedSignature: Boolean(spacecraft.isCloakedSignature),
+			isUnscannedSignature: Boolean(spacecraft.isUnscannedSignature),
 			hull: Number(spacecraft.hull) || 0,
 			maxHull: Number(spacecraft.maxHull) || 0,
 			shield: Number(spacecraft.shield) || 0,
@@ -580,7 +596,6 @@
 		}
 
 		clearRealtimeTimers(state);
-		closeRealtimeSocket(state);
 		state.realtimeConnecting = true;
 		setStatus(state, "Livekontakte werden geladen...");
 
@@ -598,12 +613,18 @@
 				}
 
 				applySensorCoverage(state, Array.isArray(data.sensorCoverageRuns) ? data.sensorCoverageRuns : []);
+				applySensorSources(state, Array.isArray(data.sensorSources) ? data.sensorSources : []);
+				state.scanEnergyCost = Number(data.scanEnergyCost) || 15;
 				const spacecrafts = Array.isArray(data.spacecrafts) ? data.spacecrafts : [];
 				applyRealtimeStaticSpacecrafts(state, spacecrafts);
 				applySensorSpacecrafts(state, state.showSensorContacts ? spacecrafts : []);
 				updateFieldDetails(state, state.selectedField);
 				scheduleDraw(state);
-				connectRealtimeSocket(state, data);
+				if (state.realtimeSocket && state.realtimeSocket.readyState === 1) {
+					state.realtimeSocket.send(JSON.stringify({ type: "refresh", token: data.token }));
+				} else {
+					connectRealtimeSocket(state, data);
+				}
 				scheduleRealtimeTokenRefresh(state, Number(data.refreshAfter) || 240);
 			})
 			.catch(function () {
@@ -622,6 +643,8 @@
 		applySensorSpacecrafts(state, []);
 		removeRealtimeStaticSpacecrafts(state);
 		applySensorCoverage(state, []);
+		state.sensorSources.clear();
+		state.identifiedEnemyIds.clear();
 		clearContactAnimations(state);
 		setStatus(state, "Livekontakte aus");
 	}
@@ -629,6 +652,17 @@
 	function applySensorCoverage(state, runs) {
 		state.sensorCoverageRuns = normalizeCoverageRuns(runs);
 		state.sensorCoverageKeys = buildCoverageKeys(state.sensorCoverageRuns);
+	}
+
+	function applySensorSources(state, sources) {
+		state.sensorSources = new Map(sources.map(function (source) {
+			return [Number(source.id), {
+				id: Number(source.id),
+				name: source.name || "Sensorquelle",
+				eps: Number(source.eps) || 0,
+				keys: buildCoverageKeys(normalizeCoverageRuns(Array.isArray(source.runs) ? source.runs : []))
+			}];
+		}));
 	}
 
 	function normalizeCoverageRuns(runs) {
@@ -747,6 +781,7 @@
 			return;
 		}
 
+		closeRealtimeSocket(state);
 		const socket = new WebSocket(buildRealtimeWebSocketUrl(data.webSocketUrl, data.token));
 		state.realtimeSocket = socket;
 
@@ -762,6 +797,9 @@
 		socket.addEventListener("close", function () {
 			if (state.realtimeSocket === socket) {
 				state.realtimeSocket = null;
+				state.connectionId = "";
+				state.identifiedEnemyIds.clear();
+				scheduleDraw(state);
 			}
 			if (shouldKeepRealtimeConnection(state) && !state.realtimeConnecting) {
 				setStatus(state, "Livekontakte getrennt");
@@ -784,7 +822,14 @@
 			return;
 		}
 
+		if (message.type === "tracking") {
+			state.identifiedEnemyIds = new Set(state.showSensorContacts && Array.isArray(message.spacecraftIds) ? message.spacecraftIds.map(Number) : []);
+			scheduleDraw(state);
+			return;
+		}
+
 		if (message.type === "ready") {
+			state.connectionId = message.connectionId || "";
 			setStatus(
 				state,
 				"Livekontakte verbunden (" +
@@ -936,6 +981,8 @@
 	}
 
 	function closeRealtimeSocket(state) {
+		state.connectionId = "";
+		state.identifiedEnemyIds.clear();
 		if (!state.realtimeSocket) {
 			return;
 		}
@@ -1940,6 +1987,7 @@
 
 	function selectField(state, field) {
 		state.selectedField = field;
+		state.scanMessage = "";
 		updateFieldDetails(state, field);
 		scheduleDraw(state);
 	}
@@ -1960,7 +2008,9 @@
 			? '<button type="button" data-user-starmap-system="' + Number(field.databaseId) + '">Systemkarte</button>'
 			: "";
 		const spacecrafts = getSpacecraftsForField(state, field);
-		const spacecraftHtml = buildSpacecraftDetailsHtml(spacecrafts);
+		const display = getSpacecraftsForSignatureDisplay(state, field.x, field.y, spacecrafts);
+		const spacecraftHtml = buildSpacecraftDetailsHtml(display.spacecrafts.filter(isDirectlyVisibleContact));
+		const snapshot = state.scanSnapshots.get(fieldKey(field.x, field.y));
 
 		state.fieldDetails.innerHTML =
 			'<div class="userStarmapFieldTitle">Feld ' + field.x + ' | ' + field.y + "</div>" +
@@ -1968,7 +2018,24 @@
 			tooltip +
 			territoryText +
 			systemButton +
-			spacecraftHtml;
+			spacecraftHtml +
+			buildUnscannedContactsHtml(display) +
+			buildScanControlsHtml(state, field) +
+			(snapshot ? '<div class="userStarmapPanelSubTitle">Scanstand ' + escapeHtml(formatScanTime(snapshot.scannedAt)) + "</div>" +
+				(snapshot.spacecrafts.length ? buildSpacecraftDetailsHtml(snapshot.spacecrafts) : '<div class="userStarmapFieldText">Keine fremden Signaturen beim Scan</div>') : "");
+
+		const sourceSelect = state.fieldDetails.querySelector("[data-user-starmap-scan-source]");
+		if (sourceSelect) {
+			sourceSelect.addEventListener("change", function () {
+				state.scanSourceByField.set(fieldKey(field.x, field.y), Number(this.value));
+			});
+		}
+		const scanButton = state.fieldDetails.querySelector("[data-user-starmap-scan]");
+		if (scanButton) {
+			scanButton.addEventListener("click", function () {
+				scanField(state, field, Number(sourceSelect.value));
+			});
+		}
 
 		const button = state.fieldDetails.querySelector("[data-user-starmap-system]");
 		if (button) {
@@ -1977,6 +2044,102 @@
 				window.open("database.php?SHOW_ENTRY=1&cat=7&ent=" + encodeURIComponent(databaseId), "_blank", "noopener");
 			});
 		}
+	}
+
+	function isDirectlyVisibleContact(spacecraft) {
+		return spacecraft.isOwn || spacecraft.isFriendly;
+	}
+
+	function formatScanTime(scannedAt) {
+		return new Date(scannedAt * 1000).toLocaleTimeString("de-DE");
+	}
+
+	function buildUnscannedContactsHtml(display) {
+		if (display.hasDubiousContacts) {
+			return '<div class="userStarmapFieldText">Signaturen verschleiert. Scan erforderlich</div>';
+		}
+		const count = display.spacecrafts.filter(function (spacecraft) { return !isDirectlyVisibleContact(spacecraft); }).length;
+		return count ? '<div class="userStarmapFieldText">Fremde Signaturen: ' + count + '. Aktuelle Kontaktdaten nur durch Scan</div>' : "";
+	}
+
+	function buildScanControlsHtml(state, field) {
+		if (!state.showSensorContacts) {
+			return "";
+		}
+		const key = fieldKey(field.x, field.y);
+		const sources = Array.from(state.sensorSources.values()).filter(function (source) { return source.keys.has(key); });
+		if (sources.length === 0) {
+			return '<div class="userStarmapFieldText">Keine Sensorquelle für dieses Feld verfügbar</div>';
+		}
+		const selectedId = state.scanSourceByField.get(key);
+		const selectedSource = sources.find(function (source) { return source.id === selectedId; }) ||
+			sources.find(function (source) { return source.eps >= state.scanEnergyCost; }) || sources[0];
+		const options = sources.map(function (source) {
+			return '<option value="' + source.id + '"' + (source.id === selectedSource.id ? ' selected="selected"' : "") + '>' +
+				escapeHtml(source.name) + " (" + source.eps + " EPS)" + "</option>";
+		}).join("");
+		return '<div class="userStarmapPanelSubTitle">Feld scannen</div>' +
+			'<label class="userStarmapScanSource">Sensorquelle <select data-user-starmap-scan-source' + (state.scanPending ? " disabled" : "") + '>' + options + "</select></label>" +
+			'<button type="button" data-user-starmap-scan' + (state.scanPending ? " disabled" : "") + '>' +
+			(state.scanPending ? "Scan läuft…" : "Scannen (" + state.scanEnergyCost + " EPS)") + "</button>" +
+			(state.scanMessage && state.scanMessageKey === key ? '<div class="userStarmapFieldText" role="status">' + escapeHtml(state.scanMessage) + "</div>" : "");
+	}
+
+	function scanField(state, field, sourceId) {
+		if (state.scanPending) {
+			return;
+		}
+		state.scanPending = true;
+		state.scanMessage = "";
+		state.scanMessageKey = fieldKey(field.x, field.y);
+		state.scanSourceByField.set(fieldKey(field.x, field.y), sourceId);
+		updateFieldDetails(state, state.selectedField);
+		const connectionId = state.connectionId;
+		const body = new URLSearchParams({
+			connectionid: connectionId || "",
+			layerid: state.layerId,
+			sourceid: sourceId,
+			x: field.x,
+			y: field.y,
+			sstr: state.sessionString
+		});
+		fetch(state.scanUrl, { method: "POST", body, cache: "no-store" })
+			.then(function (response) {
+				if (!response.ok) {
+					throw new Error("Scan fehlgeschlagen");
+				}
+				return response.json();
+			})
+			.then(function (data) {
+				if (data.sessionString) {
+					state.sessionString = data.sessionString;
+				}
+				const result = data.result;
+				const source = state.sensorSources.get(sourceId);
+				if (source && result.eps != null) {
+					source.eps = Number(result.eps);
+				}
+				if (!result.success) {
+					state.scanMessage = result.message || "Scan fehlgeschlagen";
+					return;
+				}
+				const key = fieldKey(result.x, result.y);
+				const spacecrafts = result.spacecrafts.map(normalizeSpacecraft).sort(compareContactRelationships);
+				state.scanSnapshots.set(key, { scannedAt: Number(result.scannedAt), spacecrafts });
+				if (result.trackingToken && connectionId && state.connectionId === connectionId && state.realtimeSocket?.readyState === 1) {
+					state.realtimeSocket.send(JSON.stringify({ type: "scan", token: result.trackingToken }));
+				}
+				state.scanMessage = "Scan erfolgreich";
+			})
+			.catch(function () {
+				state.scanMessage = "Scan nicht erreichbar. Bitte erneut versuchen";
+			})
+			.finally(function () {
+				state.scanPending = false;
+				updateFieldDetails(state, state.selectedField);
+				updateTooltip(state);
+				scheduleDraw(state);
+			});
 	}
 
 	function appendTerritoryOwnerTooltipHtml(field, html) {
@@ -1997,19 +2160,38 @@
 
 	function appendSpacecraftTooltipHtml(state, field, html) {
 		const display = getSpacecraftsForSignatureDisplay(state, field.x, field.y, getSpacecraftsForField(state, field));
-		const spacecrafts = display.spacecrafts;
-		if (spacecrafts.length === 0 && !display.hasDubiousContacts) {
+		const snapshot = state.scanSnapshots.get(fieldKey(field.x, field.y));
+		const spacecrafts = display.spacecrafts.filter(isDirectlyVisibleContact);
+		if (display.spacecrafts.length === 0 && !display.hasDubiousContacts && !snapshot) {
 			return;
 		}
 
-		html.push('<div class="userStarmapTooltipLine"><strong>Kontakte: ' + (display.hasDubiousContacts ? "!" : spacecrafts.length) + "</strong></div>");
+		html.push('<div class="userStarmapTooltipLine"><strong>Livekontakte: ' + (display.hasDubiousContacts ? "!" : display.spacecrafts.length) + "</strong></div>");
+		html.push(buildUnscannedContactsHtml(display));
 		if (display.hasDubiousContacts) {
 			html.push('<div class="userStarmapTooltipItem">' +
 				'<span class="userStarmapTooltipName">!</span>' +
 				'<span class="userStarmapTooltipMeta"> | Signaturen verschleiert</span>' +
 				"</div>");
 		}
+		appendContactTooltipEntries(spacecrafts, html);
+		if (snapshot) {
+			html.push('<div class="userStarmapTooltipLine"><strong>Scanstand ' + escapeHtml(formatScanTime(snapshot.scannedAt)) + "</strong></div>");
+			if (snapshot.spacecrafts.length === 0) {
+				html.push('<div class="userStarmapTooltipLine">Keine fremden Signaturen beim Scan</div>');
+			}
+			appendContactTooltipEntries(snapshot.spacecrafts, html);
+		}
+	}
+
+	function appendContactTooltipEntries(spacecrafts, html) {
+		let lastGroup = "";
 		spacecrafts.slice(0, TOOLTIP_ITEM_LIMIT).forEach(function (spacecraft) {
+			const group = getContactRelationshipLabel(spacecraft);
+			if (group !== lastGroup) {
+				html.push('<div class="userStarmapTooltipLine"><strong>' + group + "</strong></div>");
+				lastGroup = group;
+			}
 			if (spacecraft.isCloakedSignature) {
 				html.push(
 					'<div class="userStarmapTooltipItem">' +
@@ -2045,9 +2227,7 @@
 			return [];
 		}
 
-		return getSpacecraftsForFieldKey(state, fieldKey(field.x, field.y)).sort(function (a, b) {
-			return a.id - b.id;
-		});
+		return getSpacecraftsForFieldKey(state, fieldKey(field.x, field.y)).sort(compareContactRelationships);
 	}
 
 	function hasActiveSpacecraftFilter(state) {
@@ -2164,7 +2344,7 @@
 		});
 	}
 
-	function getContactStats(spacecrafts) {
+	function getContactStats(spacecrafts, identifiedEnemyIds) {
 		let ownCount = 0;
 		let friendlyCount = 0;
 		let foreignCount = 0;
@@ -2181,7 +2361,7 @@
 			visibleCount++;
 			if (spacecraft.isOwn) {
 				ownCount++;
-			} else if (spacecraft.isEnemy) {
+			} else if (identifiedEnemyIds?.has(spacecraft.id)) {
 				enemyCount++;
 			} else if (spacecraft.isFriendly) {
 				friendlyCount++;
@@ -2211,7 +2391,13 @@
 			return null;
 		}
 
-		return getContactStats(display.spacecrafts);
+		const key = fieldKey(Math.round(Number(x)), Math.round(Number(y)));
+		const contacts = state.sensorSpacecraftByField.get(key)?.spacecrafts || [];
+		const foreignContacts = contacts.filter(function (spacecraft) { return !isDirectlyVisibleContact(spacecraft); });
+		const isEnemyIdentified = foreignContacts.length > 0 && foreignContacts.every(function (spacecraft) {
+			return state.identifiedEnemyIds.has(spacecraft.id);
+		});
+		return getContactStats(display.spacecrafts, isEnemyIdentified ? state.identifiedEnemyIds : null);
 	}
 
 	function getDubiousContactStats(trustedSpacecrafts) {
@@ -2229,10 +2415,25 @@
 			return "";
 		}
 
-		return '<div class="userStarmapPanelSubTitle">Kontakte</div>' +
-			'<div class="userStarmapShipList">' +
-			spacecrafts.map(buildSpacecraftEntryHtml).join("") +
-			"</div>";
+		let lastGroup = "";
+		return '<div class="userStarmapShipList">' + spacecrafts.map(function (spacecraft) {
+			const group = getContactRelationshipLabel(spacecraft);
+			const heading = group !== lastGroup ? '<div class="userStarmapPanelSubTitle">' + group + "</div>" : "";
+			lastGroup = group;
+			return heading + buildSpacecraftEntryHtml(spacecraft);
+		}).join("") + "</div>";
+	}
+
+	function getContactRelationshipRank(spacecraft) {
+		return spacecraft.isOwn ? 0 : spacecraft.isFriendly ? 1 : spacecraft.isEnemy ? 3 : 2;
+	}
+
+	function getContactRelationshipLabel(spacecraft) {
+		return ["Eigene", "Verbündete", "Neutral", "Feinde"][getContactRelationshipRank(spacecraft)];
+	}
+
+	function compareContactRelationships(a, b) {
+		return getContactRelationshipRank(a) - getContactRelationshipRank(b) || a.id - b.id;
 	}
 
 	function buildSpacecraftEntryHtml(spacecraft) {

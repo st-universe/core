@@ -5,6 +5,7 @@ export function starmapChannels(config = {}) {
 	}
 	return {
 		streamKey: `${namespace}:realtime:starmap:spacecraft`,
-		coveragePrefix: `${namespace}:realtime:starmap:coverage:`
+		coveragePrefix: `${namespace}:realtime:starmap:coverage:`,
+		scanNoncePrefix: `${namespace}:realtime:starmap:scan-nonce:`
 	};
 }
