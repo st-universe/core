@@ -14,6 +14,7 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Mockery;
 use ReflectionClass;
+use Stu\Component\Asset\AssetVersioningInterface;
 use Stu\Component\Database\AchievementManager;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Config\ConfigStageEnum;
@@ -285,7 +286,15 @@ abstract class IntegrationTestCase extends StuTestCase
 
     protected function getContainer(): StuContainer
     {
-        self::$INTTEST_CONTAINER ??= Init::getContainer(ConfigStageEnum::INTEGRATION_TEST, true);
+        if (self::$INTTEST_CONTAINER === null) {
+            self::$INTTEST_CONTAINER = Init::getContainer(ConfigStageEnum::INTEGRATION_TEST, true);
+            self::$INTTEST_CONTAINER->set(AssetVersioningInterface::class, new class () implements AssetVersioningInterface {
+                public function rewrite(string $html): string
+                {
+                    return $html;
+                }
+            });
+        }
 
         return self::$INTTEST_CONTAINER;
     }
