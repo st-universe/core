@@ -70,7 +70,7 @@
                         {% if building.isRotatable %}
                         <button type="button" class="building-rotation" title="90° im Uhrzeigersinn drehen"
                             aria-label="90° im Uhrzeigersinn drehen" onclick="rotateBuilding({{ fieldId }}, 'right');"
-                            style="display: block; width: 40px; height: 13px; padding: 0; margin: 0; border: 0; background: transparent; cursor: pointer;">
+                            style="display: block; width: 40px; height: 13px; padding: 0; margin: 0 0 2px; border: 0; background: transparent; cursor: pointer;">
                             <img src="/assets/buttons/rotate_right.png" width="40" height="13" alt="" style="display: block;" />
                         </button>
                         {% endif %}
@@ -82,12 +82,12 @@
                         {% if building.isRotatable %}
                         <button type="button" class="building-rotation" title="90° gegen den Uhrzeigersinn drehen"
                             aria-label="90° gegen den Uhrzeigersinn drehen" onclick="rotateBuilding({{ fieldId }}, 'left');"
-                            style="display: block; width: 40px; height: 13px; padding: 0; margin: 0; border: 0; background: transparent; cursor: pointer;">
+                            style="display: block; width: 40px; height: 13px; padding: 0; margin: 2px 0 0; border: 0; background: transparent; cursor: pointer;">
                             <img src="/assets/buttons/rotate_left.png" width="40" height="13" alt="" style="display: block;" />
                         </button>
                         {% endif %}
                     </div>
-                    <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;{% if building.isRotatable %} padding-top: 13px;{% endif %}">
+                    <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;{% if building.isRotatable %} padding-top: 15px;{% endif %}">
                         <span style="font-weight: bold;">{{ building.getName }}</span><br />
                         <div onmouseover="cp('fieldinfo','buttons/info2')" onmouseout="cp('fieldinfo','buttons/info1')">
                             <span>auf</span> {{ fieldType|planetFieldTypeDescription }} <a
