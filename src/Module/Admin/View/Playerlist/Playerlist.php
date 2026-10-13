@@ -35,5 +35,12 @@ final class Playerlist implements ViewControllerInterface
                 $this->userRepository->getNonNpcList()
             )
         );
+        $game->setTemplateVar(
+            'NPC_LIST',
+            array_map(
+                fn (User $user): UserlistEntry => new UserlistEntry($user),
+                $this->userRepository->getNpcList()
+            )
+        );
     }
 }

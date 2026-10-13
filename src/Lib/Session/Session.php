@@ -17,11 +17,12 @@ final class Session implements SessionInterface
         private readonly UserIpTableRepositoryInterface $userIpTableRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserLastActionRepositoryInterface $userLastActionRepository,
-        private readonly SessionDestructionInterface $sessionDestruction
+        private readonly SessionDestructionInterface $sessionDestruction,
+        private readonly AdminImpersonationInterface $impersonation
     ) {}
 
     #[\Override]
-    public function createSession(): void
+    public function createSession(bool $adminContext = false): void
     {
         if (!$this->isLoggedIn()) {
             throw new SessionInvalidException('Session abgelaufen');
@@ -30,7 +31,7 @@ final class Session implements SessionInterface
             $this->logout();
             return;
         }
-        $this->chklogin();
+        $this->chklogin($adminContext);
     }
 
     private function isLoggedIn(): bool
@@ -63,7 +64,7 @@ final class Session implements SessionInterface
         $this->sessionDestruction->destroySession($this, $user);
     }
 
-    private function chklogin(): void
+    private function chklogin(bool $adminContext): void
     {
         if (!$this->isLoggedIn()) {
             throw new SessionInvalidException("Not logged in");
@@ -78,9 +79,13 @@ final class Session implements SessionInterface
             return;
         }
 
-        $lastAction = $user->getLastAction();
-        $lastAction->setTimestamp(time());
-        $this->userLastActionRepository->save($lastAction);
+        $user = $this->impersonation->resolveUser($user, $adminContext);
+
+        if (!$this->impersonation->isActive()) {
+            $lastAction = $user->getLastAction();
+            $lastAction->setTimestamp(time());
+            $this->userLastActionRepository->save($lastAction);
+        }
 
         $sessionId = session_id();
         if (!$sessionId) {

@@ -40,6 +40,8 @@ use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\Paging\PagingFactory;
+use Stu\Lib\Session\AdminImpersonation;
+use Stu\Lib\Session\AdminImpersonationInterface;
 use Stu\Lib\Session\Session;
 use Stu\Lib\Session\SessionDestruction;
 use Stu\Lib\Session\SessionDestructionInterface;
@@ -93,6 +95,7 @@ return [
     SessionStringFactoryInterface::class => autowire(SessionStringFactory::class),
     SessionDestructionInterface::class => autowire(SessionDestruction::class),
     SessionInterface::class => autowire(Session::class),
+    AdminImpersonationInterface::class => autowire(AdminImpersonation::class),
     SessionLoginInterface::class => autowire(SessionLogin::class),
     SessionStorageInterface::class => autowire(SessionStorage::class),
     InformationFactoryInterface::class => autowire(InformationFactory::class),

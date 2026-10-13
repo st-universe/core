@@ -20,7 +20,7 @@ final class GameSessionInitializer implements GameSessionInitializerInterface
     public function initialize(ModuleEnum $module): ?User
     {
         if ($module->doSessionCheck()) {
-            $this->session->createSession();
+            $this->session->createSession($module === ModuleEnum::ADMIN);
         } else {
             $this->sessionLogin->checkLoginCookie();
         }

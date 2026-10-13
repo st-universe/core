@@ -158,6 +158,8 @@
 <br />
 
 <div id="result" style="display: none;">..</div>
+<div class="divhead">Spieler</div>
+
 <div class="userList">
         <div class="userListItem">
     <div>
@@ -184,13 +186,13 @@
         title="Siedlerprofil ansehen" /></a>
 
         
-      </div>
+              </div>
       <div class="userBoxDetailAddendum">
         <div>
           <img title="Zuletzt online" src="/assets/buttons/time.png" />
           21.07.2394 11:30
         </div>
-        <div>STATUS:
+                                                        <div>STATUS:
           <span style="color: greenyellow;">AKTIV</span>
                     <a href="javascript:void(0);" onclick="showUserLock(this, 101);"
             onmouseover="cp('lock101','buttons/block1', 'png');"
@@ -231,13 +233,19 @@
     onclick="hidePopup(); openPmWindow(101, 102, 1,1);"><img src="/assets/buttons/msg1.png"
         name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
-      </div>
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="102" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als Spieler anmelden</button>
+        </form>
+              </div>
       <div class="userBoxDetailAddendum">
         <div>
           <img title="Zuletzt online" src="/assets/buttons/time.png" />
           21.07.2394 11:30
         </div>
-        <div>STATUS:
+                                                        <div>STATUS:
           <span style="color: greenyellow;">AKTIV</span>
                     <a href="javascript:void(0);" onclick="showUserLock(this, 102);"
             onmouseover="cp('lock102','buttons/block1', 'png');"
@@ -278,13 +286,19 @@
     onclick="hidePopup(); openPmWindow(101, 103, 1,1);"><img src="/assets/buttons/msg1.png"
         name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
 
-      </div>
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="103" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als Spieler anmelden</button>
+        </form>
+              </div>
       <div class="userBoxDetailAddendum">
         <div>
           <img title="Zuletzt online" src="/assets/buttons/time.png" />
           21.07.2394 11:30
         </div>
-        <div>STATUS:
+                                                        <div>STATUS:
           <span style="color: #dddddd;">KOLONISATIONS SCHIFF</span>
                     <a href="javascript:void(0);" onclick="showUserLock(this, 103);"
             onmouseover="cp('lock103','buttons/block1', 'png');"
@@ -292,6 +306,540 @@
               name="lock103" title="Spielersperre setzen" /></a>
                     <a href="/admin/?B_BLOCK_USER=1&uid=103&sstr=MOCKED_SESSIONSTRING"><img
               src="/assets/buttons/selfdes2.png" name="block103" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+<div class="divhead">NPCs</div>
+
+<div class="userList">
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=10">
+                <img src="/assets/rassen//1kn.png" title="Vereinte Föderation der Planeten" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #6699CC">Vereinte Föderation der Planeten</span></strong> (10)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/1s.png" />
+        <a href="/userprofile.php?uid=10" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 10, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="10" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 10);"
+            onmouseover="cp('lock10','buttons/block1', 'png');"
+            onmouseout="cp('lock10','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock10" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=10&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block10" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=11">
+                <img src="/assets/rassen//2kn.png" title="Romulanisches Sternenimperium " />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #055415">Romulanisches Sternenimperium</span> </strong> (11)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/2s.png" />
+        <a href="/userprofile.php?uid=11" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 11, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="11" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 11);"
+            onmouseover="cp('lock11','buttons/block1', 'png');"
+            onmouseout="cp('lock11','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock11" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=11&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block11" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=12">
+                <img src="/assets/rassen//3kn.png" title="Klingonisches Reich" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #760505">Klingonisches Reich</span></strong> (12)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/3s.png" />
+        <a href="/userprofile.php?uid=12" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 12, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="12" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 12);"
+            onmouseover="cp('lock12','buttons/block1', 'png');"
+            onmouseout="cp('lock12','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock12" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=12&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block12" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=13">
+                <img src="/assets/rassen//4kn.png" title="Cardassianische Union" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #999900">Cardassianische Union</span></strong> (13)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/4s.png" />
+        <a href="/userprofile.php?uid=13" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 13, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="13" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 13);"
+            onmouseover="cp('lock13','buttons/block1', 'png');"
+            onmouseout="cp('lock13','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock13" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=13&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block13" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=14">
+                <img src="/assets/rassen//5kn.png" title="Ferengi Allianz" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <span style="color: #FF8000"><strong>Ferengi Allianz</strong></span> (14)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/5s.png" />
+        <a href="/userprofile.php?uid=14" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 14, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="14" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 14);"
+            onmouseover="cp('lock14','buttons/block1', 'png');"
+            onmouseout="cp('lock14','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock14" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=14&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block14" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=15">
+                <img src="/assets/rassen//6kn.png" title="Pakled (NPC)" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: 552222">Pakled</span></strong> (NPC) (15)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/6s.png" />
+        <a href="/userprofile.php?uid=15" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 15, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="15" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 15);"
+            onmouseover="cp('lock15','buttons/block1', 'png');"
+            onmouseout="cp('lock15','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock15" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=15&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block15" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=17">
+                <img src="/assets/rassen//7kn.png" title="Kazon (KI-NPC)" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #9b734d">Kazon</span></strong> (KI-NPC) (17)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/7s.png" />
+        <a href="/userprofile.php?uid=17" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 17, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="17" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 17);"
+            onmouseover="cp('lock17','buttons/block1', 'png');"
+            onmouseout="cp('lock17','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock17" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=17&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block17" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=19">
+                <img src="/assets/rassen//8kn.png" title="Borg Kollektiv" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #006400">Borg Kollektiv</span></strong> (19)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/8s.png" />
+        <a href="/userprofile.php?uid=19" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 19, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="19" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 19);"
+            onmouseover="cp('lock19','buttons/block1', 'png');"
+            onmouseout="cp('lock19','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock19" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=19&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block19" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=20">
+                <img src="/assets/rassen//10kn.png" title="Hirogen (KI-NPC)" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        <strong><span style="color: #4b4b4b">Hirogen</span></strong> (KI-NPC) (20)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/10s.png" />
+        <a href="/userprofile.php?uid=20" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 20, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="20" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 20);"
+            onmouseover="cp('lock20','buttons/block1', 'png');"
+            onmouseout="cp('lock20','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock20" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=20&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block20" title="Spieler blockieren" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+        <div class="userListItem">
+    <div>
+      <div class="userAvatar">
+    <a href="/userprofile.php?uid=42">
+                <img src="/assets/rassen//1kn.png" title="Gesperrter User" />
+            </a>
+</div>
+
+    </div>
+    <div>
+      <div class="userListItemName">
+        Gesperrter User (42)
+<img src="/assets/buttons/rpg0.png" title="Der Spieler hat seine Rollenspieleinstellung nicht gesetzt" />
+
+      </div>
+      <div class="userListItemAllianceName">
+                        <span>-</span>
+              </div>
+      <div class="userListItemButtons">
+        <img src="/assets/rassen/1s.png" />
+        <a href="/userprofile.php?uid=42" onmouseover="cp('MOCKED_UNIQUEID','buttons/info2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/info1', 'png');"><img src="/assets/buttons/info1.png" name="MOCKED_UNIQUEID"
+        title="Siedlerprofil ansehen" /></a>
+
+        <a href="javascript:void(0);" onmouseover="cp('MOCKED_UNIQUEID','buttons/msg2', 'png');"
+    onmouseout="cp('MOCKED_UNIQUEID','buttons/msg1', 'png');"
+    onclick="hidePopup(); openPmWindow(101, 42, 1,1);"><img src="/assets/buttons/msg1.png"
+        name="MOCKED_UNIQUEID" title="Nachricht senden" /></a>
+
+                <form method="post" action="/admin/">
+          <input type="hidden" name="B_START_IMPERSONATION" value="1" />
+          <input type="hidden" name="uid" value="42" />
+          <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+          <button type="submit" class="button">Als NPC anmelden</button>
+        </form>
+              </div>
+      <div class="userBoxDetailAddendum">
+        <div>
+          <img title="Zuletzt online" src="/assets/buttons/time.png" />
+          21.07.2394 11:30
+        </div>
+                <div>STATUS:
+          <span style="color: greenyellow;">AKTIV</span>
+                    <a href="javascript:void(0);" onclick="showUserLock(this, 42);"
+            onmouseover="cp('lock42','buttons/block1', 'png');"
+            onmouseout="cp('lock42','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+              name="lock42" title="Spielersperre setzen" /></a>
+                    <a href="/admin/?B_BLOCK_USER=1&uid=42&sstr=MOCKED_SESSIONSTRING"><img
+              src="/assets/buttons/selfdes2.png" name="block42" title="Spieler blockieren" /></a>
         </div>
       </div>
     </div>

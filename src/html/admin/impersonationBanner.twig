@@ -1,0 +1,10 @@
+{% if ADMIN_ACCESS_USER_ID %}
+<div class="adminAccessBanner" role="status">
+    <span>Admin-Zugriff</span>
+    <form method="post" action="/admin/">
+        <input type="hidden" name="B_STOP_IMPERSONATION" value="1" />
+        <input type="hidden" name="sstr" value="{{ ADMIN_ACCESS_TOKEN }}" />
+        <button type="submit" class="button">Zurück zum Adminbereich</button>
+    </form>
+</div>
+{% endif %}

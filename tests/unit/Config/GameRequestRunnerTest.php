@@ -9,6 +9,7 @@ use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Component\Player\Register\RegistrationReferralTrackerInterface;
 use Stu\Exception\SessionInvalidException;
+use Stu\Lib\Session\AdminImpersonationInterface;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameSessionInitializerInterface;
@@ -72,6 +73,7 @@ class GameRequestRunnerTest extends StuTestCase
             ->with($user)
             ->once()
             ->andReturnSelf();
+        $gameRequest->shouldReceive('setAdminAccess')->with(null, null)->once();
         $gameController->shouldReceive('main')
             ->with(ModuleEnum::GAME, $gameRequest)
             ->once();
@@ -87,7 +89,8 @@ class GameRequestRunnerTest extends StuTestCase
             $uuidGenerator,
             $gameRequestSaver,
             $gameTurnRepository,
-            $this->mock(RegistrationReferralTrackerInterface::class)
+            $this->mock(RegistrationReferralTrackerInterface::class),
+            $this->mock(AdminImpersonationInterface::class)->shouldReceive('getAdminId', 'getTargetId')->andReturnNull()->getMock()
         );
 
         $runner->run(ModuleEnum::GAME);
@@ -130,7 +133,8 @@ class GameRequestRunnerTest extends StuTestCase
             $uuidGenerator,
             $gameRequestSaver,
             $gameTurnRepository,
-            $this->mock(RegistrationReferralTrackerInterface::class)
+            $this->mock(RegistrationReferralTrackerInterface::class),
+            $this->mock(AdminImpersonationInterface::class)->shouldReceive('getAdminId', 'getTargetId')->andReturnNull()->getMock()
         );
 
         $runner->run(ModuleEnum::GAME);

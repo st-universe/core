@@ -9,6 +9,7 @@ use Stu\Component\Database\AchievementManagerInterface;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Player\UserAwardEnum;
+use Stu\Lib\Session\AdminImpersonationInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
@@ -39,7 +40,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly BenchmarkResultInterface $benchmarkResult,
         private readonly GameUserRoleCheckerInterface $gameUserRoleChecker,
         private readonly GameTurnProviderInterface $gameTurnProvider,
-        private readonly SessionStringFactoryInterface $sessionStringFactory
+        private readonly SessionStringFactoryInterface $sessionStringFactory,
+        private readonly AdminImpersonationInterface $impersonation
     ) {}
 
     #[\Override]
@@ -76,6 +78,14 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $this->twigPage->setVar('IS_ADMIN', $this->gameUserRoleChecker->isAdmin());
         $this->twigPage->setVar('BENCHMARK', $this->benchmarkResult);
         $this->twigPage->setVar('GAME_STATS', $this->getGameStats());
+        $this->twigPage->setVar('ADMIN_ACCESS_USER_ID', $this->impersonation->getTargetId());
+        $adminId = $this->impersonation->getAdminId();
+        if ($adminId !== null) {
+            $admin = $this->userRepository->find($adminId);
+            if ($admin !== null) {
+                $this->twigPage->setVar('ADMIN_ACCESS_TOKEN', $this->sessionStringFactory->createSessionString($admin), true);
+            }
+        }
 
         if ($game->hasUser()) {
             $sessionString = $this->sessionStringFactory->createSessionString($game->getUser());
