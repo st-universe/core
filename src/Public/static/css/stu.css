@@ -1095,6 +1095,19 @@ div.lssobj {
   line-height: normal;
 }
 
+.userStarmapScanSource {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.userStarmapScanSource select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .userStarmapShipList {
   display: flex;
   flex-direction: column;

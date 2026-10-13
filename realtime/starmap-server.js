@@ -5,8 +5,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "redis";
 import { WebSocketServer } from "ws";
-import { isSpacecraftStaticallyVisible } from "./starmap-visibility.js";
+import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship } from "./starmap-visibility.js";
 import { starmapChannels } from "./starmap-channels.js";
+import { verifyToken } from "./starmap-token.js";
+import { StarmapTracking, acceptScanToken } from "./starmap-tracking.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -14,7 +16,7 @@ const config = loadConfig();
 const realtimeConfig = config.realtime || {};
 const cacheConfig = config.cache || config;
 
-const { streamKey: STREAM_KEY, coveragePrefix: COVERAGE_PREFIX } = starmapChannels(realtimeConfig);
+const { streamKey: STREAM_KEY, coveragePrefix: COVERAGE_PREFIX, scanNoncePrefix: SCAN_NONCE_PREFIX } = starmapChannels(realtimeConfig);
 const COVERAGE_RELOAD_MS = Number(process.env.STU_REALTIME_COVERAGE_RELOAD_MS || realtimeConfig.coverageReloadMs || 60000);
 const PORT = Number(process.env.STU_REALTIME_PORT || realtimeConfig.port || 8787);
 const HOST = process.env.STU_REALTIME_HOST || realtimeConfig.host || "127.0.0.1";
@@ -66,9 +68,14 @@ readStream().catch(function (error) {
 async function handleConnection(ws, request) {
 	const url = new URL(request.url || WS_PATH, `http://${request.headers.host || "localhost"}`);
 	const token = url.searchParams.get("token") || "";
-	const auth = verifyToken(token);
+	const auth = verifyToken(token, SECRET);
+	if (auth.purpose !== "starmap") {
+		throw new Error("invalid token purpose");
+	}
 	const client = {
 		ws,
+		connectionId: crypto.randomBytes(16).toString("hex"),
+		queue: Promise.resolve(),
 		userId: auth.userId,
 		layerId: auth.layerId,
 		allianceId: auth.allianceId,
@@ -82,15 +89,49 @@ async function handleConnection(ws, request) {
 		coverage: await loadCoverage(auth.userId, auth.layerId),
 		coverageLoadedAt: Date.now()
 	};
+	client.tracking = new StarmapTracking(client.coverage);
 
 	clients.add(client);
 	sendJson(ws, {
 		type: "ready",
 		generatedAt: Math.floor(Date.now() / 1000),
 		layerId: client.layerId,
+		connectionId: client.connectionId,
 		coverageCount: client.coverage.sourceCount,
 		coverageFieldCount: client.coverage.fieldCount,
 		tachyonFieldCount: client.coverage.tachyonFieldCount
+	});
+	sendTracking(client, true);
+
+	ws.on("message", function (raw) {
+		enqueueClient(client, async function () {
+			const message = JSON.parse(raw.toString());
+			if (message.type === "scan") {
+				await acceptScanToken(client, message.token, SECRET, (nonce, ttl) =>
+					redis.set(`${SCAN_NONCE_PREFIX}${nonce}`, "used", { NX: true, EX: ttl }));
+				sendTracking(client, true);
+			} else if (message.type === "refresh") {
+				const updated = verifyToken(message.token, SECRET);
+				if (updated.purpose !== "starmap" || updated.userId !== client.userId || updated.layerId !== client.layerId) {
+					throw new Error("invalid refresh authorization");
+				}
+				for (const key of ["allianceId", "canSeeAllianceShips", "friendlyUserIds", "enemyUserIds", "friendlyAllianceIds",
+					"enemyAllianceIds", "sharedUserIds", "sharedAllianceIds"]) {
+					client[key] = updated[key];
+				}
+				for (const [id, enemy] of client.tracking.enemies) {
+					if (!getSpacecraftRelationship(client, enemy).isEnemy) {
+						client.tracking.enemies.delete(id);
+					}
+				}
+				client.coverageLoadedAt = 0;
+				await refreshCoverageIfNeeded(client);
+				sendTracking(client, true);
+			} else if (message.type === "resetTracking") {
+				client.tracking.enemies.clear();
+				sendTracking(client, true);
+			}
+		});
 	});
 
 	ws.on("close", function () {
@@ -164,7 +205,8 @@ function dispatchPayload(rawPayload) {
 			continue;
 		}
 
-		refreshCoverageIfNeeded(client).then(function () {
+		enqueueClient(client, async function () {
+			await refreshCoverageIfNeeded(client);
 			const fromVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.from);
 			const toVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.to);
 			const fromCovered = isSpacecraftSensorCoveredAtPoint(client, payload.spacecraft, payload.from);
@@ -177,6 +219,8 @@ function dispatchPayload(rawPayload) {
 			const spacecraft = toVisible || staticVisible
 				? sanitizeSpacecraftForClient(client, payload.spacecraft)
 				: { id: payload.spacecraft.id };
+			validateTrackedRelationship(client, payload.spacecraft);
+			client.tracking.update(spacecraft, toVisible || staticVisible, payload.from);
 
 			sendJson(client.ws, {
 				type: "spacecraftMovement",
@@ -193,8 +237,7 @@ function dispatchPayload(rawPayload) {
 				staticVisible,
 				spacecraft
 			});
-		}).catch(function (error) {
-			console.error("Coverage refresh failed:", error.message);
+			sendTracking(client);
 		});
 	}
 }
@@ -224,7 +267,8 @@ function dispatchStatePayload(payload) {
 			continue;
 		}
 
-		refreshCoverageIfNeeded(client).then(function () {
+		enqueueClient(client, async function () {
+			await refreshCoverageIfNeeded(client);
 			const covered = isPointCovered(client.coverage, payload.position);
 			const visible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position);
 			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
@@ -235,6 +279,8 @@ function dispatchStatePayload(payload) {
 			const spacecraft = visible || staticVisible
 				? sanitizeSpacecraftForClient(client, payload.spacecraft)
 				: { id: payload.spacecraft.id };
+			validateTrackedRelationship(client, payload.spacecraft);
+			client.tracking.update(spacecraft, visible || staticVisible);
 
 			sendJson(client.ws, {
 				type: "spacecraftState",
@@ -245,8 +291,7 @@ function dispatchStatePayload(payload) {
 				staticVisible,
 				spacecraft
 			});
-		}).catch(function (error) {
-			console.error("Coverage refresh failed:", error.message);
+			sendTracking(client);
 		});
 	}
 }
@@ -261,7 +306,8 @@ function dispatchRemovalPayload(payload) {
 			continue;
 		}
 
-		refreshCoverageIfNeeded(client).then(function () {
+		enqueueClient(client, async function () {
+			await refreshCoverageIfNeeded(client);
 			if (!isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position)) {
 				if (!isSpacecraftStaticallyVisible(client, payload.spacecraft)) {
 					return;
@@ -270,9 +316,7 @@ function dispatchRemovalPayload(payload) {
 
 			const spacecraft = sanitizeSpacecraftForClient(client, payload.spacecraft);
 
-			if (payload.spacecraft.isCloaked && !spacecraft.isOwn) {
-				return;
-			}
+			client.tracking.remove(payload.spacecraft.id);
 
 			sendJson(client.ws, {
 				type: "spacecraftRemoval",
@@ -282,8 +326,7 @@ function dispatchRemovalPayload(payload) {
 				staticVisible: isSpacecraftStaticallyVisible(client, payload.spacecraft),
 				spacecraft
 			});
-		}).catch(function (error) {
-			console.error("Coverage refresh failed:", error.message);
+			sendTracking(client);
 		});
 	}
 }
@@ -293,7 +336,11 @@ async function refreshCoverageIfNeeded(client) {
 		return;
 	}
 
-	client.coverage = await loadCoverage(client.userId, client.layerId);
+	const coverage = await loadCoverage(client.userId, client.layerId);
+	if (coverage.snapshotVersion !== client.coverage.snapshotVersion) {
+		client.tracking.refresh(coverage);
+	}
+	client.coverage = coverage;
 	client.coverageLoadedAt = Date.now();
 }
 
@@ -316,6 +363,9 @@ async function loadCoverage(userId, layerId) {
 		}
 
 		return {
+			snapshotVersion: coverage.snapshotVersion,
+			sources: Array.isArray(coverage.sources) ? coverage.sources : [],
+			contacts: Array.isArray(coverage.contacts) ? coverage.contacts : [],
 			runs: normalizeRuns(coverage.runs),
 			tachyonRuns: normalizeRuns(coverage.tachyonRuns),
 			sourceCount: Number(coverage.sourceCount) || 0,
@@ -329,6 +379,9 @@ async function loadCoverage(userId, layerId) {
 
 function createEmptyCoverage() {
 	return {
+		snapshotVersion: null,
+		sources: [],
+		contacts: [],
 		runs: [],
 		tachyonRuns: [],
 		sourceCount: 0,
@@ -395,142 +448,39 @@ function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
 		: isPointCovered(client.coverage, point);
 }
 
-function sanitizeSpacecraftForClient(client, spacecraft) {
-	const relationship = getSpacecraftRelationship(client, spacecraft);
-	if (spacecraft.isCloaked && !relationship.hasDetails && !relationship.hasSharedLiveMapPosition) {
-		return sanitizeCloakedSignature(spacecraft, relationship);
-	}
-
-	const result = {
-		...spacecraft,
-		isOwn: relationship.isOwn,
-		isFriendly: relationship.isFriendly,
-		isEnemy: relationship.isEnemy,
-		hasDetails: relationship.hasDetails
-	};
-
-	if (!relationship.hasDetails) {
-		delete result.hull;
-		delete result.maxHull;
-		delete result.shield;
-		delete result.maxShield;
-		delete result.eps;
-		delete result.maxEps;
-		delete result.warpdrive;
-		delete result.maxWarpdrive;
-		delete result.alertState;
-		delete result.alertStateName;
-	}
-
-	return result;
-}
-
-function sanitizeCloakedSignature(spacecraft, relationship) {
-	return {
-		id: spacecraft.id,
-		name: "?",
-		nameText: "?",
-		nameHtml: "?",
-		type: spacecraft.type,
-		userId: 0,
-		userName: "Unbekannt",
-		userNameText: "Unbekannt",
-		userNameHtml: "Unbekannt",
-		allianceId: null,
-		allianceName: null,
-		allianceNameText: null,
-		allianceNameHtml: null,
-		rumpId: 0,
-		rumpName: "Tarnsignatur",
-		rumpImage: "",
-		x: spacecraft.x,
-		y: spacecraft.y,
-		inSystem: Boolean(spacecraft.inSystem),
-		systemName: spacecraft.systemName || null,
-		isCloaked: true,
-		isCloakedSignature: true,
-		isOwn: relationship.isOwn,
-		isFriendly: false,
-		isEnemy: false,
-		hasDetails: false
-	};
-}
-
-function getSpacecraftRelationship(client, spacecraft) {
-	const ownerId = Number(spacecraft.userId);
-	const allianceId = spacecraft.allianceId == null ? null : Number(spacecraft.allianceId);
-	const isOwn = ownerId === client.userId;
-	const isOwnAlliance = client.allianceId !== null && allianceId === client.allianceId;
-	const hasSharedLiveMapPosition = client.sharedUserIds.has(ownerId)
-		|| (allianceId !== null && client.sharedAllianceIds.has(allianceId));
-	const isFriendly = isOwn
-		|| isOwnAlliance
-		|| client.friendlyUserIds.has(ownerId)
-		|| (allianceId !== null && client.friendlyAllianceIds.has(allianceId));
-	const isEnemy = !isFriendly
-		&& (
-			client.enemyUserIds.has(ownerId)
-			|| (allianceId !== null && client.enemyAllianceIds.has(allianceId))
-		);
-
-	return {
-		isOwn,
-		isFriendly,
-		isEnemy,
-		hasDetails: isOwn || (client.canSeeAllianceShips && isOwnAlliance),
-		hasSharedLiveMapPosition
-	};
-}
-
-function verifyToken(token) {
-	const parts = token.split(".");
-	if (parts.length !== 2 || !parts[0] || !parts[1]) {
-		throw new Error("invalid token");
-	}
-
-	const expected = crypto.createHmac("sha256", SECRET).update(parts[0]).digest();
-	const actual = base64UrlDecode(parts[1]);
-	if (actual.length !== expected.length || !crypto.timingSafeEqual(actual, expected)) {
-		throw new Error("invalid token signature");
-	}
-
-	const payload = JSON.parse(base64UrlDecode(parts[0]).toString("utf8"));
-	const now = Math.floor(Date.now() / 1000);
-	if (Number(payload.exp) < now) {
-		throw new Error("expired token");
-	}
-
-	return {
-		userId: Number(payload.userId),
-		layerId: Number(payload.layerId),
-		allianceId: payload.allianceId == null ? null : Number(payload.allianceId),
-		canSeeAllianceShips: payload.canSeeAllianceShips === true,
-		friendlyUserIds: toNumberSet(payload.friendlyUserIds),
-		enemyUserIds: toNumberSet(payload.enemyUserIds),
-		friendlyAllianceIds: toNumberSet(payload.friendlyAllianceIds),
-		enemyAllianceIds: toNumberSet(payload.enemyAllianceIds),
-		sharedUserIds: toNumberSet(payload.sharedUserIds),
-		sharedAllianceIds: toNumberSet(payload.sharedAllianceIds)
-	};
-}
-
-function toNumberSet(values) {
-	if (!Array.isArray(values)) {
-		return new Set();
-	}
-
-	return new Set(values.map(Number).filter(Number.isFinite));
-}
-
 function sendJson(ws, payload) {
-	ws.send(JSON.stringify(payload));
+	if (ws.readyState === 1) {
+		ws.send(JSON.stringify(payload));
+	}
 }
 
-function base64UrlDecode(value) {
-	const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-	const padding = normalized.length % 4 === 0 ? "" : "=".repeat(4 - (normalized.length % 4));
+function sendTracking(client, force = false) {
+	const spacecraftIds = client.tracking.identifiedIds();
+	const version = JSON.stringify(spacecraftIds);
+	if (force || client.trackingVersion !== version) {
+		client.trackingVersion = version;
+		sendJson(client.ws, { type: "tracking", spacecraftIds });
+	}
+}
 
-	return Buffer.from(normalized + padding, "base64");
+function validateTrackedRelationship(client, spacecraft) {
+	const id = Number(spacecraft.id);
+	const enemy = client.tracking.enemies.get(id);
+	if (enemy && (enemy.userId !== Number(spacecraft.userId) || !getSpacecraftRelationship(client, spacecraft).isEnemy)) {
+		client.tracking.enemies.delete(id);
+	}
+}
+
+function enqueueClient(client, task) {
+	client.queue = client.queue.then(async function () {
+		if (client.ws.readyState === 1) {
+			await task();
+		}
+	}).catch(function (error) {
+		client.tracking.enemies.clear();
+		sendTracking(client, true);
+		console.error("Realtime client update failed:", error.message);
+	});
 }
 
 function createRedisClient() {

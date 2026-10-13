@@ -6,6 +6,8 @@ namespace Stu\Module\Starmap;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
+use Stu\Module\Starmap\Action\ScanUserStarmap\ScanUserStarmap;
+use Stu\Module\Starmap\Lib\StarmapSensorData;
 use Stu\Module\Starmap\Lib\StarmapUiFactory;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
@@ -16,6 +18,7 @@ use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
 use Stu\Module\Starmap\View\ShowUserStarmapData\ShowUserStarmapData;
 use Stu\Module\Starmap\View\ShowUserStarmapImage\ShowUserStarmapImage;
 use Stu\Module\Starmap\View\ShowUserStarmapRealtime\ShowUserStarmapRealtime;
+use Stu\Module\Starmap\View\ShowUserStarmapScan\ShowUserStarmapScan;
 use Stu\StarsystemGenerator\StarsystemGenerator;
 use Stu\StarsystemGenerator\StarsystemGeneratorInterface;
 
@@ -24,7 +27,9 @@ use function DI\autowire;
 return [
     StarsystemGeneratorInterface::class => autowire(StarsystemGenerator::class),
     ShowSectionRequestInterface::class => autowire(ShowSectionRequest::class),
-    'STARMAP_ACTIONS' => [],
+    'STARMAP_ACTIONS' => [
+        ScanUserStarmap::ACTION_IDENTIFIER => autowire(ScanUserStarmap::class)
+    ],
     'STARMAP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowSection::VIEW_IDENTIFIER => autowire(ShowSection::class),
@@ -32,7 +37,9 @@ return [
         RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class),
         ShowUserStarmapImage::VIEW_IDENTIFIER => autowire(ShowUserStarmapImage::class),
         ShowUserStarmapData::VIEW_IDENTIFIER => autowire(ShowUserStarmapData::class),
-        ShowUserStarmapRealtime::VIEW_IDENTIFIER => autowire(ShowUserStarmapRealtime::class)
+        ShowUserStarmapRealtime::VIEW_IDENTIFIER => autowire(ShowUserStarmapRealtime::class),
+        ShowUserStarmapScan::VIEW_IDENTIFIER => autowire(ShowUserStarmapScan::class)
     ],
     StarmapUiFactoryInterface::class => autowire(StarmapUiFactory::class),
+    StarmapSensorData::class => autowire(StarmapSensorData::class),
 ];

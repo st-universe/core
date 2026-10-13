@@ -53,6 +53,7 @@ class AllViewControllerTest extends TwigTestCase
         'STARMAP_VIEWS-SHOW_USER_STARMAP_DATA',
         'STARMAP_VIEWS-SHOW_USER_STARMAP_IMAGE',
         'STARMAP_VIEWS-SHOW_USER_STARMAP_REALTIME',
+        'STARMAP_VIEWS-SHOW_USER_STARMAP_SCAN',
         'USERPROFILE_VIEWS-SHOW_SURFACE',           // needs surface scan test data
         'SHIP_VIEWS-SHOW_ASTRO_ENTRY',              // needs astro entry
         'SPACECRAFT_VIEWS-SHOW_COLONY_MESSAGE',     // needs ship over colony

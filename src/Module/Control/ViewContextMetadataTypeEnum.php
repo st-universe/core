@@ -16,4 +16,5 @@ enum ViewContextMetadataTypeEnum: int
     case FILTER_ACTIVE = 8;
     case NO_AJAX = 9;
     case BUILDPLAN = 10;
+    case STARMAP_SCAN_RESULT = 11;
 }
