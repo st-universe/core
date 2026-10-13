@@ -81,4 +81,10 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     {
         return $this->settingsCore->getStringConfigValue(self::SETTING_WEBROOT);
     }
+
+    #[\Override]
+    public function getAssetsPath(): string
+    {
+        return $this->settingsCore->getStringConfigValue('assets_path', $this->getWebroot() . '/assets');
+    }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
+use Stu\Component\Asset\AssetVersioningInterface;
 use Stu\Module\Twig\TwigPage;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\StuTestCase;
@@ -24,8 +25,12 @@ class TwigPageTest extends StuTestCase
     {
         $this->environment = $this->mock(Environment::class);
 
+        $assetVersioning = $this->mock(AssetVersioningInterface::class);
+        $assetVersioning->shouldReceive('rewrite')->with('rendered')->andReturn('versioned');
+
         $this->subject = new TwigPage(
-            $this->environment
+            $this->environment,
+            $assetVersioning
         );
     }
 
@@ -56,7 +61,7 @@ class TwigPageTest extends StuTestCase
 
         $result = $this->subject->render();
 
-        $this->assertEquals('rendered', $result);
+        $this->assertEquals('versioned', $result);
     }
 
     public function testRenderWithContextVariable(): void
@@ -77,6 +82,6 @@ class TwigPageTest extends StuTestCase
 
         $result = $this->subject->render();
 
-        $this->assertEquals('rendered', $result);
+        $this->assertEquals('versioned', $result);
     }
 }

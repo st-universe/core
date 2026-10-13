@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 function loadPlayerDetails(userId) {
     const reasonInput = document.getElementById('reason-' + userId);
     const reason = reasonInput.value.trim();
@@ -554,12 +556,12 @@ function updateDealForm() {
         tab.classList.remove('module_selector_skipped');
 
         if (moduleId === '0') {
-            tabImage.src = '/assets/buttons/modul_screen_' + type + '.png';
+            tabImage.src = assetUrl('/assets/buttons/modul_screen_' + type + '.png');
             tab.classList.add('module_selector_skipped');
             effectTarget.innerHTML = '';
             effectTarget.style.display = 'none';
         } else {
-            tabImage.src = '/assets/commodities/' + commodityId + '.png';
+            tabImage.src = assetUrl('/assets/commodities/' + commodityId + '.png');
             effectTarget.innerHTML = document.getElementById('npc_' + moduleId + '_content').innerHTML;
             effectTarget.style.display = 'block';
         }

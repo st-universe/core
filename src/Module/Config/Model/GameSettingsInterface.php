@@ -17,6 +17,8 @@ interface GameSettingsInterface
 
     public function getWebroot(): string;
 
+    public function getAssetsPath(): string;
+
     public function getAdminSettings(): AdminSettingsInterface;
 
     public function getColonySettings(): ColonySettingsInterface;

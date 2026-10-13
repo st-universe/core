@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 ﻿var colonyid = null;
 var hostid = null;
 var hosttype = null;
@@ -102,7 +104,7 @@ function fieldMouseOver(obj, building, fieldtype) {
 		if (obj.parentNode.parentNode.parentNode.parentNode.className == 'cfb') {
 			oldimg = obj.src;
 			obj.parentNode.style.backgroundImage = 'url(' + oldimg + ')';
-			obj.src = gfx_path + "/generated/buildings/" + selectedbuilding + "/0at.png";
+			obj.src = assetUrl(gfx_path + "/generated/buildings/" + selectedbuilding + "/0at.png");
 		}
 	}
 	if (buildmode == 1 && $('building_preview_' + fieldtype)) {
@@ -327,7 +329,7 @@ function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 	Element.removeClassName(tabElement, 'module_selector_skipped');
 
 	if (moduleId == 0) {
-		$('tab_image_mod_' + type).src = 'assets/buttons/modul_screen_' + type + '.png';
+		$('tab_image_mod_' + type).src = assetUrl('assets/buttons/modul_screen_' + type + '.png');
 		$('module_type_' + type).innerHTML = '';
 		Element.addClassName(tabElement, 'module_selector_skipped');
 		updateCrewCount(type, 0);
@@ -335,7 +337,7 @@ function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 		if (amount < 1) {
 			Element.addClassName(tabElement, 'module_selector_unselected');
 		}
-		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
+		$('tab_image_mod_' + type).src = assetUrl('assets/commodities/' + commodityId + '.png');
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew);
@@ -467,13 +469,13 @@ function cancelModuleQueueEntries(module_id) {
 	});
 
 	document.querySelectorAll(`[name^="cancelModuleList${module_id}"]`).forEach(function (img) {
-		img.src = '/assets/buttons/x1.png';
+		img.src = assetUrl('/assets/buttons/x1.png');
 	});
 }
 
 function cp(elementName, imageName) {
 	document.getElementsByName(elementName).forEach(function (element) {
-		element.src = `/assets/${imageName}.png`;
+		element.src = assetUrl(`/assets/${imageName}.png`);
 	});
 }
 
@@ -683,7 +685,7 @@ function createModuleProductionPreviewItem(imagePath, title, total, stock) {
 		: '';
 
 	return `<span class="module-production-preview-item">` +
-		`<img src="${imagePath}" title="${escapeHtml(title)}" />` +
+		`<img src="${assetUrl(imagePath)}" title="${escapeHtml(title)}" />` +
 		`<span${shortageClass}>${total}</span>` +
 		`<span>/ ${stock}</span>` +
 		missingText +

@@ -8,7 +8,7 @@ all:init dirs
 local-setup:init dev-create-db migrateDatabase resetGame dev-serve
 
 dirs:force
-	for a in src/admin/backup src/Public/avatare/user src/Public/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
+	for a in src/admin/backup src/Public/avatare/user src/Public/avatare/alliance src/Public/generated-assets; do mkdir -p "$$a"; chmod 770 "$$a"; done
 
 init:force
 	composer install

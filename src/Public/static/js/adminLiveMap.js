@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 (function () {
 	"use strict";
 
@@ -1183,9 +1185,9 @@
 					return;
 				}
 				image.dataset.fallbackTried = "1";
-				image.src = "/assets/anomalies/" + key + ".png";
+				image.src = assetUrl("/assets/anomalies/" + key + ".png");
 			};
-			image.src = "/assets/map/anomalies/" + key + ".png";
+			image.src = assetUrl("/assets/map/anomalies/" + key + ".png");
 			state.anomalyImageCache.set(key, image);
 		}
 

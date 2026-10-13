@@ -6,6 +6,7 @@ namespace Stu;
 
 use request;
 use Spatie\Snapshots\MatchesSnapshots;
+use Stu\Component\Asset\AssetVersioningInterface;
 use Stu\Module\Control\Component\View\ViewContext;
 use Stu\Module\Control\Component\View\ViewContextFactoryInterface;
 use Stu\Module\Control\ComponentSetupInterface;
@@ -26,6 +27,12 @@ abstract class TwigTestCase extends IntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->getContainer()->setAdditionalService(AssetVersioningInterface::class, new class () implements AssetVersioningInterface {
+            public function rewrite(string $html): string
+            {
+                return $html;
+            }
+        });
         $this->setupTemplateEngine();
     }
 
