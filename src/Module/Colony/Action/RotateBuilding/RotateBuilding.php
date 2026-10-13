@@ -32,8 +32,8 @@ final class RotateBuilding implements ActionControllerInterface
         }
 
         $rotation = match (request::postString('direction')) {
-            'right' => 90,
-            'left' => 270,
+            'right' => 270,
+            'left' => 90,
             default => null
         };
 

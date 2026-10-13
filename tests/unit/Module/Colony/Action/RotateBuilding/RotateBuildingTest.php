@@ -55,14 +55,14 @@ class RotateBuildingTest extends StuTestCase
 
     public static function rotationProvider(): iterable
     {
-        yield [0, 'right', 90];
-        yield [90, 'right', 180];
-        yield [180, 'right', 270];
-        yield [270, 'right', 0];
-        yield [0, 'left', 270];
-        yield [90, 'left', 0];
-        yield [180, 'left', 90];
-        yield [270, 'left', 180];
+        yield [0, 'right', 270];
+        yield [90, 'right', 0];
+        yield [180, 'right', 90];
+        yield [270, 'right', 180];
+        yield [0, 'left', 90];
+        yield [90, 'left', 180];
+        yield [180, 'left', 270];
+        yield [270, 'left', 0];
     }
 
     public function testDoesNotRotateEmptyField(): void
