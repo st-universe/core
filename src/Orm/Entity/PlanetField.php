@@ -230,14 +230,6 @@ class PlanetField
         return 'cfu';
     }
 
-    public function getBuildingState(): string
-    {
-        if ($this->isUnderConstruction()) {
-            return 'b';
-        }
-        return 'a';
-    }
-
     public function getBuilding(): ?Building
     {
         return $this->building;
@@ -327,11 +319,6 @@ class PlanetField
         $buildtime = $building->getBuildtime();
         $perc = max(0, @round((100 / $buildtime) * min($this->getBuildProgress(), $buildtime)));
         return (int) round((40 / 100) * $perc);
-    }
-
-    public function getPictureType(): string
-    {
-        return $this->getBuildingId() . "/" . ($this->hasBuilding() ? $this->getRotation() : 'UNDEFINED') . $this->getBuildingState();
     }
 
     public function isColonizeAble(): bool
