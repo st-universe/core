@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 function onmousewheel(element, callback) {
 	// @author    Andrea Giammarchi        [http://www.devpro.it/]
 	// @license    MIT                 [http://www.opensource.org/licenses/mit-license.php]
@@ -316,7 +318,7 @@ function toggleTableRowVisible(id) {
 	$(id).style.display = "table-row";
 }
 function cp(obj, file, ending = "png") {
-	document.images[obj].src = gfx_path + "/" + file + "." + ending;
+	document.images[obj].src = assetUrl(gfx_path + "/" + file + "." + ending);
 }
 
 function updateComponent(id, url, refreshInterval) {

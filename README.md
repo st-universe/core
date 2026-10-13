@@ -33,6 +33,7 @@ Code:
 - Repository auschecken
 - php generator/building_generator/gen.php
 - php generator/field_generator/generator.php
+- php generator/asset_versions/generate.php
 - rsync -rv --delete-after --exclude=dist --exclude=".git" . /path/to/stuniverse-source/assets/
 
 ## DB-Änderungen via Doctrine-Migrations

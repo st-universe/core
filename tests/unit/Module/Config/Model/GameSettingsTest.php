@@ -88,4 +88,19 @@ class GameSettingsTest extends StuTestCase
 
         $this->assertEquals('path', $webroot);
     }
+    public function testAssetsPathDefaultsToWebrootAssets(): void
+    {
+        $this->settingsCore->shouldReceive('getStringConfigValue')->with('webroot')->once()->andReturn('/webroot');
+        $this->settingsCore->shouldReceive('getStringConfigValue')->with('assets_path', '/webroot/assets')->once()->andReturn('/webroot/assets');
+
+        self::assertSame('/webroot/assets', $this->subject->getAssetsPath());
+    }
+
+    public function testAssetsPathCanPointToSeparateRepository(): void
+    {
+        $this->settingsCore->shouldReceive('getStringConfigValue')->with('webroot')->once()->andReturn('/webroot');
+        $this->settingsCore->shouldReceive('getStringConfigValue')->with('assets_path', '/webroot/assets')->once()->andReturn('/srv/assets');
+
+        self::assertSame('/srv/assets', $this->subject->getAssetsPath());
+    }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Twig;
 
 use RuntimeException;
+use Stu\Component\Asset\AssetVersioningInterface;
 use Twig\Environment;
 use Twig\TemplateWrapper;
 
@@ -16,7 +17,8 @@ final class TwigPage implements TwigPageInterface
     private array $variables = [];
 
     public function __construct(
-        private Environment $environment
+        private Environment $environment,
+        private AssetVersioningInterface $assetVersioning
     ) {}
 
     #[\Override]
@@ -44,7 +46,7 @@ final class TwigPage implements TwigPageInterface
     #[\Override]
     public function render(): string
     {
-        return $this->loadTemplate()->render($this->variables);
+        return $this->assetVersioning->rewrite($this->loadTemplate()->render($this->variables));
     }
 
     private function loadTemplate(): TemplateWrapper

@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 document.addEventListener('mouseup', clearDragSelection);
 
 var isDragging = false;
@@ -54,7 +56,7 @@ function toggleMapfieldType(obj) {
 	if (tmpfield == 0) {
 		tmpfield = obj.parentNode.style.backgroundImage;
 		obj.parentNode.style.backgroundImage =
-			"url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
+			"url(" + assetUrl(gfx_path + "/map/" + selectedFieldType + ".png") + ")";
 		return;
 	}
 	obj.parentNode.style.backgroundImage = tmpfield;
@@ -107,7 +109,7 @@ function updateField(obj, fieldid) {
 			"/admin/?B_EDIT_FIELD=1&field=" + fieldid + "&type=" + selectedFieldType
 		);
 		obj.style.backgroundImage =
-			"url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
+			"url(" + assetUrl(gfx_path + "/map/" + selectedFieldType + ".png") + ")";
 		tmpfield = obj.style.backgroundImage;
 	}
 	if (selectedSystemType != 0) {
@@ -286,7 +288,7 @@ function selectNewSystemMapField(fieldid, cx, cy, typeid, type) {
 		"/admin/?B_EDIT_SYSTEM_FIELD=1&field=" + fieldid + "&type=" + typeid
 	);
 	field = $(cx + "_" + cy);
-	field.style.backgroundImage = "url(" + gfx_path + "/map/" + type + ".png)";
+	field.style.backgroundImage = "url(" + assetUrl(gfx_path + "/map/" + type + ".png") + ")";
 	closeAjaxWindow();
 }
 
@@ -440,7 +442,7 @@ function selectMapFieldType(type) {
 		$("fieldtypeselector").innerHTML = "Nichts gewählt";
 	} else {
 		$("fieldtypeselector").innerHTML =
-			'<img src="' + gfx_path + "/map/" + type + '.png" />';
+			'<img src="' + assetUrl(gfx_path + "/map/" + type + '.png') + '" />';
 	}
 	selectedFieldType = type;
 }
@@ -449,7 +451,7 @@ function selectSystemType(type) {
 		$("systemtypeselector").innerHTML = "Nichts gewählt";
 	} else {
 		$("systemtypeselector").innerHTML =
-			'<img src="' + gfx_path + "/map/systemtypes/" + type + '.png" />';
+			'<img src="' + assetUrl(gfx_path + "/map/systemtypes/" + type + '.png') + '" />';
 	}
 	selectedSystemType = type;
 }

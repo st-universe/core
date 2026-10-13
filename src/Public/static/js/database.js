@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 function getCommodityLocations(element, commodityId, offsetX = 0, offsetY = 0) {
 	var pos = findObject(element);
 
@@ -438,7 +440,7 @@ function initializePirateRoundChart(factionDataJson, maxPrestige, actualPrestige
 				img.onerror = function () {
 					resolve();
 				};
-				img.src = '/assets/rassen/' + faction.id + 'kn.png';
+				img.src = assetUrl('/assets/rassen/' + faction.id + 'kn.png');
 			});
 		});
 
@@ -589,7 +591,7 @@ function initializePirateRoundChart(factionDataJson, maxPrestige, actualPrestige
 
 				tooltip.innerHTML = `
                     <div style="text-align: center;">
-                        <img src="/assets/rassen/${hoveredSlice.faction.id}kn.png" style="width: 40px; height: 40px; margin-bottom: 5px; filter: drop-shadow(0 0 5px #00ffff);"><br>
+                        <img src="${assetUrl(`/assets/rassen/${hoveredSlice.faction.id}kn.png`)}" style="width: 40px; height: 40px; margin-bottom: 5px; filter: drop-shadow(0 0 5px #00ffff);"><br>
                         <strong style="color: #00ffff; text-shadow: 0 0 5px #00ffff;">${hoveredSlice.faction.name}</strong><br>
                         <span style="color: #ffff00;">Platz ${hoveredSlice.faction.rank}</span><br>
                         <span style="color: #00ff00;">${hoveredSlice.faction.percentage.toFixed(1)}% Prestige Anteil</span><br>

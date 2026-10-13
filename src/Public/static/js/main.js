@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 var faction = 0;
 var varcheck = 0;
 
@@ -379,9 +381,9 @@ document.addEventListener("DOMContentLoaded", function () {
     (currentDate >= startHoliday && currentDate <= new Date(year, 11, 31)) ||
     (currentDate >= new Date(year + 1, 0, 1) && currentDate <= endHoliday)
   ) {
-    bannerImg.src = "/assets/main/banner_x_mas.PNG";
+    bannerImg.src = assetUrl("/assets/main/banner_x_mas.PNG");
   } else {
-    bannerImg.src = "/assets/main/banner.PNG";
+    bannerImg.src = assetUrl("/assets/main/banner.PNG");
   }
 });
 

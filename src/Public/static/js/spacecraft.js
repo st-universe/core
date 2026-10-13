@@ -1,3 +1,5 @@
+window.assetUrl ??= (url) => url;
+
 var spacecraftid = null;
 var sstr = null;
 var tachyonFresh = false;
@@ -808,7 +810,7 @@ function refreshIndividualCrewTransfer(root) {
       icon.draggable = false;
       card.appendChild(icon);
     }
-    icon.src = "assets/buttons/" + (side === "0" ? "b_from1.png" : "b_to1.png");
+    icon.src = assetUrl("assets/buttons/" + (side === "0" ? "b_from1.png" : "b_to1.png"));
     icon.alt = side === "0" ? "Transfer von rechts nach links" : "Transfer von links nach rechts";
     icon.title = icon.alt;
   });
@@ -1643,7 +1645,7 @@ class Ship3DViewer {
 
     console.log('Erstelle Layer in Originalgröße');
 
-    textureLoader.load('/assets/buttons/warp_1.png', (texture) => {
+    textureLoader.load(assetUrl('/assets/buttons/warp_1.png'), (texture) => {
       const imgWidth = texture.image.width;
       const imgHeight = texture.image.height;
 
@@ -1677,7 +1679,7 @@ class Ship3DViewer {
     });
 
     if (this.isImpulse) {
-      textureLoader.load('/assets/buttons/warp_2.png', (texture) => {
+      textureLoader.load(assetUrl('/assets/buttons/warp_2.png'), (texture) => {
         const imgWidth = texture.image.width;
         const imgHeight = texture.image.height;
         const planeWidth = imgWidth * pixelToWorld;
@@ -1713,7 +1715,7 @@ class Ship3DViewer {
 
     if (this.needsWarpLayers) {
       if (!this.isImpulse) {
-        textureLoader.load('/assets/buttons/warp_2.png', (texture) => {
+        textureLoader.load(assetUrl('/assets/buttons/warp_2.png'), (texture) => {
           const imgWidth = texture.image.width;
           const imgHeight = texture.image.height;
           const planeWidth = imgWidth * pixelToWorld;
@@ -1747,7 +1749,7 @@ class Ship3DViewer {
         });
       }
 
-      textureLoader.load('/assets/buttons/warp_3.png', (texture) => {
+      textureLoader.load(assetUrl('/assets/buttons/warp_3.png'), (texture) => {
         const imgWidth = texture.image.width;
         const imgHeight = texture.image.height;
         const planeWidth = imgWidth * pixelToWorld;
@@ -1782,7 +1784,7 @@ class Ship3DViewer {
         });
       });
 
-      textureLoader.load('/assets/buttons/warp_4.png', (texture) => {
+      textureLoader.load(assetUrl('/assets/buttons/warp_4.png'), (texture) => {
         const imgWidth = texture.image.width;
         const imgHeight = texture.image.height;
         const planeWidth = imgWidth * pixelToWorld;

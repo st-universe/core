@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Twig;
 
 use Psr\Container\ContainerInterface;
+use Stu\Component\Asset\AssetVersioning;
+use Stu\Component\Asset\AssetVersioningInterface;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Twig\Environment;
@@ -13,6 +15,10 @@ use Twig\Loader\FilesystemLoader;
 use function DI\autowire;
 
 return [
+    AssetVersioningInterface::class => static fn (ContainerInterface $c): AssetVersioningInterface => new AssetVersioning(
+        $c->get(StuConfigInterface::class)->getGameSettings()->getWebroot(),
+        $c->get(StuConfigInterface::class)->getGameSettings()->getAssetsPath()
+    ),
     Environment::class => function (ContainerInterface $c): Environment {
         $stuConfig = $c->get(StuConfigInterface::class);
 
