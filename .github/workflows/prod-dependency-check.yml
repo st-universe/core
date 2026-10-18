@@ -15,10 +15,10 @@ jobs:
         os: ['ubuntu-latest']
         php: [8.5]
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: ${{ matrix.php }}
           tools: phpstan
@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install Dependencies (ignore platform)
-        uses: nick-invision/retry@v4
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60
         with:
           timeout_minutes: 5
           max_attempts: 3
