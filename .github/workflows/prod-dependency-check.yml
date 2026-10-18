@@ -21,6 +21,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          tools: phpstan
           extensions: redis
 
       - name: Cache Composer packages
@@ -41,3 +42,6 @@ jobs:
 
       - name: Verify autoloader
         run: php -r "require 'vendor/autoload.php'; echo 'Autoloader is working';"
+
+      - name: Run PHPStan
+        run: phpstan analyse
