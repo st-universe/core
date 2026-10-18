@@ -46,4 +46,23 @@ jobs:
         run: php -r "require 'vendor/autoload.php'; echo 'Autoloader is working';"
 
       - name: Run PHPStan
-        run: phpstan analyse
+        shell: bash
+        run: |
+          global_vendor="$(composer global config home --absolute)/vendor"
+          test -r "$global_vendor/phpstan/phpstan-doctrine/extension.neon"
+          test -r "$global_vendor/phpstan/phpstan-doctrine/rules.neon"
+          test -r "$global_vendor/phpstan/phpstan-deprecation-rules/rules.neon"
+          test -r "$global_vendor/autoload.php"
+
+          cat > phpstan-ci.neon <<EOF
+          includes:
+            - $global_vendor/phpstan/phpstan-doctrine/extension.neon
+            - $global_vendor/phpstan/phpstan-doctrine/rules.neon
+            - $global_vendor/phpstan/phpstan-deprecation-rules/rules.neon
+            - phpstan.neon
+          parameters:
+            bootstrapFiles:
+              - $global_vendor/autoload.php
+          EOF
+
+          phpstan analyse --configuration=phpstan-ci.neon
