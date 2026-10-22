@@ -62,6 +62,9 @@ readStream().catch(function (error) {
 });
 
 async function handleConnection(ws, request) {
+	ws.on("error", function () {
+		ws.terminate();
+	});
 	const url = new URL(request.url || WS_PATH, `http://${request.headers.host || "localhost"}`);
 	const token = url.searchParams.get("token") || "";
 	const auth = verifyToken(token, SECRET);
