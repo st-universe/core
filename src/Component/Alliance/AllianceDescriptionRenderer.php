@@ -54,11 +54,23 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
     private function getReplacementVars(): array
     {
         return [
-            'ALLIANCE_HOMEPAGE_LINK' => static fn (Alliance $alliance): string => sprintf(
-                '<a href="%s" target="_blank">%s</a>',
-                $alliance->getHomepage(),
-                'Zur Allianz-Homepage'
-            ),
+            'ALLIANCE_HOMEPAGE_LINK' => static function (Alliance $alliance): string {
+                $url = $alliance->getHomepage();
+                $scheme = parse_url($url, PHP_URL_SCHEME);
+                if (
+                    filter_var($url, FILTER_VALIDATE_URL) === false
+                    || !is_string($scheme)
+                    || !in_array(strtolower($scheme), ['http', 'https'], true)
+                ) {
+                    return '';
+                }
+
+                return sprintf(
+                    '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+                    htmlspecialchars($url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                    'Zur Allianz-Homepage'
+                );
+            },
             'ALLIANCE_BANNER' => function (Alliance $alliance): string {
                 $avatar = $alliance->getAvatar();
 
