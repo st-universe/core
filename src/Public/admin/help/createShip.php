@@ -16,11 +16,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
+    $dic->get(AdminSessionGuardInterface::class)->check();
+
     $db = $dic->get(EntityManagerInterface::class);
 
     $db->beginTransaction();
-
-    $dic->get(AdminSessionGuardInterface::class)->check();
 
     $buildplanRepo = $dic->get(SpacecraftBuildplanRepositoryInterface::class);
     $torpedoTypeRepo = $dic->get(TorpedoTypeRepositoryInterface::class);
