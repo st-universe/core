@@ -121,7 +121,7 @@ class AllOtherActionsTest extends ActionTestCase
             'COLONY_ACTIONS-B_CREATE_MODULES' => ['moduleids' => [], 'values' => [], 'func' => BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1->value],
             'COLONY_ACTIONS-B_CANCEL_REPAIR' => ['shipid' => 78],
             'COLONY_ACTIONS-B_CANCEL_MODULECREATION' => ['module' => 1, 'func' => BuildingFunctionEnum::MODULEFAB_TYPE3_LVL1->value],
-            'TRADE_ACTIONS-B_CREATE_OFFER' => ['storid' => 13, 'ggid' => 8, 'wgid' => 21, 'gcount' => 1, 'wcount' => 5, 'amount' => 1],
+            'TRADE_ACTIONS-B_CREATE_OFFER' => ['storid' => 13, 'wgid' => 21, 'gcount' => 1, 'wcount' => 5, 'amount' => 1],
             'TRADE_ACTIONS-B_TAKE_OFFER',
             'TRADE_ACTIONS-B_CANCEL_OFFER' => ['offerid' => 1],
             'TRADE_ACTIONS-B_DEALS_TAKE_OFFER' => ['dealid' => 1],

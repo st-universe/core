@@ -12,8 +12,6 @@ interface CreateOfferRequestInterface
 
     public function getWantedAmount(): int;
 
-    public function getGiveCommodityId(): int;
-
     public function getGiveAmount(): int;
 
     public function getOfferAmount(): int;

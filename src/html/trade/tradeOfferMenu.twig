@@ -24,7 +24,6 @@
     </table>
     <br />
     <form method="post" action="trade.php">
-        <input type="hidden" name="ggid" value="{{ STOR.getCommodityId }}" />
         <input type="hidden" name="storid" value="{{ STOR.getId }}" />
         <div id="tradeoffermenucontent">
             {% include 'html/trade/newOfferMenu/newOffer.twig' %}
