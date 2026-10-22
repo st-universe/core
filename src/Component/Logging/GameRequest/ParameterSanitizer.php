@@ -30,13 +30,41 @@ final class ParameterSanitizer implements ParameterSanitizerInterface
     public function sanitize(
         GameRequest $gameRequest
     ): GameRequest {
-        $params = array_diff_key(
-            $gameRequest->getParameterArray(),
-            array_flip(self::PARAMETER_BLACKLIST)
-        );
-
-        $gameRequest->setParameterArray($params);
+        $params = $this->sanitizeValue($gameRequest->getParameterArray());
+        if (is_array($params)) {
+            $gameRequest->setParameterArray($params);
+        }
 
         return $gameRequest;
     }
+
+    private function sanitizeValue(mixed $value): mixed
+    {
+        if (!is_array($value)) {
+            return $value;
+        }
+        $result = [];
+        foreach ($value as $key => $entry) {
+            if (is_string($key) && $this->isSensitive($key)) {
+                continue;
+            }
+            $result[$key] = $this->sanitizeValue($entry);
+        }
+        return $result;
+    }
+
+    private function isSensitive(string $key): bool
+    {
+        $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $key) ?? '');
+        if ($key === '_' || in_array($normalized, self::PARAMETER_BLACKLIST, true)) {
+            return true;
+        }
+        foreach (['token', 'secret', 'pass', 'credential', 'auth', 'cookie', 'session', 'apikey', 'privatekey', 'sstr', 'csrf', 'xsrf', 'bearer', 'code', 'nonce', 'email', 'mobile', 'login'] as $sensitive) {
+            if (str_contains($normalized, $sensitive)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
