@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
-use Exception;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Exception\AccessViolationException;
+use Stu\Lib\Upload\PngUpload;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
@@ -19,7 +19,7 @@ final class ChangeAvatar implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    public function __construct(private AllianceJobManagerInterface $allianceJobManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config) {}
+    public function __construct(private AllianceJobManagerInterface $allianceJobManager, private AllianceRepositoryInterface $allianceRepository, private ConfigInterface $config, private PngUpload $pngUpload) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
@@ -38,44 +38,13 @@ final class ChangeAvatar implements ActionControllerInterface
         $context->setView(Edit::VIEW_IDENTIFIER);
 
         $file = $_FILES['avatar'];
-        if ($file['type'] != 'image/png') {
-            $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
-            return;
-        }
-
-        if ($file['size'] > 200000) {
-            $context->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
-            return;
-        }
-
-        if ($file['size'] == 0) {
-            $context->getInfo()->addInformation(_('Die Datei ist leer'));
+        $img = $this->pngUpload->readUploaded($file['tmp_name'], $file['error'], 200000, 600, 150, 90000);
+        if ($img === null) {
+            $context->getInfo()->addInformation(_('Es können nur gültige PNG-Bilder bis 200 Kilobyte, 600 Pixel Breite und 150 Pixel Höhe hochgeladen werden'));
             return;
         }
 
         $imageName = md5($alliance->getId() . "_" . time());
-
-        try {
-            $img = imagecreatefrompng($file['tmp_name']);
-        } catch (Exception) {
-            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
-            return;
-        }
-
-        if (!$img) {
-            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
-            return;
-        }
-
-        if (imagesx($img) > 600) {
-            $context->getInfo()->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
-            return;
-        }
-
-        if (imagesy($img) > 150) {
-            $context->getInfo()->addInformation(_('Das Bild darf maximal 150 Pixel hoch sein'));
-            return;
-        }
 
         $newImage = imagecreatetruecolor(imagesx($img), imagesy($img));
         if ($newImage === false) {
