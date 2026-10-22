@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\CreateKnPlot;
 
+use request;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -19,6 +20,10 @@ final class CreateKnPlot implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $title = $this->createKnPlotRequest->getTitle();
         $description = $this->createKnPlotRequest->getText();
         $user = $context->getUser();
@@ -57,6 +62,6 @@ final class CreateKnPlot implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

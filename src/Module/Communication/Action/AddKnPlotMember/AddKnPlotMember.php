@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -26,6 +27,10 @@ final class AddKnPlotMember implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
         if ($plot === null || $plot->getUserId() !== $context->getUser()->getId() || !$plot->isActive()) {
             return;
@@ -63,6 +68,6 @@ final class AddKnPlotMember implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

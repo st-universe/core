@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\PostKnComment;
 
+use request;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -23,6 +24,10 @@ final class PostKnComment implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowKnComments::VIEW_IDENTIFIER);
 
         $post = $this->knPostRepository->find($this->postKnCommentRequest->getKnId());
@@ -94,6 +99,6 @@ final class PostKnComment implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

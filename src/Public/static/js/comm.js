@@ -119,11 +119,18 @@ function postComment(knId) {
 		}
 		$('postCommentButton').disabled = true;
 	}
-	comment = Form.Element.serialize('comment');
-	ajax_update('kncomments', "communication.php?B_POST_COMMENT=1&knid=" + knId + "&" + comment);
+	new Ajax.Updater('kncomments', 'communication.php', {
+		method: 'post',
+		parameters: { B_POST_COMMENT: 1, knid: knId, comment: $('comment').value, sstr: $('kn_comment_session_string').value },
+		evalScripts: true
+	});
 }
 function deletePostingComment(knId, commentId) {
-	ajax_update('kncomments', `communication.php?B_DELETE_COMMENT=1&knid=${knId}&commentid=${commentId}`);
+	new Ajax.Updater('kncomments', 'communication.php', {
+		method: 'post',
+		parameters: { B_DELETE_COMMENT: 1, knid: knId, commentid: commentId, sstr: $('kn_comment_session_string').value },
+		evalScripts: true
+	});
 }
 function updateCategoryOrder() {
 	new Ajax.Updater('catlist', '/pm.php', {
