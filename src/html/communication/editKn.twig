@@ -10,7 +10,7 @@
             <td>
                 <div id="writekntitle" class="selected" style="float: left; width: 100px; padding: 5px;">Titel</div>
                 <div id="writekntitleinput" style="clear: both; margin: 5px;">
-                    <input type="text" name="title" style="width: 100%;" value="{{ POST.getTitle|raw }}" />
+                    <input type="text" name="title" style="width: 100%;" value="{{ POST.getTitle }}" />
                 </div>
                 {% if POST.getPlotId %}
                 <div id="writeknplot" class="selected" style="float: left; width: 100px; padding: 5px;">Plot</div>
@@ -33,7 +33,7 @@
             <th>Text</th>
         </tr>
         <tr>
-            <td><textarea name="text" style="width: 100%; height: 300px;">{{ POST.getText|raw }}</textarea></td>
+            <td><textarea name="text" style="width: 100%; height: 300px;">{{ POST.getText }}</textarea></td>
         </tr>
         <tr>
             <td>
