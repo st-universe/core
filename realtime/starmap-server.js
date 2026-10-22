@@ -246,28 +246,32 @@ function dispatchPayload(rawPayload) {
 				return;
 			}
 
-			const spacecraft = toVisible || staticVisible
-				? sanitizeSpacecraftForClient(client, payload.spacecraft)
-				: { id: payload.spacecraft.id };
+			const fromAllowed = fromVisible || (staticVisible && !isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.from));
+			const toAllowed = toVisible || staticVisible;
+			const spacecraft = toAllowed ? sanitizeSpacecraftForClient(client, payload.spacecraft) : null;
 			validateTrackedRelationship(client, payload.spacecraft);
-			client.tracking.update(spacecraft, toVisible || staticVisible, payload.from);
-
-			sendJson(client, {
-				type: "spacecraftMovement",
-				generatedAt: payload.generatedAt,
-				layerId: payload.layerId,
-				direction: isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.from)
-					|| isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.to) ? null : payload.direction,
-				from: fromVisible || staticVisible ? { x: payload.from.x, y: payload.from.y } : null,
-				to: toVisible || staticVisible ? { x: payload.to.x, y: payload.to.y } : null,
-				fromVisible,
-				toVisible,
-				fromCovered,
-				toCovered,
-				visible: toVisible,
-				staticVisible,
-				spacecraft: serializeContact(client, spacecraft)
-			});
+			client.tracking.update(spacecraft || { id: payload.spacecraft.id }, toAllowed, payload.from);
+			if (!toAllowed) {
+				const handle = client.contacts.forget(payload.spacecraft.id);
+				if (handle !== undefined) sendJson(client, { type: "spacecraftRemoval", spacecraft: { id: handle } });
+			} else if (!fromAllowed) {
+				sendJson(client, {
+					type: "spacecraftState", generatedAt: payload.generatedAt, layerId: payload.layerId,
+					position: { x: payload.to.x, y: payload.to.y },
+					visible: toVisible, staticVisible, spacecraft: serializeContact(client, spacecraft)
+				});
+			} else {
+				sendJson(client, {
+					type: "spacecraftMovement",
+					generatedAt: payload.generatedAt,
+					layerId: payload.layerId,
+					direction: payload.direction,
+					from: { x: payload.from.x, y: payload.from.y },
+					to: { x: payload.to.x, y: payload.to.y },
+					fromVisible, toVisible, fromCovered, toCovered,
+					visible: toVisible, staticVisible, spacecraft: serializeContact(client, spacecraft)
+				});
+			}
 			sendTracking(client);
 		});
 	}
