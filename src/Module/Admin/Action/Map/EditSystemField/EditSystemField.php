@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditSystemField;
 
+use request;
 use RuntimeException;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
@@ -21,6 +22,10 @@ final class EditSystemField implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         /** @var StarSystemMap $selectedField */
         $selectedField = $this->starSystemMapRepository->find($this->editSystemFieldRequest->getFieldId());
         $fieldTypeId = $this->editSystemFieldRequest->getFieldType();
@@ -39,6 +44,6 @@ final class EditSystemField implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

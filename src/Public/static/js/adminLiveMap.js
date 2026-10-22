@@ -1563,15 +1563,7 @@ window.assetUrl ??= (url) => url;
 		updateIonStormEditStatus(state);
 		updateStatus(state);
 
-		fetch(state.ionStormMovementActionUrl, {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-				"X-Requested-With": "XMLHttpRequest",
-			},
-			body: params.toString(),
-		})
+		adminMapPost(state.ionStormMovementActionUrl, params)
 			.then(function (response) {
 				return response.json().catch(function () {
 					return {};

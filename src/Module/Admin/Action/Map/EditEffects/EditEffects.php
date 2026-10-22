@@ -25,7 +25,11 @@ final class EditEffects implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
-        $selectedField = $this->mapRepository->find(request::getIntFatal('field'));
+        if (!request::isPost()) {
+            return;
+        }
+
+        $selectedField = $this->mapRepository->find(request::postIntFatal('field'));
         if ($selectedField === null) {
             return;
         }
@@ -33,7 +37,7 @@ final class EditEffects implements ActionControllerInterface
         $mapFieldType = $selectedField->getFieldType();
 
         $effectArray = [];
-        foreach (request::getArrayFatal('effects') as $value) {
+        foreach (request::postArrayFatal('effects') as $value) {
             if (!is_string($value)) {
                 continue;
             }
@@ -45,7 +49,7 @@ final class EditEffects implements ActionControllerInterface
             }
         }
 
-        $mode = request::getString('mode');
+        $mode = request::postString('mode');
         $currentEffects = [];
         foreach ($mapFieldType->getEffects() as $effect) {
             $currentEffects[$effect->value] = $effect;
@@ -72,6 +76,6 @@ final class EditEffects implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

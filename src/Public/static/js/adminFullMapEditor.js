@@ -1015,14 +1015,7 @@
 			? "Speichere Feld " + fields[0].x + "|" + fields[0].y + "..."
 			: "Speichere " + fields.length + " Felder...");
 
-		fetch(state.editUrl, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-				"X-Requested-With": "XMLHttpRequest",
-			},
-			body: payload.toString(),
-		})
+		adminMapPost(state.editUrl, payload)
 			.then(function (response) {
 				return response.json().then(function (data) {
 					if (!response.ok || data.success !== true) {

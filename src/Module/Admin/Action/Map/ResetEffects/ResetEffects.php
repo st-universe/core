@@ -23,7 +23,11 @@ final class ResetEffects implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
-        $selectedField = $this->mapRepository->find(request::getIntFatal('field'));
+        if (!request::isPost()) {
+            return;
+        }
+
+        $selectedField = $this->mapRepository->find(request::postIntFatal('field'));
         if ($selectedField === null) {
             return;
         }
@@ -39,6 +43,6 @@ final class ResetEffects implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

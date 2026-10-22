@@ -5119,8 +5119,13 @@
 				<td title="System zurück (Pfeiltaste links)">
 										x
 									</td>
-				<td style="text-align: center;"><a href="/admin/?REGENERATE_SYSTEM=1&systemid=252"><img
-							src="/assets/buttons/update1.png" title="System neu generieren (Pfeiltaste hoch)" /></a>
+				<td style="text-align: center;">
+					<form id="regenerateSystemForm" action="/admin/" method="post">
+						<input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
+						<input type="hidden" name="REGENERATE_SYSTEM" value="1" />
+						<input type="hidden" name="systemid" value="252" />
+						<button type="submit"><img src="/assets/buttons/update1.png" title="System neu generieren (Pfeiltaste hoch)" /></button>
+					</form>
 				</td>
 				<td title="System vor (Pfeiltaste rechts)" style="text-align: right;">
 										x
