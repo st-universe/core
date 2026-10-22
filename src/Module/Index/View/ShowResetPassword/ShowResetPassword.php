@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\View\ShowResetPassword;
 
 use Stu\Exception\InvalidParamException;
+use Stu\Lib\AccountToken;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,12 +22,13 @@ final class ShowResetPassword implements ViewControllerInterface
     #[\Override]
     public function handle(ViewControllerContext $game): void
     {
-        $user = $this->userRepository->getByResetToken($this->showResetPasswordRequest->getToken());
+        $token = $this->showResetPasswordRequest->getToken();
+        if (!AccountToken::isValid($token, AccountToken::PASSWORD_RESET)) {
+            throw new InvalidParamException();
+        }
+        $user = $this->userRepository->getByResetToken($token);
         if ($user === null) {
-            throw new InvalidParamException(sprintf(
-                'Could not get user by reset token, userId: %d',
-                $game->getUser()->getId()
-            ));
+            throw new InvalidParamException();
         }
         $game->setTemplateFile('html/index/resetPassword.twig');
         $game->setPageTitle(_('Password zurücksetzen - Star Trek Universe'));

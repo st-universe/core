@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Html;
 
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
@@ -11,6 +12,7 @@ use Stu\Exception\AccessViolationException;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StubGameComponentsTrait;
 use Stu\TwigTestCase;
 
@@ -133,6 +135,14 @@ class AllViewControllerTest extends TwigTestCase
 
     private function getSpecificRequestVariables(string $key): array
     {
+        if ($key === 'INDEX_VIEWS-SHOW_RESET_PASSWORD') {
+            $token = 'password-reset.4102444800.' . str_repeat('a', 64);
+            $dic = $this->getContainer();
+            $dic->get(UserRepositoryInterface::class)->find(19)->getRegistration()->setPasswordToken($token);
+            $dic->get(EntityManagerInterface::class)->flush();
+            return ['TOKEN' => $token];
+        }
+
         return match ($key) {
             'SHIP_VIEWS-SHOW_COLONIZATION' => ['id' => 1031],
             'SPACECRAFT_VIEWS-SHOW_WORMHOLE_RESTRICTIONS' => ['entryId' => 42],
