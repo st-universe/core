@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action;
 
 use request;
+use Stu\Component\Player\Register\RegistrationIdentity;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -63,11 +64,11 @@ final class BlockUser implements ActionControllerInterface
         $blockedUser = $this->blockedUserRepository->prototype();
         $blockedUser->setId($userIdToBlock);
         $blockedUser->setTime(time());
-        $blockedUser->setEmailHash($this->stuHash->hash($registration->getEmail()));
+        $blockedUser->setEmailHash($this->stuHash->hash(RegistrationIdentity::email($registration->getEmail())));
         if ($registration->getMobile() !== null) {
             $alreadyHashed = strlen($registration->getMobile()) >= 40;
 
-            $blockedUser->setMobileHash($alreadyHashed ? $registration->getMobile() : $this->stuHash->hash($registration->getMobile()));
+            $blockedUser->setMobileHash($alreadyHashed ? $registration->getMobile() : $this->stuHash->hash(RegistrationIdentity::mobile($registration->getMobile())));
         }
         $this->blockedUserRepository->save($blockedUser);
 

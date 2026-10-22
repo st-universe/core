@@ -23,6 +23,8 @@ class LocalPlayerCreator extends PlayerCreator
         ?string $emailCode = null,
         ?string $referer = null
     ): User {
+        $emailAddress = RegistrationIdentity::email($emailAddress);
+        $this->assertNotBlocked($emailAddress, $mobile);
 
         $player = $this->userRepository->prototype();
         $player->setFaction($faction);
