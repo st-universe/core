@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use request;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Alliance\Enum\AllianceRelationTypeEnum;
 use Stu\Component\Alliance\Enum\RelationPermissionEnum;
@@ -36,6 +37,10 @@ final class CreateRelation implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $alliance = $context->getUser()->getAlliance();
 
         if ($alliance === null) {
@@ -119,6 +124,6 @@ final class CreateRelation implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
