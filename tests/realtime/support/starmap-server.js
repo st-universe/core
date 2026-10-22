@@ -3,6 +3,7 @@ import fs from "node:fs";
 import vm from "node:vm";
 import { EventEmitter } from "node:events";
 import { verifyToken } from "../../../realtime/starmap-token.js";
+import { StarmapAdmission } from "../../../realtime/starmap-admission.js";
 import { StarmapContacts } from "../../../realtime/starmap-contacts.js";
 import { StarmapTracking, acceptScanToken } from "../../../realtime/starmap-tracking.js";
 import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship, isSpacecraftConcealedAtPoint } from "../../../realtime/starmap-visibility.js";
@@ -15,15 +16,17 @@ export function signToken(claims) {
 	return payload + "." + crypto.createHmac("sha256", secret).update(payload).digest("base64url");
 }
 
-export function loadServer({ getCoverage = async () => null, getGeneration = async () => null } = {}) {
+export function loadServer({ getCoverage = async () => null, getGeneration = async () => null, setNonce, limits } = {}) {
 	let now = Date.now();
 	const timers = new Map();
 	let timerId = 0;
 	const clients = new Set();
+	const nonces = new Set();
+	const admission = new StarmapAdmission(limits, () => now);
 	const context = vm.createContext({
 		crypto, URL, console: { error() {} }, SECRET: secret, WS_PATH: "/realtime/starmap",
-		COVERAGE_RELOAD_MS: 60000, COVERAGE_PREFIX: "test:", SCAN_NONCE_PREFIX: "nonce:", clients,
-		redis: { get: key => key.includes("generation:") ? getGeneration(key) : getCoverage(key), set: async () => "OK" },
+		COVERAGE_RELOAD_MS: 60000, COVERAGE_PREFIX: "test:", SCAN_NONCE_PREFIX: "nonce:", clients, admission,
+		redis: { get: key => key.includes("generation:") ? getGeneration(key) : getCoverage(key), set: setNonce || (async key => { if (nonces.has(key)) return null; nonces.add(key); return "OK"; }) },
 		Date: class extends Date { static now() { return now; } },
 		setTimeout: (callback, delay) => { timers.set(++timerId, { callback, at: now + delay }); return timerId; },
 		clearTimeout: id => timers.delete(id),
@@ -43,8 +46,8 @@ export function loadServer({ getCoverage = async () => null, getGeneration = asy
 				}
 			}
 		},
-		connect(ws, claims) {
-			return context.handleConnection(ws, { url: "?token=" + signToken(claims), headers: {} });
+		connect(ws, claims, ip = "127.0.0.1") {
+			return context.handleConnection(ws, { url: "?token=" + signToken(claims), headers: {}, socket: { remoteAddress: ip } });
 		},
 		dispatch: payload => context.dispatchPayload(JSON.stringify(payload)),
 		flush: async () => { await Promise.all([...clients].map(client => client.queue)); }
@@ -63,7 +66,7 @@ export function socket() {
 
 export function authorization(server, overrides = {}) {
 	return {
-		userId: 101, layerId: 2, exp: Math.floor(server.now() / 1000) + 300,
+		nonce: crypto.randomBytes(8).toString("hex"), userId: 101, layerId: 2, exp: Math.floor(server.now() / 1000) + 300,
 		sharedUserIds: [102], friendlyUserIds: [102], ...overrides
 	};
 }

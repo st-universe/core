@@ -22,7 +22,7 @@ for (const reason of ["close", "error"]) {
 
 test("repeated disconnects during initialization do not accumulate clients or timers", async () => {
 	const completions = [];
-	const server = loadServer({ getCoverage: () => new Promise(resolve => completions.push(resolve)) });
+	const server = loadServer({ getCoverage: () => new Promise(resolve => completions.push(resolve)), limits: { attempts: 200 } });
 	const connections = [];
 	for (let index = 0; index < 100; index++) {
 		const ws = socket();

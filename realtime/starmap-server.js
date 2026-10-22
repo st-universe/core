@@ -11,6 +11,7 @@ import { verifyToken } from "./starmap-token.js";
 import { realtimeSecret } from "./starmap-secret.js";
 import { StarmapTracking, acceptScanToken } from "./starmap-tracking.js";
 import { StarmapContacts } from "./starmap-contacts.js";
+import { StarmapAdmission } from "./starmap-admission.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -27,6 +28,7 @@ const SECRET = realtimeSecret(config);
 
 const redis = createRedisClient();
 const clients = new Set();
+const admission = new StarmapAdmission();
 let lastStreamId = "$";
 
 redis.on("error", function (error) {
@@ -39,13 +41,25 @@ const server = http.createServer(function (_request, response) {
 	response.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
 	response.end("STU realtime starmap server\n");
 });
-const wss = new WebSocketServer({ server, path: WS_PATH });
+const wss = new WebSocketServer({
+	server,
+	path: WS_PATH,
+	verifyClient(info) {
+		try {
+			info.req.realtimeReservation = reserveConnection(info.req);
+			info.req.socket.once("close", info.req.realtimeReservation.release);
+			return true;
+		} catch {
+			return false;
+		}
+	}
+});
 
 wss.on("connection", function (ws, request) {
 	handleConnection(ws, request).catch(function (error) {
 		console.error("WebSocket connection failed:", error.message);
 		try {
-			ws.close(1011, "Realtime authentication failed");
+			ws.terminate();
 		} catch {
 			// ignore close errors
 		}
@@ -65,8 +79,10 @@ readStream().catch(function (error) {
 async function handleConnection(ws, request) {
 	let client;
 	let disconnected = false;
+	let releaseAdmission;
 	const cleanup = function () {
 		disconnected = true;
+		releaseAdmission?.();
 		if (client) {
 			clients.delete(client);
 			clearTimeout(client.expiryTimer);
@@ -77,18 +93,19 @@ async function handleConnection(ws, request) {
 		cleanup();
 		ws.terminate();
 	});
-	const url = new URL(request.url || WS_PATH, `http://${request.headers.host || "localhost"}`);
-	const token = url.searchParams.get("token") || "";
-	const auth = verifyToken(token, SECRET);
-	if (auth.purpose !== "starmap") {
-		throw new Error("invalid token purpose");
-	}
-	const coverage = await loadCoverage(auth.userId, auth.layerId);
+	const reservation = request.realtimeReservation || reserveConnection(request);
+	const auth = reservation.auth;
+	releaseAdmission = reservation.release;
+	const [coverage] = await Promise.all([loadCoverage(auth.userId, auth.layerId), consumeAuthorizationNonce(auth)]).catch(error => {
+		releaseAdmission();
+		throw error;
+	});
 	if (disconnected || ws.readyState !== 1) {
 		return;
 	}
 	client = {
 		ws,
+		releaseAdmission,
 		connectionId: crypto.randomBytes(16).toString("hex"),
 		queue: Promise.resolve(),
 		userId: auth.userId,
@@ -154,6 +171,24 @@ async function handleConnection(ws, request) {
 			}
 		});
 	});
+}
+
+function reserveConnection(request) {
+	const ip = request.socket?.remoteAddress || "unknown";
+	admission.attempt(ip);
+	const url = new URL(request.url || WS_PATH, "http://localhost");
+	const auth = verifyToken(url.searchParams.get("token") || "", SECRET);
+	if (auth.purpose !== "starmap") throw new Error("invalid token purpose");
+	return { auth, release: admission.reserve(auth.userId, ip) };
+}
+
+async function consumeAuthorizationNonce(auth) {
+	if (typeof auth.nonce !== "string" || !/^[a-f0-9]{16}$/.test(auth.nonce)) {
+		throw new Error("invalid authorization nonce");
+	}
+	const ttl = Math.max(1, auth.exp - Math.floor(Date.now() / 1000));
+	const accepted = await redis.set(`${SCAN_NONCE_PREFIX}connection:${auth.nonce}`, "used", { NX: true, EX: ttl });
+	if (accepted !== "OK") throw new Error("authorization token already used");
 }
 
 async function readStream() {
@@ -516,11 +551,13 @@ function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
 function isClientAuthorized(client) {
 	if (client.ws.readyState !== 1) {
 		clients.delete(client);
+		client.releaseAdmission();
 		clearTimeout(client.expiryTimer);
 		return false;
 	}
 	if (client.exp <= Math.floor(Date.now() / 1000)) {
 		clients.delete(client);
+		client.releaseAdmission();
 		clearTimeout(client.expiryTimer);
 		client.ws.close(1008, "Realtime authorization expired");
 		return false;
