@@ -8,6 +8,7 @@ import { WebSocketServer } from "ws";
 import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship } from "./starmap-visibility.js";
 import { starmapChannels } from "./starmap-channels.js";
 import { verifyToken } from "./starmap-token.js";
+import { realtimeSecret } from "./starmap-secret.js";
 import { StarmapTracking, acceptScanToken } from "./starmap-tracking.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,12 +22,7 @@ const COVERAGE_RELOAD_MS = Number(process.env.STU_REALTIME_COVERAGE_RELOAD_MS ||
 const PORT = Number(process.env.STU_REALTIME_PORT || realtimeConfig.port || 8787);
 const HOST = process.env.STU_REALTIME_HOST || realtimeConfig.host || "127.0.0.1";
 const WS_PATH = process.env.STU_REALTIME_PATH || realtimeConfig.path || "/realtime/starmap";
-const SECRET = process.env.STU_REALTIME_SECRET || config.game?.map?.encryptionKey || config.db?.database;
-
-if (!SECRET) {
-	console.error("Missing STU_REALTIME_SECRET or game.map.encryptionKey in config.");
-	process.exit(1);
-}
+const SECRET = realtimeSecret(config);
 
 const redis = createRedisClient();
 const clients = new Set();

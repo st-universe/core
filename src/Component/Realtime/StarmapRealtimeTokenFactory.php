@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Component\Realtime;
 
+use InvalidArgumentException;
 use JsonException;
-use Stu\Module\Config\StuConfigInterface;
+use Noodlehaus\ConfigInterface;
 
 final class StarmapRealtimeTokenFactory
 {
     private const int JSON_FLAGS = JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE;
 
-    public function __construct(private StuConfigInterface $config) {}
+    public function __construct(private ConfigInterface $config) {}
 
     /**
      * @throws JsonException
@@ -36,8 +37,15 @@ final class StarmapRealtimeTokenFactory
 
     private function getSecret(): string
     {
-        return $this->config->getGameSettings()->getMapSettings()->getEncryptionKey()
-            ?? $this->config->getDbSettings()->getDatabase();
+        $environmentSecret = getenv('STU_REALTIME_SECRET');
+        $secret = $environmentSecret === false ? $this->config->get('game.map.encryptionKey') : $environmentSecret;
+        if (!is_string($secret) || mb_strlen(trim($secret)) < 32
+            || $secret === 'the key to encrypt map data'
+            || $secret === $this->config->get('db.database')) {
+            throw new InvalidArgumentException('Configure a random STU_REALTIME_SECRET or game.map.encryptionKey with at least 32 characters');
+        }
+
+        return $secret;
     }
 
     private function base64UrlEncode(string $value): string
