@@ -10,7 +10,6 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Admin\Lib\UserlistEntry;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\NPC\Action\LogPlayerDetails;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -22,8 +21,7 @@ final class ShowPlayerDetails implements ViewControllerInterface
         private UserRepositoryInterface $userRepository,
         private CrewCountRetrieverInterface $crewCountRetriever,
         private CrewLimitCalculatorInterface $crewLimitCalculator,
-        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository,
-        private LogPlayerDetails $logPlayerDetailsAction
+        private SpacecraftRumpRepositoryInterface $spacecraftRumpRepository
     ) {}
 
     #[\Override]
@@ -31,26 +29,11 @@ final class ShowPlayerDetails implements ViewControllerInterface
     {
         $game->setTemplateFile('html/npc/playerDetails.twig');
 
-        $userId = request::getIntFatal('userid');
-        $reason = request::getString('reason');
+        $userId = request::indInt('userid');
 
         $user = $this->userRepository->find($userId);
         if ($user === null) {
             return;
-        }
-
-        if (!empty($reason)) {
-            $logText = sprintf(
-                '%s hat die Details von Spieler %s (%d) eingesehen. Grund: %s',
-                $game->getUser()->getName(),
-                $user->getName(),
-                $user->getId(),
-                $reason
-            );
-
-            if ($game->getUser()->isNpc()) {
-                $this->logPlayerDetailsAction->createLogEntry($logText, $game->getUser()->getId());
-            }
         }
 
         $game->setTemplateVar(

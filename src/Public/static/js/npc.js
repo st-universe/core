@@ -1,5 +1,34 @@
 window.assetUrl ??= (url) => url;
 
+window.npcMutationPending ??= false;
+
+function sendNpcMutation(parameters) {
+    const token = document.querySelector('[data-npc-session-string]');
+    if (window.npcMutationPending || !token?.value) {
+        return Promise.reject(new Error('Aktion momentan nicht möglich'));
+    }
+    const formData = new FormData();
+    for (const [name, value] of Object.entries(parameters)) {
+        formData.append(name, value);
+    }
+    formData.append('sstr', token.value);
+    window.npcMutationPending = true;
+    return fetch('/npc/index.php', { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(html => {
+            const result = document.createElement('div');
+            result.innerHTML = html;
+            const nextToken = result.querySelector('[data-npc-session-string]')?.value;
+            if (nextToken) {
+                document.querySelectorAll('[data-npc-session-string], input[name="sstr"]').forEach(input => {
+                    input.value = nextToken;
+                });
+            }
+            return result;
+        })
+        .finally(() => { window.npcMutationPending = false; });
+}
+
 function loadPlayerDetails(userId) {
     const reasonInput = document.getElementById('reason-' + userId);
     const reason = reasonInput.value.trim();
@@ -15,11 +44,8 @@ function loadPlayerDetails(userId) {
     document.getElementById('playerColonies-' + userId).style.display = 'block';
     document.getElementById('playerShips-' + userId).style.display = 'block';
 
-    fetch('/npc/?SHOW_PLAYER_DETAILS=1&userid=' + userId + '&reason=' + encodeURIComponent(reason))
-        .then(response => response.text())
-        .then(html => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+    sendNpcMutation({ B_LOG_PLAYER_DETAILS: '1', SHOW_PLAYER_DETAILS: '1', userid: userId, reason })
+        .then(tempDiv => {
 
             const columns = tempDiv.querySelector('div').children;
 
@@ -52,13 +78,7 @@ function showPlayerDetails(userId) {
     document.getElementById('playerDetails-' + userId).style.display = 'block';
     document.getElementById('playerColonies-' + userId).style.display = 'flex';
     document.getElementById('playerShips-' + userId).style.display = 'block';
-    fetch('/npc/index.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'B_LOG_PLAYER_DETAILS=1&userid=' + userId + '&reason=' + encodeURIComponent(reason)
-    })
+    sendNpcMutation({ B_LOG_PLAYER_DETAILS: '1', SHOW_PLAYER_DETAILS: '1', userid: userId, reason })
         .catch(error => {
             console.error('Fehler beim Protokollieren des Zugriffs:', error);
         });
@@ -260,19 +280,8 @@ function postQuestLogEntry(questId) {
         return;
     }
 
-    const formData = new FormData();
-    formData.append('B_ADD_QUEST_LOG_ENTRY', '1');
-    formData.append('quest_id', questId);
-    formData.append('log_text', text);
-
-    fetch('/npc/index.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(html => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+    sendNpcMutation({ B_ADD_QUEST_LOG_ENTRY: '1', quest_id: questId, log_text: text })
+        .then(tempDiv => {
 
             const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
             if (newQuestDetails) {
@@ -289,19 +298,8 @@ function postQuestLogEntry(questId) {
 }
 
 function acceptQuestApplication(questId, questUserId) {
-    const formData = new FormData();
-    formData.append('B_ACCEPT_QUEST_APPLICATION', '1');
-    formData.append('quest_id', questId);
-    formData.append('quest_user_id', questUserId);
-
-    fetch('/npc/index.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(html => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+    sendNpcMutation({ B_ACCEPT_QUEST_APPLICATION: '1', quest_id: questId, quest_user_id: questUserId })
+        .then(tempDiv => {
 
             const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
             if (newQuestDetails) {
@@ -315,19 +313,8 @@ function acceptQuestApplication(questId, questUserId) {
 }
 
 function rejectQuestApplication(questId, questUserId) {
-    const formData = new FormData();
-    formData.append('B_REJECT_QUEST_APPLICATION', '1');
-    formData.append('quest_id', questId);
-    formData.append('quest_user_id', questUserId);
-
-    fetch('/npc/index.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(html => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+    sendNpcMutation({ B_REJECT_QUEST_APPLICATION: '1', quest_id: questId, quest_user_id: questUserId })
+        .then(tempDiv => {
 
             const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
             if (newQuestDetails) {
@@ -349,19 +336,8 @@ function inviteQuestUsers(questId) {
         return;
     }
 
-    const formData = new FormData();
-    formData.append('B_INVITE_QUEST_USERS', '1');
-    formData.append('quest_id', questId);
-    formData.append('user_ids', userIds);
-
-    fetch('/npc/index.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(html => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+    sendNpcMutation({ B_INVITE_QUEST_USERS: '1', quest_id: questId, user_ids: userIds })
+        .then(tempDiv => {
 
             const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
             if (newQuestDetails) {
@@ -385,19 +361,8 @@ function excludeQuestUsers(questId) {
         return;
     }
 
-    const formData = new FormData();
-    formData.append('B_EXCLUDE_QUEST_USERS', '1');
-    formData.append('quest_id', questId);
-    formData.append('user_ids', userIds);
-
-    fetch('/npc/index.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(html => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+    sendNpcMutation({ B_EXCLUDE_QUEST_USERS: '1', quest_id: questId, user_ids: userIds })
+        .then(tempDiv => {
 
             const newQuestDetails = tempDiv.querySelector('#questDetails' + questId);
             if (newQuestDetails) {
@@ -417,16 +382,8 @@ function endNPCQuest(questId) {
         return;
     }
 
-    const formData = new FormData();
-    formData.append('B_END_NPC_QUEST', '1');
-    formData.append('quest_id', questId);
-
-    fetch('/npc/index.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(html => {
+    sendNpcMutation({ B_END_NPC_QUEST: '1', quest_id: questId })
+        .then(() => {
             location.reload();
         })
         .catch(error => {

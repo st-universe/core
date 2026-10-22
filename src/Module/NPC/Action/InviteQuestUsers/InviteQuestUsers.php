@@ -33,6 +33,10 @@ final class InviteQuestUsers implements ActionControllerInterface
     #[Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
         $questId = request::postInt('quest_id');
@@ -134,6 +138,6 @@ final class InviteQuestUsers implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
