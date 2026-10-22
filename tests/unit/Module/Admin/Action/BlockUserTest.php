@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuHashInterface;
@@ -18,12 +19,22 @@ use Stu\StuTestCase;
 
 final class BlockUserTest extends StuTestCase
 {
-    public function testBlockingRevokesActionAndRecoveryTokensBeforeAccountDeletion(): void
+    public static function blockedIdentities(): array
+    {
+        return [
+            ['test@example.test', null, null],
+            ['  TEST@EXAMPLE.TEST  ', '+49 1234567890', 'canonical-mobile-hash'],
+            ['test@example.test', str_repeat('a', 40), str_repeat('a', 40)]
+        ];
+    }
+
+    #[DataProvider('blockedIdentities')]
+    public function testBlockingRevokesActionAndRecoveryTokensBeforeAccountDeletion(string $email, ?string $mobile, ?string $mobileHash): void
     {
         request::setMockVars(['uid' => '101']);
         $user = $this->mock(User::class);
         $user->shouldReceive('getName')->andReturn('Testspieler');
-        $registration = new UserRegistration($user)->setEmail('test@example.test')->setPasswordToken('previous-recovery-token');
+        $registration = new UserRegistration($user)->setEmail($email)->setMobile($mobile)->setPasswordToken('previous-recovery-token');
         $user->shouldReceive('getRegistration')->andReturn($registration);
         $users = $this->mock(UserRepositoryInterface::class);
         $users->shouldReceive('find')->with(101)->once()->andReturn($user);
@@ -35,6 +46,9 @@ final class BlockUserTest extends StuTestCase
         $blockedUsers->shouldReceive('save')->with($blocked)->once();
         $hasher = $this->mock(StuHashInterface::class);
         $hasher->shouldReceive('hash')->with('test@example.test')->once()->andReturn('blocked-email-hash');
+        if ($mobile !== null && strlen($mobile) < 40) {
+            $hasher->shouldReceive('hash')->with('00491234567890')->once()->andReturn('canonical-mobile-hash');
+        }
         $tokens = $this->mock(SessionStringRepositoryInterface::class);
         $tokens->shouldReceive('truncate')->with($user)->once();
         $context = $this->mock(ActionControllerContext::class);
@@ -46,5 +60,6 @@ final class BlockUserTest extends StuTestCase
         self::assertSame(UserConstants::DELETION_CONFIRMED, $registration->getDeletionMark());
         self::assertSame('', $registration->getPasswordToken());
         self::assertSame('blocked-email-hash', $blocked->getEmailHash());
+        self::assertSame($mobileHash, $blocked->getMobileHash());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\CheckInput;
 
+use Stu\Component\Player\Register\RegistrationIdentity;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuHashInterface;
@@ -49,6 +50,7 @@ final class CheckInput implements ActionControllerInterface
                 $state = self::REGISTER_STATE_OK;
                 break;
             case 'email':
+                $value = RegistrationIdentity::email($value);
                 if (
                     !filter_var($value, FILTER_VALIDATE_EMAIL)
                     || mb_strlen($value) > UserRegistration::EMAIL_MAX_LENGTH
@@ -67,7 +69,7 @@ final class CheckInput implements ActionControllerInterface
                 break;
             case 'mobile':
 
-                $trimmedMobile = str_replace('+', '00', str_replace(' ', '', trim($value, " \t\n\r\x0B")));
+                $trimmedMobile = RegistrationIdentity::mobile($value);
                 $trimmedMobileHash = $this->stuHash->hash($trimmedMobile);
 
                 if (!$this->isMobileNumberCountryAllowed($trimmedMobile)) {

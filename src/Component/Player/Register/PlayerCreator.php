@@ -12,6 +12,7 @@ use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
+use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -27,7 +28,8 @@ class PlayerCreator implements PlayerCreatorInterface
         private SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
         private StuHashInterface $stuHash,
         protected EntityManagerInterface $entityManager,
-        private UserRefererRepositoryInterface $userRefererRepository
+        private UserRefererRepositoryInterface $userRefererRepository,
+        private BlockedUserRepositoryInterface $blockedUserRepository
     ) {}
 
     #[\Override]
@@ -39,7 +41,8 @@ class PlayerCreator implements PlayerCreatorInterface
         string $password,
         ?string $referer = null
     ): void {
-        $mobileWithDoubleZero = str_replace('+', '00', $mobile);
+        $emailAddress = RegistrationIdentity::email($emailAddress);
+        $mobileWithDoubleZero = RegistrationIdentity::mobile($mobile);
         $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
 
         $randomSmsHash = substr($this->stuHash->hash(uniqid((string) random_int(0, mt_getrandmax()), true)), 16, 6);
@@ -90,6 +93,15 @@ class PlayerCreator implements PlayerCreatorInterface
         if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile)) instanceof \Stu\Orm\Entity\User) {
             throw new RegistrationException(ErrorCodeEnum::REGISTRATION_DUPLICATE);
         }
+        $this->assertNotBlocked($emailAddress, $mobile);
+    }
+
+    protected function assertNotBlocked(string $emailAddress, ?string $mobile): void
+    {
+        if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash(RegistrationIdentity::email($emailAddress))) !== null
+            || ($mobile !== null && $this->blockedUserRepository->getByMobileHash($this->stuHash->hash(RegistrationIdentity::mobile($mobile))) !== null)) {
+            throw new RegistrationException(ErrorCodeEnum::REGISTRATION_BLOCKED);
+        }
     }
 
     private function isMobileNumberCountryAllowed(string $mobile): bool
@@ -113,6 +125,8 @@ class PlayerCreator implements PlayerCreatorInterface
         ?string $emailCode = null,
         ?string $referer = null
     ): User {
+        $emailAddress = RegistrationIdentity::email($emailAddress);
+        $mobile = $mobile === null ? null : RegistrationIdentity::mobile($mobile);
         $this->checkForException($loginName, $emailAddress, $mobile);
 
         return $this->createPlayerUnchecked(

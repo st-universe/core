@@ -10,6 +10,7 @@ enum ErrorCodeEnum: int
     case EMAIL_ADDRESS_INVALID = 100002;
     case REGISTRATION_DUPLICATE = 100003;
     case SMS_VERIFICATION_CODE_INVALID = 100009;
+    case REGISTRATION_BLOCKED = 100010;
 
     public function getDescription(): string
     {
@@ -17,7 +18,8 @@ enum ErrorCodeEnum: int
             self::LOGIN_NAME_INVALID => 'The provided login name is invalid (invalid characters or invalid length)',
             self::EMAIL_ADDRESS_INVALID => 'The provided email address is not valid',
             self::REGISTRATION_DUPLICATE => 'The provided email address or username are already registered',
-            self::SMS_VERIFICATION_CODE_INVALID => 'The provided mobile number is not valid'
+            self::SMS_VERIFICATION_CODE_INVALID => 'The provided mobile number is not valid',
+            self::REGISTRATION_BLOCKED => 'The provided registration details are blocked'
         };
     }
 }

@@ -11,6 +11,7 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserRegistration;
+use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRefererRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -37,6 +38,9 @@ class LocalPlayerCreatorTest extends StuTestCase
         $this->stuHash = $this->mock(StuHashInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->userRefererRepository = $this->mock(UserRefererRepositoryInterface::class);
+        $blockedUsers = $this->mock(BlockedUserRepositoryInterface::class);
+        $blockedUsers->shouldReceive('getByEmailHash')->andReturnNull();
+        $this->stuHash->shouldReceive('hash')->andReturn('identifier-hash');
 
         $this->subject = new LocalPlayerCreator(
             $this->userRepository,
@@ -45,7 +49,8 @@ class LocalPlayerCreatorTest extends StuTestCase
             $this->smsVerificationCodeSender,
             $this->stuHash,
             $this->entityManager,
-            $this->userRefererRepository
+            $this->userRefererRepository,
+            $blockedUsers
         );
     }
 
