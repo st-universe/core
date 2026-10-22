@@ -54,6 +54,7 @@ export function socket() {
 	ws.readyState = 1;
 	ws.messages = [];
 	ws.send = value => ws.messages.push(JSON.parse(value));
+	ws.terminate = () => { ws.terminated = true; ws.readyState = 3; ws.emit("close"); };
 	ws.close = (code, reason) => { ws.closeCode = code; ws.closeReason = reason; ws.readyState = 3; ws.emit("close"); };
 	return ws;
 }
