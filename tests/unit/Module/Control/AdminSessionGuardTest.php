@@ -26,6 +26,6 @@ class AdminSessionGuardTest extends StuTestCase
             ->once()
             ->andReturn([42]);
 
-        new AdminSessionGuard($sessionStarter, $session, $stuConfig)->check();
+        new AdminSessionGuard($sessionStarter, $session, $stuConfig, $this->mock(\Stu\Orm\Repository\SessionStringRepositoryInterface::class))->check();
     }
 }

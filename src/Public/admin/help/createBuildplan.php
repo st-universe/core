@@ -10,6 +10,7 @@ use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Config\Init;
+use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Control\AdminSessionGuardInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -22,7 +23,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
-    $dic->get(AdminSessionGuardInterface::class)->check();
+    $admin = $dic->get(AdminSessionGuardInterface::class)->check();
+    $sessionString = $dic->get(SessionStringFactoryInterface::class)->createSessionString($admin);
 
     $db = $dic->get(EntityManagerInterface::class);
 
@@ -65,7 +67,7 @@ Init::run(function (ContainerInterface $dic): void {
 
         $moduleList = request::postArray('mod');
         $moduleSpecialList = request::postArray('special_mod');
-        if (count($moduleList) >= $mod_level->getMandatoryModulesCount()) {
+        if (request::isPost() && count($moduleList) >= $mod_level->getMandatoryModulesCount()) {
             $user = $userRepo->find($userId);
             if ($user === null) {
                 throw new RuntimeException('userId %d does not exist', $userId);
@@ -138,7 +140,9 @@ Init::run(function (ContainerInterface $dic): void {
         } else {
             printf(
                 '<form action="" method="post">
+            <input type="hidden" name="sstr" value="%s" />
             <input type="hidden" name="userId" value="%d">',
+                htmlspecialchars($sessionString, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
                 $userId
             );
 
