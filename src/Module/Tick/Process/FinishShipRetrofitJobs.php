@@ -27,8 +27,26 @@ final class FinishShipRetrofitJobs implements ProcessTickHandlerInterface
                 $newbuildplan = $obj->getSpacecraftBuildplan();
                 $ship = $obj->getShip();
 
-                if ($ship == null) {
-                    return;
+                if (
+                    $ship === null
+                    || $ship->getUserId() !== $obj->getUserId()
+                    || $colony->getUserId() !== $obj->getUserId()
+                    || $ship->getLocation() !== $colony->getLocation()
+                    || $ship->getRump()->getId() !== $obj->getRump()->getId()
+                    || $newbuildplan->getRump()->getId() !== $ship->getRump()->getId()
+                    || $newbuildplan->getUser()->getId() !== $obj->getUserId()
+                    || $ship->getBuildplan()?->getUser()->getId() !== $obj->getUserId()
+                    || $ship->getState() !== SpacecraftStateEnum::RETROFIT
+                ) {
+                    if (
+                        $ship !== null
+                        && $ship->getUserId() === $obj->getUserId()
+                        && $ship->getState() === SpacecraftStateEnum::RETROFIT
+                    ) {
+                        $ship->getCondition()->setState(SpacecraftStateEnum::NONE);
+                    }
+                    $this->colonyShipQueueRepository->delete($obj);
+                    continue;
                 }
 
                 $this->shipRetrofit->updateBy(

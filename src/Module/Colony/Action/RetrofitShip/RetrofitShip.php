@@ -19,12 +19,12 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
@@ -48,7 +48,7 @@ final class RetrofitShip implements ActionControllerInterface
         private ColonyLibFactoryInterface $colonyLibFactory,
         private SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private ColonyRepositoryInterface $colonyRepository,
-        private ShipRepositoryInterface $shipRepository,
+        private ShipLoaderInterface $shipLoader,
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation
     ) {}
 
@@ -71,8 +71,15 @@ final class RetrofitShip implements ActionControllerInterface
             return;
         }
 
-        $ship = $this->shipRepository->find(request::indInt('shipid'));
-        if ($ship === null) {
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(request::indInt('shipid'), $userId);
+        $ship = $wrapper->get();
+        if (
+            $ship->getLocation() !== $colony->getLocation()
+            || $ship->getRump()->getId() !== $rump->getId()
+            || $ship->getState() !== SpacecraftStateEnum::NONE
+            || !$wrapper->canBeRetrofitted()
+            || $ship->isWarped()
+        ) {
             return;
         }
 
@@ -80,15 +87,9 @@ final class RetrofitShip implements ActionControllerInterface
         if ($oldplan === null) {
             return;
         }
-
-        if ($ship->getBuildplan()) {
-            if ($ship->getBuildplan() != $oldplan) {
-                $context->getInfo()->addInformation(_('Das Schiff hat einen anderen Bauplan'));
-                return;
-            }
-            if ($ship->getBuildplan()->getUser()->getId() !== $user->getId()) {
-                $context->getInfo()->addInformation(_('Übernommene Schiffe können nicht umgerüstet werden'));
-            }
+        if ($oldplan->getUser()->getId() !== $userId) {
+            $context->getInfo()->addInformation(_('Übernommene Schiffe können nicht umgerüstet werden'));
+            return;
         }
 
         $building_function = null;
