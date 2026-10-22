@@ -28,11 +28,8 @@ final class StuBbCodeWithImageDefinitionSet implements CodeDefinitionSet
                 ->setUseOption(true)
                 ->setOptionValidator(new CssColorValidator())
                 ->build(),
-            new CodeDefinitionBuilder(
-                'img',
-                '<img src="{param}" style="max-height: 100%;max-width:100%;" />'
-            )
-                ->setBodyValidator(new StuBbCodeImageValidator())
+            new CodeDefinitionBuilder('img', '{param}')
+                ->setParseContent(false)
                 ->build(),
         ];
         return $this->definitions;
