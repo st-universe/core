@@ -28,6 +28,8 @@ class TestSession implements SessionInterface
 
     public function setUser(?User $user): SessionInterface
     {
+        $this->user = $user;
+
         return $this;
     }
 

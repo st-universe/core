@@ -27,12 +27,26 @@ use Stu\TwigTestCase;
 
 final class BbCodeImageRenderingTest extends TwigTestCase
 {
+    private ?string $previousRequestMethod = null;
+
     #[\Override]
     public function setUp(): void
     {
+        $this->previousRequestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
         self::$isSchemaInitializationNeeded = true;
         parent::setUp();
         self::$isSchemaInitializationNeeded = true;
+    }
+
+    #[\Override]
+    public function tearDown(): void
+    {
+        if ($this->previousRequestMethod === null) {
+            unset($_SERVER['REQUEST_METHOD']);
+        } else {
+            $_SERVER['REQUEST_METHOD'] = $this->previousRequestMethod;
+        }
+        parent::tearDown();
     }
 
     #[DataProvider('descriptions')]
@@ -47,6 +61,7 @@ final class BbCodeImageRenderingTest extends TwigTestCase
         self::$testSession->setUserById($actorId);
         $actionContext = $dic->get(ActionContextFactoryInterface::class)->createActionContext($game);
 
+        $_SERVER['REQUEST_METHOD'] = 'POST';
         request::setMockVars([
             'description' => $description,
             'name' => 'Testallianz',
@@ -78,6 +93,7 @@ final class BbCodeImageRenderingTest extends TwigTestCase
             }
         }
 
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         self::$testSession->setUserById(102);
         $game->resetGameData();
         $context = $dic->get(ViewContextFactoryInterface::class)->createViewContext(
