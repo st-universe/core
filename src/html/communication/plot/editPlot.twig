@@ -1,6 +1,7 @@
 {% block body %}
     <script src="{{ javascriptPath }}/js/comm.js"></script>
     <form action="communication.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <input type="hidden" name="SHOW_EDIT_PLOT" value="1" />
         <input type="hidden" name="plotid" value="{{ PLOT.getId }}" />
         <table class="tcal">
@@ -8,14 +9,14 @@
                 <th>Titel</th>
             </tr>
             <tr>
-                <td><input type="text" name="title" style="width: 100%;" value="{{ PLOT.getTitle|raw }}" /></td>
+                <td><input type="text" name="title" style="width: 100%;" value="{{ PLOT.getTitle }}" /></td>
             </tr>
             <tr>
                 <th>Beschreibung</th>
             </tr>
             <tr>
                 <td>
-                    <textarea name="description" style="width: 100%; height: 300px;">{{ PLOT.getDescription|raw }}</textarea>
+                    <textarea name="description" style="width: 100%; height: 300px;">{{ PLOT.getDescription }}</textarea>
                 </td>
             </tr>
             <tr>

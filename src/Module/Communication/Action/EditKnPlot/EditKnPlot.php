@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditKnPlot;
 
+use request;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -18,6 +19,10 @@ final class EditKnPlot implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $plot = $this->rpgPlotRepository->find($this->editKnPlotRequest->getPlotId());
 
         if ($plot === null || $plot->getUserId() !== $context->getUser()->getId()) {
@@ -43,6 +48,6 @@ final class EditKnPlot implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
