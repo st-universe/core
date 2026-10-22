@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
@@ -16,6 +17,7 @@ use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\Station;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -461,12 +463,12 @@ class SpacecraftLoaderTest extends StuTestCase
 
         $this->spacecraftRepository->shouldReceive('getUserIdsForSpacecrafts')
             ->with([5])
-            ->once()
+            ->twice()
             ->andReturn([42]);
 
         $this->userRepository->shouldReceive('lockUsersForUpdate')
             ->with([42])
-            ->once();
+            ->twice();
 
         $this->spacecraftRepository->shouldReceive('find')
             ->with(5)
@@ -475,7 +477,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
         $this->spacecraft->shouldReceive('getUser->getId')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn(42);
 
         $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')
@@ -485,7 +487,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
-            ->twice()
+            ->times(3)
             ->andReturn($this->spacecraft);
 
         // first call populates cache
@@ -493,5 +495,77 @@ class SpacecraftLoaderTest extends StuTestCase
 
         // second call should use cache: repository/find/wrap called only once, wrapper->get() still returns spacecraft
         self::assertSame($this->spacecraft, $this->subject->getByIdAndUser(5, 42));
+    }
+
+    #[DataProvider('ownerBoundLoads')]
+    public function testCachedForeignTargetCannotBecomeOwnedSource(string $method, bool $station): void
+    {
+        $target = $this->cacheForeignTarget($station);
+        $this->crewAssignmentRepository->shouldReceive('hasCrewmanOfUser')
+            ->with($target, 42)->once()->andReturn(false);
+        $this->expectException(AccessViolationException::class);
+
+        match ($method) {
+            'entity' => $this->subject->getByIdAndUser(1, 42, false, false),
+            'wrapper' => $this->subject->getWrapperByIdAndUser(1, 42, false, false),
+            'targetUser' => $this->subject->getWrapperByIdAndUserAndTargetUser(1, 42, 7, false, false),
+            'interaction' => $this->subject->getWrappersBySourceAndUserAndTarget(1, 42, 5, false, false)
+        };
+    }
+
+    public static function ownerBoundLoads(): iterable
+    {
+        foreach (['entity', 'wrapper', 'targetUser', 'interaction'] as $method) {
+            yield $method . '-ship' => [$method, false];
+            yield $method . '-station' => [$method, true];
+        }
+    }
+
+    public function testCachedTargetRemainsAvailableToItsOwner(): void
+    {
+        $target = $this->cacheForeignTarget();
+
+        self::assertSame($target, $this->subject->getByIdAndUser(1, 999, false, false));
+    }
+
+    public function testCachedUplinkCannotBeReusedForOperationWithoutUplinkPermission(): void
+    {
+        $target = $this->cacheForeignTarget();
+        $this->crewAssignmentRepository->shouldReceive('hasCrewmanOfUser')
+            ->with($target, 42)->twice()->andReturn(true);
+        $target->shouldReceive('getSystemState')->with(SpacecraftSystemTypeEnum::UPLINK)->once()->andReturn(true);
+        $target->shouldReceive('getUser->isVacationRequestOldEnough')->once()->andReturn(false);
+
+        self::assertSame($target, $this->subject->getByIdAndUser(1, 42, true, false));
+        $this->expectException(UnallowedUplinkOperationException::class);
+        $this->subject->getByIdAndUser(1, 42, false, false);
+    }
+
+    public function testCachedSourceStillRequiresCurrentEntityLock(): void
+    {
+        $this->cacheForeignTarget();
+        $this->lockManager->shouldReceive('isLocked')->with(5, LockTypeEnum::SHIP_GROUP)->once()->andReturn(true);
+        $this->expectException(EntityLockedException::class);
+
+        $this->subject->getByIdAndUser(5, 42);
+    }
+
+    private function cacheForeignTarget(bool $station = false): Spacecraft
+    {
+        $target = $this->mock($station ? Station::class : Ship::class);
+        $targetWrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $this->spacecraftRepository->shouldReceive('find')->with(5)->once()->andReturn($this->spacecraft);
+        $this->spacecraftRepository->shouldReceive('find')->with(1)->once()->andReturn($target);
+        $this->spacecraft->shouldReceive('getUser->getId')->andReturn(42);
+        $target->shouldReceive('getUser->getId')->andReturn(999);
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')->with($this->spacecraft)->once()->andReturn($this->wrapper);
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')->with($target)->once()->andReturn($targetWrapper);
+        $this->wrapper->shouldReceive('get')->andReturn($this->spacecraft);
+        $targetWrapper->shouldReceive('get')->andReturn($target);
+
+        $wrappers = $this->subject->getWrappersBySourceAndUserAndTarget(5, 42, 1, false, false);
+        self::assertSame($targetWrapper, $wrappers->getTarget());
+
+        return $target;
     }
 }
