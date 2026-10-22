@@ -156,3 +156,14 @@ test("hover shows friendly live contacts and scanned foreign contacts without em
 	assert.match(html.join(""), /Enemy ship|Feinde/);
 	assert.match(html.join(""), /Scanstand/);
 });
+
+test("coordinate-free removal clears a previously known marker and its animation", () => {
+	const map = loadMap();
+	const state = createState();
+	state.contactAnimations = new Map([[1, { from: { x: 5, y: 5 } }]]);
+	map.addSensorSpacecraft(state, enemy());
+	map.handleRealtimeMessage(state, JSON.stringify({ type: "spacecraftRemoval", layerId: 2, spacecraft: { id: 1 } }));
+	assert.equal(state.sensorSpacecraftById.has(1), false);
+	assert.equal(state.sensorSpacecraftByField.has("5:5"), false);
+	assert.equal(state.contactAnimations.has(1), false);
+});
