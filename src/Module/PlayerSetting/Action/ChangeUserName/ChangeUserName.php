@@ -24,7 +24,7 @@ final class ChangeUserName implements ActionControllerInterface
             return;
         }
 
-        $text = $this->changeUserNameRequest->getName();
+        $text = CleanTextUtils::clearEmojis($this->changeUserNameRequest->getName());
 
         if (!CleanTextUtils::checkBBCode($text)) {
             $context->getInfo()->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
@@ -36,7 +36,7 @@ final class ChangeUserName implements ActionControllerInterface
             return;
         }
 
-        $value = CleanTextUtils::clearEmojis($text);
+        $value = $text;
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($value);
         if ($value !== $nameWithoutUnicode) {
             $context->getInfo()->addInformation(_('Der Name enthält ungültigen Unicode'));

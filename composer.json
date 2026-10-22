@@ -84,7 +84,8 @@
   "extra": {
     "patches": {
        "jbbcode/jbbcode": {
-          "Fix PHP 8.4 deprecated implicit nullable": "patches/jbbcode-parser-nullable.patch"
+          "Fix PHP 8.4 deprecated implicit nullable": "patches/jbbcode-parser-nullable.patch",
+          "Validate and escape BBCode options consistently": "patches/jbbcode-option-validation.patch"
        }
     }
   },
