@@ -34,7 +34,7 @@ final class TrackShip implements ActionControllerInterface
 
         $userId = $context->getUser()->getId();
 
-        $shipId = request::getIntFatal('id');
+        $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
         $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(

@@ -145,15 +145,6 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             $this->checkForGlobalEntityLock($spacecraftId);
         }
 
-        if (array_key_exists($spacecraftId, self::$cache)) {
-            $resultFromCache = new SourceAndTargetWrappers(self::$cache[$spacecraftId]);
-            if ($targetId !== null && array_key_exists($targetId, self::$cache)) {
-                $resultFromCache->setTarget(self::$cache[$targetId]);
-            }
-
-            return $resultFromCache;
-        }
-
         StuLogger::log(sprintf(
             'user %3d - Loading Spacecraft %6d (target: %6s, targetUser: %4s)',
             $userId,
@@ -181,22 +172,24 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             ), LogTypeEnum::USER_LOCK);
         }
 
-        $sourceSpacecraft = $this->spacecraftRepository->find($spacecraftId);
+        $cachedWrapper = self::$cache[$spacecraftId] ?? null;
+        $sourceSpacecraft = $cachedWrapper?->get() ?? $this->spacecraftRepository->find($spacecraftId);
         if ($sourceSpacecraft === null) {
             throw new SpacecraftDoesNotExistException('Raumfahrzeug existiert nicht!');
         }
 
         $this->checkViolations($sourceSpacecraft, $userId, $allowUplink);
 
-        $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($sourceSpacecraft);
+        $wrapper = $cachedWrapper ?? $this->spacecraftWrapperFactory->wrapSpacecraft($sourceSpacecraft);
 
         $result = new SourceAndTargetWrappers($wrapper);
         self::$cache[$spacecraftId] = $wrapper;
 
         if ($targetId !== null) {
-            $targetSpacecraft = $this->spacecraftRepository->find($targetId);
+            $cachedTargetWrapper = self::$cache[$targetId] ?? null;
+            $targetSpacecraft = $cachedTargetWrapper?->get() ?? $this->spacecraftRepository->find($targetId);
             if ($targetSpacecraft !== null) {
-                $targetWrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($targetSpacecraft);
+                $targetWrapper = $cachedTargetWrapper ?? $this->spacecraftWrapperFactory->wrapSpacecraft($targetSpacecraft);
                 $result->setTarget($targetWrapper);
                 self::$cache[$targetId] = $targetWrapper;
             }
