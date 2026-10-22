@@ -62,7 +62,18 @@ readStream().catch(function (error) {
 });
 
 async function handleConnection(ws, request) {
+	let client;
+	let disconnected = false;
+	const cleanup = function () {
+		disconnected = true;
+		if (client) {
+			clients.delete(client);
+			clearTimeout(client.expiryTimer);
+		}
+	};
+	ws.on("close", cleanup);
 	ws.on("error", function () {
+		cleanup();
 		ws.terminate();
 	});
 	const url = new URL(request.url || WS_PATH, `http://${request.headers.host || "localhost"}`);
@@ -71,7 +82,11 @@ async function handleConnection(ws, request) {
 	if (auth.purpose !== "starmap") {
 		throw new Error("invalid token purpose");
 	}
-	const client = {
+	const coverage = await loadCoverage(auth.userId, auth.layerId);
+	if (disconnected || ws.readyState !== 1) {
+		return;
+	}
+	client = {
 		ws,
 		connectionId: crypto.randomBytes(16).toString("hex"),
 		queue: Promise.resolve(),
@@ -86,7 +101,7 @@ async function handleConnection(ws, request) {
 		enemyAllianceIds: auth.enemyAllianceIds,
 		sharedUserIds: auth.sharedUserIds,
 		sharedAllianceIds: auth.sharedAllianceIds,
-		coverage: await loadCoverage(auth.userId, auth.layerId),
+		coverage,
 		coverageLoadedAt: Date.now()
 	};
 	client.tracking = new StarmapTracking(client.coverage);
@@ -134,16 +149,6 @@ async function handleConnection(ws, request) {
 				sendTracking(client, true);
 			}
 		});
-	});
-
-	ws.on("close", function () {
-		clients.delete(client);
-		clearTimeout(client.expiryTimer);
-	});
-
-	ws.on("error", function () {
-		clients.delete(client);
-		clearTimeout(client.expiryTimer);
 	});
 }
 
@@ -464,6 +469,8 @@ function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
 
 function isClientAuthorized(client) {
 	if (client.ws.readyState !== 1) {
+		clients.delete(client);
+		clearTimeout(client.expiryTimer);
 		return false;
 	}
 	if (client.exp <= Math.floor(Date.now() / 1000)) {

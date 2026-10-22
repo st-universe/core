@@ -32,6 +32,7 @@ export function loadServer({ getCoverage = async () => null } = {}) {
 	vm.runInContext(source.slice(source.indexOf("async function handleConnection(")), context);
 	return {
 		clients,
+		timers,
 		now: () => now,
 		advance(milliseconds, fireTimers = true) {
 			now += milliseconds;
