@@ -15,7 +15,7 @@ export function signToken(claims) {
 	return payload + "." + crypto.createHmac("sha256", secret).update(payload).digest("base64url");
 }
 
-export function loadServer({ getCoverage = async () => null } = {}) {
+export function loadServer({ getCoverage = async () => null, getGeneration = async () => null } = {}) {
 	let now = Date.now();
 	const timers = new Map();
 	let timerId = 0;
@@ -23,7 +23,7 @@ export function loadServer({ getCoverage = async () => null } = {}) {
 	const context = vm.createContext({
 		crypto, URL, console: { error() {} }, SECRET: secret, WS_PATH: "/realtime/starmap",
 		COVERAGE_RELOAD_MS: 60000, COVERAGE_PREFIX: "test:", SCAN_NONCE_PREFIX: "nonce:", clients,
-		redis: { get: getCoverage, set: async () => "OK" },
+		redis: { get: key => key.includes("generation:") ? getGeneration(key) : getCoverage(key), set: async () => "OK" },
 		Date: class extends Date { static now() { return now; } },
 		setTimeout: (callback, delay) => { timers.set(++timerId, { callback, at: now + delay }); return timerId; },
 		clearTimeout: id => timers.delete(id),

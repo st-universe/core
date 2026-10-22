@@ -192,6 +192,8 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->once()
             ->andReturn($this->ship);
 
+        $this->spacecraftMovementPublisher->shouldReceive('publishCoverageChanged')->with($this->ship)->once();
+
         $this->system->handleDestruction($this->wrapper);
     }
 }

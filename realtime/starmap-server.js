@@ -383,7 +383,8 @@ function dispatchRemovalPayload(payload) {
 }
 
 async function refreshCoverageIfNeeded(client) {
-	if (Date.now() - client.coverageLoadedAt < COVERAGE_RELOAD_MS) {
+	const generation = Number(await redis.get(`${COVERAGE_PREFIX}generation:${client.layerId}`)) || 0;
+	if (client.coverage.generation === generation && Date.now() - client.coverageLoadedAt < COVERAGE_RELOAD_MS) {
 		return;
 	}
 
@@ -403,12 +404,14 @@ async function refreshCoverageIfNeeded(client) {
 
 async function loadCoverage(userId, layerId) {
 	const raw = await redis.get(`${COVERAGE_PREFIX}${userId}:${layerId}`);
+	const generation = Number(await redis.get(`${COVERAGE_PREFIX}generation:${layerId}`)) || 0;
 	if (!raw) {
 		return createEmptyCoverage();
 	}
 
 	try {
 		const coverage = JSON.parse(raw);
+		if (Number(coverage.generation || 0) !== generation) return createEmptyCoverage();
 		if (Array.isArray(coverage)) {
 			return {
 				runs: [],
@@ -420,6 +423,7 @@ async function loadCoverage(userId, layerId) {
 		}
 
 		return {
+			generation,
 			snapshotVersion: coverage.snapshotVersion,
 			sources: Array.isArray(coverage.sources) ? coverage.sources : [],
 			contacts: Array.isArray(coverage.contacts) ? coverage.contacts : [],

@@ -68,9 +68,16 @@ final class LongRangeScannerShipSystem extends AbstractSpacecraftSystemType impl
     }
 
     #[\Override]
+    public function handleDamage(SpacecraftWrapperInterface $wrapper): void
+    {
+        $this->spacecraftMovementPublisher->publishCoverageChanged($wrapper->get());
+    }
+
+    #[\Override]
     public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();
+        $this->spacecraftMovementPublisher->publishCoverageChanged($spacecraft);
         if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)) {
             $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::ASTRO_LABORATORY)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
 

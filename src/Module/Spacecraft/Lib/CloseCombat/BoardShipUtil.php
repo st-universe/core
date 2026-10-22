@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Spacecraft\Lib\CloseCombat;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -19,7 +21,8 @@ class BoardShipUtil implements BoardShipUtilInterface
         private CloseCombatUtilInterface $closeCombatUtil,
         private SpacecraftShutdownInterface $spacecraftShutdown,
         private MessageFactoryInterface $messageFactory,
-        private StuRandom $stuRandom
+        private StuRandom $stuRandom,
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     #[\Override]
@@ -79,6 +82,9 @@ class BoardShipUtil implements BoardShipUtilInterface
         $killedCrewAssignment->clearAssignment();
         $this->crewAssignmentRepository->delete($killedCrewAssignment);
         $this->crewRepository->delete($crew);
+        if ($ship->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)) {
+            $this->spacecraftMovementPublisher->publishCoverageChanged($ship);
+        }
 
         if ($ship->getCrewAssignments()->isEmpty()) {
             $this->spacecraftShutdown->shutdown($wrapper, true);

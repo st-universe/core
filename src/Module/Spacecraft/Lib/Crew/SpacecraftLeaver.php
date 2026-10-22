@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Crew;
 
 use RuntimeException;
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Lib\Auxiliary\SpacecraftShutdownInterface;
@@ -26,7 +28,8 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
         private CrewRepositoryInterface $crewRepository,
         private LaunchEscapePodsInterface $launchEscapePods,
         private SpacecraftShutdownInterface $spacecraftShutdown,
-        private PrivateMessageSenderInterface $privateMessageSender
+        private PrivateMessageSenderInterface $privateMessageSender,
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     #[\Override]
@@ -84,12 +87,20 @@ final class SpacecraftLeaver implements SpacecraftLeaverInterface
             $this->shipCrewRepository->delete($crewAssignment);
             $this->crewRepository->delete($crew);
 
+            if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)) {
+                $this->spacecraftMovementPublisher->publishCoverageChanged($spacecraft);
+            }
+
             return _('Der Crewman wurde exekutiert!');
         }
         $spacecraft->getCrewAssignments()->removeElement($crewAssignment);
         $crewAssignment->setSpacecraft($pods);
         $crewAssignment->setSlot(null);
         $this->shipCrewRepository->save($crewAssignment);
+
+        if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)) {
+            $this->spacecraftMovementPublisher->publishCoverageChanged($spacecraft);
+        }
 
         return _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
     }

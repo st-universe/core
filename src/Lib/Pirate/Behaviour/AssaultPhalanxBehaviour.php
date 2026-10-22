@@ -4,7 +4,6 @@ namespace Stu\Lib\Pirate\Behaviour;
 
 use RuntimeException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
-use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Map\DistanceCalculationInterface;
@@ -202,7 +201,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         // Deactivate uplink if no foreigners left
         if (!$hasForeigners && $spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)) {
-            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::UPLINK, true);
             $message = sprintf('Der Uplink der %s wurde deaktiviert, da sich keine fremden Crewmitglieder mehr an Bord befinden', $spacecraft->getName());
             $this->logger->log($message);
             $messages[] = $message;
@@ -210,7 +209,7 @@ class AssaultPhalanxBehaviour implements PirateBehaviourInterface
 
         // Deactivate uplink if not enough own crew
         if ($hasForeigners && $spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK) && $ownCrewCount < $minOwnCrew) {
-            $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+            $this->spacecraftSystemManager->deactivate($wrapper, SpacecraftSystemTypeEnum::UPLINK, true);
             $message = sprintf(
                 'Der Uplink der %s wurde deaktiviert, da nicht mehr genügend eigene Crewmitglieder an Bord sind (%d/%d)',
                 $spacecraft->getName(),

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -12,6 +14,28 @@ use Stu\Orm\Entity\Spacecraft;
 final class UplinkShipSystem extends AbstractSpacecraftSystemType implements SpacecraftSystemTypeInterface
 {
     public const int MAX_FOREIGNERS = 3;
+
+    public function __construct(private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher) {}
+
+    #[\Override]
+    public function activate(SpacecraftWrapperInterface $wrapper, SpacecraftSystemManagerInterface $manager): void
+    {
+        parent::activate($wrapper, $manager);
+        $this->spacecraftMovementPublisher->publishCoverageChanged($wrapper->get());
+    }
+
+    #[\Override]
+    public function deactivate(SpacecraftWrapperInterface $wrapper): void
+    {
+        parent::deactivate($wrapper);
+        $this->spacecraftMovementPublisher->publishCoverageChanged($wrapper->get());
+    }
+
+    #[\Override]
+    public function handleDestruction(SpacecraftWrapperInterface $wrapper): void
+    {
+        $this->spacecraftMovementPublisher->publishCoverageChanged($wrapper->get());
+    }
 
     #[\Override]
     public function getSystemType(): SpacecraftSystemTypeEnum

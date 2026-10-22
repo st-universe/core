@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\System\Type;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -17,7 +18,8 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
 
     public function __construct(
         private CrewRepositoryInterface $crewRepository,
-        private CrewAssignmentRepositoryInterface $crewAssignmentRepository
+        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     #[\Override]
@@ -41,6 +43,10 @@ final class TroopQuartersShipSystem extends AbstractSpacecraftSystemType impleme
             $crewAssignment->clearAssignment();
             $this->crewAssignmentRepository->delete($crewAssignment);
             $this->crewRepository->delete($crew);
+        }
+
+        if ($crewToDelete !== [] && $wrapper->get()->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)) {
+            $this->spacecraftMovementPublisher->publishCoverageChanged($wrapper->get());
         }
     }
 
