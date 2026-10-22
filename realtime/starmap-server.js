@@ -77,6 +77,7 @@ async function handleConnection(ws, request) {
 		connectionId: crypto.randomBytes(16).toString("hex"),
 		queue: Promise.resolve(),
 		userId: auth.userId,
+		exp: auth.exp,
 		layerId: auth.layerId,
 		allianceId: auth.allianceId,
 		canSeeAllianceShips: auth.canSeeAllianceShips,
@@ -92,7 +93,8 @@ async function handleConnection(ws, request) {
 	client.tracking = new StarmapTracking(client.coverage);
 
 	clients.add(client);
-	sendJson(ws, {
+	scheduleAuthorizationExpiry(client);
+	sendJson(client, {
 		type: "ready",
 		generatedAt: Math.floor(Date.now() / 1000),
 		layerId: client.layerId,
@@ -115,10 +117,11 @@ async function handleConnection(ws, request) {
 				if (updated.purpose !== "starmap" || updated.userId !== client.userId || updated.layerId !== client.layerId) {
 					throw new Error("invalid refresh authorization");
 				}
-				for (const key of ["allianceId", "canSeeAllianceShips", "friendlyUserIds", "enemyUserIds", "friendlyAllianceIds",
+				for (const key of ["exp", "allianceId", "canSeeAllianceShips", "friendlyUserIds", "enemyUserIds", "friendlyAllianceIds",
 					"enemyAllianceIds", "sharedUserIds", "sharedAllianceIds"]) {
 					client[key] = updated[key];
 				}
+				scheduleAuthorizationExpiry(client);
 				for (const [id, enemy] of client.tracking.enemies) {
 					if (!getSpacecraftRelationship(client, enemy).isEnemy) {
 						client.tracking.enemies.delete(id);
@@ -136,10 +139,12 @@ async function handleConnection(ws, request) {
 
 	ws.on("close", function () {
 		clients.delete(client);
+		clearTimeout(client.expiryTimer);
 	});
 
 	ws.on("error", function () {
 		clients.delete(client);
+		clearTimeout(client.expiryTimer);
 	});
 }
 
@@ -201,7 +206,7 @@ function dispatchPayload(rawPayload) {
 	}
 
 	for (const client of clients) {
-		if (client.layerId !== Number(payload.layerId) || client.ws.readyState !== 1) {
+		if (client.layerId !== Number(payload.layerId) || !isClientAuthorized(client)) {
 			continue;
 		}
 
@@ -222,7 +227,7 @@ function dispatchPayload(rawPayload) {
 			validateTrackedRelationship(client, payload.spacecraft);
 			client.tracking.update(spacecraft, toVisible || staticVisible, payload.from);
 
-			sendJson(client.ws, {
+			sendJson(client, {
 				type: "spacecraftMovement",
 				generatedAt: payload.generatedAt,
 				layerId: payload.layerId,
@@ -244,12 +249,12 @@ function dispatchPayload(rawPayload) {
 
 function dispatchCoverageChangedPayload(payload) {
 	for (const client of clients) {
-		if (client.layerId !== Number(payload.layerId) || client.ws.readyState !== 1) {
+		if (client.layerId !== Number(payload.layerId) || !isClientAuthorized(client)) {
 			continue;
 		}
 
 		client.coverageLoadedAt = 0;
-		sendJson(client.ws, {
+		sendJson(client, {
 			type: "coverageChanged",
 			generatedAt: payload.generatedAt,
 			layerId: payload.layerId
@@ -263,7 +268,7 @@ function dispatchStatePayload(payload) {
 	}
 
 	for (const client of clients) {
-		if (client.layerId !== Number(payload.layerId) || client.ws.readyState !== 1) {
+		if (client.layerId !== Number(payload.layerId) || !isClientAuthorized(client)) {
 			continue;
 		}
 
@@ -282,7 +287,7 @@ function dispatchStatePayload(payload) {
 			validateTrackedRelationship(client, payload.spacecraft);
 			client.tracking.update(spacecraft, visible || staticVisible);
 
-			sendJson(client.ws, {
+			sendJson(client, {
 				type: "spacecraftState",
 				generatedAt: payload.generatedAt,
 				layerId: payload.layerId,
@@ -302,7 +307,7 @@ function dispatchRemovalPayload(payload) {
 	}
 
 	for (const client of clients) {
-		if (client.layerId !== Number(payload.layerId) || client.ws.readyState !== 1) {
+		if (client.layerId !== Number(payload.layerId) || !isClientAuthorized(client)) {
 			continue;
 		}
 
@@ -318,7 +323,7 @@ function dispatchRemovalPayload(payload) {
 
 			client.tracking.remove(payload.spacecraft.id);
 
-			sendJson(client.ws, {
+			sendJson(client, {
 				type: "spacecraftRemoval",
 				generatedAt: payload.generatedAt,
 				layerId: payload.layerId,
@@ -448,9 +453,29 @@ function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
 		: isPointCovered(client.coverage, point);
 }
 
-function sendJson(ws, payload) {
-	if (ws.readyState === 1) {
-		ws.send(JSON.stringify(payload));
+function isClientAuthorized(client) {
+	if (client.ws.readyState !== 1) {
+		return false;
+	}
+	if (client.exp <= Math.floor(Date.now() / 1000)) {
+		clients.delete(client);
+		clearTimeout(client.expiryTimer);
+		client.ws.close(1008, "Realtime authorization expired");
+		return false;
+	}
+	return true;
+}
+
+function scheduleAuthorizationExpiry(client) {
+	clearTimeout(client.expiryTimer);
+	client.expiryTimer = setTimeout(function () {
+		isClientAuthorized(client);
+	}, Math.max(0, client.exp * 1000 - Date.now()));
+}
+
+function sendJson(client, payload) {
+	if (isClientAuthorized(client)) {
+		client.ws.send(JSON.stringify(payload));
 	}
 }
 
@@ -459,7 +484,7 @@ function sendTracking(client, force = false) {
 	const version = JSON.stringify(spacecraftIds);
 	if (force || client.trackingVersion !== version) {
 		client.trackingVersion = version;
-		sendJson(client.ws, { type: "tracking", spacecraftIds });
+		sendJson(client, { type: "tracking", spacecraftIds });
 	}
 }
 
@@ -473,7 +498,7 @@ function validateTrackedRelationship(client, spacecraft) {
 
 function enqueueClient(client, task) {
 	client.queue = client.queue.then(async function () {
-		if (client.ws.readyState === 1) {
+		if (isClientAuthorized(client)) {
 			await task();
 		}
 	}).catch(function (error) {
