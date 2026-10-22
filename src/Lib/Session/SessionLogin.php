@@ -7,6 +7,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\LoginException;
+use Stu\Lib\Request\RequestRateLimiter;
 use Stu\Lib\UserLockedException;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuHashInterface;
@@ -29,7 +30,8 @@ final class SessionLogin implements SessionLoginInterface
         private readonly SessionDestructionInterface $sessionDestruction,
         private readonly StuConfigInterface $stuConfig,
         private readonly StuHashInterface $stuHash,
-        private readonly AdminImpersonationInterface $impersonation
+        private readonly AdminImpersonationInterface $impersonation,
+        private readonly RequestRateLimiter $rateLimiter
     ) {}
 
     /**
@@ -55,9 +57,13 @@ final class SessionLogin implements SessionLoginInterface
     {
         $this->destroyLoginCookies();
 
+        $login = mb_strtolower(trim($login));
+        $this->rateLimiter->consume('login-source', $this->rateLimiter->source(), 30, 60);
+        $this->rateLimiter->consume('login-name', $login, 5, 60);
         $user = $this->loadUser($login);
+        $this->rateLimiter->consume('login-account', (string) $user->getId(), 5, 60);
 
-        $this->checkPassword($user, $password);
+        $this->rateLimiter->concurrent('password-verification', 4, fn () => $this->checkPassword($user, $password));
         $this->checkUser($user);
         $this->impersonation->stop();
         $this->updateUser($user);
@@ -69,6 +75,9 @@ final class SessionLogin implements SessionLoginInterface
             $cookieString = $this->buildCookieString($user);
             setcookie('sstr', $cookieString, time() + TimeConstants::TWO_DAYS_IN_SECONDS, "", "", true, true);
         }
+
+        $this->rateLimiter->reset('login-name', $login);
+        $this->rateLimiter->reset('login-account', (string) $user->getId());
 
         // register login
         $this->addIpTableEntry($user);
