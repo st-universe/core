@@ -51,6 +51,10 @@ class ParameterSanitizerTest extends StuTestCase
             [['pass2' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
             [['password' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
             [['password2' => 'foo', 'meh' => 'bar'], ['meh' => 'bar']],
+            [['TOKEN' => 'foo', 'token' => 'bar', 'ToKeN' => 'secret', 'id' => 42], ['id' => 42]],
+            [['EMAIL' => 'foo', 'LOGINNAME' => 'bar', 'OldPass' => 'secret'], []],
+            [['nested' => ['reset_token' => 'foo', 'items' => [['Authorization' => 'bearer', 'amount' => 3]]]], ['nested' => ['items' => [['amount' => 3]]]]],
+            [['access-token' => 'foo', 'api_key' => 'bar', 'session_id' => 'secret', 'email_code' => '1234'], []],
         ];
     }
 }
