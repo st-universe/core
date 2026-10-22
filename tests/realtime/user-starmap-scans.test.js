@@ -167,3 +167,22 @@ test("coordinate-free removal clears a previously known marker and its animation
 	assert.equal(state.sensorSpacecraftByField.has("5:5"), false);
 	assert.equal(state.contactAnimations.has(1), false);
 });
+
+test("connection snapshots replace old anonymous handles and leave scan history fixed", () => {
+	const map = loadMap();
+	const state = createState();
+	state.contactAnimations = new Map();
+	state.contactAnimationFrame = 0;
+	state.realtimeStaticSpacecraftIds = new Set();
+	state.status = {};
+	map.addSensorSpacecraft(state, { ...enemy(-1), isEnemy: false });
+	state.scanSnapshots.set("5:5", { spacecrafts: [enemy(-8)] });
+	map.handleRealtimeMessage(state, JSON.stringify({ type: "ready", connectionId: "new", spacecrafts: [{ ...enemy(-2), isSensorContact: true }] }));
+	assert.equal(state.connectionId, "new");
+	assert.equal(state.sensorSpacecraftById.has(-1), false);
+	assert.equal(state.sensorSpacecraftById.has(-2), true);
+	map.handleRealtimeMessage(state, JSON.stringify({ type: "contactsSnapshot", spacecrafts: [{ ...enemy(-3), isSensorContact: true }] }));
+	assert.equal(state.sensorSpacecraftById.has(-2), false);
+	assert.equal(state.sensorSpacecraftById.has(-3), true);
+	assert.equal(state.scanSnapshots.get("5:5").spacecrafts[0].id, -8);
+});

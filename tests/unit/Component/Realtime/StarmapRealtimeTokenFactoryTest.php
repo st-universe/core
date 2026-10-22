@@ -53,6 +53,24 @@ final class StarmapRealtimeTokenFactoryTest extends StuTestCase
         self::assertGreaterThan(time(), $claims['exp']);
     }
 
+    public function testScanSnapshotIsEncryptedAndAuthenticated(): void
+    {
+        $secret = str_repeat('1234567890abcdef', 4);
+        $config = new Config([]);
+        $config->set('game.map.encryptionKey', $secret);
+        $factory = new StarmapRealtimeTokenFactory($config);
+        $scan = '{"spacecrafts":[{"id":123456789,"name":"Testschiff"}]}';
+        $first = base64_decode($factory->encryptScan($scan), true);
+        $second = base64_decode($factory->encryptScan($scan), true);
+        self::assertIsString($first);
+        self::assertIsString($second);
+        self::assertNotSame($first, $second);
+        self::assertStringNotContainsString('123456789', $first);
+        self::assertSame($scan, openssl_decrypt(substr($first, 28), 'aes-256-gcm', hash('sha256', $secret, true), OPENSSL_RAW_DATA, substr($first, 0, 12), substr($first, 12, 16)));
+        $first[28] = chr(ord($first[28]) ^ 1);
+        self::assertFalse(openssl_decrypt(substr($first, 28), 'aes-256-gcm', hash('sha256', $secret, true), OPENSSL_RAW_DATA, substr($first, 0, 12), substr($first, 12, 16)));
+    }
+
     public function testEnvironmentSecretHasPrecedence(): void
     {
         $secret = str_repeat('fedcba0987654321', 4);

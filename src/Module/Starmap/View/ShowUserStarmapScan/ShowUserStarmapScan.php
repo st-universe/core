@@ -37,9 +37,13 @@ final class ShowUserStarmapScan implements ViewControllerInterface
                 [
                     'purpose' => 'starmapScan',
                     'connectionId' => request::postString('connectionid'),
-                    'scan' => $result
+                    'encryptedScan' => $this->tokenFactory->encryptScan($result)
                 ]
             );
+            foreach ($scan['spacecrafts'] as &$spacecraft) {
+                $spacecraft['id'] = -random_int(1, 2 ** 48 - 1);
+            }
+            unset($spacecraft);
             $result = json_encode($scan, JSON_THROW_ON_ERROR | JSON_INVALID_UTF8_SUBSTITUTE);
         }
 

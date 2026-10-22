@@ -22,10 +22,17 @@ function tracking(sources = [source(42, 4, 6)], contacts = [contact()]) {
 	return new StarmapTracking({ sources, contacts });
 }
 
+function encryptedScan(scan, secret) {
+	const iv = crypto.randomBytes(12);
+	const cipher = crypto.createCipheriv("aes-256-gcm", crypto.createHash("sha256").update(secret).digest(), iv);
+	const encrypted = Buffer.concat([cipher.update(JSON.stringify(scan)), cipher.final()]);
+	return Buffer.concat([iv, cipher.getAuthTag(), encrypted]).toString("base64");
+}
+
 function sign(claims = {}, secret = "secret") {
 	const body = Buffer.from(JSON.stringify({
 		userId: 1, layerId: 2, exp: Math.floor(Date.now() / 1000) + 60, nonce: "0123456789abcdef",
-		purpose: "starmapScan", connectionId: "connection", scan: JSON.stringify(scan()), ...claims
+		purpose: "starmapScan", connectionId: "connection", encryptedScan: encryptedScan(scan(), secret), ...claims
 	})).toString("base64url");
 	return body + "." + crypto.createHmac("sha256", secret).update(body).digest("base64url");
 }

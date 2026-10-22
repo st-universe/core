@@ -82,7 +82,8 @@ function sanitizeSignature(spacecraft, relationship) {
 		isOwn: relationship.isOwn,
 		isFriendly: false,
 		isEnemy: false,
-		hasDetails: false
+		hasDetails: false,
+		isSensorContact: true
 	};
 }
 

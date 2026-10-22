@@ -22,7 +22,7 @@ export function verifyToken(token, secret) {
 		purpose: payload.purpose || "starmap",
 		nonce: payload.nonce,
 		connectionId: payload.connectionId,
-		scan: payload.scan,
+		encryptedScan: payload.encryptedScan,
 		exp: Number(payload.exp),
 		userId: Number(payload.userId),
 		layerId: Number(payload.layerId),

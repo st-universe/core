@@ -828,8 +828,22 @@
 			return;
 		}
 
+		if (message.type === "contactsSnapshot") {
+			state.contactAnimations.clear();
+			applySensorSpacecrafts(state, message.spacecrafts);
+			applyRealtimeStaticSpacecrafts(state, message.spacecrafts);
+			scheduleDraw(state);
+			return;
+		}
+
 		if (message.type === "ready") {
 			state.connectionId = message.connectionId || "";
+			if (Array.isArray(message.spacecrafts)) {
+				state.contactAnimations.clear();
+				applySensorSpacecrafts(state, message.spacecrafts);
+				applyRealtimeStaticSpacecrafts(state, message.spacecrafts);
+				scheduleDraw(state);
+			}
 			setStatus(
 				state,
 				"Livekontakte verbunden (" +

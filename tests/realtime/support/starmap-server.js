@@ -3,6 +3,7 @@ import fs from "node:fs";
 import vm from "node:vm";
 import { EventEmitter } from "node:events";
 import { verifyToken } from "../../../realtime/starmap-token.js";
+import { StarmapContacts } from "../../../realtime/starmap-contacts.js";
 import { StarmapTracking, acceptScanToken } from "../../../realtime/starmap-tracking.js";
 import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship } from "../../../realtime/starmap-visibility.js";
 
@@ -26,7 +27,7 @@ export function loadServer({ getCoverage = async () => null } = {}) {
 		Date: class extends Date { static now() { return now; } },
 		setTimeout: (callback, delay) => { timers.set(++timerId, { callback, at: now + delay }); return timerId; },
 		clearTimeout: id => timers.delete(id),
-		verifyToken, StarmapTracking, acceptScanToken,
+		verifyToken, StarmapTracking, acceptScanToken, StarmapContacts,
 		isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship
 	});
 	vm.runInContext(source.slice(source.indexOf("async function handleConnection(")), context);

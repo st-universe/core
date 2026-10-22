@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { verifyToken } from "./starmap-token.js";
 
 export class StarmapTracking {
@@ -173,7 +174,11 @@ export async function acceptScanToken(client, token, secret, consumeNonce) {
 		auth.connectionId !== client.connectionId || typeof auth.nonce !== "string" || !/^[a-f0-9]{16}$/.test(auth.nonce)) {
 		throw new Error("invalid scan authorization");
 	}
-	const scan = JSON.parse(auth.scan);
+	if (typeof auth.encryptedScan !== "string") throw new Error("missing encrypted scan");
+	const encrypted = Buffer.from(auth.encryptedScan, "base64");
+	const decipher = crypto.createDecipheriv("aes-256-gcm", crypto.createHash("sha256").update(secret).digest(), encrypted.subarray(0, 12));
+	decipher.setAuthTag(encrypted.subarray(12, 28));
+	const scan = JSON.parse(Buffer.concat([decipher.update(encrypted.subarray(28)), decipher.final()]).toString("utf8"));
 	if (scan.success !== true || Number(scan.layerId) !== client.layerId || !Array.isArray(scan.spacecrafts)) {
 		throw new Error("invalid scan snapshot");
 	}

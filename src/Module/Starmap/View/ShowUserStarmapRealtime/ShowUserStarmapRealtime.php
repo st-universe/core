@@ -133,7 +133,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                 'isOwn' => $spacecraft['isOwn'],
                 'isFriendly' => $spacecraft['isFriendly'],
                 'isCloakedSignature' => $spacecraft['isCloakedSignature'] ?? false
-            ], $spacecrafts), self::JSON_FLAGS)
+            ], $spacecrafts), self::JSON_FLAGS),
+            json_encode($spacecrafts, self::JSON_FLAGS)
         );
 
         header('Content-Type: application/json; charset=utf-8');
@@ -156,7 +157,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'sensorCoverageRuns' => $coverage['runs'],
             'sensorCoverageFieldCount' => $coverage['fieldCount'],
             'sensorTachyonFieldCount' => $coverage['tachyonFieldCount'],
-            'spacecrafts' => $spacecrafts
+            'spacecrafts' => array_map(static fn (array $spacecraft): array => $spacecraft['isOwn'] || $spacecraft['isFriendly']
+                ? $spacecraft : array_replace($spacecraft, ['id' => -random_int(1, 2 ** 48 - 1)]), $spacecrafts)
         ], self::JSON_FLAGS);
 
         exit();
@@ -185,7 +187,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      *     tachyonKeys: array<string, true>
      * } $coverage
      */
-    private function cacheCoverage(int $userId, int $layerId, array $coverage, string $sources, string $contacts): void
+    private function cacheCoverage(int $userId, int $layerId, array $coverage, string $sources, string $contacts, string $spacecrafts): void
     {
         try {
             $redis = $this->redisFactory->create();
@@ -204,7 +206,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                     'tachyonFieldCount' => $coverage['tachyonFieldCount'],
                     'snapshotVersion' => bin2hex(random_bytes(8)),
                     'sources' => json_decode($sources, true, 512, JSON_THROW_ON_ERROR),
-                    'contacts' => json_decode($contacts, true, 512, JSON_THROW_ON_ERROR)
+                    'contacts' => json_decode($contacts, true, 512, JSON_THROW_ON_ERROR),
+                    'spacecrafts' => json_decode($spacecrafts, true, 512, JSON_THROW_ON_ERROR)
                 ], self::JSON_FLAGS)
             );
         } catch (Throwable) {

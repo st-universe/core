@@ -10,6 +10,7 @@ import { starmapChannels } from "./starmap-channels.js";
 import { verifyToken } from "./starmap-token.js";
 import { realtimeSecret } from "./starmap-secret.js";
 import { StarmapTracking, acceptScanToken } from "./starmap-tracking.js";
+import { StarmapContacts } from "./starmap-contacts.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -105,6 +106,7 @@ async function handleConnection(ws, request) {
 		coverageLoadedAt: Date.now()
 	};
 	client.tracking = new StarmapTracking(client.coverage);
+	client.contacts = new StarmapContacts();
 
 	clients.add(client);
 	scheduleAuthorizationExpiry(client);
@@ -113,6 +115,7 @@ async function handleConnection(ws, request) {
 		generatedAt: Math.floor(Date.now() / 1000),
 		layerId: client.layerId,
 		connectionId: client.connectionId,
+		spacecrafts: (client.coverage.spacecrafts || []).map(spacecraft => client.contacts.serialize(spacecraft)),
 		coverageCount: client.coverage.sourceCount,
 		coverageFieldCount: client.coverage.fieldCount,
 		tachyonFieldCount: client.coverage.tachyonFieldCount
@@ -244,7 +247,7 @@ function dispatchPayload(rawPayload) {
 				toCovered,
 				visible: toVisible,
 				staticVisible,
-				spacecraft
+				spacecraft: serializeContact(client, spacecraft)
 			});
 			sendTracking(client);
 		});
@@ -288,7 +291,7 @@ function dispatchStatePayload(payload) {
 						type: "spacecraftRemoval",
 						generatedAt: payload.generatedAt,
 						layerId: payload.layerId,
-						spacecraft: { id }
+						spacecraft: { id: client.contacts.forget(id) }
 					});
 					sendTracking(client);
 				}
@@ -308,7 +311,7 @@ function dispatchStatePayload(payload) {
 				position: payload.position,
 				visible,
 				staticVisible,
-				spacecraft
+				spacecraft: serializeContact(client, spacecraft)
 			});
 			sendTracking(client);
 		});
@@ -343,7 +346,7 @@ function dispatchRemovalPayload(payload) {
 				layerId: payload.layerId,
 				position: payload.position,
 				staticVisible: isSpacecraftStaticallyVisible(client, payload.spacecraft),
-				spacecraft
+				spacecraft: serializeContact(client, spacecraft)
 			});
 			sendTracking(client);
 		});
@@ -358,6 +361,12 @@ async function refreshCoverageIfNeeded(client) {
 	const coverage = await loadCoverage(client.userId, client.layerId);
 	if (coverage.snapshotVersion !== client.coverage.snapshotVersion) {
 		client.tracking.refresh(coverage);
+		const visible = new Set((coverage.spacecrafts || []).map(spacecraft => Number(spacecraft.id)));
+		for (const id of client.contacts.handles.keys()) {
+			if (!visible.has(id)) client.contacts.forget(id);
+		}
+		for (const spacecraft of coverage.spacecrafts || []) client.contacts.serialize(spacecraft);
+		sendJson(client, { type: "contactsSnapshot", spacecrafts: client.contacts.snapshot() });
 	}
 	client.coverage = coverage;
 	client.coverageLoadedAt = Date.now();
@@ -385,6 +394,7 @@ async function loadCoverage(userId, layerId) {
 			snapshotVersion: coverage.snapshotVersion,
 			sources: Array.isArray(coverage.sources) ? coverage.sources : [],
 			contacts: Array.isArray(coverage.contacts) ? coverage.contacts : [],
+			spacecrafts: Array.isArray(coverage.spacecrafts) ? coverage.spacecrafts : [],
 			runs: normalizeRuns(coverage.runs),
 			tachyonRuns: normalizeRuns(coverage.tachyonRuns),
 			sourceCount: Number(coverage.sourceCount) || 0,
@@ -496,12 +506,26 @@ function sendJson(client, payload) {
 }
 
 function sendTracking(client, force = false) {
-	const spacecraftIds = client.tracking.identifiedIds();
+	const identified = client.tracking.identifiedIds();
+	if (client.contacts.resetRecognition(identified) || client.contacts.changed) {
+		client.contacts.changed = false;
+		sendJson(client, { type: "contactsSnapshot", spacecrafts: client.contacts.snapshot() });
+	}
+	const spacecraftIds = identified.map(id => client.contacts.handles.get(id)).filter(Number.isFinite);
 	const version = JSON.stringify(spacecraftIds);
 	if (force || client.trackingVersion !== version) {
 		client.trackingVersion = version;
 		sendJson(client, { type: "tracking", spacecraftIds });
 	}
+}
+
+function serializeContact(client, spacecraft) {
+	if (spacecraft.x == null && spacecraft.userId == null) {
+		return { id: client.contacts.forget(spacecraft.id) };
+	}
+	client.contacts.serialize(spacecraft);
+	sendTracking(client);
+	return client.contacts.serialize(spacecraft);
 }
 
 function validateTrackedRelationship(client, spacecraft) {
