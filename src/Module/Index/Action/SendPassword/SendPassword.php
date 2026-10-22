@@ -6,10 +6,10 @@ namespace Stu\Module\Index\Action\SendPassword;
 
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
-use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -21,7 +21,6 @@ final class SendPassword implements ActionControllerInterface
         private SendPasswordRequestInterface $sendPasswordRequest,
         private UserRepositoryInterface $userRepository,
         private MailFactoryInterface $mailFactory,
-        private StuHashInterface $stuHash,
         private ConfigInterface $config
     ) {}
 
@@ -44,7 +43,7 @@ final class SendPassword implements ActionControllerInterface
 
         $registration = $user->getRegistration();
 
-        $token = $this->stuHash->hash(time() . $registration->getLogin());
+        $token = AccountToken::create(AccountToken::PASSWORD_RESET);
         $registration->setPasswordToken($token);
 
         $this->userRepository->save($user);
@@ -58,7 +57,7 @@ final class SendPassword implements ActionControllerInterface
                     "Hallo.\n\n
 Du bekommst diese eMail, da Du in Star Trek Universe ein neues Password angefordert hast. Solltest Du das nicht getan
 haben, so ignoriere die eMail einfach.\n\n
-Klicke auf folgenden Link um Dir ein neues Password zu setzen:\n
+Klicke auf folgenden Link um Dir ein neues Password zu setzen. Der Link ist eine Stunde gültig:\n
 %s/?SHOW_RESET_PASSWORD=1&TOKEN=%s\n\n
 Das Star Trek Universe Team\n
 %s",

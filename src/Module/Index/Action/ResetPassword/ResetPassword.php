@@ -8,6 +8,7 @@ use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
 use Stu\Exception\InvalidParamException;
+use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -30,6 +31,10 @@ final class ResetPassword implements ActionControllerInterface
     public function handle(ActionControllerContext $context): void
     {
         $token = $this->resetPasswordRequest->getToken();
+
+        if (!AccountToken::isValid($token, AccountToken::PASSWORD_RESET)) {
+            throw new InvalidParamException();
+        }
 
         $user = $this->userRepository->getByResetToken($token);
 

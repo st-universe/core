@@ -54,6 +54,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     #[\Override]
     public function getByResetToken(string $resetToken): ?User
     {
+        if ($resetToken === '') {
+            return null;
+        }
+
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(

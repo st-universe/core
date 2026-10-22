@@ -258,7 +258,6 @@ final class ChangeEmailSecurityTest extends TwigTestCase
             new SendPasswordRequest(),
             $dic->get(UserRepositoryInterface::class),
             $mailFactory,
-            $dic->get(StuHashInterface::class),
             $dic->get(ConfigInterface::class)
         )->handle($context);
         $dic->get(EntityManagerInterface::class)->flush();
