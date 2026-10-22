@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Action\DeleteWormholeRestriction;
 
 use request;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Spacecraft\View\ShowWormholeRestrictions\ShowWormholeRestrictions;
 use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 use Stu\Orm\Repository\WormholeRestrictionRepositoryInterface;
@@ -17,12 +19,16 @@ final class DeleteWormholeRestriction implements ActionControllerInterface
 
     public function __construct(
         private WormholeRestrictionRepositoryInterface $wormholeRestrictionRepository,
-        private WormholeEntryRepositoryInterface $wormholeEntryRepository
+        private WormholeEntryRepositoryInterface $wormholeEntryRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
+            throw new AccessViolationException();
+        }
 
         $entryId = request::getIntFatal('entryId');
         $restrictionId = request::getIntFatal('restrictionId');
