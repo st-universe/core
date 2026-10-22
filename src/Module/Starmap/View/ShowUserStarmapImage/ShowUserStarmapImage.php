@@ -7,7 +7,10 @@ namespace Stu\Module\Starmap\View\ShowUserStarmapImage;
 use GdImage;
 use InvalidArgumentException;
 use request;
+use RuntimeException;
+use SplFileObject;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Cache\PrivateCacheDirectory;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
@@ -35,7 +38,8 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         private UserMapRepositoryInterface $userMapRepository,
         private StuConfigInterface $config,
         private StuHashInterface $stuHash,
-        private EncodedMapInterface $encodedMap
+        private EncodedMapInterface $encodedMap,
+        private PrivateCacheDirectory $cacheDirectory
     ) {}
 
     #[\Override]
@@ -56,18 +60,26 @@ final class ShowUserStarmapImage implements ViewControllerInterface
 
         $baseCachePath = $this->getBaseCachePath($layer);
         $this->ensureBaseCacheFile($layer, $baseCachePath);
-        $baseMtime = (int)filemtime($baseCachePath);
+        $baseFile = $this->cacheDirectory->open(basename($baseCachePath));
+        $baseMtime = $baseFile->fstat()['mtime'];
 
         $visibility = $this->getVisibility($user, $layer);
-        if ($visibility['full']) {
-            $this->cleanupOldMaskedCaches($layer, $user, null);
-            $this->sendImage($baseCachePath, $this->buildEtag($layer, $user, $visibility['version'], $baseMtime));
+        $lock = $this->cacheDirectory->open(sprintf('stu-user-starmap-mask-u%d-l%d.lock', $user->getId(), $layer->getId()));
+        if (!$lock->flock(LOCK_EX)) {
+            throw new RuntimeException('Sichtbarer Kartencache kann nicht gesperrt werden');
         }
-
-        $maskedCachePath = $this->getMaskedCachePath($layer, $user, $visibility['version'], $baseMtime);
-        $this->ensureMaskedCacheFile($layer, $baseCachePath, $visibility['runs'], $maskedCachePath);
-        $this->cleanupOldMaskedCaches($layer, $user, $maskedCachePath);
-        $this->sendImage($maskedCachePath, $this->buildEtag($layer, $user, $visibility['version'], $baseMtime));
+        try {
+            if ($visibility['full']) {
+                $this->cleanupOldMaskedCaches($layer, $user, null);
+                $this->sendImage($baseCachePath, $this->buildEtag($layer, $user, $visibility['version'], $baseMtime));
+            }
+            $maskedCachePath = $this->getMaskedCachePath($layer, $user, $visibility['version'], $baseMtime);
+            $this->ensureMaskedCacheFile($layer, $baseCachePath, $visibility['runs'], $maskedCachePath);
+            $this->cleanupOldMaskedCaches($layer, $user, $maskedCachePath);
+            $this->sendImage($maskedCachePath, $this->buildEtag($layer, $user, $visibility['version'], $baseMtime));
+        } finally {
+            $lock->flock(LOCK_UN);
+        }
     }
 
     /**
@@ -108,28 +120,24 @@ final class ShowUserStarmapImage implements ViewControllerInterface
 
     private function ensureBaseCacheFile(Layer $layer, string $cachePath): void
     {
-        $lockHandle = fopen($cachePath . '.lock', 'c');
-        if ($lockHandle !== false) {
-            flock($lockHandle, LOCK_EX);
+        $lock = $this->cacheDirectory->open(basename($cachePath) . '.lock');
+        if (!$lock->flock(LOCK_EX)) {
+            throw new RuntimeException('Kartencache kann nicht gesperrt werden');
         }
-
+        $temporary = null;
         try {
-            if (
-                is_file($cachePath)
-                && filemtime($cachePath) !== false
-                && filemtime($cachePath) > time() - self::BASE_CACHE_TTL
-            ) {
+            $cachePath = $this->cacheDirectory->path(basename($cachePath));
+            if (is_file($cachePath) && filemtime($cachePath) > time() - self::BASE_CACHE_TTL) {
                 return;
             }
-
-            $tmpPath = $cachePath . '.' . getmypid() . '.tmp';
-            $this->renderLayerImage($layer, $tmpPath);
-            rename($tmpPath, $cachePath);
+            $temporary = $this->cacheDirectory->createTemporary(basename($cachePath));
+            $this->renderLayerImage($layer, $temporary);
+            $this->cacheDirectory->replace($temporary, basename($cachePath));
         } finally {
-            if ($lockHandle !== false) {
-                flock($lockHandle, LOCK_UN);
-                fclose($lockHandle);
+            if ($temporary !== null && is_file($temporary->getPathname())) {
+                unlink($this->cacheDirectory->path($temporary->getFilename()));
             }
+            $lock->flock(LOCK_UN);
         }
     }
 
@@ -138,28 +146,22 @@ final class ShowUserStarmapImage implements ViewControllerInterface
      */
     private function ensureMaskedCacheFile(Layer $layer, string $baseCachePath, array $runs, string $cachePath): void
     {
-        $lockHandle = fopen($cachePath . '.lock', 'c');
-        if ($lockHandle !== false) {
-            flock($lockHandle, LOCK_EX);
+        $cachePath = $this->cacheDirectory->path(basename($cachePath));
+        if (is_file($cachePath)) {
+            return;
         }
-
+        $temporary = $this->cacheDirectory->createTemporary(basename($cachePath));
         try {
-            if (is_file($cachePath)) {
-                return;
-            }
-
-            $tmpPath = $cachePath . '.' . getmypid() . '.tmp';
-            $this->renderMaskedLayerImage($layer, $baseCachePath, $runs, $tmpPath);
-            rename($tmpPath, $cachePath);
+            $this->renderMaskedLayerImage($layer, $baseCachePath, $runs, $temporary);
+            $this->cacheDirectory->replace($temporary, basename($cachePath));
         } finally {
-            if ($lockHandle !== false) {
-                flock($lockHandle, LOCK_UN);
-                fclose($lockHandle);
+            if (is_file($temporary->getPathname())) {
+                unlink($this->cacheDirectory->path($temporary->getFilename()));
             }
         }
     }
 
-    private function renderLayerImage(Layer $layer, string $targetPath): void
+    private function renderLayerImage(Layer $layer, SplFileObject $targetFile): void
     {
         $width = $layer->getWidth() * self::CELL_SIZE;
         $height = $layer->getHeight() * self::CELL_SIZE;
@@ -186,13 +188,13 @@ final class ShowUserStarmapImage implements ViewControllerInterface
             $this->renderMapField($image, $layer, $map, $tileCache);
         }
 
-        imagepng($image, $targetPath, 6);
+        $this->saveImage($image, $targetFile);
     }
 
     /**
      * @param array<int, array{y: int, startX: int, endX: int}> $runs
      */
-    private function renderMaskedLayerImage(Layer $layer, string $baseCachePath, array $runs, string $targetPath): void
+    private function renderMaskedLayerImage(Layer $layer, string $baseCachePath, array $runs, SplFileObject $targetFile): void
     {
         $width = $layer->getWidth() * self::CELL_SIZE;
         $height = $layer->getHeight() * self::CELL_SIZE;
@@ -212,7 +214,19 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         }
         imagefill($targetImage, 0, 0, $background);
 
-        $baseImage = $this->createImageFromPng($baseCachePath);
+        $baseFile = $this->cacheDirectory->open(basename($baseCachePath));
+        $size = $baseFile->fstat()['size'];
+        if ($size < 1) {
+            throw new RuntimeException('Kartengrafik ist leer');
+        }
+        $bytes = $baseFile->fread($size);
+        if ($bytes === false) {
+            throw new RuntimeException('Kartengrafik kann nicht gelesen werden');
+        }
+        $baseImage = imagecreatefromstring($bytes);
+        if ($baseImage === false) {
+            throw new RuntimeException('Kartengrafik kann nicht geladen werden');
+        }
         foreach ($runs as $run) {
             $sourceX = ($run['startX'] - 1) * self::CELL_SIZE;
             $sourceY = ($run['y'] - 1) * self::CELL_SIZE;
@@ -230,7 +244,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
             );
         }
 
-        imagepng($targetImage, $targetPath, 6);
+        $this->saveImage($targetImage, $targetFile);
     }
 
     /**
@@ -282,6 +296,27 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         return $image;
     }
 
+    private function saveImage(GdImage $image, SplFileObject $targetFile): void
+    {
+        $stream = fopen('php://temp', 'w+b');
+        if ($stream === false) {
+            throw new RuntimeException('Kartengrafik kann nicht zwischengespeichert werden');
+        }
+        try {
+            if (!imagepng($image, $stream, 6) || !rewind($stream)) {
+                throw new RuntimeException('Kartengrafik kann nicht geschrieben werden');
+            }
+            while (!feof($stream)) {
+                $chunk = fread($stream, 65536);
+                if ($chunk === false || ($chunk !== '' && $targetFile->fwrite($chunk) !== strlen($chunk))) {
+                    throw new RuntimeException('Kartengrafik kann nicht vollständig geschrieben werden');
+                }
+            }
+        } finally {
+            fclose($stream);
+        }
+    }
+
     private function sendImage(string $cachePath, string $etag): void
     {
         header('ETag: ' . $etag);
@@ -292,9 +327,10 @@ final class ShowUserStarmapImage implements ViewControllerInterface
             exit;
         }
 
+        $file = $this->cacheDirectory->open(basename($cachePath));
         header('Content-Type: image/png');
-        header('Content-Length: ' . filesize($cachePath));
-        readfile($cachePath);
+        header('Content-Length: ' . $file->fstat()['size']);
+        $file->fpassthru();
         exit;
     }
 
@@ -308,34 +344,31 @@ final class ShowUserStarmapImage implements ViewControllerInterface
 
     private function getBaseCachePath(Layer $layer): string
     {
-        return sprintf(
-            '%s/stu-user-starmap-layer-base-v1-%d-%dx%d.png',
-            sys_get_temp_dir(),
+        return $this->cacheDirectory->path(sprintf(
+            'stu-user-starmap-layer-base-v1-%d-%dx%d.png',
             $layer->getId(),
             $layer->getWidth(),
             $layer->getHeight()
-        );
+        ));
     }
 
     private function getMaskedCachePath(Layer $layer, User $user, string $visibilityVersion, int $baseMtime): string
     {
-        return sprintf(
-            '%s/stu-user-starmap-mask-v1-u%d-l%d-%dx%d-%s-%d.png',
-            sys_get_temp_dir(),
+        return $this->cacheDirectory->path(sprintf(
+            'stu-user-starmap-mask-v1-u%d-l%d-%dx%d-%s-%d.png',
             $user->getId(),
             $layer->getId(),
             $layer->getWidth(),
             $layer->getHeight(),
             $visibilityVersion,
             $baseMtime
-        );
+        ));
     }
 
     private function cleanupOldMaskedCaches(Layer $layer, User $user, ?string $keepPath): void
     {
-        $pattern = sprintf(
-            '%s/stu-user-starmap-mask-v1-u%d-l%d-*',
-            sys_get_temp_dir(),
+        $pattern = dirname($this->cacheDirectory->path('probe')) . '/' . sprintf(
+            'stu-user-starmap-mask-v1-u%d-l%d-*.png',
             $user->getId(),
             $layer->getId()
         );
@@ -345,12 +378,13 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         }
 
         foreach ($files as $file) {
-            if ($file === $keepPath || ($keepPath !== null && $file === $keepPath . '.lock')) {
+            if ($file === $keepPath) {
                 continue;
             }
 
+            $file = $this->cacheDirectory->path(basename($file));
             if (is_file($file)) {
-                @unlink($file);
+                unlink($file);
             }
         }
     }
