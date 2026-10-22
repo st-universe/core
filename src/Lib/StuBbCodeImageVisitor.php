@@ -35,12 +35,7 @@ final class StuBbCodeImageVisitor implements NodeVisitor
             $url .= $child->getAsBBCode();
         }
 
-        $scheme = parse_url($url, PHP_URL_SCHEME);
-        if (
-            filter_var($url, FILTER_VALIDATE_URL) === false
-            || !is_string($scheme)
-            || !in_array(strtolower($scheme), ['http', 'https'], true)
-        ) {
+        if (!new StuBbCodeImageValidator()->validate($url)) {
             $html = htmlspecialchars($elementNode->getAsBBCode(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         } else {
             $html = sprintf(
