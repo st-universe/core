@@ -26,7 +26,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
         $token = AccountToken::create(AccountToken::ACCOUNT_DELETION);
 
         $registration->setDeletionMark(UserConstants::DELETION_REQUESTED);
-        $registration->setPasswordToken($token);
+        $registration->setDeletionToken($token);
 
         $body = <<<EOT
             Hallo\n\n

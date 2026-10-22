@@ -49,6 +49,9 @@ class UserRegistration
     #[Column(type: 'string', length: 255)]
     private string $password_token = '';
 
+    #[Column(type: 'string', length: 255, nullable: true)]
+    private ?string $deletion_token = null;
+
     #[Column(type: 'integer', nullable: true, options: ['default' => 1])]
     private ?int $sms_sended = 1;
 
@@ -148,6 +151,17 @@ class UserRegistration
     public function setPasswordToken(string $password_token): UserRegistration
     {
         $this->password_token = $password_token;
+        return $this;
+    }
+
+    public function getDeletionToken(): ?string
+    {
+        return $this->deletion_token;
+    }
+
+    public function setDeletionToken(?string $deletionToken): UserRegistration
+    {
+        $this->deletion_token = $deletionToken;
         return $this;
     }
 

@@ -75,6 +75,7 @@ final class BlockUser implements ActionControllerInterface
         // mark user as deletable
         $registration->setDeletionMark(UserConstants::DELETION_CONFIRMED);
         $registration->setPasswordToken('');
+        $registration->setDeletionToken(null);
         $this->sessionStringRepository->truncate($userToBlock);
         $this->userRepository->save($userToBlock);
 

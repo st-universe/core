@@ -34,7 +34,7 @@ final class BlockUserTest extends StuTestCase
         request::setMockVars(['uid' => '101']);
         $user = $this->mock(User::class);
         $user->shouldReceive('getName')->andReturn('Testspieler');
-        $registration = new UserRegistration($user)->setEmail($email)->setMobile($mobile)->setPasswordToken('previous-recovery-token');
+        $registration = new UserRegistration($user)->setEmail($email)->setMobile($mobile)->setPasswordToken('previous-recovery-token')->setDeletionToken('previous-deletion-token');
         $user->shouldReceive('getRegistration')->andReturn($registration);
         $users = $this->mock(UserRepositoryInterface::class);
         $users->shouldReceive('find')->with(101)->once()->andReturn($user);
@@ -59,6 +59,7 @@ final class BlockUserTest extends StuTestCase
         $subject->handle($context);
         self::assertSame(UserConstants::DELETION_CONFIRMED, $registration->getDeletionMark());
         self::assertSame('', $registration->getPasswordToken());
+        self::assertNull($registration->getDeletionToken());
         self::assertSame('blocked-email-hash', $blocked->getEmailHash());
         self::assertSame($mobileHash, $blocked->getMobileHash());
     }

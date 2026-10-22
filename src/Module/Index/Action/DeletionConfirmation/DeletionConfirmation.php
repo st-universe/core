@@ -28,7 +28,7 @@ final class DeletionConfirmation implements ActionControllerInterface
             return;
         }
 
-        $user = $this->userRepository->getByResetToken($token);
+        $user = $this->userRepository->getByDeletionToken($token);
         if ($user === null) {
             return;
         }
@@ -38,7 +38,7 @@ final class DeletionConfirmation implements ActionControllerInterface
             return;
         }
 
-        $registration->setPasswordToken('');
+        $registration->setDeletionToken(null);
         $registration->setDeletionMark(UserConstants::DELETION_CONFIRMED);
 
         $this->userRepository->save($user);

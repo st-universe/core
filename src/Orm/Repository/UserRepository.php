@@ -74,6 +74,28 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     }
 
     #[\Override]
+    public function getByDeletionToken(string $deletionToken): ?User
+    {
+        if ($deletionToken === '') {
+            return null;
+        }
+
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u
+                    JOIN %s ur
+                    WITH u = ur.user
+                    WHERE ur.deletion_token = :token',
+                    User::class,
+                    UserRegistration::class
+                )
+            )
+            ->setParameter('token', $deletionToken)
+            ->getOneOrNullResult();
+    }
+
+    #[\Override]
     public function getDeleteable(
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
