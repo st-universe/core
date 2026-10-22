@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\DeletionConfirmation;
 
+use Stu\Lib\AccountToken;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -22,6 +23,10 @@ final class DeletionConfirmation implements ActionControllerInterface
     public function handle(ActionControllerContext $context): void
     {
         $token = $this->deletionConfirmationRequest->getToken();
+
+        if (!AccountToken::isValid($token, AccountToken::ACCOUNT_DELETION)) {
+            return;
+        }
 
         $user = $this->userRepository->getByResetToken($token);
         if ($user === null) {

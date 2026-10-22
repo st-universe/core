@@ -6,8 +6,8 @@ namespace Stu\Component\Player\Deletion\Confirmation;
 
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
-use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -17,14 +17,13 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
     public function __construct(
         private UserRepositoryInterface $userRepository,
         private MailFactoryInterface $mailFactory,
-        private ConfigInterface $config,
-        private StuHashInterface $stuHash
+        private ConfigInterface $config
     ) {}
 
     public function request(User $user): void
     {
         $registration = $user->getRegistration();
-        $token = $this->stuHash->hash(time() . $registration->getCreationDate());
+        $token = AccountToken::create(AccountToken::ACCOUNT_DELETION);
 
         $registration->setDeletionMark(UserConstants::DELETION_REQUESTED);
         $registration->setPasswordToken($token);
@@ -34,6 +33,7 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
             Du hast eine Accountlöschung in Star Trek Universe angefordert.\n\n
             Bitte bestätige die Löschung mittels Klick auf folgenden Link:\n
             %s/?CONFIRM_ACCOUNT_DELETION=1&token=%s\n
+            Der Link ist eine Stunde gültig.\n\n
             Das STU-Team\n\n,
             EOT;
 
