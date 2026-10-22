@@ -55,10 +55,7 @@ final class ClaimQuestReward implements ActionControllerInterface
             return;
         }
 
-        $questUser = $this->npcQuestUserRepository->findOneBy([
-            'quest_id' => $questId,
-            'user_id' => $user->getId()
-        ]);
+        $questUser = $this->npcQuestUserRepository->getByQuestAndUserForUpdate($questId, $user->getId());
 
         if ($questUser === null) {
             $context->getInfo()->addInformation('Du bist kein Teilnehmer dieser Quest');

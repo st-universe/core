@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Action;
 
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
@@ -64,7 +65,12 @@ class AllOtherActionsTest extends ActionTestCase
             $this->expectException(AccessViolationException::class);
         }
 
-        $subject->handle($dic->get(ActionContextFactoryInterface::class)->createActionContext($game));
+        $context = $dic->get(ActionContextFactoryInterface::class)->createActionContext($game);
+        if (in_array($key, ['TRADE_ACTIONS-B_TAKE_OFFER', 'TRADE_ACTIONS-B_DEALS_TAKE_AUCTION'], true)) {
+            $dic->get(EntityManagerInterface::class)->wrapInTransaction(static fn () => $subject->handle($context));
+            return;
+        }
+        $subject->handle($context);
     }
 
     private function getUserId(string $key): int

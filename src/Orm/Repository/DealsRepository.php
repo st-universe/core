@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\User;
 
@@ -13,6 +15,19 @@ use Stu\Orm\Entity\User;
  */
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
+    #[\Override]
+    public function getForUpdate(int $id): ?Deals
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf('SELECT entry FROM %s entry WHERE entry.id = :id ORDER BY entry.id ASC', Deals::class)
+        )
+            ->setParameters(['id' => $id])
+            ->setMaxResults(1)
+            ->setHint(Query::HINT_REFRESH, true)
+            ->setLockMode(LockMode::PESSIMISTIC_WRITE)
+            ->getOneOrNullResult();
+    }
+
     #[\Override]
     public function prototype(): Deals
     {

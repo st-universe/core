@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Stu\Orm\Entity\NPCQuestUser;
 
 /**
@@ -12,6 +14,19 @@ use Stu\Orm\Entity\NPCQuestUser;
  */
 final class NPCQuestUserRepository extends EntityRepository implements NPCQuestUserRepositoryInterface
 {
+    #[\Override]
+    public function getByQuestAndUserForUpdate(int $questId, int $userId): ?NPCQuestUser
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf('SELECT entry FROM %s entry WHERE entry.quest_id = :questId AND entry.user_id = :userId ORDER BY entry.id ASC', NPCQuestUser::class)
+        )
+            ->setParameters(['questId' => $questId, 'userId' => $userId])
+            ->setMaxResults(1)
+            ->setHint(Query::HINT_REFRESH, true)
+            ->setLockMode(LockMode::PESSIMISTIC_WRITE)
+            ->getOneOrNullResult();
+    }
+
     #[\Override]
     public function prototype(): NPCQuestUser
     {

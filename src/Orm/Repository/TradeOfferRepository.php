@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -16,6 +18,19 @@ use Stu\Orm\Entity\TradeOffer;
  */
 final class TradeOfferRepository extends EntityRepository implements TradeOfferRepositoryInterface
 {
+    #[\Override]
+    public function getForUpdate(int $id): ?TradeOffer
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf('SELECT entry FROM %s entry WHERE entry.id = :id ORDER BY entry.id ASC', TradeOffer::class)
+        )
+            ->setParameters(['id' => $id])
+            ->setMaxResults(1)
+            ->setHint(Query::HINT_REFRESH, true)
+            ->setLockMode(LockMode::PESSIMISTIC_WRITE)
+            ->getOneOrNullResult();
+    }
+
     #[\Override]
     public function prototype(): TradeOffer
     {

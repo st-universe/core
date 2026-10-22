@@ -46,7 +46,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $dealId = $this->dealstakeAuctionRequest->getDealId();
         $context->setView(ShowDeals::VIEW_IDENTIFIER);
 
-        $auction = $this->dealsRepository->find($dealId);
+        $auction = $this->dealsRepository->getForUpdate($dealId);
 
         if ($auction === null) {
             $context->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));

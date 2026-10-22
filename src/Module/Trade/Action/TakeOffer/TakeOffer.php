@@ -37,7 +37,7 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        $selectedOffer = $this->tradeOfferRepository->find($offerId);
+        $selectedOffer = $this->tradeOfferRepository->getForUpdate($offerId);
 
         if ($selectedOffer === null) {
             $context->getInfo()->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
