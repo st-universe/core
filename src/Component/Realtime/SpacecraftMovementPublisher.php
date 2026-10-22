@@ -88,6 +88,10 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
     #[\Override]
     public function publishRemoval(Spacecraft $spacecraft): void
     {
+        if ($spacecraft->isRpgModuleInvisible()) {
+            return;
+        }
+
         $map = $this->normalizeMapLocation($spacecraft->getLocation());
         if ($map === null) {
             return;
@@ -122,6 +126,35 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
                 $this->channels->starmapSpacecraftStream(),
                 '*',
                 ['payload' => $payload],
+                10000,
+                true
+            );
+        } catch (Throwable) {
+            return;
+        }
+    }
+
+    #[\Override]
+    public function publishContactInvalidation(Spacecraft $spacecraft): void
+    {
+        $map = $this->normalizeMapLocation($spacecraft->getLocation());
+        if ($map === null) {
+            return;
+        }
+
+        try {
+            $redis = $this->redisFactory->create();
+            if ($redis === null) {
+                return;
+            }
+            $redis->xAdd(
+                $this->channels->starmapSpacecraftStream(),
+                '*',
+                ['payload' => json_encode([
+                    'type' => 'spacecraftInvalidation',
+                    'layerId' => $map['layerId'],
+                    'spacecraft' => ['id' => $spacecraft->getId()]
+                ], self::JSON_FLAGS)],
                 10000,
                 true
             );

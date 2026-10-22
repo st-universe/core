@@ -49,7 +49,7 @@ final class SetRpgModuleInvisibility implements ActionControllerInterface
         $rpgModule->setInvisible($isInvisible)->update();
 
         if ($isInvisible) {
-            $this->spacecraftMovementPublisher->publishRemoval($spacecraft);
+            $this->spacecraftMovementPublisher->publishContactInvalidation($spacecraft);
             $context->getInfo()->addInformation('RPG-Unsichtbarkeit aktiviert');
         } else {
             $this->spacecraftMovementPublisher->publishState($spacecraft);

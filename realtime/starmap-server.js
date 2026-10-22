@@ -194,6 +194,21 @@ function dispatchPayload(rawPayload) {
 		return;
 	}
 
+	if (payload.type === "spacecraftInvalidation") {
+		for (const client of clients) {
+			if (client.layerId !== Number(payload.layerId) || !isClientAuthorized(client)) continue;
+			enqueueClient(client, async function () {
+				const handle = client.contacts.forget(payload.spacecraft?.id);
+				client.tracking.remove(payload.spacecraft?.id);
+				if (handle !== undefined) {
+					sendJson(client, { type: "spacecraftRemoval", spacecraft: { id: handle } });
+					sendTracking(client);
+				}
+			});
+		}
+		return;
+	}
+
 	if (payload.type === "spacecraftRemoval") {
 		dispatchRemovalPayload(payload);
 		return;

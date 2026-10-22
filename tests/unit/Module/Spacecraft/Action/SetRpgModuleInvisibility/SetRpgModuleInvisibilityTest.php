@@ -64,7 +64,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
             ->never();
         $this->spacecraftSystemRepository->shouldReceive('save')
             ->never();
-        $this->spacecraftMovementPublisher->shouldReceive('publishRemoval')
+        $this->spacecraftMovementPublisher->shouldReceive('publishContactInvalidation')
             ->never();
         $this->spacecraftMovementPublisher->shouldReceive('publishState')
             ->never();
@@ -131,7 +131,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
         $this->spacecraftSystemRepository->shouldReceive('save')
             ->with($rpgModule)
             ->once();
-        $this->spacecraftMovementPublisher->shouldReceive('publishRemoval')
+        $this->spacecraftMovementPublisher->shouldReceive('publishContactInvalidation')
             ->with($spacecraft)
             ->once();
         $this->spacecraftMovementPublisher->shouldReceive('publishState')
@@ -205,7 +205,7 @@ class SetRpgModuleInvisibilityTest extends ActionControllerTestCase
         $this->spacecraftSystemRepository->shouldReceive('save')
             ->with($rpgModule)
             ->once();
-        $this->spacecraftMovementPublisher->shouldReceive('publishRemoval')
+        $this->spacecraftMovementPublisher->shouldReceive('publishContactInvalidation')
             ->never();
         $this->spacecraftMovementPublisher->shouldReceive('publishState')
             ->with($spacecraft)
