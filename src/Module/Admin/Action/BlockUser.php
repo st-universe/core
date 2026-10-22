@@ -13,6 +13,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class BlockUser implements ActionControllerInterface
@@ -25,7 +26,8 @@ final class BlockUser implements ActionControllerInterface
         private UserRepositoryInterface $userRepository,
         private BlockedUserRepositoryInterface $blockedUserRepository,
         private StuHashInterface $stuHash,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        private SessionStringRepositoryInterface $sessionStringRepository
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -71,6 +73,8 @@ final class BlockUser implements ActionControllerInterface
 
         // mark user as deletable
         $registration->setDeletionMark(UserConstants::DELETION_CONFIRMED);
+        $registration->setPasswordToken('');
+        $this->sessionStringRepository->truncate($userToBlock);
         $this->userRepository->save($userToBlock);
 
         $this->loggerUtil->log('E');
