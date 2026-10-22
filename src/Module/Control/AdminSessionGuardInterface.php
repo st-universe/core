@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Stu\Orm\Entity\User;
+
 interface AdminSessionGuardInterface
 {
-    public function check(): void;
+    public function check(): User;
 }

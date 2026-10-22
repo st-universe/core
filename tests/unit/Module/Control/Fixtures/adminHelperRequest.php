@@ -12,6 +12,7 @@ use Stu\Config\Init;
 use Stu\Config\SessionStarterInterface;
 use Stu\Exception\SessionInvalidException;
 use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\AdminSessionGuard;
 use Stu\Module\Control\AdminSessionGuardInterface;
@@ -29,6 +30,7 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
@@ -38,8 +40,10 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 require dirname(__DIR__, 4) . '/Bootstrap.php';
 
 [$helper, $role, $operation] = array_slice($argv, 1);
+$tokenKind = $argv[4] ?? 'own';
 $_GET = [];
 $_POST = $operation === 'create' ? [
+    'sstr' => $tokenKind === 'missing' ? '' : $tokenKind,
     'userId' => 7,
     'buildplanId' => 11,
     'rumpId' => 12,
@@ -51,6 +55,14 @@ $_POST = $operation === 'create' ? [
     'mod' => [SpacecraftModuleTypeEnum::HULL->value => 21]
 ] : [];
 $_SERVER['REQUEST_METHOD'] = $operation === 'create' ? 'POST' : 'GET';
+if ($operation === 'select-user') {
+    $_GET = ['userId' => 7];
+} elseif ($operation === 'select-torpedo') {
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+    $_POST = ['sstr' => $tokenKind, 'userId' => 7, 'buildplanId' => 11, 'layer' => 1, 'cx' => 2, 'cy' => 3, 'shipcount' => 1];
+} elseif ($operation === 'select-rump') {
+    $_GET = ['userId' => 7, 'rumpId' => 12];
+}
 
 $starter = Mockery::mock(SessionStarterInterface::class);
 $starter->shouldReceive('start')->once();
@@ -61,16 +73,23 @@ if ($role === 'no-session') {
 } else {
     $session->shouldReceive('createSession')->with(true)->once();
     $user = $role === 'missing-user' ? null : Mockery::mock(User::class);
-    $user?->shouldReceive('getId')->once()->andReturn($role === 'admin' ? 42 : 43);
+    $user?->shouldReceive('getId')->andReturn($role === 'admin' ? 42 : 43);
     $session->shouldReceive('getUser')->once()->andReturn($user);
     $config->shouldReceive('getGameSettings->getAdminIds')->once()->andReturn([42]);
 }
 
+$tokens = Mockery::mock(SessionStringRepositoryInterface::class);
+if ($role === 'admin' && in_array($operation, ['create', 'select-torpedo'], true) && $tokenKind !== 'missing') {
+    $tokens->shouldReceive('isValid')->with($tokenKind, 42)->once()->andReturn($tokenKind === 'own');
+}
 $container = Mockery::mock(ContainerInterface::class);
 $container->shouldReceive('get')->with(AdminSessionGuardInterface::class)->once()
-    ->andReturn(new AdminSessionGuard($starter, $session, $config));
+    ->andReturn(new AdminSessionGuard($starter, $session, $config, $tokens));
 
-if ($role === 'admin') {
+if ($role === 'admin' && ($operation !== 'create' || $tokenKind === 'own')) {
+    $factory = Mockery::mock(SessionStringFactoryInterface::class);
+    $factory->shouldReceive('createSessionString')->with($user)->once()->andReturn('fresh-form-token');
+    $container->shouldReceive('get')->with(SessionStringFactoryInterface::class)->once()->andReturn($factory);
     $services = [];
     foreach ([
         EntityManagerInterface::class,
@@ -98,6 +117,24 @@ if ($role === 'admin') {
     if ($operation === 'list') {
         $services[UserRepositoryInterface::class]->shouldReceive('getNpcList')->once()->andReturn([]);
         $services[UserRepositoryInterface::class]->shouldReceive('getNonNpcList')->once()->andReturn([]);
+    } elseif ($operation === 'select-user') {
+        $services[SpacecraftBuildplanRepositoryInterface::class]->shouldReceive('getByUser')->with(7)->once()->andReturn([]);
+    } elseif ($operation === 'select-torpedo') {
+        $rump = Mockery::mock(SpacecraftRump::class);
+        $rump->shouldReceive('getTorpedoLevel')->once()->andReturn(0);
+        $plan = Mockery::mock(SpacecraftBuildplan::class);
+        $plan->shouldReceive('getRump')->once()->andReturn($rump);
+        $services[SpacecraftBuildplanRepositoryInterface::class]->shouldReceive('find')->with(11)->once()->andReturn($plan);
+        $services[TorpedoTypeRepositoryInterface::class]->shouldReceive('getByLevel')->with(0)->once()->andReturn([]);
+    } elseif ($operation === 'select-rump') {
+        $rump = Mockery::mock(SpacecraftRump::class);
+        $rump->shouldReceive('getCategoryId')->once()->andReturn(SpacecraftRumpCategoryEnum::STATION);
+        $services[SpacecraftRumpRepositoryInterface::class]->shouldReceive('find')->with(12)->once()->andReturn($rump);
+        $level = Mockery::mock(ShipRumpModuleLevel::class);
+        $level->shouldReceive('getDefaultLevel')->andReturn(0);
+        $level->shouldReceive('isMandatory')->andReturn(false);
+        $services[ShipRumpModuleLevelRepositoryInterface::class]->shouldReceive('getByShipRump')->with($rump)->andReturn($level);
+        $services[ModuleRepositoryInterface::class]->shouldReceive('getBySpecialTypeIds')->once()->andReturn([]);
     } else {
         $rump = Mockery::mock(SpacecraftRump::class);
         $rump->shouldReceive('getId')->andReturn(12);

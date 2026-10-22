@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
+use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Control\AdminSessionGuardInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -16,7 +17,8 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
-    $dic->get(AdminSessionGuardInterface::class)->check();
+    $admin = $dic->get(AdminSessionGuardInterface::class)->check();
+    $sessionString = $dic->get(SessionStringFactoryInterface::class)->createSessionString($admin);
 
     $db = $dic->get(EntityManagerInterface::class);
 
@@ -34,7 +36,7 @@ Init::run(function (ContainerInterface $dic): void {
     $torptypeId = request::indInt('torptypeId');
     $noTorps = request::indInt('noTorps');
 
-    if ($torptypeId > 0 || $noTorps) {
+    if (request::isPost() && ($torptypeId > 0 || $noTorps)) {
         $plan = $buildplanRepo->find($buildplanId);
         $layer = $layerRepo->find(request::postIntFatal('layer'));
         $cx = request::postIntFatal('cx');
@@ -55,6 +57,7 @@ Init::run(function (ContainerInterface $dic): void {
     } elseif ($buildplanId > 0) {
         printf(
             '<form action="" method="post">
+            <input type="hidden" name="sstr" value="%s" />
             <input type="hidden" name="userId" value="%d" />
             <input type="hidden" name="buildplanId" value="%d" />
             <input type="hidden" name="layer" value="%d" />
@@ -62,6 +65,7 @@ Init::run(function (ContainerInterface $dic): void {
             <input type="hidden" name="cy" value="%d" />
             <input type="hidden" name="shipcount" value="%d" />
             ',
+            htmlspecialchars($sessionString, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
             $userId,
             $buildplanId,
             request::postIntFatal('layer'),
@@ -93,7 +97,9 @@ Init::run(function (ContainerInterface $dic): void {
         $buildplans = $buildplanRepo->getByUser($userId);
         printf(
             '<form action="" method="post">
+                <input type="hidden" name="sstr" value="%s" />
                 <input type="hidden" name="userId" value="%d" />',
+            htmlspecialchars($sessionString, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
             $userId
         );
         foreach ($buildplans as $plan) {
