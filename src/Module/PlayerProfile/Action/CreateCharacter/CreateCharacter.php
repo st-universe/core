@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerProfile\Action\CreateCharacter;
 
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Lib\Upload\PngUpload;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserCharacterRepositoryInterface;
@@ -14,7 +15,7 @@ final class CreateCharacter implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_CREATE_CHARACTER';
 
-    public function __construct(private CreateCharacterRequestInterface $request, private UserCharacterRepositoryInterface $userCharactersRepository, private ConfigInterface $config) {}
+    public function __construct(private CreateCharacterRequestInterface $request, private UserCharacterRepositoryInterface $userCharactersRepository, private ConfigInterface $config, private PngUpload $pngUpload) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
@@ -39,24 +40,21 @@ final class CreateCharacter implements ActionControllerInterface
             return;
         }
 
-        if ($avatarFile['type'] !== 'image/png') {
-            $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
+        $image = $this->pngUpload->readUploaded(
+            $avatarFile['tmp_name'],
+            $avatarFile['error'],
+            1000000,
+            2048,
+            2048,
+            4000000
+        );
+        if ($image === null) {
+            $context->getInfo()->addInformation(_('Es können nur gültige PNG-Bilder bis 1 Megabyte und 2048 Pixel je Seite hochgeladen werden'));
             return;
         }
-        if ($avatarFile['size'] > 1000000) {
-            $context->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 1 Megabyte'));
-            return;
-        }
-        if ($avatarFile['size'] === 0) {
-            $context->getInfo()->addInformation(_('Die Datei ist leer'));
-            return;
-        }
 
-        $imageNameWithExtension = substr(md5(time() . "_" . $avatarFile['name']), 0, 32) . '.png';
-
-
-        $imageName = substr($imageNameWithExtension, 0, -4);
-
+        $imageName = bin2hex(random_bytes(16));
+        $imageNameWithExtension = $imageName . '.png';
         $uploadDir = $this->config->get('game.character_avatar_path');
         $uploadPath = $uploadDir . '/' . $imageNameWithExtension;
 
@@ -64,7 +62,7 @@ final class CreateCharacter implements ActionControllerInterface
             throw new RuntimeException(sprintf('Directory "%s" was not created', $uploadDir));
         }
 
-        if (!move_uploaded_file($avatarFile['tmp_name'], $uploadPath)) {
+        if (!$this->pngUpload->write($image, $uploadPath, 1000000)) {
             $context->getInfo()->addInformation(_('Fehler beim Speichern des Avatars.'));
             return;
         }
