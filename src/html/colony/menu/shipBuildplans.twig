@@ -34,9 +34,8 @@
             </td>
             <td class="responsive-hide" style="text-align: center;">
                 {% if item.deletable %}
-                <a class="linkbutton linkbutton_red"
-                    href="?id={{ HOST.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
-                    title="Löschen">X</a>
+                <button type="submit" class="linkbutton linkbutton_red" name="planid" value="{{ id }}"
+                    formaction="colony.php?B_DEL_BUILDPLAN=1" title="Löschen">X</button>
                 {% endif %}
             </td>
         </tr>
@@ -54,9 +53,8 @@
                         </td>
                         <td style="text-align: center;">
                             {% if item.deletable %}
-                            <a class="linkbutton linkbutton_red"
-                                href="?id={{ HOST.getId }}&B_DEL_BUILDPLAN=1&planid={{ id }}&sstr={{ SESSIONSTRING }}"
-                                title="Löschen">X</a>
+                            <button type="submit" class="linkbutton linkbutton_red" name="planid" value="{{ id }}"
+                                formaction="colony.php?B_DEL_BUILDPLAN=1" title="Löschen">X</button>
                             {% endif %}
                         </td>
                     </tr>

@@ -43,6 +43,7 @@
 <br />
 {% endif %}
 <form action="alliance.php" method="post">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <table class="use" {% if not hasAlliancePermission(7) %}style="display:none;" {% endif %}>
         <tr>
             <th>Forum erstellen</th>
