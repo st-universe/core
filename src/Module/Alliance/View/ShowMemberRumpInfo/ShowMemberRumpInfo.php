@@ -44,7 +44,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
         }
 
         $memberAlliance = $member->getAlliance();
-        if ($memberAlliance === null) {
+        if ($memberAlliance === null || $user->getAlliance()?->getId() !== $memberAlliance->getId()) {
             return;
         }
 

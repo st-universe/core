@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\Action\CreateAlliance;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
@@ -35,6 +36,9 @@ final class CreateAlliance implements ActionControllerInterface
     public function handle(ActionControllerContext $context): void
     {
         $user = $context->getUser();
+        if ($user->getAlliance() !== null) {
+            throw new AccessViolationException();
+        }
 
         $name = $this->createAllianceRequest->getName();
         $faction_mode = $this->createAllianceRequest->getFactionMode();
@@ -85,7 +89,7 @@ final class CreateAlliance implements ActionControllerInterface
         $this->allianceJobRepository->save($founderJob);
         $this->entityManager->flush();
 
-        $user->setAlliance($alliance);
+        $this->allianceJobManager->joinAlliance($user, $alliance);
         $this->userRepository->save($user);
 
         $this->allianceJobManager->assignUserToJob($user, $founderJob);

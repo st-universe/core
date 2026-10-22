@@ -57,8 +57,8 @@ final class AcceptApplication implements ActionControllerInterface
         }
 
         $applicant = $application->getUser();
+        $this->allianceJobManager->joinAlliance($applicant, $alliance);
         $this->userRelationManager->removeRelationsForAllianceEntry($applicant, $alliance);
-        $applicant->setAlliance($alliance);
         $applicationsOfUser = $this->allianceApplicationRepository->getByUser($applicant->getId());
 
         $this->cancelOtherApplications($applicationsOfUser, $application);
