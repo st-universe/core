@@ -4,6 +4,7 @@ namespace Stu\Lib\Session;
 
 use DateTime;
 use Stu\Exception\SessionInvalidException;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserLastActionRepositoryInterface;
@@ -77,6 +78,11 @@ final class Session implements SessionInterface
         if ($user === null) {
             $this->logout();
             return;
+        }
+
+        if ($user->getRegistration()->getDeletionMark() === UserConstants::DELETION_CONFIRMED) {
+            $this->logout();
+            throw new SessionInvalidException('Spieleraccount ist zur Löschung vorgesehen');
         }
 
         if (!SessionCredential::isValid($user)) {
