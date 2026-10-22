@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Profile\View\ShowColonySurface;
 
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
@@ -22,6 +23,16 @@ final class ShowColonySurface implements ViewControllerInterface
 
 
         $id = $this->showColonySurfaceRequest->getId();
+        $scan = $this->colonyScanRepository->find($id);
+        $user = $game->getUser();
+        if (
+            $scan === null
+            || ($scan->getUser()->getId() !== $user->getId()
+                && ($user->getAlliance() === null
+                    || $scan->getUser()->getAlliance()?->getId() !== $user->getAlliance()->getId()))
+        ) {
+            throw new AccessViolationException();
+        }
 
         $game->setTemplateVar('SURFACE', unserialize($this->colonyScanRepository->getSurfaceArray($id)));
         $game->setTemplateVar('CSSCLASS', 'cfu');
