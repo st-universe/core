@@ -12,6 +12,7 @@ import { realtimeSecret } from "./starmap-secret.js";
 import { StarmapTracking, acceptScanToken } from "./starmap-tracking.js";
 import { StarmapContacts } from "./starmap-contacts.js";
 import { StarmapAdmission } from "./starmap-admission.js";
+import { StarmapMessageBudget, STARMAP_MAX_PAYLOAD } from "./starmap-message-budget.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -44,6 +45,7 @@ const server = http.createServer(function (_request, response) {
 const wss = new WebSocketServer({
 	server,
 	path: WS_PATH,
+	maxPayload: STARMAP_MAX_PAYLOAD,
 	verifyClient(info) {
 		try {
 			info.req.realtimeReservation = reserveConnection(info.req);
@@ -108,6 +110,7 @@ async function handleConnection(ws, request) {
 		releaseAdmission,
 		connectionId: crypto.randomBytes(16).toString("hex"),
 		queue: Promise.resolve(),
+		budget: new StarmapMessageBudget(() => Date.now()),
 		userId: auth.userId,
 		exp: auth.exp,
 		layerId: auth.layerId,
@@ -140,36 +143,51 @@ async function handleConnection(ws, request) {
 	});
 	sendTracking(client, true);
 
-	ws.on("message", function (raw) {
+	ws.on("message", function (raw, isBinary) {
+		if (!isClientAuthorized(client)) return;
+		let message, bytes;
+		try {
+			({ message, bytes } = client.budget.read(raw, isBinary));
+		} catch {
+			ws.close(1008, "Invalid realtime message");
+			return;
+		}
+		if (message.type === "refresh" && client.queuedRefreshToken === message.token) return;
+		if (message.type === "refresh") client.queuedRefreshToken = message.token;
 		enqueueClient(client, async function () {
-			const message = JSON.parse(raw.toString());
-			if (message.type === "scan") {
-				await acceptScanToken(client, message.token, SECRET, (nonce, ttl) =>
-					redis.set(`${SCAN_NONCE_PREFIX}${nonce}`, "used", { NX: true, EX: ttl }));
-				sendTracking(client, true);
-			} else if (message.type === "refresh") {
-				const updated = verifyToken(message.token, SECRET);
-				if (updated.purpose !== "starmap" || updated.userId !== client.userId || updated.layerId !== client.layerId) {
-					throw new Error("invalid refresh authorization");
-				}
-				for (const key of ["exp", "allianceId", "canSeeAllianceShips", "friendlyUserIds", "enemyUserIds", "friendlyAllianceIds",
-					"enemyAllianceIds", "sharedUserIds", "sharedAllianceIds"]) {
-					client[key] = updated[key];
-				}
-				scheduleAuthorizationExpiry(client);
-				for (const [id, enemy] of client.tracking.enemies) {
-					if (!getSpacecraftRelationship(client, enemy).isEnemy) {
-						client.tracking.enemies.delete(id);
+			try {
+				if (message.type === "scan") {
+					await acceptScanToken(client, message.token, SECRET, (nonce, ttl) =>
+						redis.set(`${SCAN_NONCE_PREFIX}${nonce}`, "used", { NX: true, EX: ttl }));
+					sendTracking(client, true);
+				} else if (message.type === "refresh") {
+					const updated = verifyToken(message.token, SECRET);
+					if (updated.purpose !== "starmap" || updated.userId !== client.userId || updated.layerId !== client.layerId) {
+						throw new Error("invalid refresh authorization");
 					}
+					for (const key of ["exp", "allianceId", "canSeeAllianceShips", "friendlyUserIds", "enemyUserIds", "friendlyAllianceIds",
+						"enemyAllianceIds", "sharedUserIds", "sharedAllianceIds"]) {
+						client[key] = updated[key];
+					}
+					scheduleAuthorizationExpiry(client);
+					for (const [id, enemy] of client.tracking.enemies) {
+						if (!getSpacecraftRelationship(client, enemy).isEnemy) {
+							client.tracking.enemies.delete(id);
+						}
+					}
+					client.coverageLoadedAt = 0;
+					await refreshCoverageIfNeeded(client);
+					sendTracking(client, true);
+				} else if (message.type === "resetTracking") {
+					client.tracking.enemies.clear();
+					sendTracking(client, true);
 				}
-				client.coverageLoadedAt = 0;
-				await refreshCoverageIfNeeded(client);
-				sendTracking(client, true);
-			} else if (message.type === "resetTracking") {
-				client.tracking.enemies.clear();
-				sendTracking(client, true);
+			} catch {
+				ws.close(1008, "Realtime authorization rejected");
+			} finally {
+				if (message.type === "refresh" && client.queuedRefreshToken === message.token) client.queuedRefreshToken = null;
 			}
-		});
+		}, bytes);
 	});
 }
 
@@ -621,7 +639,15 @@ function validateTrackedRelationship(client, spacecraft) {
 	}
 }
 
-function enqueueClient(client, task) {
+function enqueueClient(client, task, bytes = 0) {
+	if (!isClientAuthorized(client)) return;
+	let release;
+	try {
+		release = client.budget.reserve(bytes);
+	} catch {
+		client.ws.close(1013, "Realtime queue limit exceeded");
+		return;
+	}
 	client.queue = client.queue.then(async function () {
 		if (isClientAuthorized(client)) {
 			await task();
@@ -630,7 +656,7 @@ function enqueueClient(client, task) {
 		client.tracking.enemies.clear();
 		sendTracking(client, true);
 		console.error("Realtime client update failed:", error.message);
-	});
+	}).finally(release);
 }
 
 function createRedisClient() {
