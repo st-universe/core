@@ -1,6 +1,8 @@
 {% from 'html/macros.twig' import userAvatar, userInfo, contactModeSwitcher, translationSwitcher %}
 
 <form action="pm.php" method="post" name="pmlist" id="pmlist">
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+  <input type="hidden" name="delete_single" id="delete_single" value="0" />
   <input type="hidden" id="formaction" value="1" />
   <input type="hidden" name="move_pm" id="move_pm" value="0" />
   <input type="hidden" name="deletion_mark" id="deletion_mark" value="" />
@@ -77,7 +79,7 @@
                 </a>
                 {% endif %}
                 <input type="checkbox" name="deleted[]" value="{{ postId }}" />
-                <a href="?B_DELETE_PMS=1&pmcat={{ CATEGORY.getId }}&delete_single={{ postId }}"
+                <a href="javascript:void(0);" onclick="deleteSinglePm({{ postId }});"
                   onmouseover="cp('del{{ postId }}','buttons/x2', 'png')"
                   onmouseout="cp('del{{ postId }}','buttons/x1', 'png')">
                   <img src="/assets/buttons/x1.png" name="del{{ postId }}" title="Nachricht löschen" />

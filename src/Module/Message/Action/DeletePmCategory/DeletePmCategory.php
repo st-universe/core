@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeletePmCategory;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -22,6 +23,10 @@ final class DeletePmCategory implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $timestamp = time();
 
         $folder = $this->privateMessageFolderRepository->find($this->deletePmCategoryRequest->getCategoryId());
@@ -43,6 +48,6 @@ final class DeletePmCategory implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
