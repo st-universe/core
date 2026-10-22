@@ -274,6 +274,17 @@ final class StarmapSensorData
             }
         }
 
+        $relationship = $this->getSpacecraftRelationship($row, $user, $canSeeAllianceShips, $relationContext);
+        if (!$reveal && !$relationship['hasDetails']) {
+            $effects = (string) ($row['field_effects'] ?? '');
+            if (str_contains($effects, FieldTypeEffectEnum::NO_SPACECRAFT_COUNT->value)) {
+                return null;
+            }
+            if (str_contains($effects, FieldTypeEffectEnum::DUBIOUS_SPACECRAFT_COUNT->value)) {
+                return ['isDubiousSignature' => true, 'x' => (int) $row['x'], 'y' => (int) $row['y']];
+            }
+        }
+
         return $this->normalizeSpacecraft($row, $user, $canSeeAllianceShips, $relationContext, $reveal);
     }
 

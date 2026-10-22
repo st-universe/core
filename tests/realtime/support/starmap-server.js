@@ -5,7 +5,7 @@ import { EventEmitter } from "node:events";
 import { verifyToken } from "../../../realtime/starmap-token.js";
 import { StarmapContacts } from "../../../realtime/starmap-contacts.js";
 import { StarmapTracking, acceptScanToken } from "../../../realtime/starmap-tracking.js";
-import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship } from "../../../realtime/starmap-visibility.js";
+import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship, isSpacecraftConcealedAtPoint } from "../../../realtime/starmap-visibility.js";
 
 const source = fs.readFileSync(new URL("../../../realtime/starmap-server.js", import.meta.url), "utf8");
 export const secret = "test-realtime-authorization-secret";
@@ -28,7 +28,7 @@ export function loadServer({ getCoverage = async () => null } = {}) {
 		setTimeout: (callback, delay) => { timers.set(++timerId, { callback, at: now + delay }); return timerId; },
 		clearTimeout: id => timers.delete(id),
 		verifyToken, StarmapTracking, acceptScanToken, StarmapContacts,
-		isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship
+		isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship, isSpacecraftConcealedAtPoint
 	});
 	vm.runInContext(source.slice(source.indexOf("async function handleConnection(")), context);
 	return {

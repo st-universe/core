@@ -617,7 +617,7 @@
 				state.scanEnergyCost = Number(data.scanEnergyCost) || 15;
 				const spacecrafts = Array.isArray(data.spacecrafts) ? data.spacecrafts : [];
 				applyRealtimeStaticSpacecrafts(state, spacecrafts);
-				applySensorSpacecrafts(state, state.showSensorContacts ? spacecrafts : []);
+				applySensorSpacecrafts(state, state.showSensorContacts ? withDubiousFields(spacecrafts, data.dubiousFields) : []);
 				updateFieldDetails(state, state.selectedField);
 				scheduleDraw(state);
 				if (state.realtimeSocket && state.realtimeSocket.readyState === 1) {
@@ -689,6 +689,13 @@
 		});
 
 		return keys;
+	}
+
+	function withDubiousFields(spacecrafts, fields) {
+		return [...(spacecrafts || []), ...(fields || []).map(point => ({
+			id: Number.MIN_SAFE_INTEGER + Number(point.x) * 1000000 + Number(point.y),
+			x: point.x, y: point.y, isSensorContact: true, isDubiousSignature: true
+		}))];
 	}
 
 	function applySensorSpacecrafts(state, spacecrafts) {
@@ -830,7 +837,7 @@
 
 		if (message.type === "contactsSnapshot") {
 			state.contactAnimations.clear();
-			applySensorSpacecrafts(state, message.spacecrafts);
+			applySensorSpacecrafts(state, withDubiousFields(message.spacecrafts, message.dubiousFields));
 			applyRealtimeStaticSpacecrafts(state, message.spacecrafts);
 			scheduleDraw(state);
 			return;
@@ -840,7 +847,7 @@
 			state.connectionId = message.connectionId || "";
 			if (Array.isArray(message.spacecrafts)) {
 				state.contactAnimations.clear();
-				applySensorSpacecrafts(state, message.spacecrafts);
+				applySensorSpacecrafts(state, withDubiousFields(message.spacecrafts, message.dubiousFields));
 				applyRealtimeStaticSpacecrafts(state, message.spacecrafts);
 				scheduleDraw(state);
 			}
@@ -855,7 +862,7 @@
 			return;
 		}
 
-		if (message.type === "coverageChanged" && shouldKeepRealtimeConnection(state)) {
+		if ((message.type === "coverageChanged" || message.type === "signatureInterference") && shouldKeepRealtimeConnection(state)) {
 			scheduleRealtimeCoverageRefresh(state);
 			return;
 		}

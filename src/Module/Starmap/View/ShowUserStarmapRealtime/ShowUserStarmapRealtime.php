@@ -106,6 +106,14 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $spacecrafts
         )));
 
+        $dubiousFields = [];
+        foreach ($spacecrafts as $spacecraft) {
+            if ($spacecraft['isDubiousSignature'] ?? false) {
+                $dubiousFields[$spacecraft['x'] . ':' . $spacecraft['y']] = ['x' => $spacecraft['x'], 'y' => $spacecraft['y']];
+            }
+        }
+        $spacecrafts = array_values(array_filter($spacecrafts, static fn (array $spacecraft): bool => !($spacecraft['isDubiousSignature'] ?? false)));
+
         $sources = [];
         foreach ($ranges as $range) {
             $source = $this->spacecraftRepository->find((int) $range['source_id']);
@@ -134,7 +142,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                 'isFriendly' => $spacecraft['isFriendly'],
                 'isCloakedSignature' => $spacecraft['isCloakedSignature'] ?? false
             ], $spacecrafts), self::JSON_FLAGS),
-            json_encode($spacecrafts, self::JSON_FLAGS)
+            json_encode($spacecrafts, self::JSON_FLAGS),
+            json_encode(array_values($dubiousFields), self::JSON_FLAGS)
         );
 
         header('Content-Type: application/json; charset=utf-8');
@@ -143,6 +152,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         echo json_encode([
             'generatedAt' => time(),
             'sensorSources' => $sources,
+            'dubiousFields' => array_values($dubiousFields),
             'scanEnergyCost' => ShowSensorScan::ENERGY_COST_SECTOR_SCAN,
             'token' => $this->tokenFactory->create(
                 $user->getId(),
@@ -187,7 +197,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      *     tachyonKeys: array<string, true>
      * } $coverage
      */
-    private function cacheCoverage(int $userId, int $layerId, array $coverage, string $sources, string $contacts, string $spacecrafts): void
+    private function cacheCoverage(int $userId, int $layerId, array $coverage, string $sources, string $contacts, string $spacecrafts, string $dubiousFields): void
     {
         try {
             $redis = $this->redisFactory->create();
@@ -207,7 +217,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                     'snapshotVersion' => bin2hex(random_bytes(8)),
                     'sources' => json_decode($sources, true, 512, JSON_THROW_ON_ERROR),
                     'contacts' => json_decode($contacts, true, 512, JSON_THROW_ON_ERROR),
-                    'spacecrafts' => json_decode($spacecrafts, true, 512, JSON_THROW_ON_ERROR)
+                    'spacecrafts' => json_decode($spacecrafts, true, 512, JSON_THROW_ON_ERROR),
+                    'dubiousFields' => json_decode($dubiousFields, true, 512, JSON_THROW_ON_ERROR)
                 ], self::JSON_FLAGS)
             );
         } catch (Throwable) {

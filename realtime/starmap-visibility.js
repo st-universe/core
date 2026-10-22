@@ -19,6 +19,10 @@ export function isSpacecraftStaticallyVisible(client, spacecraft) {
 		&& Number(spacecraft.allianceId) === client.allianceId;
 }
 
+export function isSpacecraftConcealedAtPoint(client, spacecraft, point) {
+	return point?.signatureConcealment != null && !getSpacecraftRelationship(client, spacecraft).hasDetails;
+}
+
 export function sanitizeSpacecraftForClient(client, spacecraft) {
 	const relationship = getSpacecraftRelationship(client, spacecraft);
 	if (spacecraft.isCloaked && !relationship.hasDetails && !relationship.hasSharedLiveMapPosition) {

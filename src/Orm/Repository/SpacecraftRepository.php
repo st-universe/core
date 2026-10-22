@@ -691,6 +691,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $rsm->addScalarResult('in_system', 'in_system', 'boolean');
         $rsm->addScalarResult('system_name', 'system_name', 'string');
         $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+        $rsm->addScalarResult('field_effects', 'field_effects', 'string');
         $rsm->addScalarResult('hull', 'hull', 'integer');
         $rsm->addScalarResult('max_hull', 'max_hull', 'integer');
         $rsm->addScalarResult('shield', 'shield', 'integer');
@@ -786,6 +787,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
         $rsm->addScalarResult('in_system', 'in_system', 'boolean');
         $rsm->addScalarResult('system_name', 'system_name', 'string');
         $rsm->addScalarResult('is_cloaked', 'is_cloaked', 'boolean');
+        $rsm->addScalarResult('field_effects', 'field_effects', 'string');
         $rsm->addScalarResult('hull', 'hull', 'integer');
         $rsm->addScalarResult('max_hull', 'max_hull', 'integer');
         $rsm->addScalarResult('shield', 'shield', 'integer');
@@ -894,6 +896,7 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
                 CASE WHEN system_field.id IS NOT NULL THEN parent_location.cy ELSE location.cy END as y,
                 CASE WHEN system_field.id IS NULL THEN false ELSE true END as in_system,
                 systems.name as system_name,
+                field_type.effects::text as field_effects,
                 CASE WHEN COALESCE(cloak_system.mode, 0) >= :cloakMode THEN true ELSE false END as is_cloaked,
                 sc.hull,
                 sp.max_hull,
@@ -917,6 +920,8 @@ final class SpacecraftRepository extends EntityRepository implements SpacecraftR
             ON parent_map.systems_id = system_field.systems_id
             LEFT JOIN stu_location parent_location
             ON parent_location.id = parent_map.id
+            LEFT JOIN stu_map_ftypes field_type
+            ON field_type.id = CASE WHEN system_field.id IS NOT NULL THEN parent_location.field_id ELSE location.field_id END
             LEFT JOIN stu_systems systems
             ON systems.id = system_field.systems_id
             JOIN stu_user u
