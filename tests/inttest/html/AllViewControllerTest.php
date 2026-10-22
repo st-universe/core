@@ -7,6 +7,7 @@ namespace Stu\Html;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Stu\Config\Init;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Control\ViewControllerInterface;
@@ -104,6 +105,10 @@ class AllViewControllerTest extends TwigTestCase
 
         $this->snapshotKey = $key;
         $vars = $this->getSpecificRequestVariables($key) + $this->getGeneralRequestVariables();
+
+        if ($key === 'SPACECRAFT_VIEWS-SHOW_WORMHOLE_RESTRICTIONS') {
+            $this->expectException(AccessViolationException::class);
+        }
 
         $this->renderSnapshot(
             $this->getUserId($key),

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\View\ShowWormholeRestrictions;
 
 use request;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\Component\View\ViewControllerContext;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftUiFactoryInterface;
@@ -20,12 +22,16 @@ final class ShowWormholeRestrictions implements ViewControllerInterface
     public function __construct(
         private WormholeEntryRepositoryInterface $wormholeEntryRepository,
         private SpacecraftLoaderInterface $spacecraftLoader,
-        private SpacecraftUiFactoryInterface $spacecraftUiFactory
+        private SpacecraftUiFactoryInterface $spacecraftUiFactory,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
     public function handle(ViewControllerContext $game): void
     {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
+            throw new AccessViolationException();
+        }
         $userId = $game->getUser()->getId();
 
         $ship = $this->spacecraftLoader->getByIdAndUser(

@@ -12,6 +12,7 @@ use Stu\Component\Building\BuildMenuEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Config\Init;
+use Stu\Exception\AccessViolationException;
 use Stu\Lib\Transfer\TransferTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
@@ -55,6 +56,13 @@ class AllOtherActionsTest extends ActionTestCase
         /** @var ActionControllerInterface */
         $subject = Init::getContainer()
             ->getDefinedImplementationsOf(ActionControllerInterface::class, true)->get($key);
+
+        if (in_array($key, [
+            'SPACECRAFT_ACTIONS-B_ADD_WORMHOLE_RESTRICTION',
+            'SPACECRAFT_ACTIONS-B_DELETE_WORMHOLE_RESTRICTION'
+        ], true)) {
+            $this->expectException(AccessViolationException::class);
+        }
 
         $subject->handle($dic->get(ActionContextFactoryInterface::class)->createActionContext($game));
     }

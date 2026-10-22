@@ -7,8 +7,10 @@ namespace Stu\Module\Spacecraft\Action\AddWormholeRestriction;
 use request;
 use Stu\Component\Ship\Wormhole\WormholeEntryModeEnum;
 use Stu\Component\Ship\Wormhole\WormholeEntryTypeEnum as RestrictionTypeEnum;
+use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Spacecraft\View\ShowWormholeRestrictions\ShowWormholeRestrictions;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -24,12 +26,16 @@ final class AddWormholeRestriction implements ActionControllerInterface
         private WormholeRestrictionRepositoryInterface $wormholeRestrictionRepository,
         private WormholeEntryRepositoryInterface $wormholeEntryRepository,
         private AllianceRepositoryInterface $allianceRepository,
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private GameUserRoleCheckerInterface $gameUserRoleChecker
     ) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
+            throw new AccessViolationException();
+        }
 
         if (!request::has('entryId')) {
             return;
