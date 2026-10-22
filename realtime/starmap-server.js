@@ -273,10 +273,20 @@ function dispatchStatePayload(payload) {
 
 		enqueueClient(client, async function () {
 			await refreshCoverageIfNeeded(client);
-			const covered = isPointCovered(client.coverage, payload.position);
 			const visible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position);
 			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
-			if (!covered && !visible && !staticVisible) {
+			if (!visible && !staticVisible) {
+				const id = Number(payload.spacecraft.id);
+				if (client.tracking.contacts.has(id)) {
+					client.tracking.remove(id);
+					sendJson(client, {
+						type: "spacecraftRemoval",
+						generatedAt: payload.generatedAt,
+						layerId: payload.layerId,
+						spacecraft: { id }
+					});
+					sendTracking(client);
+				}
 				return;
 			}
 
