@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\RenameBoard;
 
 use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceForumPermission;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -16,7 +17,8 @@ final class RenameBoard implements ActionControllerInterface
 
     public function __construct(
         private RenameBoardRequestInterface $renameBoardRequest,
-        private AllianceBoardRepositoryInterface $allianceBoardRepository
+        private AllianceBoardRepositoryInterface $allianceBoardRepository,
+        private AllianceForumPermission $allianceForumPermission
     ) {}
 
     #[\Override]
@@ -30,6 +32,8 @@ final class RenameBoard implements ActionControllerInterface
         if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
+
+        $this->allianceForumPermission->assertCanManageForum($context->getUser(), $board->getAlliance());
 
         $context->setView(Boards::VIEW_IDENTIFIER);
 

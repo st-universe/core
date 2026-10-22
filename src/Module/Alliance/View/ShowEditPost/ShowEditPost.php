@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\View\ShowEditPost;
 
 use request;
 use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceForumPermission;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
@@ -14,7 +15,10 @@ final class ShowEditPost implements ViewControllerInterface
 {
     public const string VIEW_IDENTIFIER = 'SHOW_EDIT_ALLY_POST';
 
-    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
+    public function __construct(
+        private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        private AllianceForumPermission $allianceForumPermission
+    ) {}
 
     #[\Override]
     public function handle(ViewControllerContext $game): void
@@ -31,6 +35,8 @@ final class ShowEditPost implements ViewControllerInterface
         if ($board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
+
+        $this->allianceForumPermission->assertCanEditPost($game->getUser(), $post);
 
         $game->setViewTemplate('html/alliance/editallypost.twig');
         $game->appendNavigationPart(sprintf('alliance.php?id=%d', $alliance->getId()), _('Allianz'));

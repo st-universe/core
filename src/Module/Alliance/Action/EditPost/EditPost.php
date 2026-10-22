@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\EditPost;
 
 use request;
 use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceForumPermission;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -15,7 +16,10 @@ final class EditPost implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_EDIT_POSTING';
 
-    public function __construct(private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository) {}
+    public function __construct(
+        private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        private AllianceForumPermission $allianceForumPermission
+    ) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
@@ -30,6 +34,8 @@ final class EditPost implements ActionControllerInterface
         if ($post->getBoard()->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
+
+        $this->allianceForumPermission->assertCanEditPost($context->getUser(), $post);
 
         $context->setView(Topic::VIEW_IDENTIFIER);
 

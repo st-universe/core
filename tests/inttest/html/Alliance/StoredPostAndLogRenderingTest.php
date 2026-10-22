@@ -76,6 +76,12 @@ final class StoredPostAndLogRenderingTest extends TwigTestCase
 
         $context = $this->viewContext(102, ModuleEnum::ALLIANCE);
         request::setMockVars(['pid' => $post->getId()]);
+        try {
+            $dic->get(ShowEditPost::class)->handle($context);
+            self::fail('Fremde Beiträge dürfen nicht im Editor geöffnet werden');
+        } catch (AccessViolationException) {
+        }
+        $context = $this->viewContext(101, ModuleEnum::ALLIANCE);
         $dic->get(ShowEditPost::class)->handle($context);
         $document = $this->render('html/alliance/editallypost.twig');
         self::assertSame(0, $document->getElementsByTagName('img')->length);
