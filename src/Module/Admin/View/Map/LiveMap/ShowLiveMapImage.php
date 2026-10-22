@@ -7,7 +7,10 @@ namespace Stu\Module\Admin\View\Map\LiveMap;
 use GdImage;
 use InvalidArgumentException;
 use request;
+use RuntimeException;
+use SplFileObject;
 use Stu\Component\Map\EncodedMapInterface;
+use Stu\Lib\Cache\PrivateCacheDirectory;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,7 +30,8 @@ final class ShowLiveMapImage implements ViewControllerInterface
         private MapRepositoryInterface $mapRepository,
         private LayerRepositoryInterface $layerRepository,
         private StuConfigInterface $config,
-        private EncodedMapInterface $encodedMap
+        private EncodedMapInterface $encodedMap,
+        private PrivateCacheDirectory $cacheDirectory
     ) {}
 
     #[\Override]
@@ -49,33 +53,28 @@ final class ShowLiveMapImage implements ViewControllerInterface
 
     private function ensureCacheFile(Layer $layer, string $cachePath, bool $refresh): void
     {
-        $lockHandle = fopen($cachePath . '.lock', 'c');
-        if ($lockHandle !== false) {
-            flock($lockHandle, LOCK_EX);
+        $lock = $this->cacheDirectory->open(basename($cachePath) . '.lock');
+        if (!$lock->flock(LOCK_EX)) {
+            throw new RuntimeException('Kartencache kann nicht gesperrt werden');
         }
-
+        $temporary = null;
         try {
-            if (
-                !$refresh
-                && is_file($cachePath)
-                && filemtime($cachePath) !== false
-                && filemtime($cachePath) > time() - self::CACHE_TTL
-            ) {
+            $cachePath = $this->cacheDirectory->path(basename($cachePath));
+            if (!$refresh && is_file($cachePath) && filemtime($cachePath) > time() - self::CACHE_TTL) {
                 return;
             }
-
-            $tmpPath = $cachePath . '.' . getmypid() . '.tmp';
-            $this->renderLayerImage($layer, $tmpPath);
-            rename($tmpPath, $cachePath);
+            $temporary = $this->cacheDirectory->createTemporary(basename($cachePath));
+            $this->renderLayerImage($layer, $temporary);
+            $this->cacheDirectory->replace($temporary, basename($cachePath));
         } finally {
-            if ($lockHandle !== false) {
-                flock($lockHandle, LOCK_UN);
-                fclose($lockHandle);
+            if ($temporary !== null && is_file($temporary->getPathname())) {
+                unlink($this->cacheDirectory->path($temporary->getFilename()));
             }
+            $lock->flock(LOCK_UN);
         }
     }
 
-    private function renderLayerImage(Layer $layer, string $targetPath): void
+    private function renderLayerImage(Layer $layer, SplFileObject $targetFile): void
     {
         $width = $layer->getWidth() * self::CELL_SIZE;
         $height = $layer->getHeight() * self::CELL_SIZE;
@@ -102,7 +101,7 @@ final class ShowLiveMapImage implements ViewControllerInterface
             $this->renderMapField($image, $layer, $map, $tileCache);
         }
 
-        imagepng($image, $targetPath, 6);
+        $this->saveImage($image, $targetFile);
     }
 
     /**
@@ -154,24 +153,45 @@ final class ShowLiveMapImage implements ViewControllerInterface
         return $image;
     }
 
+    private function saveImage(GdImage $image, SplFileObject $targetFile): void
+    {
+        $stream = fopen('php://temp', 'w+b');
+        if ($stream === false) {
+            throw new RuntimeException('Kartengrafik kann nicht zwischengespeichert werden');
+        }
+        try {
+            if (!imagepng($image, $stream, 6) || !rewind($stream)) {
+                throw new RuntimeException('Kartengrafik kann nicht geschrieben werden');
+            }
+            while (!feof($stream)) {
+                $chunk = fread($stream, 65536);
+                if ($chunk === false || ($chunk !== '' && $targetFile->fwrite($chunk) !== strlen($chunk))) {
+                    throw new RuntimeException('Kartengrafik kann nicht vollständig geschrieben werden');
+                }
+            }
+        } finally {
+            fclose($stream);
+        }
+    }
+
     private function sendImage(string $cachePath): never
     {
+        $file = $this->cacheDirectory->open(basename($cachePath));
         header('Content-Type: image/png');
         header('Cache-Control: private, max-age=300');
-        header('Content-Length: ' . filesize($cachePath));
-        readfile($cachePath);
+        header('Content-Length: ' . $file->fstat()['size']);
+        $file->fpassthru();
         exit;
     }
 
     private function getCachePath(Layer $layer): string
     {
-        return sprintf(
-            '%s/stu-admin-live-map-layer-base-v2-%d-%dx%d.png',
-            sys_get_temp_dir(),
+        return $this->cacheDirectory->path(sprintf(
+            'stu-admin-live-map-layer-base-v2-%d-%dx%d.png',
             $layer->getId(),
             $layer->getWidth(),
             $layer->getHeight()
-        );
+        ));
     }
 
     private function getMapGraphicPath(Layer $layer, int $fieldType): string
