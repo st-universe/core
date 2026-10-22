@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "redis";
 import { WebSocketServer } from "ws";
-import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship } from "./starmap-visibility.js";
+import { isSpacecraftStaticallyVisible, sanitizeSpacecraftForClient, getSpacecraftRelationship, isSpacecraftConcealedAtPoint } from "./starmap-visibility.js";
 import { starmapChannels } from "./starmap-channels.js";
 import { verifyToken } from "./starmap-token.js";
 import { realtimeSecret } from "./starmap-secret.js";
@@ -115,6 +115,7 @@ async function handleConnection(ws, request) {
 		generatedAt: Math.floor(Date.now() / 1000),
 		layerId: client.layerId,
 		connectionId: client.connectionId,
+		dubiousFields: client.coverage.dubiousFields || [],
 		spacecrafts: (client.coverage.spacecrafts || []).map(spacecraft => client.contacts.serialize(spacecraft)),
 		coverageCount: client.coverage.sourceCount,
 		coverageFieldCount: client.coverage.fieldCount,
@@ -223,8 +224,10 @@ function dispatchPayload(rawPayload) {
 			const toVisible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.to);
 			const fromCovered = isSpacecraftSensorCoveredAtPoint(client, payload.spacecraft, payload.from);
 			const toCovered = isSpacecraftSensorCoveredAtPoint(client, payload.spacecraft, payload.to);
-			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
+			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft)
+				&& !isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.to || payload.position);
 			if (!fromVisible && !toVisible && !staticVisible) {
+				removeConcealedContact(client, payload);
 				return;
 			}
 
@@ -238,9 +241,10 @@ function dispatchPayload(rawPayload) {
 				type: "spacecraftMovement",
 				generatedAt: payload.generatedAt,
 				layerId: payload.layerId,
-				direction: payload.direction,
-				from: payload.from,
-				to: payload.to,
+				direction: isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.from)
+					|| isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.to) ? null : payload.direction,
+				from: fromVisible || staticVisible ? { x: payload.from.x, y: payload.from.y } : null,
+				to: toVisible || staticVisible ? { x: payload.to.x, y: payload.to.y } : null,
 				fromVisible,
 				toVisible,
 				fromCovered,
@@ -282,8 +286,10 @@ function dispatchStatePayload(payload) {
 		enqueueClient(client, async function () {
 			await refreshCoverageIfNeeded(client);
 			const visible = isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position);
-			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft);
+			const staticVisible = isSpacecraftStaticallyVisible(client, payload.spacecraft)
+				&& !isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.to || payload.position);
 			if (!visible && !staticVisible) {
+				removeConcealedContact(client, payload);
 				const id = Number(payload.spacecraft.id);
 				if (client.tracking.contacts.has(id)) {
 					client.tracking.remove(id);
@@ -330,6 +336,10 @@ function dispatchRemovalPayload(payload) {
 
 		enqueueClient(client, async function () {
 			await refreshCoverageIfNeeded(client);
+			if (isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.position)) {
+				removeConcealedContact(client, payload);
+				return;
+			}
 			if (!isSpacecraftVisibleAtPoint(client, payload.spacecraft, payload.position)) {
 				if (!isSpacecraftStaticallyVisible(client, payload.spacecraft)) {
 					return;
@@ -366,7 +376,7 @@ async function refreshCoverageIfNeeded(client) {
 			if (!visible.has(id)) client.contacts.forget(id);
 		}
 		for (const spacecraft of coverage.spacecrafts || []) client.contacts.serialize(spacecraft);
-		sendJson(client, { type: "contactsSnapshot", spacecrafts: client.contacts.snapshot() });
+		sendJson(client, { type: "contactsSnapshot", spacecrafts: client.contacts.snapshot(), dubiousFields: coverage.dubiousFields || [] });
 	}
 	client.coverage = coverage;
 	client.coverageLoadedAt = Date.now();
@@ -395,6 +405,7 @@ async function loadCoverage(userId, layerId) {
 			sources: Array.isArray(coverage.sources) ? coverage.sources : [],
 			contacts: Array.isArray(coverage.contacts) ? coverage.contacts : [],
 			spacecrafts: Array.isArray(coverage.spacecrafts) ? coverage.spacecrafts : [],
+			dubiousFields: Array.isArray(coverage.dubiousFields) ? coverage.dubiousFields : [],
 			runs: normalizeRuns(coverage.runs),
 			tachyonRuns: normalizeRuns(coverage.tachyonRuns),
 			sourceCount: Number(coverage.sourceCount) || 0,
@@ -461,6 +472,7 @@ function isPointInRuns(runs, point) {
 }
 
 function isSpacecraftVisibleAtPoint(client, spacecraft, point) {
+	if (isSpacecraftConcealedAtPoint(client, spacecraft, point)) return false;
 	if (Number(spacecraft.userId) === client.userId) {
 		return true;
 	}
@@ -472,6 +484,7 @@ function isSpacecraftVisibleAtPoint(client, spacecraft, point) {
 }
 
 function isSpacecraftSensorCoveredAtPoint(client, spacecraft, point) {
+	if (isSpacecraftConcealedAtPoint(client, spacecraft, point)) return false;
 	return spacecraft.isCloaked
 		? isPointTachyonCovered(client.coverage, point)
 		: isPointCovered(client.coverage, point);
@@ -509,13 +522,25 @@ function sendTracking(client, force = false) {
 	const identified = client.tracking.identifiedIds();
 	if (client.contacts.resetRecognition(identified) || client.contacts.changed) {
 		client.contacts.changed = false;
-		sendJson(client, { type: "contactsSnapshot", spacecrafts: client.contacts.snapshot() });
+		sendJson(client, { type: "contactsSnapshot", spacecrafts: client.contacts.snapshot(), dubiousFields: client.coverage.dubiousFields || [] });
 	}
 	const spacecraftIds = identified.map(id => client.contacts.handles.get(id)).filter(Number.isFinite);
 	const version = JSON.stringify(spacecraftIds);
 	if (force || client.trackingVersion !== version) {
 		client.trackingVersion = version;
 		sendJson(client, { type: "tracking", spacecraftIds });
+	}
+}
+
+function removeConcealedContact(client, payload) {
+	if (!isSpacecraftConcealedAtPoint(client, payload.spacecraft, payload.to || payload.position)) return;
+	const id = Number(payload.spacecraft.id);
+	const handle = client.contacts.forget(id);
+	client.tracking.remove(id);
+	if (handle !== undefined) sendJson(client, { type: "spacecraftRemoval", layerId: payload.layerId, spacecraft: { id: handle } });
+	const point = payload.to || payload.position;
+	if (point?.signatureConcealment === "dubious" && isPointCovered(client.coverage, point)) {
+		sendJson(client, { type: "signatureInterference" });
 	}
 }
 

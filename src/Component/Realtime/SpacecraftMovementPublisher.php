@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
@@ -56,11 +57,13 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
                 'direction' => $direction->value,
                 'from' => [
                     'x' => $currentMap['x'],
-                    'y' => $currentMap['y']
+                    'y' => $currentMap['y'],
+                    'signatureConcealment' => $currentMap['signatureConcealment']
                 ],
                 'to' => [
                     'x' => $nextMap['x'],
-                    'y' => $nextMap['y']
+                    'y' => $nextMap['y'],
+                    'signatureConcealment' => $nextMap['signatureConcealment']
                 ],
                 'spacecraft' => $this->normalizeSpacecraft($spacecraft, $nextMap['x'], $nextMap['y'])
             ], self::JSON_FLAGS);
@@ -99,7 +102,8 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
                 'layerId' => $map['layerId'],
                 'position' => [
                     'x' => $map['x'],
-                    'y' => $map['y']
+                    'y' => $map['y'],
+                    'signatureConcealment' => $map['signatureConcealment']
                 ],
                 'spacecraft' => [
                     'id' => $spacecraft->getId(),
@@ -145,7 +149,8 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
                 'layerId' => $map['layerId'],
                 'position' => [
                     'x' => $map['x'],
-                    'y' => $map['y']
+                    'y' => $map['y'],
+                    'signatureConcealment' => $map['signatureConcealment']
                 ],
                 'spacecraft' => $this->normalizeSpacecraft($spacecraft, $map['x'], $map['y'])
             ], self::JSON_FLAGS);
@@ -200,7 +205,7 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
     }
 
     /**
-     * @return null|array{layerId: int, x: int, y: int}
+     * @return null|array{layerId: int, x: int, y: int, signatureConcealment: ?string}
      */
     private function normalizeMapLocation(Location $location): ?array
     {
@@ -216,7 +221,9 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
         return [
             'layerId' => $layer->getId(),
             'x' => $map->getX(),
-            'y' => $map->getY()
+            'y' => $map->getY(),
+            'signatureConcealment' => $map->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_SPACECRAFT_COUNT)
+                ? 'hidden' : ($map->getFieldType()->hasEffect(FieldTypeEffectEnum::DUBIOUS_SPACECRAFT_COUNT) ? 'dubious' : null)
         ];
     }
 

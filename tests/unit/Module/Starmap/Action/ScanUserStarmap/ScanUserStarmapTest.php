@@ -181,6 +181,26 @@ class ScanUserStarmapTest extends StuTestCase
         self::assertFalse($scanned['isEnemy']);
     }
 
+    public function testPassiveFeedsConcealFieldContactsButAuthorizedScansStillWork(): void
+    {
+        $this->mapRepository->shouldReceive('getLssBlockadeLocations')->andReturn([]);
+        $coverage = $this->sensorData->buildSensorCoverage($this->layer, [$this->range()]);
+        $relations = $this->sensorData->getRelationContext($this->user);
+        foreach (['NO_SPACECRAFT_COUNT', 'DUBIOUS_SPACECRAFT_COUNT'] as $effect) {
+            $row = $this->contact(100, 7) + ['field_effects' => '["' . $effect . '"]'];
+            $passive = $this->sensorData->normalizeVisibleSpacecraft($row, $this->user, false, $relations, $coverage);
+            if ($effect === 'NO_SPACECRAFT_COUNT') {
+                self::assertNull($passive);
+            } else {
+                self::assertSame(['isDubiousSignature' => true, 'x' => 5, 'y' => 5], $passive);
+            }
+            $own = $row;
+            $own['user_id'] = 1;
+            self::assertSame(100, $this->sensorData->normalizeVisibleSpacecraft($own, $this->user, false, $relations, $coverage)['id']);
+            self::assertSame('Schiff 100', $this->sensorData->normalizeVisibleSpacecraft($row, $this->user, false, $relations, $coverage, true)['name']);
+        }
+    }
+
     private function prepareRanges(array $blockers = []): void
     {
         $this->spacecraftRepository->shouldReceive('getUserStarmapRealtimeSensorRanges')->with(1, 2)->twice()->andReturn([$this->range()]);
