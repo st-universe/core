@@ -26,9 +26,14 @@ class AddBoardTest extends StuTestCase
 
     private AddBoard $subject;
 
+    private ?string $previousRequestMethod;
+
     #[\Override]
     protected function setUp(): void
     {
+        $this->previousRequestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
         $this->addBoardRequest = $this->mock(AddBoardRequestInterface::class);
         $this->allianceBoardRepository = $this->mock(AllianceBoardRepositoryInterface::class);
         $this->allianceJobManager = $this->mock(AllianceJobManagerInterface::class);
@@ -38,6 +43,17 @@ class AddBoardTest extends StuTestCase
             $this->allianceBoardRepository,
             $this->allianceJobManager
         );
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        if ($this->previousRequestMethod === null) {
+            unset($_SERVER['REQUEST_METHOD']);
+        } else {
+            $_SERVER['REQUEST_METHOD'] = $this->previousRequestMethod;
+        }
+        parent::tearDown();
     }
 
     public function testHandleThrowsIfUserHasNoAlliance(): void
@@ -168,9 +184,9 @@ class AddBoardTest extends StuTestCase
         $this->subject->handle($context);
     }
 
-    public function testPerformSessionCheckReturnsFalse(): void
+    public function testPerformSessionCheckReturnsTrue(): void
     {
-        $this->assertFalse(
+        $this->assertTrue(
             $this->subject->performSessionCheck()
         );
     }

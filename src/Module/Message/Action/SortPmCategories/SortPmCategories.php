@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\SortPmCategories;
 
+use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
-use Stu\Module\Message\View\Noop\Noop;
+use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class SortPmCategories implements ActionControllerInterface
@@ -19,7 +20,11 @@ final class SortPmCategories implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
-        $context->setView(Noop::VIEW_IDENTIFIER);
+        if (!request::isPost()) {
+            return;
+        }
+
+        $context->setView(ShowPmCategoryList::VIEW_IDENTIFIER);
 
         foreach ($this->sortPmCategoriesRequest->getCategoryIds() as $key => $value) {
             $cat = $this->privateMessageFolderRepository->find((int) $value);
@@ -35,6 +40,6 @@ final class SortPmCategories implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

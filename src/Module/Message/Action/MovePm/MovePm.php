@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\MovePm;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -18,6 +19,10 @@ final class MovePm implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $userId = $context->getUser()->getId();
 
         $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
@@ -46,6 +51,6 @@ final class MovePm implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

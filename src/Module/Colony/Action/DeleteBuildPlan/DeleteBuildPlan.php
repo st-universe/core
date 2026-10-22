@@ -20,11 +20,15 @@ final class DeleteBuildPlan implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $userId = $context->getUser()->getId();
 
         $context->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $spacecraftBuildplan = $this->spacecraftBuildplanRepository->find(request::getIntFatal('planid'));
+        $spacecraftBuildplan = $this->spacecraftBuildplanRepository->find(request::postIntFatal('planid'));
         if (
             $spacecraftBuildplan === null
             || $spacecraftBuildplan->getUserId() !== $userId
@@ -43,6 +47,6 @@ final class DeleteBuildPlan implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

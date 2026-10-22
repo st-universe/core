@@ -1,4 +1,7 @@
 <script defer="defer">
+    if (document.forms.pmlist) {
+      document.forms.pmlist.elements.sstr.value = "{{ SESSIONSTRING }}";
+    }
     var pmCategoryList = Sortable.create($('catlist'), {
       tag: 'li',
       onUpdate: updateCategoryOrder,

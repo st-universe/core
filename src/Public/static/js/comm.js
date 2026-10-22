@@ -19,7 +19,11 @@ function changeCategoryName() {
 		return;
 	}
 	catid = document.forms['editcat'].elements['pmcat'].value;
-	ajax_update('catlist', '/pm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat=' + catid + '&' + Form.Element.serialize('catname'));
+	new Ajax.Updater('catlist', '/pm.php', {
+		method: 'post',
+		parameters: { B_EDIT_PMCATEGORY_NAME: 1, pmcat: catid, catname: catname, sstr: document.forms['editcat'].elements['sstr'].value },
+		evalScripts: true
+	});
 	hidePopup();
 }
 
@@ -122,7 +126,11 @@ function deletePostingComment(knId, commentId) {
 	ajax_update('kncomments', `communication.php?B_DELETE_COMMENT=1&knid=${knId}&commentid=${commentId}`);
 }
 function updateCategoryOrder() {
-	ajax_update(false, '/pm.php?B_PMCATEGORY_SORT=1&catlist=' + pmCategoryList.toArray().join(','));
+	new Ajax.Updater('catlist', '/pm.php', {
+		method: 'post',
+		parameters: { B_PMCATEGORY_SORT: 1, catlist: pmCategoryList.toArray().join(','), sstr: document.querySelector('#catlist [data-pm-category-token]').dataset.pmCategoryToken },
+		evalScripts: true
+	});
 }
 function movePm(pmId) {
 	$('move_pm').value = pmId;
