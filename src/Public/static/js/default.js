@@ -426,7 +426,12 @@ function initTranslations() {
 			/\[translate\]([\s\S]*?)\[translation\]([\s\S]*?)\[\/translate\]/g;
 
 		let newContent = content.replace(regex, function (match, p1, p2) {
-			return `<span class="translatable" data-original="${p1}" data-translation="${p2}">${p1}</span>`;
+			const translation = document.createElement("span");
+			translation.classList.add("translatable");
+			translation.setAttribute("data-original", p1);
+			translation.setAttribute("data-translation", p2);
+			translation.innerHTML = p1;
+			return translation.outerHTML;
 		});
 
 		spanElement.innerHTML = newContent;

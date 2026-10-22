@@ -10,5 +10,8 @@
   "dependencies": {
     "redis": "^6.0.0",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3"
   }
 }
