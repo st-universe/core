@@ -103,7 +103,7 @@
         </tr>
         {% endif %}
         <tr>
-          <td colspan="3">{{ DATA.getText|nl2br|bbcode }}</td>
+          <td colspan="3">{{ DATA.getText|bbcode|nl2br }}</td>
         </tr>
       </table>
       {% if not loop.last %}

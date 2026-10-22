@@ -133,7 +133,7 @@ class TwigHelper
         $stuDateFilter = new TwigFilter('stuDate', fn (int $value): string => $this->stuTime->transformToStuDate($value));
         $this->environment->addFilter($stuDateFilter);
 
-        $nl2brFilter = new TwigFilter('nl2br', fn (string $value): string => nl2br($value));
+        $nl2brFilter = new TwigFilter('nl2br', fn (string $value): string => nl2br($value), ['preserves_safety' => ['html']]);
         $this->environment->addFilter($nl2brFilter);
 
         $htmlSafeFilter = new TwigFilter('htmlSafe', fn (string $text): string => htmlspecialchars($text));
