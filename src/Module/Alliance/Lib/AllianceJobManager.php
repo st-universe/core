@@ -29,6 +29,17 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     }
 
     #[\Override]
+    public function joinAlliance(User $user, Alliance $alliance): void
+    {
+        if ($user->getAlliance() !== null) {
+            throw new AccessViolationException();
+        }
+
+        $this->allianceMemberJobRepository->truncateByUser($user->getId());
+        $user->setAlliance($alliance);
+    }
+
+    #[\Override]
     public function assignUserToJob(User $user, AllianceJob $job): void
     {
         $existing = $this->allianceMemberJobRepository->getByUserAndJob($user, $job->getId());
@@ -71,20 +82,16 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     #[\Override]
     public function hasUserJob(User $user, Alliance $alliance): bool
     {
-        $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
-
-        foreach ($assignments as $assignment) {
-            if ($assignment->getJob()->getAlliance()->getId() === $alliance->getId()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getUserJobs($user, $alliance) !== [];
     }
 
     #[\Override]
     public function getUserJobs(User $user, Alliance $alliance): array
     {
+        if ($user->getAlliance()?->getId() !== $alliance->getId()) {
+            return [];
+        }
+
         $assignments = $this->allianceMemberJobRepository->getByUser($user->getId());
         $jobs = [];
 

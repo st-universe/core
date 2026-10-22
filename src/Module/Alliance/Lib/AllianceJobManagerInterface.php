@@ -13,6 +13,8 @@ interface AllianceJobManagerInterface
 {
     public function assertUserCanManageMember(User $actor, User $target, Alliance $alliance): void;
 
+    public function joinAlliance(User $user, Alliance $alliance): void;
+
     public function assignUserToJob(User $user, AllianceJob $job): void;
 
     public function removeUserFromJob(User $user, AllianceJob $job): void;
