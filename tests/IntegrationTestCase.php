@@ -22,6 +22,7 @@ use Stu\Config\Init;
 use Stu\Config\StuContainer;
 use Stu\Lib\Component\ComponentRegistrationInterface;
 use Stu\Lib\Session\SessionInterface;
+use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Lib\Session\SessionStringFactoryInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\BenchmarkResultInterface;
@@ -71,10 +72,6 @@ abstract class IntegrationTestCase extends StuTestCase
 
     private function setupTestSession(): void
     {
-        $dic = $this->getContainer();
-
-        self::$testSession ??= new TestSession($dic->get(UserRepositoryInterface::class));
-        $dic->setAdditionalService(SessionInterface::class, self::$testSession);
         self::$testSession->getUser()?->setSessiondata('');
     }
 
@@ -195,6 +192,7 @@ abstract class IntegrationTestCase extends StuTestCase
             $em = $this->getContainer()->get(EntityManagerInterface::class);
             $em->reset();
             self::$testSession?->setUser(null);
+            $this->getContainer()->get(SessionStorageInterface::class)->reset();
 
             $this->dropSchema();
             $this->initializeSchemaAndTestData();
@@ -289,6 +287,8 @@ abstract class IntegrationTestCase extends StuTestCase
     {
         if (self::$INTTEST_CONTAINER === null) {
             self::$INTTEST_CONTAINER = Init::getContainer(ConfigStageEnum::INTEGRATION_TEST, true);
+            self::$testSession ??= new TestSession(self::$INTTEST_CONTAINER->get(UserRepositoryInterface::class));
+            self::$INTTEST_CONTAINER->set(SessionInterface::class, self::$testSession);
             self::$INTTEST_CONTAINER->set(AssetVersioningInterface::class, new class () implements AssetVersioningInterface {
                 public function rewrite(string $html): string
                 {
