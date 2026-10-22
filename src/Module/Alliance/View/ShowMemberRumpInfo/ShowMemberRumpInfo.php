@@ -48,15 +48,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
             return;
         }
 
-        if (
-            !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::SUCCESSOR)
-            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::DIPLOMATIC)
-            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::MANAGE_JOBS)
-            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_COLONIES)
-            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_MEMBER_DATA)
-            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_SHIPS)
-            && !$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_ALLIANCE_STORAGE)
-        ) {
+        if (!$this->allianceJobManager->hasUserPermission($user, $memberAlliance, AllianceJobPermissionEnum::VIEW_SHIPS)) {
             return;
         }
 
