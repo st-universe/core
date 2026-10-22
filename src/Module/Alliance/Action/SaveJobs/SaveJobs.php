@@ -59,6 +59,25 @@ final class SaveJobs implements ActionControllerInterface
             $existingJobs[$job->getId()] = $job;
         }
 
+        foreach ($jobsData as $jobData) {
+            $jobId = $jobData['id'] ?? null;
+            if ($jobId !== null && isset($existingJobs[$jobId])
+                && $existingJobs[$jobId]->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {
+                continue;
+            }
+
+            $permissions = $jobData['permissions'] ?? [];
+            if (!is_array($permissions)) {
+                throw new AccessViolationException();
+            }
+
+            foreach ($permissions as $permissionValue) {
+                if (!is_int($permissionValue) || !AllianceJobPermissionEnum::tryFrom($permissionValue)?->isEditable()) {
+                    throw new AccessViolationException();
+                }
+            }
+        }
+
         $processedJobIds = [];
 
         foreach ($jobsData as $jobData) {
