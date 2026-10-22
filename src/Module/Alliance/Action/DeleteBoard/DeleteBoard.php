@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteBoard;
 
 use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceForumPermission;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -14,7 +15,11 @@ final class DeleteBoard implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DELETE_BOARD';
 
-    public function __construct(private DeleteBoardRequestInterface $deleteBoardRequest, private AllianceBoardRepositoryInterface $allianceBoardRepository) {}
+    public function __construct(
+        private DeleteBoardRequestInterface $deleteBoardRequest,
+        private AllianceBoardRepositoryInterface $allianceBoardRepository,
+        private AllianceForumPermission $allianceForumPermission
+    ) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
@@ -25,6 +30,8 @@ final class DeleteBoard implements ActionControllerInterface
         if ($board === null || $board->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
+
+        $this->allianceForumPermission->assertCanManageForum($context->getUser(), $board->getAlliance());
 
         $this->allianceBoardRepository->delete($board);
 

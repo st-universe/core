@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\TopicSettings;
 
 use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceForumPermission;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
@@ -15,7 +16,8 @@ final class TopicSettings implements ViewControllerInterface
 
     public function __construct(
         private TopicSettingsRequestInterface $topicSettingsRequest,
-        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        private AllianceForumPermission $allianceForumPermission
     ) {}
 
     #[\Override]
@@ -28,6 +30,8 @@ final class TopicSettings implements ViewControllerInterface
         if ($topic === null || $topic->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
+
+        $this->allianceForumPermission->assertCanManageForum($game->getUser(), $topic->getAlliance());
 
         $game->setPageTitle(_('Thema bearbeiten'));
         $game->setMacroInAjaxWindow('html/alliance/alliancetopicsettings.twig');

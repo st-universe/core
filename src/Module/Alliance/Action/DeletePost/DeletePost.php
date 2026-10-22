@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\DeletePost;
 
 use request;
 use Stu\Exception\AccessViolationException;
+use Stu\Module\Alliance\Lib\AllianceForumPermission;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
@@ -19,7 +20,8 @@ final class DeletePost implements ActionControllerInterface
 
     public function __construct(
         private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+        private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        private AllianceForumPermission $allianceForumPermission
     ) {}
 
     #[\Override]
@@ -35,6 +37,8 @@ final class DeletePost implements ActionControllerInterface
         if ($post->getBoard()->getAlliance()->getId() !== $alliance?->getId()) {
             throw new AccessViolationException();
         }
+
+        $this->allianceForumPermission->assertCanManageForum($context->getUser(), $post->getBoard()->getAlliance());
 
         $postcount = $post->getTopic()->getPostCount();
         $this->allianceBoardPostRepository->delete($post);
