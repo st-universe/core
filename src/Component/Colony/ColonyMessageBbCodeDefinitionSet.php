@@ -8,7 +8,6 @@ use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
 use JBBCode\validators\CssColorValidator;
-use Stu\Lib\StuBbCodeImageValidator;
 
 final class ColonyMessageBbCodeDefinitionSet implements CodeDefinitionSet
 {
@@ -35,11 +34,8 @@ final class ColonyMessageBbCodeDefinitionSet implements CodeDefinitionSet
                 ->setUseOption(true)
                 ->setOptionValidator(new CssColorValidator())
                 ->build(),
-            new CodeDefinitionBuilder(
-                'img',
-                '<img src="{param}" style="max-height: 100%;max-width:100%;" />'
-            )
-                ->setBodyValidator(new StuBbCodeImageValidator())
+            new CodeDefinitionBuilder('img', '{param}')
+                ->setParseContent(false)
                 ->build(),
         ];
 
