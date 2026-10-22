@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\CreateTutorials;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\TutorialStepRepositoryInterface;
@@ -18,6 +19,10 @@ final class CreateTutorials implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $user = $context->getUser();
 
         $this->userTutorialRepository->truncateByUser($user);
@@ -40,6 +45,6 @@ final class CreateTutorials implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

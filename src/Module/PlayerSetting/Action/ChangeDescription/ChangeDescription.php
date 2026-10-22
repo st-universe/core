@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeDescription;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -17,6 +18,10 @@ final class ChangeDescription implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $value = $this->changeDescriptionRequest->getDescription();
 
         $user = $context->getUser();
@@ -31,6 +36,6 @@ final class ChangeDescription implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

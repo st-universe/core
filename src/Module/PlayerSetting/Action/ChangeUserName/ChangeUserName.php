@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 
 use JBBCode\Parser;
+use request;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -19,6 +20,10 @@ final class ChangeUserName implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $text = $this->changeUserNameRequest->getName();
 
         if (!CleanTextUtils::checkBBCode($text)) {
@@ -70,6 +75,6 @@ final class ChangeUserName implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

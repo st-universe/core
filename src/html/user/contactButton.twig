@@ -1,4 +1,4 @@
 <span id="{{ div }}">
     {% include 'html/user/contactListModeSelector.twig' %}
-    <input type="button" class="button" value="+ Kontakt" onclick="addUserContact('{{ div }}',{{ userId }})" />
+    <input type="button" class="button" value="+ Kontakt" onclick="addUserContact('{{ div }}',{{ userId }}, '{{ SESSIONSTRING }}')" />
 </span>

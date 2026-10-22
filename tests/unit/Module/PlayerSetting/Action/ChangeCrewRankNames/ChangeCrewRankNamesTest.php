@@ -23,9 +23,17 @@ final class ChangeCrewRankNamesTest extends ActionControllerTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $_SERVER['REQUEST_METHOD'] = 'POST';
 
         $this->userCrewRankRepository = $this->mock(UserCrewRankRepositoryInterface::class);
         $this->subject = new ChangeCrewRankNames($this->userCrewRankRepository);
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        unset($_SERVER['REQUEST_METHOD']);
+        parent::tearDown();
     }
 
     public function testRejectsInvalidRankName(): void

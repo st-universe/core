@@ -1,5 +1,6 @@
 <div class="optionsView">
     <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <table class="tcal">
             <tr>
                 <th colspan="2">Siedlername</th>
@@ -72,6 +73,7 @@
     <br />
     {% for setting in DISTINCT_SETTING_WRAPPERS %}
     <form action="options.php" method="post" {% if setting.encType %}enctype="{{ setting.getEnctype }}" {% endif %}>
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <table class="tcal">
             <tr>
                 <th colspan="2">{{ setting.getType.getTitle }}</th>
@@ -82,6 +84,7 @@
     <br />
     {% endfor %}
     <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <table class="tcal">
             <tr>
                 <th>Siedlerbeschreibung</th>
@@ -108,6 +111,7 @@
     <br />
     {% set rankColumnCount = SHOW_FACTION_CREW_RANKS ? 3 : 2 %}
     <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <table class="tcal">
             <tr>
                 <th colspan="{{ rankColumnCount }}">Crew-Ränge</th>
@@ -147,6 +151,7 @@
     </form>
     <br />
     <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <table class="tcal">
             <th colspan="2">Accounteinstellungen</th>
             {% for setting in SETTING_WRAPPERS %}
@@ -179,6 +184,7 @@
     </form>
     <br />
     <form action="options.php" method="post">
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
         <input type="hidden" name="B_ACTIVATE_VACATION" value="1" />
         <table class="tcal">
             <th colspan="4">Urlaubsmodus</th>

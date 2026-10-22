@@ -27,6 +27,7 @@ class AddContactTest extends ActionControllerTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $_SERVER['REQUEST_METHOD'] = 'POST';
 
         $this->addContactRequest = $this->mock(AddContactRequestInterface::class);
         $this->contactRepository = $this->mock(ContactRepositoryInterface::class);
@@ -39,6 +40,13 @@ class AddContactTest extends ActionControllerTestCase
             $this->privateMessageSender,
             $this->userRepository
         );
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        unset($_SERVER['REQUEST_METHOD']);
+        parent::tearDown();
     }
 
     public function testHandleReturnsToContactListWhenAddedFromContactList(): void

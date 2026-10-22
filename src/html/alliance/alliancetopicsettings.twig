@@ -1,4 +1,5 @@
 <form action="alliance.php" method="post">
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
     <input type="hidden" name="boardid" value="{{ TOPIC.getBoardId }}" />
     <input type="hidden" name="topicid" value="{{ TOPIC.getId }}" />
     <table class="use" style="width: 200px">
@@ -15,14 +16,9 @@
                 <br />
                 <br />
                 {% if not TOPIC.getSticky %}
-                <a class="linkbutton"
-                    href="?B_SET_STICKY=1&SHOW_BOARD=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}">Als
-                    Wichtig
-                    markieren</a>
+                <button type="submit" class="linkbutton" name="B_SET_STICKY" value="1">Als Wichtig markieren</button>
                 {% else %}
-                <a class="linkbutton"
-                    href="?B_UNSET_STICKY=1&SHOW_BOARD=1&boardid={{ TOPIC.getBoardId }}&topicid={{ TOPIC.getId }}">Als
-                    Unwichtig markieren</a>
+                <button type="submit" class="linkbutton" name="B_UNSET_STICKY" value="1">Als Unwichtig markieren</button>
                 {% endif %}
             </td>
         </tr>

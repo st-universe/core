@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 use Exception;
 use GdImage;
 use Noodlehaus\ConfigInterface;
+use request;
 use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,6 +28,10 @@ final class ChangeAvatar implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $file = $_FILES['avatar'];
         if ($file['type'] !== 'image/png') {
             $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
@@ -97,6 +102,6 @@ final class ChangeAvatar implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

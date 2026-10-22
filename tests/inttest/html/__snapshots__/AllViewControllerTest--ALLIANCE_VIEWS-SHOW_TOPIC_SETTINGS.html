@@ -19,6 +19,7 @@
       </tr>
     </table>
         <form action="alliance.php" method="post">
+    <input type="hidden" name="sstr" value="MOCKED_SESSIONSTRING" />
     <input type="hidden" name="boardid" value="1" />
     <input type="hidden" name="topicid" value="1" />
     <table class="use" style="width: 200px">
@@ -34,9 +35,7 @@
                 <input type="submit" value="Umbenennen" name="B_RENAME_TOPIC" />
                 <br />
                 <br />
-                                <a class="linkbutton"
-                    href="?B_UNSET_STICKY=1&SHOW_BOARD=1&boardid=1&topicid=1">Als
-                    Unwichtig markieren</a>
+                                <button type="submit" class="linkbutton" name="B_UNSET_STICKY" value="1">Als Unwichtig markieren</button>
                             </td>
         </tr>
     </table>
