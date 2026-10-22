@@ -6,27 +6,27 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
+use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Config\Init;
 use Stu\Module\Control\AdminSessionGuardInterface;
-use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
-use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
+    $dic->get(AdminSessionGuardInterface::class)->check();
+
     $db = $dic->get(EntityManagerInterface::class);
 
     $db->beginTransaction();
-
-    $dic->get(AdminSessionGuardInterface::class)->check();
 
     $shipRumpRepo = $dic->get(SpacecraftRumpRepositoryInterface::class);
     $shipRumpModuleLevelRepo = $dic->get(ShipRumpModuleLevelRepositoryInterface::class);

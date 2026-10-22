@@ -51,7 +51,7 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        $giveCommodityId = $this->createOfferRequest->getGiveCommodityId();
+        $giveCommodityId = $storage->getCommodityId();
         $giveAmount = $this->createOfferRequest->getGiveAmount();
         $wantedCommodityId = $this->createOfferRequest->getWantedCommodityId();
         $wantedAmount = $this->createOfferRequest->getWantedAmount();

@@ -62,7 +62,7 @@
     "symfony/cache": "^8",
     "symfony/event-dispatcher": "^8.0",
     "symfony/mailer": "^8.0.0",
-    "twig/twig": "3.30.0"
+    "twig/twig": "^3.0"
   },
   "require-dev": {
     "bnf/phpstan-psr-container": "^1.0",

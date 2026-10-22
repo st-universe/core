@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeleteIgnores;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
@@ -17,6 +18,10 @@ final class DeleteIgnores implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $userId = $context->getUser()->getId();
 
         foreach ($this->deleteIgnoresRequest->getIgnoreIds() as $val) {
@@ -33,6 +38,6 @@ final class DeleteIgnores implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

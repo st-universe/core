@@ -1,0 +1,68 @@
+name: Production Dependency Check
+
+on:
+  push:
+    branches: [ dev, master ]
+  pull_request:
+    branches: [ dev, master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest']
+        php: [8.5]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: ${{ matrix.php }}
+          tools: >-
+            phpstan:2.3.1,
+            phpstan/extension-installer:1.4.3,
+            phpstan/phpstan-doctrine:2.0.28,
+            phpstan/phpstan-deprecation-rules:2.0.5
+          extensions: redis
+
+      - name: Cache production Composer packages
+        id: composer-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-production-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install Dependencies (ignore platform)
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: composer install -a --no-dev --no-interaction --no-progress --ignore-platform-req=php
+
+      - name: Verify autoloader
+        run: php -r "require 'vendor/autoload.php'; echo 'Autoloader is working';"
+
+      - name: Run PHPStan
+        shell: bash
+        run: |
+          global_vendor="$(composer global config home --absolute)/vendor"
+          test -r "$global_vendor/phpstan/phpstan-doctrine/extension.neon"
+          test -r "$global_vendor/phpstan/phpstan-doctrine/rules.neon"
+          test -r "$global_vendor/phpstan/phpstan-deprecation-rules/rules.neon"
+          test -r "$global_vendor/autoload.php"
+
+          cat > phpstan-ci.neon <<EOF
+          includes:
+            - $global_vendor/phpstan/phpstan-doctrine/extension.neon
+            - $global_vendor/phpstan/phpstan-doctrine/rules.neon
+            - $global_vendor/phpstan/phpstan-deprecation-rules/rules.neon
+            - phpstan.neon
+          parameters:
+            bootstrapFiles:
+              - $global_vendor/autoload.php
+          EOF
+
+          phpstan analyse --configuration=phpstan-ci.neon

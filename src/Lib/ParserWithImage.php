@@ -11,6 +11,8 @@ final class ParserWithImage implements ParserWithImageInterface
     #[\Override]
     public function parse($str)
     {
-        return $this->bbcodeParser->parse($str);
+        $this->bbcodeParser->parse($str)->accept(new StuBbCodeImageVisitor());
+
+        return $this->bbcodeParser;
     }
 }

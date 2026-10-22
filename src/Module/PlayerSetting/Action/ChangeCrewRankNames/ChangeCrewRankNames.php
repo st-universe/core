@@ -19,6 +19,10 @@ final class ChangeCrewRankNames implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $rankNames = request::postArray('crew_rank_names');
 
         foreach (CrewSkillLevelEnum::cases() as $rank) {
@@ -60,6 +64,6 @@ final class ChangeCrewRankNames implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

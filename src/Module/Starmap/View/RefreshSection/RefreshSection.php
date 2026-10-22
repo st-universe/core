@@ -43,7 +43,11 @@ final class RefreshSection implements ViewControllerInterface
             throw new SanityCheckException('user tried to access unseen layer');
         }
 
-        $game->showMacro(request::getStringFatal('macro'));
+        $macro = request::getString('macro') ?: 'html/map/starmapSectionTable.twig';
+        if (!in_array($macro, ['html/map/starmapSectionTable.twig', 'html/colony/telescopeSectionTable.twig'], true)) {
+            throw new SanityCheckException('Invalid map section template');
+        }
+        $game->showMacro($macro);
 
         $helper = $this->starmapUiFactory->createMapSectionHelper();
         $directionValue = $this->request->getDirection();

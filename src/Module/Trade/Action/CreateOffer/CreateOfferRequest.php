@@ -29,12 +29,6 @@ final class CreateOfferRequest implements CreateOfferRequestInterface
     }
 
     #[\Override]
-    public function getGiveCommodityId(): int
-    {
-        return $this->bodyParameter('ggid')->int()->required();
-    }
-
-    #[\Override]
     public function getGiveAmount(): int
     {
         return $this->bodyParameter('gcount')->int()->defaultsTo(0);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\IgnoreUser;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
@@ -18,6 +19,10 @@ final class IgnoreUser implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $userId = $context->getUser()->getId();
 
         $recipient = $this->userRepository->find($this->ignoreUserRequest->getRecipientId());
@@ -47,6 +52,6 @@ final class IgnoreUser implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

@@ -10,7 +10,6 @@ use Stu\Component\Asset\AssetVersioningInterface;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 use function DI\autowire;
 
@@ -24,7 +23,7 @@ return [
 
         $templatePath = realpath(
             sprintf(
-                '%s/../',
+                '%s/../html',
                 $stuConfig->getGameSettings()->getWebroot()
             )
         );
@@ -38,7 +37,7 @@ return [
             );
         }
 
-        $loader = new FilesystemLoader($templatePath ?: []);
+        $loader = new TrustedTemplateLoader($templatePath ?: []);
         $extensions = $c->get(ExtensionRegistry::class);
         foreach ($extensions->all() as $extension) {
             foreach ($extension['templates'] ?? [] as $namespace => $path) {

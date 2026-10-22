@@ -194,6 +194,7 @@ abstract class IntegrationTestCase extends StuTestCase
             /** @var ReopeningEntityManager */
             $em = $this->getContainer()->get(EntityManagerInterface::class);
             $em->reset();
+            self::$testSession?->setUser(null);
 
             $this->dropSchema();
             $this->initializeSchemaAndTestData();

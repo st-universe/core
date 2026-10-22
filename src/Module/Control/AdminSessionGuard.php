@@ -28,6 +28,7 @@ final class AdminSessionGuard implements AdminSessionGuardInterface
         $adminIds = $this->stuConfig->getGameSettings()->getAdminIds();
         if ($user === null || !in_array($user->getId(), $adminIds, true)) {
             header(self::REDIRECT_TO_DOMAIN_ROOT);
+            exit;
         }
     }
 }

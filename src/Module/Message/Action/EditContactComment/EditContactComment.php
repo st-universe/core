@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\EditContactComment;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -18,6 +19,10 @@ final class EditContactComment implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $contact = $this->contactRepository->find($this->editContactCommentRequest->getContactId());
         if ($contact == null || $contact->getUserId() !== $context->getUser()->getId()) {
             return;
@@ -40,6 +45,6 @@ final class EditContactComment implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

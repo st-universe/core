@@ -19,6 +19,10 @@ final class ChangeRgbCode implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $value = request::postStringFatal('rgb_code');
         if (strlen($value) !== 7) {
             $context->getInfo()->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
@@ -47,6 +51,6 @@ final class ChangeRgbCode implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

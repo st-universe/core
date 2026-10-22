@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeleteContacts;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -22,6 +23,10 @@ final class DeleteContacts implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         foreach ($this->deleteContactsRequest->getContactIds() as $contactId) {
             $contact = $this->contactRepository->find((int) $contactId);
             if ($contact === null || $contact->getUserId() !== $context->getUser()->getId()) {
@@ -46,6 +51,6 @@ final class DeleteContacts implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\SwitchContactMode;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -20,6 +21,10 @@ final class SwitchContactMode implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowContactMode::VIEW_IDENTIFIER);
 
         $context->setTemplateVar('div', $this->switchContactModeRequest->getContactDiv());
@@ -66,6 +71,6 @@ final class SwitchContactMode implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

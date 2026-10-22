@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ActivateVacation;
 
+use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Component\Game\RedirectionException;
 use Stu\Component\Game\TimeConstants;
@@ -21,6 +22,10 @@ final class ActivateVacation implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         //wenn die letzte Aktivierung älter als eine Woche ist
         if ((time() - $context->getUser()->getVacationRequestDate()) > TimeConstants::SEVEN_DAYS_IN_SECONDS) {
             $user = $context->getUser();
@@ -42,6 +47,6 @@ final class ActivateVacation implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

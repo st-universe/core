@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeEmail;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuHashInterface;
@@ -19,6 +20,10 @@ final class ChangeEmail implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $value = trim($this->changeEmailRequest->getEmailAddress());
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $context->getInfo()->addInformation(_('Die E-Mail-Adresse ist ungültig'));
@@ -46,6 +51,6 @@ final class ChangeEmail implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

@@ -41,25 +41,28 @@ function ajaxrequest(url) {
 	new Ajax.Request(url);
 }
 
-function ignoreUser(obj, userid) {
-	ajax_update(obj, "/pm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid=" + userid);
+function ignoreUser(obj, userid, sessionString) {
+	ajaxPostUpdate(obj, "/pm.php", {
+		B_IGNORE_USER: 1,
+		SHOW_IGNORE: 1,
+		recid: userid,
+		sstr: sessionString
+	});
 }
-function addUserContact(obj, userid) {
+function addUserContact(obj, userid, sessionString) {
 	var contact = "selector_" + obj;
 	if (!$(contact)) {
 		mode = document.forms[0].elements[contact].value;
 	} else {
 		mode = $(contact).value;
 	}
-	ajax_update(
-		obj,
-		"/pm.php?B_ADD_CONTACT=1&recid=" +
-		userid +
-		"&clmode=" +
-		mode +
-		"&cldiv=" +
-		obj
-	);
+	ajaxPostUpdate(obj, "/pm.php", {
+		B_ADD_CONTACT: 1,
+		recid: userid,
+		clmode: mode,
+		cldiv: obj,
+		sstr: sessionString
+	});
 }
 var clmodeswitchdiv = "";
 function showContactModeSwitcher(element, div, contactid) {
@@ -70,16 +73,14 @@ function showContactModeSwitcher(element, div, contactid) {
 		70
 	);
 }
-function switchContactMode(contactid, mode) {
-	ajax_update(
-		clmodeswitchdiv,
-		"/pm.php?B_CHANGE_CONTACTMODE=1&cid=" +
-		contactid +
-		"&clmode=" +
-		mode +
-		"&cldiv=" +
-		clmodeswitchdiv
-	);
+function switchContactMode(contactid, mode, sessionString) {
+	ajaxPostUpdate(clmodeswitchdiv, "/pm.php", {
+		B_CHANGE_CONTACTMODE: 1,
+		cid: contactid,
+		clmode: mode,
+		cldiv: clmodeswitchdiv,
+		sstr: sessionString
+	});
 	clmodeswitcdiv = "";
 	hidePopup();
 }

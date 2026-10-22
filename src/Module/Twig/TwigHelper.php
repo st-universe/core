@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Twig;
 
 use JBBCode\Parser;
+use JBBCode\visitors\HTMLSafeVisitor;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Building\NameAbbreviations;
@@ -88,7 +89,11 @@ class TwigHelper
         $bbcode2txtFilter = new TwigFilter('bbcode2txt', fn ($string): string => $this->parser->parse($string)->getAsText());
         $this->environment->addFilter($bbcode2txtFilter);
 
-        $bbcodeFilter = new TwigFilter('bbcode', fn ($string): string => $this->parser->parse($string)->getAsHTML(), ['is_safe' => ['html']]);
+        $bbcodeFilter = new TwigFilter('bbcode', function ($string): string {
+            $this->parser->parse($string)->accept(new HTMLSafeVisitor());
+
+            return $this->parser->getAsHTML();
+        }, ['is_safe' => ['html']]);
         $this->environment->addFilter($bbcodeFilter);
 
         $jsquoteFilter = new TwigFilter('jsquote', fn (string $string): string => $this->templateHelper->jsquote($string));
@@ -128,7 +133,7 @@ class TwigHelper
         $stuDateFilter = new TwigFilter('stuDate', fn (int $value): string => $this->stuTime->transformToStuDate($value));
         $this->environment->addFilter($stuDateFilter);
 
-        $nl2brFilter = new TwigFilter('nl2br', fn (string $value): string => nl2br($value));
+        $nl2brFilter = new TwigFilter('nl2br', fn (string $value): string => nl2br($value), ['preserves_safety' => ['html']]);
         $this->environment->addFilter($nl2brFilter);
 
         $htmlSafeFilter = new TwigFilter('htmlSafe', fn (string $text): string => htmlspecialchars($text));

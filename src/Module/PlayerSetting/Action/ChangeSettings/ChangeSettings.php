@@ -19,6 +19,10 @@ final class ChangeSettings implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $user = $context->getUser();
 
         foreach (UserSettingEnum::getNonDistinct() as $setting) {
@@ -41,6 +45,6 @@ final class ChangeSettings implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

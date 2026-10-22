@@ -3,7 +3,7 @@
     <tr>
         <td>
             {% if contact.getMode != mode %}
-            <div class="cltype{{ mode.value }}" onclick="switchContactMode({{ contact.getId }}, {{ mode.value }});">
+            <div class="cltype{{ mode.value }}" onclick="switchContactMode({{ contact.getId }}, {{ mode.value }}, '{{ SESSIONSTRING }}');">
                 {{ mode.getTitle }}
             </div>
             {% endif %}

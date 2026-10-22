@@ -51,7 +51,7 @@
         </td>
         <td style="vertical-align: top;">
             {% autoescape false %}
-            <span>{{ post.getText | nl2br | bbcode }}</span>
+            <span>{{ post.getText | bbcode | nl2br }}</span>
             {% endautoescape %}
         </td>
     </tr>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\SetTopicSticky;
 
+use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,6 +23,10 @@ final class SetTopicSticky implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $alliance = $context->getUser()->getAlliance();
 
         $topic = $this->allianceBoardTopicRepository->find($this->setTopicStickyRequest->getTopicId());
@@ -41,6 +46,6 @@ final class SetTopicSticky implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
