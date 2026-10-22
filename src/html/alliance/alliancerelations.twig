@@ -98,6 +98,7 @@
                 vorschlagen</a>
             {% else %}
             <form method="post" action="alliance.php">
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                 <input type="hidden" name="SHOW_RELATIONS" value="1" />
                 <input type="hidden" name="oid" value="{{ opponent.getId }}" />
                 <select id="alliance-relation-type-{{ relation.getId }}" name="type" data-relation-permission-selector="alliance-relation-permissions-{{ relation.getId }}">
