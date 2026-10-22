@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
-use GdImage;
 use Noodlehaus\ConfigInterface;
 use request;
 use RuntimeException;
@@ -43,34 +42,29 @@ final class ChangeAvatar implements ActionControllerInterface
         $user = $context->getUser();
 
         $avatar = $this->userSettingsProvider->getAvatar($user);
-        if ($avatar !== '') {
-            $path = sprintf(
-                '/%s/%s.png',
-                $this->config->get('game.user_avatar_path'),
-                $avatar
-            );
-            if (file_exists($path)) {
-                $result = @unlink($path);
-
-                if ($result === false) {
-                    throw new RuntimeException('old alliance avatar could not be deleted');
-                }
+        $directory = sprintf('%s/%s', rtrim($this->config->get('game.webroot'), '/'), trim($this->config->get('game.user_avatar_path'), '/'));
+        $imageName = md5('user-avatar-' . $user->getId());
+        $path = $directory . '/' . $imageName . '.png';
+        $temporaryPath = tempnam($directory, 'avatar-');
+        if ($temporaryPath === false) {
+            throw new RuntimeException('Avatar could not be written');
+        }
+        $newImage = imagecreatetruecolor(150, 150);
+        if ($newImage === false) {
+            unlink($temporaryPath);
+            return;
+        }
+        imagecopy($newImage, $img, 0, 0, 0, 0, 150, 150);
+        if (!imagepng($newImage, $temporaryPath) || !chmod($temporaryPath, 0o644) || !rename($temporaryPath, $path)) {
+            unlink($temporaryPath);
+            throw new RuntimeException('Avatar could not be replaced');
+        }
+        if ($avatar !== '' && $avatar !== $imageName && preg_match('/^[a-f0-9]{32}$/D', $avatar) === 1) {
+            $oldPath = $directory . '/' . $avatar . '.png';
+            if (is_file($oldPath) && !@unlink($oldPath) && is_file($oldPath)) {
+                throw new RuntimeException('Old avatar could not be deleted');
             }
         }
-        $imageName = md5($user->getId() . "_" . time());
-
-        /** @var GdImage $newImage */
-        $newImage = imagecreatetruecolor(150, 150);
-        imagecopy($newImage, $img, 0, 0, 0, 0, 150, 150);
-        imagepng(
-            $newImage,
-            sprintf(
-                '%s/%s/%s.png',
-                $this->config->get('game.webroot'),
-                $this->config->get('game.user_avatar_path'),
-                $imageName
-            )
-        );
 
         $this->changerUserSetting->change(
             $user,
