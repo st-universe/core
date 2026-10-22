@@ -35,6 +35,17 @@ final class StarmapRealtimeTokenFactory
         return sprintf('%s.%s', $payloadEncoded, $this->base64UrlEncode($signature));
     }
 
+    public function encryptScan(string $scan): string
+    {
+        $iv = random_bytes(12);
+        $tag = '';
+        $encrypted = openssl_encrypt($scan, 'aes-256-gcm', hash('sha256', $this->getSecret(), true), OPENSSL_RAW_DATA, $iv, $tag);
+        if ($encrypted === false) {
+            throw new \RuntimeException('Scan authorization encryption failed');
+        }
+        return base64_encode($iv . $tag . $encrypted);
+    }
+
     private function getSecret(): string
     {
         $environmentSecret = getenv('STU_REALTIME_SECRET');

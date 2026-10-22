@@ -17,6 +17,7 @@ test("ordinary coverage cannot reveal an unknown cloaked ship after RPG unhide",
 	const server = loadServer({ getCoverage: async () => coverage() });
 	const ws = socket();
 	await server.connect(ws, authorization(server, { sharedUserIds: [] }));
+	const handle = [...server.clients][0].contacts.handles.get(7);
 	ws.messages.length = 0;
 	server.dispatch(hiddenEvent());
 	await server.flush();
@@ -24,14 +25,15 @@ test("ordinary coverage cannot reveal an unknown cloaked ship after RPG unhide",
 });
 
 test("previously known contacts receive only one coordinate-free removal when hidden", async () => {
-	const server = loadServer({ getCoverage: async () => coverage({ contacts: [{ id: 7, x: 2, y: 5 }] }) });
+	const server = loadServer({ getCoverage: async () => coverage({ contacts: [{ id: 7, x: 2, y: 5 }], spacecrafts: [{ id: 7, x: 2, y: 5, isSensorContact: true }] }) });
 	const ws = socket();
 	await server.connect(ws, authorization(server, { sharedUserIds: [] }));
+	const handle = [...server.clients][0].contacts.handles.get(7);
 	ws.messages.length = 0;
 	server.dispatch(hiddenEvent());
 	await server.flush();
 	assert.equal(ws.messages.length, 1);
-	assert.deepEqual(ws.messages[0], { type: "spacecraftRemoval", layerId: 2, spacecraft: { id: 7 } });
+	assert.deepEqual(ws.messages[0], { type: "spacecraftRemoval", layerId: 2, spacecraft: { id: handle } });
 	assert.equal([...server.clients][0].tracking.contacts.has(7), false);
 	ws.messages.length = 0;
 	server.dispatch(hiddenEvent({ position: { x: 8, y: 5 } }));
@@ -46,10 +48,11 @@ test("cloak activation removes a contact that was delivered over ordinary sensor
 	server.dispatch(event());
 	await server.flush();
 	assert.equal(ws.messages.some(message => message.type === "spacecraftState" && message.visible), true);
+	const handle = [...server.clients][0].contacts.handles.get(7);
 	ws.messages.length = 0;
 	server.dispatch(hiddenEvent());
 	await server.flush();
-	assert.deepEqual(ws.messages, [{ type: "spacecraftRemoval", layerId: 2, spacecraft: { id: 7 } }]);
+	assert.deepEqual(ws.messages, [{ type: "spacecraftRemoval", layerId: 2, spacecraft: { id: handle } }]);
 });
 
 for (const [name, grants, tachyonRuns, owner] of [
