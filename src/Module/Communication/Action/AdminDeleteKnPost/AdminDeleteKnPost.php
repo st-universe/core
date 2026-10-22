@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\Action\AdminDeleteKnPost;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\KnPost;
@@ -17,11 +18,15 @@ final class AdminDeleteKnPost implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ADMIN_DEL_KN';
 
-    public function __construct(private AdminDeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender) {}
+    public function __construct(private AdminDeleteKnPostRequestInterface $deleteKnPostRequest, private KnPostRepositoryInterface $knPostRepository, private PrivateMessageSenderInterface $privateMessageSender, private GameUserRoleCheckerInterface $gameUserRoleChecker) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!$this->gameUserRoleChecker->isAdmin()) {
+            throw new AccessViolationException();
+        }
+
         $admin = $context->getUser();
 
         /** @var KnPost|null $post */
