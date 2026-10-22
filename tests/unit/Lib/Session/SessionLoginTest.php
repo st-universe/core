@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Session;
 
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Request\RequestRateLimiter;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\User;
@@ -35,7 +36,8 @@ final class SessionLoginTest extends StuTestCase
             $this->mock(SessionDestructionInterface::class),
             $config,
             $this->mock(StuHashInterface::class),
-            $this->mock(AdminImpersonationInterface::class)
+            $this->mock(AdminImpersonationInterface::class),
+            $this->mock(RequestRateLimiter::class)
         );
 
         $this->getMethod($subject, 'checkPassword')->invoke($subject, $user, 'admin-password');
@@ -61,7 +63,8 @@ final class SessionLoginTest extends StuTestCase
             $this->mock(SessionDestructionInterface::class),
             $this->mock(StuConfigInterface::class),
             $this->mock(StuHashInterface::class),
-            $impersonation
+            $impersonation,
+            $this->mock(RequestRateLimiter::class)
         );
 
         $subject->checkLoginCookie();
@@ -93,7 +96,8 @@ final class SessionLoginTest extends StuTestCase
             $destruction,
             $this->mock(StuConfigInterface::class),
             $hasher,
-            $impersonation
+            $impersonation,
+            $this->mock(RequestRateLimiter::class)
         );
         $method = $this->getMethod($subject, 'buildCookieString');
         $oldCookie = $method->invoke($subject, $user);
@@ -128,7 +132,8 @@ final class SessionLoginTest extends StuTestCase
             $this->mock(SessionDestructionInterface::class),
             $this->mock(StuConfigInterface::class),
             $this->mock(StuHashInterface::class),
-            $impersonation
+            $impersonation,
+            $this->mock(RequestRateLimiter::class)
         );
         $previousSession = $_SESSION ?? [];
         try {
@@ -156,7 +161,8 @@ final class SessionLoginTest extends StuTestCase
             $this->mock(SessionDestructionInterface::class),
             $this->mock(StuConfigInterface::class),
             $this->mock(StuHashInterface::class),
-            $this->mock(AdminImpersonationInterface::class)
+            $this->mock(AdminImpersonationInterface::class),
+            $this->mock(RequestRateLimiter::class)
         );
         $previousSession = $_SESSION ?? [];
         try {

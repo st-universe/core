@@ -12,6 +12,7 @@ use Stu\Exception\SpacecraftDoesNotExistException;
 use Stu\Exception\UnallowedUplinkOperationException;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
+use Stu\Lib\Request\RequestLimitException;
 use Stu\Lib\UserLockedException;
 use Stu\Module\Control\Component\Action\ActionContextFactory;
 use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
@@ -35,6 +36,7 @@ use Stu\Module\Control\Router\Handler\LoginErrorFallbackHandler;
 use Stu\Module\Control\Router\Handler\MaintenanceFallbackHandler;
 use Stu\Module\Control\Router\Handler\RedirectionFallbackHandler;
 use Stu\Module\Control\Router\Handler\RelocationFallbackHandler;
+use Stu\Module\Control\Router\Handler\RequestLimitFallbackHandler;
 use Stu\Module\Control\Router\Handler\ResetFallbackHandler;
 use Stu\Module\Control\Router\Handler\SpacecraftNotFoundFallbackHandler;
 use Stu\Module\Control\Router\Handler\UplinkFallbackHandler;
@@ -71,6 +73,7 @@ return [
             [
                 AccountNotVerifiedException::class => autowire(AccountNotVerifiedFallbackHandler::class),
                 LoginException::class => autowire(LoginErrorFallbackHandler::class),
+                RequestLimitException::class => autowire(RequestLimitFallbackHandler::class),
                 UserLockedException::class => autowire(UserLockedFallbackHandler::class),
                 MaintenanceGameStateException::class => autowire(MaintenanceFallbackHandler::class),
                 ResetGameStateException::class => autowire(ResetFallbackHandler::class),
