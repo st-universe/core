@@ -38,7 +38,7 @@ final class SessionLogin implements SessionLoginInterface
     #[\Override]
     public function checkLoginCookie(): void
     {
-        if ($this->impersonation->isActive()) {
+        if ($this->impersonation->isActive() || ($_SESSION['login'] ?? null) == 1) {
             $this->session->createSession();
             return;
         }
@@ -96,6 +96,7 @@ final class SessionLogin implements SessionLoginInterface
     {
         $_SESSION['uid'] = $user->getId();
         $_SESSION['login'] = 1;
+        SessionCredential::bind($user);
 
         $this->session->setUser($user);
     }
@@ -169,7 +170,7 @@ final class SessionLogin implements SessionLoginInterface
 
     private function buildCookieString(User $user): string
     {
-        return $this->stuHash->hash(($user->getId() . $user->getRegistration()->getEMail() . $user->getRegistration()->getCreationDate()));
+        return $this->stuHash->hash(($user->getId() . $user->getRegistration()->getEMail() . $user->getRegistration()->getCreationDate() . $user->getRegistration()->getPassword()));
     }
 
     private function destroyLoginCookies(): void

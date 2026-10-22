@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
+use Stu\Lib\Session\SessionCredential;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -52,6 +53,10 @@ final class ChangePassword implements ActionControllerInterface
         $user->getRegistration()->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
 
         $this->userRepository->save($user);
+
+        if ((int) ($_SESSION['uid'] ?? 0) === $user->getId()) {
+            SessionCredential::bind($user);
+        }
 
         $context->getInfo()->addInformation(_('Das Passwort wurde geändert'));
     }

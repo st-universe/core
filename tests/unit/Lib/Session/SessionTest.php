@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserLastAction;
+use Stu\Orm\Entity\UserRegistration;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserLastActionRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -22,6 +23,10 @@ final class SessionTest extends StuTestCase
         session_id('admin-access-test');
         $admin = $this->mock(User::class);
         $player = $this->mock(User::class);
+        $admin->shouldReceive('getId')->andReturn(1);
+        $player->shouldReceive('getId')->andReturn(101);
+        $admin->shouldReceive('getRegistration')->andReturn(new UserRegistration($admin)->setPassword('admin-hash'));
+        $player->shouldReceive('getRegistration')->andReturn(new UserRegistration($player)->setPassword('player-hash'));
         $lastAction = new UserLastAction($player)->setTimestamp(100);
         $player->shouldReceive('getLastAction')->andReturn($lastAction);
         $users = $this->mock(UserRepositoryInterface::class);
@@ -38,16 +43,19 @@ final class SessionTest extends StuTestCase
         $session = new Session($ips, $users, $lastActions, $this->mock(SessionDestructionInterface::class), $impersonation);
 
         $_SESSION = ['uid' => 1, 'login' => 1, 'impersonated_user_id' => 101];
+        SessionCredential::bind($_SESSION['uid'] === 1 ? $admin : $player);
         $session->createSession();
         self::assertSame($player, $session->getUser());
         self::assertSame(100, $lastAction->getTimestamp());
 
         $_SESSION = ['uid' => 101, 'login' => 1];
+        SessionCredential::bind($_SESSION['uid'] === 1 ? $admin : $player);
         $session->createSession();
         $playerTimestamp = $lastAction->getTimestamp();
         self::assertGreaterThan(100, $playerTimestamp);
 
         $_SESSION = ['uid' => 1, 'login' => 1, 'impersonated_user_id' => 101];
+        SessionCredential::bind($_SESSION['uid'] === 1 ? $admin : $player);
         $session->createSession();
         self::assertSame($playerTimestamp, $lastAction->getTimestamp());
     }

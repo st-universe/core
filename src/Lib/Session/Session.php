@@ -79,6 +79,11 @@ final class Session implements SessionInterface
             return;
         }
 
+        if (!SessionCredential::isValid($user)) {
+            $this->logout();
+            throw new SessionInvalidException('Anmeldung nach Passwortänderung erforderlich');
+        }
+
         $user = $this->impersonation->resolveUser($user, $adminContext);
 
         if (!$this->impersonation->isActive()) {
