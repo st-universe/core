@@ -48,14 +48,26 @@ class AllianceDescriptionRendererTest extends StuTestCase
 
     public function testRenderReplacesHomepage(): void
     {
-        $homepage = 'some-homepage';
+        $homepage = 'https://example.test/?a=1&b=2';
 
         $this->alliance->shouldReceive('getHomepage')->withNoArgs()->once()->andReturn($homepage);
 
         $this->createRendererExpectations(
             'ALLIANCE_HOMEPAGE_LINK',
-            sprintf('<a href="%s" target="_blank">%s</a>', $homepage, 'Zur Allianz-Homepage')
+            sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', htmlspecialchars($homepage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), 'Zur Allianz-Homepage')
         );
+    }
+
+    public function testInvalidHomepageDoesNotCreateLink(): void
+    {
+        $this->alliance->shouldReceive('getHomepage')->once()->andReturn('http://example.test/" onmouseover="window.test=1');
+        $this->createRendererExpectations('ALLIANCE_HOMEPAGE_LINK', '');
+    }
+
+    public function testNonHttpHomepageDoesNotCreateLink(): void
+    {
+        $this->alliance->shouldReceive('getHomepage')->once()->andReturn('javascript:window.test=1');
+        $this->createRendererExpectations('ALLIANCE_HOMEPAGE_LINK', '');
     }
 
     public function testRenderReplacesBannerWithAvater(): void
