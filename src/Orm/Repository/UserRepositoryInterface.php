@@ -24,6 +24,8 @@ interface UserRepositoryInterface extends ObjectRepository
 
     public function getByResetToken(string $resetToken): ?User;
 
+    public function getByDeletionToken(string $deletionToken): ?User;
+
     /**
      * @param array<int> $ignoreIds
      *

@@ -7,7 +7,7 @@ namespace Stu\Migrations\Sqlite;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20261012180828 extends AbstractMigration
+final class Version20261022213827 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -596,7 +596,7 @@ final class Version20261012180828 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DD0F44876804FB49 ON stu_user_profile_visitors (recipient)');
         $this->addSql('CREATE TABLE stu_user_referer (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, referer CLOB NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_A00722FDA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user_registration (user_id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A00722FDA76ED395 ON stu_user_referer (user_id)');
-        $this->addSql('CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, sms_sended INTEGER DEFAULT 1, email_code VARCHAR(6) DEFAULT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_user_registration (login VARCHAR(20) NOT NULL, pass VARCHAR(255) NOT NULL, sms_code VARCHAR(6) DEFAULT NULL, email VARCHAR(200) NOT NULL, mobile VARCHAR(255) DEFAULT NULL, creation INTEGER NOT NULL, delmark SMALLINT NOT NULL, password_token VARCHAR(255) NOT NULL, deletion_token VARCHAR(255) DEFAULT NULL, sms_sended INTEGER DEFAULT 1, email_code VARCHAR(6) DEFAULT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id), CONSTRAINT FK_9C660348A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_user_setting (setting VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, user_id INTEGER NOT NULL, PRIMARY KEY (user_id, setting), CONSTRAINT FK_6AAFACE0A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_6AAFACE0A76ED395 ON stu_user_setting (user_id)');
         $this->addSql('CREATE TABLE stu_user_tutorial (user_id INTEGER NOT NULL, tutorial_step_id INTEGER NOT NULL, PRIMARY KEY (user_id, tutorial_step_id), CONSTRAINT FK_9840DDF3A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9840DDF3D356979 FOREIGN KEY (tutorial_step_id) REFERENCES stu_tutorial_step (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
