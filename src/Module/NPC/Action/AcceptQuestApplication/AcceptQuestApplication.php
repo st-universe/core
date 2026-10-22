@@ -31,6 +31,10 @@ final class AcceptQuestApplication implements ActionControllerInterface
     #[Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
         $questUserIdParameter = request::postInt('quest_user_id');
@@ -97,6 +101,6 @@ final class AcceptQuestApplication implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

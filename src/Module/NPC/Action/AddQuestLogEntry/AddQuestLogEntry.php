@@ -29,6 +29,10 @@ final class AddQuestLogEntry implements ActionControllerInterface
     #[Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowNPCQuests::VIEW_IDENTIFIER);
 
         $questId = request::postInt('quest_id');
@@ -65,7 +69,7 @@ final class AddQuestLogEntry implements ActionControllerInterface
     #[Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 
     private function notifyQuestMembers(NPCQuest $quest): void

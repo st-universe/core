@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\NPC\View\ShowPlayerDetails\ShowPlayerDetails;
 use Stu\Orm\Repository\NPCLogRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -24,6 +25,12 @@ final class LogPlayerDetails implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
+        $context->setView(ShowPlayerDetails::VIEW_IDENTIFIER);
+
         $userId = request::postIntFatal('userid');
         $reason = request::postStringFatal('reason');
         $user = $this->userRepository->find($userId);
@@ -59,6 +66,6 @@ final class LogPlayerDetails implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
