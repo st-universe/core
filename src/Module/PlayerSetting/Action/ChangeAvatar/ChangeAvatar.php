@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
-use Exception;
 use GdImage;
 use Noodlehaus\ConfigInterface;
 use request;
 use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Lib\Upload\PngUpload;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\ChangeUserSettingInterface;
@@ -22,7 +22,8 @@ final class ChangeAvatar implements ActionControllerInterface
     public function __construct(
         private readonly ChangeUserSettingInterface $changerUserSetting,
         private readonly UserSettingsProviderInterface $userSettingsProvider,
-        private readonly ConfigInterface $config
+        private readonly ConfigInterface $config,
+        private readonly PngUpload $pngUpload
     ) {}
 
     #[\Override]
@@ -33,16 +34,9 @@ final class ChangeAvatar implements ActionControllerInterface
         }
 
         $file = $_FILES['avatar'];
-        if ($file['type'] !== 'image/png') {
-            $context->getInfo()->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
-            return;
-        }
-        if ($file['size'] > 200000) {
-            $context->getInfo()->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
-            return;
-        }
-        if ($file['size'] === 0) {
-            $context->getInfo()->addInformation(_('Die Datei ist leer'));
+        $img = $this->pngUpload->readUploaded($file['tmp_name'], $file['error'], 200000, 2048, 2048, 4000000);
+        if ($img === null) {
+            $context->getInfo()->addInformation(_('Es können nur gültige PNG-Bilder bis 200 Kilobyte und 2048 Pixel je Seite hochgeladen werden'));
             return;
         }
 
@@ -64,18 +58,6 @@ final class ChangeAvatar implements ActionControllerInterface
             }
         }
         $imageName = md5($user->getId() . "_" . time());
-
-        try {
-            $img = imagecreatefrompng($file['tmp_name']);
-        } catch (Exception) {
-            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
-            return;
-        }
-
-        if (!$img) {
-            $context->getInfo()->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
-            return;
-        }
 
         /** @var GdImage $newImage */
         $newImage = imagecreatetruecolor(150, 150);

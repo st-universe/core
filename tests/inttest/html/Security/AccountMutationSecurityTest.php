@@ -20,6 +20,7 @@ use Stu\Component\Game\RedirectionException;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Session\SessionInterface;
 use Stu\Lib\Session\SessionStringFactory;
+use Stu\Lib\Upload\PngUpload;
 use Stu\Module\Control\AccessCheckInterface;
 use Stu\Module\Control\Component\Action\ActionContextFactoryInterface;
 use Stu\Module\Control\Component\CallbackExecution;
@@ -55,6 +56,8 @@ use Stu\TwigTestCase;
 #[PreserveGlobalState(false)]
 final class AccountMutationSecurityTest extends TwigTestCase
 {
+    private const string ORIGINAL_AVATAR = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+
     private string $directory;
     private int $contactId;
     private int $ignoreId;
@@ -75,7 +78,7 @@ final class AccountMutationSecurityTest extends TwigTestCase
         $this->directory = sys_get_temp_dir() . '/stu-account-security-' . bin2hex(random_bytes(8));
         mkdir($this->directory);
         $image = imagecreatetruecolor(150, 150);
-        imagepng($image, $this->directory . '/original.png');
+        imagepng($image, $this->directory . '/' . self::ORIGINAL_AVATAR . '.png');
         imagepng($image, $this->directory . '/upload.png');
         $dic = $this->getContainer();
         $notification = $this->mock(EmailNotificationSenderInterface::class);
@@ -91,7 +94,7 @@ final class AccountMutationSecurityTest extends TwigTestCase
         $changer->change($user, UserSettingEnum::SHOW_ONLINE_STATUS, '1');
         $changer->change($user, UserSettingEnum::SAVE_LOGIN, '1');
         $changer->change($user, UserSettingEnum::RGB_CODE, '#123456');
-        $changer->change($user, UserSettingEnum::AVATAR, 'original');
+        $changer->change($user, UserSettingEnum::AVATAR, self::ORIGINAL_AVATAR);
         $ranks = $dic->get(UserCrewRankRepositoryInterface::class);
         $ranks->save($ranks->prototype()->setUser($user)->setRank(CrewSkillLevelEnum::CADET)->setName('Anwärter'));
         $contacts = $dic->get(ContactRepositoryInterface::class);
@@ -313,7 +316,7 @@ final class AccountMutationSecurityTest extends TwigTestCase
         $parameters[$class::ACTION_IDENTIFIER] = '1';
         $_GET = $method === 'GET' ? $parameters : [];
         $_POST = $method === 'POST' ? $parameters : [];
-        $_FILES = ['avatar' => ['type' => 'image/png', 'size' => filesize($this->directory . '/upload.png'), 'tmp_name' => $this->directory . '/upload.png']];
+        $_FILES = ['avatar' => ['name' => 'upload.png', 'error' => UPLOAD_ERR_OK, 'type' => 'image/png', 'size' => filesize($this->directory . '/upload.png'), 'tmp_name' => $this->directory . '/upload.png']];
         $dic = $this->getContainer();
         $arguments = [];
         foreach (new ReflectionClass($class)->getConstructor()->getParameters() as $parameter) {
@@ -327,6 +330,10 @@ final class AccountMutationSecurityTest extends TwigTestCase
                     $this->logoutCount++;
                 });
                 $arguments[] = $session;
+            } elseif ($type === PngUpload::class) {
+                $upload = $this->mock(PngUpload::class)->makePartial();
+                $upload->shouldReceive('readUploaded')->andReturnUsing(fn (string $path, int $error, int $bytes, int $width, int $height, int $pixels) => $upload->readFile($path, $bytes, $width, $height, $pixels));
+                $arguments[] = $upload;
             } elseif ($type === ConfigInterface::class) {
                 $arguments[] = new Config(json_encode(['game' => ['webroot' => '', 'user_avatar_path' => $this->directory]]), new Json(), true);
             } else {
@@ -414,7 +421,7 @@ final class AccountMutationSecurityTest extends TwigTestCase
             'CreateTutorials' => self::assertCount(2, $after['tutorials']),
             'DeleteTutorials' => self::assertSame([], $after['tutorials']),
             'ChangeRgbCode' => self::assertSame('#abcdef', $after['settings']['rgb_code']),
-            'ChangeAvatar' => self::assertNotSame('original', $after['settings']['avatar']),
+            'ChangeAvatar' => self::assertNotSame(self::ORIGINAL_AVATAR, $after['settings']['avatar']),
             'AddContact' => self::assertSame(ContactListModeEnum::FRIEND, $this->getContainer()->get(ContactRepositoryInterface::class)->getByUserAndOpponent(101, 102)->getMode()),
             'SwitchContactMode' => self::assertSame(1, $after['contacts'][$this->contactId][2]),
             'EditContactComment' => self::assertSame('Neuer Kommentar', $after['contacts'][$this->contactId][3]),
@@ -428,7 +435,7 @@ final class AccountMutationSecurityTest extends TwigTestCase
             self::assertGreaterThan($before['messages'], $after['messages']);
         }
         if (str_ends_with($class, '\\ChangeAvatar')) {
-            self::assertFileDoesNotExist($this->directory . '/original.png');
+            self::assertFileDoesNotExist($this->directory . '/' . self::ORIGINAL_AVATAR . '.png');
             $file = $this->directory . '/' . $after['settings']['avatar'] . '.png';
             self::assertFileExists($file);
             self::assertSame([150, 150], array_slice(getimagesize($file), 0, 2));
