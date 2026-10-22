@@ -19,6 +19,8 @@ interface SpacecraftMovementPublisherInterface
 
     public function publishRemoval(Spacecraft $spacecraft): void;
 
+    public function publishContactInvalidation(Spacecraft $spacecraft): void;
+
     public function publishState(Spacecraft $spacecraft): void;
 
     public function publishCoverageChanged(Spacecraft $spacecraft): void;
