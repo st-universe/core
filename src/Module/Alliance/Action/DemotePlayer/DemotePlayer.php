@@ -56,6 +56,8 @@ final class DemotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
+        $this->allianceJobManager->assertUserCanManageMember($user, $player, $alliance);
+
         $this->allianceJobManager->removeUserFromAllJobs($player, $alliance);
 
         $this->privateMessageSender->send(
