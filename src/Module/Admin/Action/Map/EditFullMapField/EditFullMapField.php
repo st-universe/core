@@ -43,6 +43,10 @@ final class EditFullMapField implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $selectedFields = $this->getSelectedFields();
         if ($selectedFields === []) {
             $this->respondJson(['success' => false, 'message' => 'Kartenfeld nicht gefunden'], 404);
@@ -209,7 +213,7 @@ final class EditFullMapField implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 
     /**

@@ -19,9 +19,13 @@ final class GenerateEmptySystems implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowMapEditor::VIEW_IDENTIFIER);
 
-        $count = $this->generateEmptySystems->generate(request::getInt('layerid'), $context);
+        $count = $this->generateEmptySystems->generate(request::postInt('layerid'), $context);
 
         $context->getInfo()->addInformation(sprintf('Es wurden %d Systeme generiert.', $count));
     }
@@ -29,6 +33,6 @@ final class GenerateEmptySystems implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\EditInfluenceArea;
 
+use request;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -19,6 +20,10 @@ final class EditInfluenceArea implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $selectedField = $this->mapRepository->find($this->editInfluenceAreaRequest->getFieldId());
 
         if ($selectedField === null) {
@@ -46,6 +51,6 @@ final class EditInfluenceArea implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

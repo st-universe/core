@@ -14,6 +14,6 @@ final class Noop implements ViewControllerInterface
     #[\Override]
     public function handle(ViewControllerContext $game): void
     {
-        $game->showMacro('html/empty.twig');
+        $game->showMacro('html/admin/mapMutationResponse.twig');
     }
 }

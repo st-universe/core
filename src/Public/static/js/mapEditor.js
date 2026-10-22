@@ -1,5 +1,41 @@
 window.assetUrl ??= (url) => url;
 
+async function adminMapPost(url, parameters = new URLSearchParams()) {
+	const tokenResponse = await fetch("/admin/?NOOP=1", { credentials: "same-origin", cache: "no-store" });
+	if (!tokenResponse.ok) {
+		throw new Error("Sitzungstoken konnte nicht geladen werden");
+	}
+	const document = new DOMParser().parseFromString(await tokenResponse.text(), "text/html");
+	const token = document.querySelector("[data-admin-map-token]")?.dataset.adminMapToken;
+	if (!token) {
+		throw new Error("Sitzungstoken fehlt");
+	}
+	const target = new URL(url, window.location.origin);
+	const body = new URLSearchParams(target.search);
+	for (const [key, value] of parameters) {
+		body.append(key, value);
+	}
+	body.set("sstr", token);
+	target.search = "";
+	return fetch(target.toString(), {
+		method: "POST",
+		credentials: "same-origin",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+			"X-Requested-With": "XMLHttpRequest",
+		},
+		body: body.toString(),
+	});
+}
+
+function adminMapUpdate(url) {
+	return adminMapPost(url).then(response => {
+		if (!response.ok) {
+			throw new Error("Kartenänderung fehlgeschlagen");
+		}
+	}).catch(error => alert(error.message));
+}
+
 document.addEventListener('mouseup', clearDragSelection);
 
 var isDragging = false;
@@ -104,8 +140,7 @@ function updateField(obj, fieldid) {
 	var parentTd = obj.parentNode;
 
 	if (selectedFieldType != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_FIELD=1&field=" + fieldid + "&type=" + selectedFieldType
 		);
 		obj.style.backgroundImage =
@@ -113,8 +148,7 @@ function updateField(obj, fieldid) {
 		tmpfield = obj.style.backgroundImage;
 	}
 	if (selectedSystemType != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_SYSTEMTYPE_FIELD=1&field=" +
 			fieldid +
 			"&type=" +
@@ -126,8 +160,7 @@ function updateField(obj, fieldid) {
 		}
 	}
 	if (selectedRegion != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_REGION=1&field=" + fieldid + "&region=" + selectedRegion
 		);
 		parentTd.setAttribute("data-region", selectedRegion);
@@ -136,8 +169,7 @@ function updateField(obj, fieldid) {
 		}
 	}
 	if (areaid != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_INFLUENCE_AREA=1&field=" + fieldid + "&area=" + areaid
 		);
 		parentTd.setAttribute("data-influence-area", areaid);
@@ -167,8 +199,7 @@ function updateField(obj, fieldid) {
 	}
 
 	if (adminregionselector != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_ADMIN_REGION=1&field=" +
 			fieldid +
 			"&adminregion=" +
@@ -180,8 +211,7 @@ function updateField(obj, fieldid) {
 		}
 	}
 	if (passableselector != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_PASSABLE=1&field=" +
 			fieldid +
 			"&passable=" +
@@ -194,8 +224,7 @@ function updateField(obj, fieldid) {
 		}
 	}
 	if (borderselector != 0) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			"/admin/?B_EDIT_BORDER=1&field=" + fieldid + "&border=" + borderselector
 		);
 		if (fieldevent == 7) {
@@ -207,8 +236,7 @@ function updateField(obj, fieldid) {
 		const joined = [...selectedEffects].join('&effects[]=');
 		const effectMode = getSelectedEffectMode();
 
-		ajax_update(
-			false,
+		adminMapUpdate(
 			`/admin/?B_EDIT_EFFECTS=1&field=${fieldid}&mode=${effectMode}&effects[]=${joined}`
 		);
 		const currentEffects = getCurrentEffects(parentTd);
@@ -226,8 +254,7 @@ function updateField(obj, fieldid) {
 		}
 	}
 	if ($('reseteffects').checked) {
-		ajax_update(
-			false,
+		adminMapUpdate(
 			`/admin/?B_RESET_EFFECTS=1&field=${fieldid}`
 		);
 		parentTd.setAttribute("data-effects", "");
@@ -283,8 +310,7 @@ function openSystemFieldSelector(obj, x, y, systemId) {
 	);
 }
 function selectNewSystemMapField(fieldid, cx, cy, typeid, type) {
-	ajax_update(
-		false,
+	adminMapUpdate(
 		"/admin/?B_EDIT_SYSTEM_FIELD=1&field=" + fieldid + "&type=" + typeid
 	);
 	field = $(cx + "_" + cy);
@@ -511,7 +537,7 @@ function registerSystemEditorNavKeys(previousId, currentId, nextId) {
 			document.location.href = '?SHOW_SYSTEM=1&systemid=' + nextId;
 		}
 		if (event.key === "ArrowUp") {
-			document.location.href = '?REGENERATE_SYSTEM=1&systemid=' + currentId;
+			document.getElementById('regenerateSystemForm').requestSubmit();
 		}
 		if (event.key === "ArrowDown") {
 			document.location.href = '?SHOW_SYSTEM=1&systemid=' + currentId;

@@ -43,8 +43,14 @@
 	</tr>
 	{% if NUMBER_OF_SYSTEMS_TO_GENERATE > 0 %}
 	<tr>
-		<td><a href="/admin/?GENERATE_EMPTY_SYSTEMS=1&layerid={{ LAYERID }}">10 / {{ NUMBER_OF_SYSTEMS_TO_GENERATE }}
-				leeren Systeme generieren</a></td>
+		<td>
+			<form action="/admin/" method="post">
+				<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+				<input type="hidden" name="GENERATE_EMPTY_SYSTEMS" value="1" />
+				<input type="hidden" name="layerid" value="{{ LAYERID }}" />
+				<button type="submit">10 / {{ NUMBER_OF_SYSTEMS_TO_GENERATE }} leeren Systeme generieren</button>
+			</form>
+		</td>
 	</tr>
 	{% endif %}
 	<tr>

@@ -32,6 +32,10 @@ final class SetIonStormMovement implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $rootId = request::postInt('rootId');
         $directionInDegrees = $this->parseIntPostValue('directionInDegrees');
         $velocity = $this->parseIntPostValue('velocity');
@@ -68,7 +72,7 @@ final class SetIonStormMovement implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 
     private function parseIntPostValue(string $key): ?int

@@ -22,9 +22,13 @@ final class RegenerateSystem implements ActionControllerInterface
     #[\Override]
     public function handle(ActionControllerContext $context): void
     {
+        if (!request::isPost()) {
+            return;
+        }
+
         $context->setView(ShowSystem::VIEW_IDENTIFIER);
 
-        $systemId = request::getInt('systemid');
+        $systemId = request::postInt('systemid');
 
         $starSystem = $this->starSystemRepository->find($systemId);
         if ($starSystem === null) {
@@ -59,6 +63,6 @@ final class RegenerateSystem implements ActionControllerInterface
     #[\Override]
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
