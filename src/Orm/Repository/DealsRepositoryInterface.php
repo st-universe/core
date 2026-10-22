@@ -14,6 +14,8 @@ use Stu\Orm\Entity\Deals;
  */
 interface DealsRepositoryInterface extends ObjectRepository
 {
+    public function getForUpdate(int $id): ?Deals;
+
     public function prototype(): Deals;
 
     public function save(Deals $post): void;

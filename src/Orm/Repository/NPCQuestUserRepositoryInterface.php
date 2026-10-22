@@ -14,6 +14,8 @@ use Stu\Orm\Entity\NPCQuestUser;
  */
 interface NPCQuestUserRepositoryInterface extends ObjectRepository
 {
+    public function getByQuestAndUserForUpdate(int $questId, int $userId): ?NPCQuestUser;
+
     public function prototype(): NPCQuestUser;
 
     public function save(NPCQuestUser $questUser): void;

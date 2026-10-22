@@ -14,6 +14,8 @@ use Stu\Orm\Entity\TradeOffer;
  */
 interface TradeOfferRepositoryInterface extends ObjectRepository
 {
+    public function getForUpdate(int $id): ?TradeOffer;
+
     public function prototype(): TradeOffer;
 
     public function save(TradeOffer $post): void;
