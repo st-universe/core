@@ -161,6 +161,10 @@ class PromotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($job);
 
+        $this->allianceJobManager->shouldReceive('assertUserCanManageMember')
+            ->with($user, $promotedPlayer, $alliance)
+            ->once();
+
         $this->allianceJobManager->shouldReceive('removeUserFromAllJobs')
             ->with($promotedPlayer, $alliance)
             ->once();

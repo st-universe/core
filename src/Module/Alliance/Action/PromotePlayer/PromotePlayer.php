@@ -56,6 +56,8 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
+        $this->allianceJobManager->assertUserCanManageMember($user, $promotedPlayer, $alliance);
+
         $userLosesFounderRights = false;
 
         if ($job->hasPermission(AllianceJobPermissionEnum::FOUNDER->value)) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Exception\AccessViolationException;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\User;
@@ -15,6 +16,17 @@ final class AllianceJobManager implements AllianceJobManagerInterface
     public function __construct(
         private AllianceMemberJobRepositoryInterface $allianceMemberJobRepository
     ) {}
+
+    #[\Override]
+    public function assertUserCanManageMember(User $actor, User $target, Alliance $alliance): void
+    {
+        if ($actor->getAlliance()?->getId() !== $alliance->getId()
+            || $target->getAlliance()?->getId() !== $alliance->getId()
+            || !$this->hasUserPermission($actor, $alliance, AllianceJobPermissionEnum::MANAGE_JOBS)
+            || $this->hasUserPermission($target, $alliance, AllianceJobPermissionEnum::FOUNDER)) {
+            throw new AccessViolationException();
+        }
+    }
 
     #[\Override]
     public function assignUserToJob(User $user, AllianceJob $job): void

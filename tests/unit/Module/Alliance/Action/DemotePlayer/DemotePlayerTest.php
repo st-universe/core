@@ -174,6 +174,10 @@ class DemotePlayerTest extends StuTestCase
             ->once()
             ->andReturn($this->alliance);
 
+        $this->allianceJobManager->shouldReceive('assertUserCanManageMember')
+            ->with($this->user, $player, $this->alliance)
+            ->once();
+
         $this->allianceJobManager->shouldReceive('removeUserFromAllJobs')
             ->with($player, $this->alliance)
             ->once();

@@ -49,15 +49,9 @@ final class KickPlayer implements ActionControllerInterface
             throw new AccessViolationException();
         }
 
+        $this->allianceJobManager->assertUserCanManageMember($user, $player, $alliance);
+
         $alliance->getMembers()->removeElement($player);
-
-        $isKickedPlayerFounder = $this->allianceJobManager->hasUserPermission($user, $alliance, AllianceJobPermissionEnum::FOUNDER);
-
-        if ($isKickedPlayerFounder) {
-            $founderJob = $alliance->getFounder();
-            $this->allianceJobManager->removeUserFromJob($player, $founderJob);
-            $this->allianceJobManager->assignUserToJob($user, $founderJob);
-        }
 
         foreach ($alliance->getStations() as $station) {
             if ($station->getUser()->getId() === $playerId) {
