@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use JBBCode\InputValidator;
-use JBBCode\validators\UrlValidator;
 
 final class StuBbCodeImageValidator implements InputValidator
 {
@@ -17,15 +16,10 @@ final class StuBbCodeImageValidator implements InputValidator
     #[\Override]
     public function validate($input): bool
     {
-        $urlValidator = new UrlValidator();
+        $scheme = parse_url($input, PHP_URL_SCHEME);
 
-        return $urlValidator->validate($input) && $this->isJpgOrPng($input);
-    }
-
-    private function isJpgOrPng(string $input): bool
-    {
-        $imageType = exif_imagetype($input);
-
-        return $imageType === IMAGETYPE_JPEG || $imageType === IMAGETYPE_PNG;
+        return filter_var($input, FILTER_VALIDATE_URL) !== false
+            && is_string($scheme)
+            && in_array(strtolower($scheme), ['http', 'https'], true);
     }
 }
