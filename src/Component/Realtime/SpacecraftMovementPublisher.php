@@ -9,10 +9,12 @@ use Stu\Component\Map\DirectionEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Map\FieldTypeEffectEnum;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Throwable;
 
 final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherInterface
@@ -28,7 +30,9 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
     public function __construct(
         private RealtimeRedisFactory $redisFactory,
         private Parser $bbCodeParser,
-        private RealtimeChannels $channels
+        private RealtimeChannels $channels,
+        private UserRepositoryInterface $userRepository,
+        private StuConfigInterface $stuConfig
     ) {}
 
     #[\Override]
@@ -213,6 +217,10 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
             return;
         }
 
+        if (!$this->stuConfig->getDbSettings()->useSqlite()) {
+            $this->userRepository->lockUsersForUpdate([$spacecraft->getUser()->getId()]);
+        }
+
         try {
             $payload = json_encode([
                 'type' => 'coverageChanged',
@@ -224,6 +232,8 @@ final class SpacecraftMovementPublisher implements SpacecraftMovementPublisherIn
             if ($redis === null) {
                 return;
             }
+
+            $redis->incr($this->channels->starmapCoverageGenerationKey($map['layerId']));
 
             $redis->xAdd(
                 $this->channels->starmapSpacecraftStream(),

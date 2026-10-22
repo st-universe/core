@@ -25,6 +25,11 @@ final class RealtimeChannels
         return $this->namespace . ':realtime:starmap:spacecraft';
     }
 
+    public function starmapCoverageGenerationKey(int $layerId): string
+    {
+        return sprintf('%s:realtime:starmap:coverage:generation:%d', $this->namespace, $layerId);
+    }
+
     public function starmapCoverageKey(int $userId, int $layerId): string
     {
         return sprintf('%s:realtime:starmap:coverage:%d:%d', $this->namespace, $userId, $layerId);

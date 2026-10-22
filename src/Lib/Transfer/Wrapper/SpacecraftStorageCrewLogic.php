@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Transfer\Wrapper;
 
+use Stu\Component\Realtime\SpacecraftMovementPublisherInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
@@ -27,7 +28,8 @@ class SpacecraftStorageCrewLogic
         private readonly ActivatorDeactivatorHelperInterface $activatorDeactivatorHelper,
         private readonly SpacecraftCrewCalculatorInterface $shipCrewCalculator,
         private readonly SpacecraftShutdownInterface $spacecraftShutdown,
-        private readonly SpacecraftStartupInterface $spacecraftStartup
+        private readonly SpacecraftStartupInterface $spacecraftStartup,
+        private readonly SpacecraftMovementPublisherInterface $spacecraftMovementPublisher
     ) {}
 
     public function getMaxTransferrableCrew(Spacecraft $spacecraft, bool $isTarget, User $user): int
@@ -167,6 +169,10 @@ class SpacecraftStorageCrewLogic
                 && $ownCrew >= $minOwnCrew
             ) {
                 $spacecraft->getSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+            }
+
+            if ($spacecraft->hasSpacecraftSystem(SpacecraftSystemTypeEnum::UPLINK)) {
+                $this->spacecraftMovementPublisher->publishCoverageChanged($spacecraft);
             }
 
             $this->sendUplinkMessage($hasForeigners, $information, $spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK), $ownCrew >= $minOwnCrew);

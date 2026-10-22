@@ -13,6 +13,7 @@ use Stu\Component\Realtime\RealtimeRedisFactory;
 use Stu\Component\Realtime\StarmapRealtimeTokenFactory;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -21,6 +22,7 @@ use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Throwable;
 
 final class ShowUserStarmapRealtime implements ViewControllerInterface
@@ -43,7 +45,9 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         private AllianceJobManagerInterface $allianceJobManager,
         private StarmapSensorData $sensorData,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
-        private RealtimeChannels $channels
+        private RealtimeChannels $channels,
+        private UserRepositoryInterface $userRepository,
+        private StuConfigInterface $stuConfig
     ) {}
 
     /**
@@ -65,6 +69,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             exit();
         }
 
+        $coverageGeneration = $this->getCoverageGeneration($layerId);
         $alliance = $user->getAlliance();
         $canSeeAllianceShips = $alliance !== null
         && $this->allianceJobManager->hasUserPermission(
@@ -76,6 +81,13 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $user->getId(),
             $layer->getId()
         );
+        if ($ranges !== [] && !$this->stuConfig->getDbSettings()->useSqlite()) {
+            $sourceIds = array_map(static fn (array $range): int => (int) $range['source_id'], $ranges);
+            $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts($sourceIds);
+            sort($userIds, SORT_NUMERIC);
+            $this->userRepository->lockUsersForUpdate($userIds);
+            $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
+        }
         $coverage = $this->sensorData->buildSensorCoverage($layer, $ranges);
 
         $sensorSpacecrafts = $ranges === []
@@ -143,7 +155,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                 'isCloakedSignature' => $spacecraft['isCloakedSignature'] ?? false
             ], $spacecrafts), self::JSON_FLAGS),
             json_encode($spacecrafts, self::JSON_FLAGS),
-            json_encode(array_values($dubiousFields), self::JSON_FLAGS)
+            json_encode(array_values($dubiousFields), self::JSON_FLAGS),
+            $coverageGeneration
         );
 
         header('Content-Type: application/json; charset=utf-8');
@@ -174,6 +187,16 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         exit();
     }
 
+    private function getCoverageGeneration(int $layerId): ?int
+    {
+        try {
+            $redis = $this->redisFactory->create();
+            return $redis === null ? null : (int) $redis->get($this->channels->starmapCoverageGenerationKey($layerId));
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
     private function getWebSocketUrl(): string
     {
         $url = getenv('STU_REALTIME_WEBSOCKET_URL');
@@ -197,8 +220,11 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      *     tachyonKeys: array<string, true>
      * } $coverage
      */
-    private function cacheCoverage(int $userId, int $layerId, array $coverage, string $sources, string $contacts, string $spacecrafts, string $dubiousFields): void
+    private function cacheCoverage(int $userId, int $layerId, array $coverage, string $sources, string $contacts, string $spacecrafts, string $dubiousFields, ?int $generation): void
     {
+        if ($generation === null) {
+            return;
+        }
         try {
             $redis = $this->redisFactory->create();
             if ($redis === null) {
@@ -214,6 +240,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
                     'sourceCount' => $coverage['sourceCount'],
                     'fieldCount' => $coverage['fieldCount'],
                     'tachyonFieldCount' => $coverage['tachyonFieldCount'],
+                    'generation' => $generation,
                     'snapshotVersion' => bin2hex(random_bytes(8)),
                     'sources' => json_decode($sources, true, 512, JSON_THROW_ON_ERROR),
                     'contacts' => json_decode($contacts, true, 512, JSON_THROW_ON_ERROR),
