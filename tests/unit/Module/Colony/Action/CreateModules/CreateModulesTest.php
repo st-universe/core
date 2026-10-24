@@ -185,10 +185,10 @@ class CreateModulesTest extends StuTestCase
         $this->assertSame(
             [
                 '0 von 1 Klingonische Torpedobank (Klasse 6)',
-                '<div style="padding-left: 20px;">- Zur Herstellung von weiteren 1 Klingonische Torpedobank (Klasse 6) werden benötigt: 110 Baumaterial</div>',
+                "\u{00A0}\u{00A0}\u{00A0}\u{00A0}- Zur Herstellung von weiteren 1 Klingonische Torpedobank (Klasse 6) werden benötigt: 110 Baumaterial",
                 '0 von 1 Mehrfach-Torpedogeschütz (Klasse 6)',
-                '<div style="padding-left: 20px;">- Zur Herstellung von weiteren 1 Mehrfach-Torpedogeschütz (Klasse 6) werden benötigt: 110 Baumaterial</div>',
-                '<div style="padding-left: 20px;">- Insgesamt werden zusätzlich benötigt: 220 Baumaterial</div>'
+                "\u{00A0}\u{00A0}\u{00A0}\u{00A0}- Zur Herstellung von weiteren 1 Mehrfach-Torpedogeschütz (Klasse 6) werden benötigt: 110 Baumaterial",
+                "\u{00A0}\u{00A0}\u{00A0}\u{00A0}- Insgesamt werden zusätzlich benötigt: 220 Baumaterial"
             ],
             $informationWrapper->getInformations()
         );

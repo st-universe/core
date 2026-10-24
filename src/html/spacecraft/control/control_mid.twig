@@ -469,7 +469,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
             {% if wrapper.canLandOnCurrentColony %}
             <div>
                 <a href="javascript:void(0);"
-                    onClick="actionToInnerContent('B_LAND_SHIP', 'id={{ colonyId }}&shipid={{ spacecraftId }}&sstr={{ SESSIONSTRING }}', '{{ currentColony.getName|bbcode2txt|htmlSafe }}',  'colony.php');">Landen</a>
+                    onClick="actionToInnerContent('B_LAND_SHIP', 'id={{ colonyId }}&shipid={{ spacecraftId }}&sstr={{ SESSIONSTRING }}', '{{ currentColony.getName|bbcode2txt|htmlSafe|e('js') }}',  'colony.php');">Landen</a>
             </div>
             {% endif %}
         </td>
@@ -591,7 +591,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
 {% set lable = currentColony.isFree ? currentColony.getColonyClass.getName : currentColony.getName %}
 {% if ownsCurrentColony %}
 <a href="javascript:void(0);"
-    onclick="switchInnerContent('SHOW_COLONY', '{{ currentColony.getName|bbcode2txt|htmlSafe }}', 'id={{ currentColony.getId }}&target={{ shipId }}', 'colony.php');">
+    onclick="switchInnerContent('SHOW_COLONY', '{{ currentColony.getName|bbcode2txt|htmlSafe|e('js') }}', 'id={{ currentColony.getId }}&target={{ shipId }}', 'colony.php');">
     <img src="/assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
     {{ lable|bbcode }}
 </a>

@@ -144,7 +144,7 @@
 {% set id = spacecraft.getId %}
 {% set phpPage = spacecraft.getType.getModuleView.getPhpPage %}
 href="/{{ phpPage }}?SHOW_SPACECRAFT=1&id={{ id }}"
-onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe }}',
+onclick="if(event.button === 0) { switchInnerContent('SHOW_SPACECRAFT', '{{ spacecraft.getName|bbcode2txt|htmlSafe|e('js') }}',
 'id={{ id }}',
 '{{ phpPage }}'); event.preventDefault();}
 updateSelectedSpacecraftId('{{ id }}');"
@@ -154,7 +154,7 @@ updateSelectedSpacecraftId('{{ id }}');"
 {% macro onClickColony(colony) %}
 {% set id = colony.getId %}
 href="/colony.php?SHOW_COLONY=1&id={{ id }}"
-onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe }}', 'id={{
+onclick="if(event.button === 0) { switchInnerContent('SHOW_COLONY', '{{ colony.getName|bbcode2txt|htmlSafe|e('js') }}', 'id={{
 id }}', '/colony.php'); event.preventDefault(); }"
 {% endmacro %}
 

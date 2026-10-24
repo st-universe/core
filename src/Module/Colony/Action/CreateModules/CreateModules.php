@@ -166,7 +166,7 @@ final class CreateModules implements ActionControllerInterface
                 );
 
                 $prod[] = sprintf(
-                    _('<div style="padding-left: 20px;">- Zur Herstellung von weiteren %d %s werden benötigt: %s</div>'),
+                    _("\u{00A0}\u{00A0}\u{00A0}\u{00A0}- Zur Herstellung von weiteren %d %s werden benötigt: %s"),
                     $missingModuleCount,
                     $module->getName(),
                     implode(', ', $missingText)
@@ -178,7 +178,7 @@ final class CreateModules implements ActionControllerInterface
             ksort($missingCommodityTotals);
 
             $prod[] = sprintf(
-                _('<div style="padding-left: 20px;">- Insgesamt werden zusätzlich benötigt: %s</div>'),
+                _("\u{00A0}\u{00A0}\u{00A0}\u{00A0}- Insgesamt werden zusätzlich benötigt: %s"),
                 implode(', ', $this->formatMissingCommodities($missingCommodityTotals))
             );
         }

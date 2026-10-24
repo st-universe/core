@@ -7,7 +7,7 @@
     {% if RELATION.hasText %}
     <div
         style="background-color: #171616; border: 1px solid #262323; padding: 15px; margin-bottom: 15px; word-wrap: break-word; line-height: 1.4;">
-        {{ RELATION.getText|nl2br|bbcode }}
+        {{ RELATION.getText|bbcode|nl2br }}
     </div>
     {% if RELATION.getLastEdited %}
     <div style="font-size: 90%; color: #888; text-align: right; margin-bottom: 15px;">
