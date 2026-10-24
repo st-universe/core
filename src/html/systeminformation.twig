@@ -12,7 +12,7 @@
                 <div class="information-container">
                     {% for info in INFORMATION %}
                     <div class="information-item{% if loop.index > 6 %} hidden-info{% endif %}">
-                        {{ info|bbcode }}
+                        {{ info|bbcode|nl2br }}
                     </div>
                     {% endfor %}
 

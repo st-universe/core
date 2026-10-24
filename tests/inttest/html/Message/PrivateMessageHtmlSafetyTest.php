@@ -87,6 +87,23 @@ final class PrivateMessageHtmlSafetyTest extends TwigTestCase
         yield 'normal-private-message' => ['private', true];
     }
 
+    public function testStoredFlightReportKeepsLegacyLineBreaksAndEntities(): void
+    {
+        $text = '[color=yellow]&alpha;<br>Signaturen verborgen[/color]';
+        $message = $this->createMessage('stored', $text);
+
+        foreach (['inbox', 'conversation', 'preview'] as $view) {
+            $document = HTMLDocument::createFromString($this->renderMessage($message, $view), LIBXML_NOERROR);
+            $content = $document->getElementById('message' . $message->getId());
+            self::assertNotNull($content);
+            self::assertSame(1, $content->getElementsByTagName('br')->length);
+            self::assertStringContainsString('α', $content->textContent);
+            self::assertStringNotContainsString('<br>', $content->textContent);
+        }
+
+        self::assertSame($text, $message->getText());
+    }
+
     #[DataProvider('filterInputs')]
     public function testSharedFilterEscapesRawHtml(string $input, string $expected): void
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Twig;
 
 use JBBCode\Parser;
-use JBBCode\visitors\HTMLSafeVisitor;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
 use Stu\Component\Building\NameAbbreviations;
@@ -21,6 +20,7 @@ use Stu\Lib\Colony\DayNight\DayNightBorder;
 use Stu\Lib\Colony\PlanetFieldHostInterface;
 use Stu\Lib\Colony\PlanetFieldImage;
 use Stu\Lib\ModuleScreen\GradientColorInterface;
+use Stu\Lib\StuBbCodeHtmlSafeVisitor;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -86,11 +86,15 @@ class TwigHelper
 
     private function registerFilters(): void
     {
-        $bbcode2txtFilter = new TwigFilter('bbcode2txt', fn ($string): string => $this->parser->parse($string)->getAsText());
+        $bbcode2txtFilter = new TwigFilter('bbcode2txt', fn ($string): string => html_entity_decode(
+            $this->parser->parse($string)->getAsText(),
+            ENT_QUOTES | ENT_HTML5,
+            'UTF-8'
+        ));
         $this->environment->addFilter($bbcode2txtFilter);
 
         $bbcodeFilter = new TwigFilter('bbcode', function ($string): string {
-            $this->parser->parse($string)->accept(new HTMLSafeVisitor());
+            $this->parser->parse($string)->accept(new StuBbCodeHtmlSafeVisitor());
 
             return $this->parser->getAsHTML();
         }, ['is_safe' => ['html']]);

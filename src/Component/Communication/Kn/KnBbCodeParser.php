@@ -3,7 +3,7 @@
 namespace Stu\Component\Communication\Kn;
 
 use JBBCode\Parser;
-use JBBCode\visitors\HTMLSafeVisitor;
+use Stu\Lib\StuBbCodeHtmlSafeVisitor;
 
 class KnBbCodeParser extends Parser
 {
@@ -14,7 +14,7 @@ class KnBbCodeParser extends Parser
 
     public function parseToHtml(string $text): string
     {
-        $this->parse($text)->accept(new HTMLSafeVisitor());
+        $this->parse($text)->accept(new StuBbCodeHtmlSafeVisitor());
 
         return $this->getAsHTML();
     }
