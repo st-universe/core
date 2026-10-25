@@ -13,6 +13,9 @@
         {% autoescape false %}
         {{ PLOT.getDescription|bbcode|nl2br }}
         {% endautoescape %}
+        {% if PLOT.getEditDate %}
+        <div class="knedit">Bearbeitet: {{ PLOT.getEditDate|stuDateTime }}</div>
+        {% endif %}
       </div>
       <br />
       <div class="divhead">Status</div>
@@ -24,6 +27,7 @@
           </div>
           {% if MAY_EDIT %}
           <div style="padding-top: 15px">
+            <input type="submit" value="Plot bearbeiten" name="SHOW_EDIT_PLOT" form="edit-plot-form" />
             <input type="submit" value="Plot beenden" name="B_END_PLOT" />
           </div>
           <div style="padding-top: 30px">
@@ -39,6 +43,12 @@
         {% else %}
         <div>
           Plot beendet seit: {{ PLOT.getEndDate|stuDate }}
+          {% if MAY_EDIT %}
+          <div style="padding-top: 15px">
+            <input type="submit" value="Plot bearbeiten" name="SHOW_EDIT_PLOT" form="edit-plot-form" />
+            <input type="submit" value="Plot erneut öffnen" name="B_REOPEN_PLOT" />
+          </div>
+          {% endif %}
         </div>
         {% endif %}
       </div>
@@ -75,3 +85,9 @@
     </div>
   </div>
 </form>
+{% if MAY_EDIT %}
+<form id="edit-plot-form" action="communication.php" method="post">
+  <input type="hidden" name="plotid" value="{{ PLOT.getId }}" />
+  <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+</form>
+{% endif %}

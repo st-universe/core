@@ -9,7 +9,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Communication\Action\EditKnPlot\EditKnPlot;
 use Stu\Module\Communication\Action\EditKnPlot\EditKnPlotRequestInterface;
+use Stu\Module\Communication\Lib\PlotMemberServiceInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -21,7 +23,12 @@ final class PlotEditSecurityTest extends ProtectedMutationTestCase
 {
     public function testEditRejectsForgedRequests(): void
     {
-        $this->assertRequestProtection(new EditKnPlot($this->mock(EditKnPlotRequestInterface::class), $this->mock(RpgPlotRepositoryInterface::class)));
+        $this->assertRequestProtection(new EditKnPlot(
+            $this->mock(EditKnPlotRequestInterface::class),
+            $this->mock(RpgPlotRepositoryInterface::class),
+            $this->mock(PlotMemberServiceInterface::class),
+            $this->mock(StuTime::class)
+        ));
     }
 
     #[DataProvider('ownership')]
@@ -37,18 +44,24 @@ final class PlotEditSecurityTest extends ProtectedMutationTestCase
         $user->shouldReceive('getId')->once()->andReturn(101);
         $context = $this->mock(ActionControllerContext::class);
         $context->shouldReceive('getUser')->once()->andReturn($user);
+        $members = $this->mock(PlotMemberServiceInterface::class);
+        $time = $this->mock(StuTime::class);
         if ($owned) {
             $request->shouldReceive('getTitle')->once()->andReturn('Geänderter Titel');
             $request->shouldReceive('getText')->once()->andReturn('Neue Beschreibung');
             $plot->shouldReceive('setTitle')->with('Geänderter Titel')->once();
             $plot->shouldReceive('setDescription')->with('Neue Beschreibung')->once();
+            $plot->shouldReceive('getTitle')->twice()->andReturn('Alter Titel', 'Geänderter Titel');
+            $time->shouldReceive('time')->once()->andReturn(1234567890);
+            $plot->shouldReceive('setEditDate')->with(1234567890)->once();
             $plots->shouldReceive('save')->with($plot)->once();
+            $members->shouldReceive('notifyMembers')->with($plot, 'Der Besitzer hat den RPG-Plot "Geänderter Titel" bearbeitet')->once();
             $info = $this->mock(InformationWrapper::class);
             $info->shouldReceive('addInformation')->once();
             $context->shouldReceive('getInfo')->once()->andReturn($info);
             $context->shouldReceive('setView')->once();
         }
-        new EditKnPlot($request, $plots)->handle($context);
+        new EditKnPlot($request, $plots, $members, $time)->handle($context);
     }
 
     public function testEditorEscapesStoredAttributeAndTextareaPayloads(): void

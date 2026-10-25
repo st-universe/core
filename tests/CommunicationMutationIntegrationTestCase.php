@@ -160,6 +160,7 @@ abstract class CommunicationMutationIntegrationTestCase extends ActionTestCase
                 'SortPmCategories' => ['catlist' => (string) $this->ids['foreignFolder']],
                 'DeleteBuildPlan' => ['planid' => $this->ids['foreignPlan']],
                 'EditKnPlot' => ['plotid' => $this->ids['foreignPlot'], 'title' => 'Fremder Titel', 'description' => 'Fremder Text'],
+                'ReopenKnPlot' => ['plotid' => $this->ids['foreignPlot']],
                 'DeleteKnComment' => ['commentid' => $this->ids['foreignComment'], 'knid' => $this->ids['post']],
                 'AddKnPlotMember' => ['plotid' => $this->ids['foreignPlot'], 'memid' => 103],
                 default => null
@@ -187,6 +188,7 @@ abstract class CommunicationMutationIntegrationTestCase extends ActionTestCase
             'DeleteBuildPlan' => ['planid' => $this->ids['plan']],
             'AddBoard' => ['board' => 'Neues Testforum'],
             'EditKnPlot' => ['plotid' => $this->ids['plot'], 'title' => 'Neuer Plottitel', 'description' => 'Neue Beschreibung'],
+            'ReopenKnPlot' => ['plotid' => $this->ids['plot']],
             'CreateKnPlot' => ['title' => 'Neuer Testplot', 'description' => 'Neue Beschreibung'],
             'PostKnComment' => ['knid' => $this->ids['post'], 'comment' => 'Neuer Testkommentar'],
             'DeleteKnComment' => ['knid' => $this->ids['post'], 'commentid' => $this->ids['comment']],
@@ -238,7 +240,7 @@ abstract class CommunicationMutationIntegrationTestCase extends ActionTestCase
                 $state[$class][$entity->getId()] = match ($class) {
                     PrivateMessage::class => [$entity->getRecipientId(), $entity->getCategoryId(), $entity->isDeleted()],
                     PrivateMessageFolder::class => [$entity->getUserId(), $entity->getDescription(), $entity->getSort(), $entity->isDeleted()],
-                    RpgPlot::class => [$entity->getUserId(), $entity->getTitle(), $entity->getDescription(), $entity->getEndDate()],
+                    RpgPlot::class => [$entity->getUserId(), $entity->getTitle(), $entity->getDescription(), $entity->getEndDate(), $entity->getEditDate()],
                     KnComment::class => [$entity->getUserId(), $entity->getText(), $entity->isDeleted()],
                     SpacecraftBuildplan::class => [$entity->getUserId(), $entity->getName()],
                     AllianceBoard::class => [$entity->getAlliance()->getId(), $entity->getName()],
@@ -261,6 +263,7 @@ abstract class CommunicationMutationIntegrationTestCase extends ActionTestCase
             'DeleteBuildPlan' => self::assertArrayNotHasKey($this->ids['plan'], $after[SpacecraftBuildplan::class]),
             'AddBoard' => self::assertCount(count($before[AllianceBoard::class]) + 1, $after[AllianceBoard::class]),
             'EditKnPlot' => self::assertSame('Neuer Plottitel', $after[RpgPlot::class][$this->ids['plot']][1]),
+            'ReopenKnPlot' => self::assertNull($after[RpgPlot::class][$this->ids['plot']][3]),
             'CreateKnPlot' => self::assertCount(count($before[RpgPlot::class]) + 1, $after[RpgPlot::class]),
             'PostKnComment' => self::assertCount(count($before[KnComment::class]) + 1, $after[KnComment::class]),
             'DeleteKnComment' => self::assertTrue($after[KnComment::class][$this->ids['comment']][2]),

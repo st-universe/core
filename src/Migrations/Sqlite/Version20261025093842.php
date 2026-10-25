@@ -7,7 +7,7 @@ namespace Stu\Migrations\Sqlite;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20261022213827 extends AbstractMigration
+final class Version20261025093842 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -345,7 +345,7 @@ final class Version20261022213827 extends AbstractMigration
         $this->addSql('CREATE INDEX planet_commodity_commodity_idx ON stu_planets_commodity (commodity_id)');
         $this->addSql('CREATE INDEX planet_commodity_count_idx ON stu_planets_commodity (count)');
         $this->addSql('CREATE UNIQUE INDEX planet_commodity_unique_idx ON stu_planets_commodity (planet_classes_id, commodity_id)');
-        $this->addSql('CREATE TABLE stu_plots (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(255) NOT NULL, description CLOB NOT NULL, start_date INTEGER NOT NULL, end_date INTEGER DEFAULT NULL, CONSTRAINT FK_D438967A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_plots (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(255) NOT NULL, description CLOB NOT NULL, start_date INTEGER NOT NULL, end_date INTEGER DEFAULT NULL, edit_date INTEGER DEFAULT NULL, CONSTRAINT FK_D438967A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX rpg_plot_end_date_idx ON stu_plots (end_date)');
         $this->addSql('CREATE INDEX rpg_plot_user_idx ON stu_plots (user_id)');
         $this->addSql('CREATE TABLE stu_plots_archiv (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, version VARCHAR(255) NOT NULL, former_id INTEGER NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(255) NOT NULL, description CLOB NOT NULL, start_date INTEGER NOT NULL, end_date INTEGER DEFAULT NULL)');

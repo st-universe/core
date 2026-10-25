@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
+use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\NPCQuest;
+use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 
@@ -45,5 +48,24 @@ final class PlotMemberService implements PlotMemberServiceInterface
                 $quest->getTitle()
             )
         );
+    }
+
+    #[\Override]
+    public function notifyMembers(RpgPlot $plot, string $message): void
+    {
+        foreach ($plot->getMembers() as $member) {
+            $recipientId = $member->getUser()->getId();
+            if ($recipientId === $plot->getUserId()) {
+                continue;
+            }
+
+            $this->privateMessageSender->send(
+                UserConstants::USER_NOONE,
+                $recipientId,
+                $message,
+                PrivateMessageFolderTypeEnum::SPECIAL_SYSTEM,
+                sprintf('/communication.php?SHOW_PLOT=1&plotid=%d', $plot->getId())
+            );
+        }
     }
 }

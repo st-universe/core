@@ -27,9 +27,9 @@ final class ShowEditPlot implements ViewControllerInterface
         $game->appendNavigationPart('communication.php', _('KommNet'));
         $game->appendNavigationPart(
             sprintf('communication.php?%s=1&plotid=%d', self::VIEW_IDENTIFIER, $plot->getId()),
-            _('Plot editiren')
+            _('Plot bearbeiten')
         );
-        $game->setPageTitle(_('Plot editieren'));
+        $game->setPageTitle(_('Plot bearbeiten'));
 
         $game->setTemplateVar('PLOT', $plot);
     }

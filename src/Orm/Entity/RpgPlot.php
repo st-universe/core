@@ -45,6 +45,9 @@ class RpgPlot
     #[Column(type: 'integer', nullable: true)]
     private ?int $end_date = null;
 
+    #[Column(type: 'integer', nullable: true)]
+    private ?int $edit_date = null;
+
     /**
      * @var ArrayCollection<int, KnPost>
      */
@@ -139,6 +142,18 @@ class RpgPlot
     public function isActive(): bool
     {
         return $this->getEndDate() === null || $this->getEndDate() === 0;
+    }
+
+    public function getEditDate(): ?int
+    {
+        return $this->edit_date;
+    }
+
+    public function setEditDate(?int $editDate): RpgPlot
+    {
+        $this->edit_date = $editDate;
+
+        return $this;
     }
 
     /**

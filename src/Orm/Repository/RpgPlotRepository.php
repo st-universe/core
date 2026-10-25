@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\User;
@@ -82,6 +83,8 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
     #[\Override]
     public function getEmptyOldPlots(int $maxAge): array
     {
+        $now = time();
+
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -90,12 +93,17 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
                     WHERE NOT EXISTS (SELECT kn.id
                                     FROM %s kn
                                     WHERE kn.plot_id = pl.id)
+                    AND NOT EXISTS (SELECT q.id
+                                    FROM %s q
+                                    WHERE q.plot_id = pl.id
+                                    AND (q.end IS NULL OR q.end >= :now))
                     AND pl.start_date < :deletionThreshold',
                     RpgPlot::class,
-                    KnPost::class
+                    KnPost::class,
+                    NPCQuest::class
                 )
             )
-            ->setParameters(['deletionThreshold' => time() - $maxAge])
+            ->setParameters(['deletionThreshold' => $now - $maxAge, 'now' => $now])
             ->getResult();
     }
 
