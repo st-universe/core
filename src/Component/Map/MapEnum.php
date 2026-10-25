@@ -24,4 +24,9 @@ final class MapEnum
     //MAP REGIONS
     public const int ADMIN_REGION_SUPERPOWER_CENTRAL = 61;
     public const int ADMIN_REGION_SUPERPOWER_PERIPHERAL = 62;
+
+    public const array PIRATE_FORBIDDEN_ADMIN_AREAS = [
+        self::ADMIN_REGION_SUPERPOWER_CENTRAL,
+        self::ADMIN_REGION_SUPERPOWER_PERIPHERAL
+    ];
 }
