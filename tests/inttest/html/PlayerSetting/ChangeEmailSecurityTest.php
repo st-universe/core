@@ -9,11 +9,10 @@ use Dom\HTMLDocument;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Lib\Mail\MailFactory;
+use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Lib\Session\SessionStringFactory;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\AccessCheckInterface;
@@ -41,8 +40,6 @@ use Stu\TwigTestCase;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
 final class ChangeEmailSecurityTest extends TwigTestCase
 {
     #[\Override]
@@ -270,7 +267,8 @@ final class ChangeEmailSecurityTest extends TwigTestCase
             $mailFactory,
             $dic->get(ConfigInterface::class),
             $dic->get(UserRepositoryInterface::class),
-            $dic->get(PasswordGeneratorInterface::class)
+            $dic->get(PasswordGeneratorInterface::class),
+            $dic->get(PasswordHasherInterface::class)
         )->handle($context);
         $dic->get(EntityManagerInterface::class)->flush();
         self::assertCount(2, $messages);

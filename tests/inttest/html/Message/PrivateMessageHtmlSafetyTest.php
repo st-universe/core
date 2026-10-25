@@ -8,8 +8,6 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Dom\HTMLDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
@@ -35,8 +33,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\TwigTestCase;
 use Twig\Environment;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
 final class PrivateMessageHtmlSafetyTest extends TwigTestCase
 {
     #[\Override]

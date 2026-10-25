@@ -6,8 +6,6 @@ namespace Stu\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use request;
 use Stu\ActionTestCase;
 use Stu\Exception\AccessViolationException;
@@ -33,8 +31,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
 final class TradeOfferConservationTest extends ActionTestCase
 {
     #[\Override]

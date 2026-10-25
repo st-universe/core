@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stu\Html\Security;
 
 use Dom\HTMLDocument;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\SanityCheckException;
@@ -20,11 +18,17 @@ use Stu\StubGameComponentsTrait;
 use Stu\TwigTestCase;
 use Twig\Environment;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
 final class StarmapTemplateSecurityTest extends TwigTestCase
 {
     use StubGameComponentsTrait;
+
+    #[\Override]
+    public function setUp(): void
+    {
+        self::$isSchemaInitializationNeeded = true;
+        parent::setUp();
+        self::$isSchemaInitializationNeeded = true;
+    }
 
     public function testRefreshRendersBothAllowedMapTemplates(): void
     {

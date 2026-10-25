@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
+use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Lib\Session\SessionCredential;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -18,7 +19,11 @@ final class ChangePassword implements ActionControllerInterface
      */
     public const string PASSWORD_REGEX = '/[a-zA-Z0-9]{6,20}/';
 
-    public function __construct(private ChangePasswordRequestInterface $changePasswordRequest, private UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        private ChangePasswordRequestInterface $changePasswordRequest,
+        private UserRepositoryInterface $userRepository,
+        private PasswordHasherInterface $passwordHasher
+    ) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
@@ -30,7 +35,7 @@ final class ChangePassword implements ActionControllerInterface
             $context->getInfo()->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
-        if (!password_verify($currentPassword, $user->getRegistration()->getPassword())) {
+        if (!$this->passwordHasher->verify($currentPassword, $user->getRegistration()->getPassword())) {
             $context->getInfo()->addInformation(_('Das alte Passwort ist falsch'));
             return;
         }
@@ -50,7 +55,7 @@ final class ChangePassword implements ActionControllerInterface
             $context->getInfo()->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
             return;
         }
-        $user->getRegistration()->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+        $user->getRegistration()->setPassword($this->passwordHasher->hash($newPassword));
 
         $this->userRepository->save($user);
 

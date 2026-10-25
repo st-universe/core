@@ -42,6 +42,8 @@ use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\Paging\PagingFactory;
 use Stu\Lib\Session\AdminImpersonation;
 use Stu\Lib\Session\AdminImpersonationInterface;
+use Stu\Lib\Session\PasswordHasher;
+use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Lib\Session\Session;
 use Stu\Lib\Session\SessionDestruction;
 use Stu\Lib\Session\SessionDestructionInterface;
@@ -92,6 +94,7 @@ use function DI\get;
 return [
     ComponentRegistrationInterface::class => autowire(ComponentRegistration::class),
     ComponentLoaderInterface::class => autowire(ComponentLoader::class),
+    PasswordHasherInterface::class => autowire(PasswordHasher::class),
     SessionStringFactoryInterface::class => autowire(SessionStringFactory::class),
     SessionDestructionInterface::class => autowire(SessionDestruction::class),
     SessionInterface::class => autowire(Session::class),

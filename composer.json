@@ -71,6 +71,7 @@
     "friendsofphp/php-cs-fixer": "^3.95.27",
     "mikey179/vfsstream": "1.6.12",
     "mockery/mockery": "^1.1",
+    "nikic/php-parser": "^5.0",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^2.3.1",
     "phpstan/phpstan-deprecation-rules": "^2.0",
@@ -79,6 +80,7 @@
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^13.4.1",
     "rector/rector": "^2.0",
+    "sebastian/complexity": "^6.0",
     "spatie/phpunit-snapshot-assertions": "^5.1"
   },
   "extra": {
@@ -119,6 +121,7 @@
     "dev:serve-node": "bash bin/dev-serve-realtime",
     "dev:serve-debug": "@php -S localhost:1337 -t src/Public/ router.php",
     "mago:analyze": "@php -d xdebug.mode=off vendor/bin/mago analyze --fix --fmt",
+    "complexity:check": "@php -d memory_limit=-1 -d xdebug.mode=off vendor/bin/phpunit -c phpunit.xml tests/unit/CodeComplexityTest.php",
     "unittests": "@php vendor/bin/phpunit --testsuite \"STU unit\"",
     "integrationtests": "@php vendor/bin/phpunit --testsuite \"STU integration\"",
     "stan": "phpstan",

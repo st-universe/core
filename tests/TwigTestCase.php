@@ -75,6 +75,10 @@ abstract class TwigTestCase extends IntegrationTestCase
     private function setupTemplateEngine(): void
     {
         if (!self::$isTemplateEngineSetup) {
+            $page = $this->getContainer()->get(TwigPageInterface::class);
+            foreach (['JAVASCRIPTPATH', 'SESSIONSTRING', 'ADMIN_ACCESS_TOKEN'] as $variable) {
+                $page->setVar($variable, null, true);
+            }
             $twigHelper = $this->getContainer()->get(TwigHelper::class);
             $twigHelper->registerFiltersAndFunctions();
             $twigHelper->registerGlobalVariables();
