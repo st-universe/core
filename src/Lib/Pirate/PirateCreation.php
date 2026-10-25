@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
-use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Game\Lib\GameTurnProviderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -35,10 +34,7 @@ class PirateCreation implements PirateCreationInterface
     public const MAX_PIRATE_FLEETS_PER_TICK = 5;
     public const MAX_PIRATE_FLEETS_PER_10MIN = 3;
 
-    public const FORBIDDEN_ADMIN_AREAS = [
-        MapEnum::ADMIN_REGION_SUPERPOWER_CENTRAL,
-        MapEnum::ADMIN_REGION_SUPERPOWER_PERIPHERAL
-    ];
+    public const FORBIDDEN_ADMIN_AREAS = MapEnum::PIRATE_FORBIDDEN_ADMIN_AREAS;
 
     private PirateLoggerInterface $logger;
 
@@ -216,7 +212,7 @@ class PirateCreation implements PirateCreationInterface
     }
 
     #[\Override]
-    public function createPirateFleet(?Spacecraft $supportCaller = null, ?int $pirateSetupId = null): Fleet
+    public function createPirateFleet(?Spacecraft $supportCaller = null, ?int $pirateSetupId = null, ?Map $spawnLocation = null): Fleet
     {
         $pirateUser = $this->userRepository->find(UserConstants::USER_NPC_KAZON);
         if ($pirateUser === null) {
@@ -228,7 +224,7 @@ class PirateCreation implements PirateCreationInterface
             : $this->getRandomPirateSetup();
 
         //create ships
-        $ships = $this->createShips($pirateSetup, $supportCaller);
+        $ships = $this->createShips($pirateSetup, $supportCaller, $spawnLocation);
         $this->entityManager->flush();
 
         $fleetLeader = $ships[$this->stuRandom->array_rand($ships)];
@@ -255,9 +251,9 @@ class PirateCreation implements PirateCreationInterface
     }
 
     /** @return array<Ship> */
-    private function createShips(PirateSetup $pirateSetup, ?Spacecraft $supportCaller): array
+    private function createShips(PirateSetup $pirateSetup, ?Spacecraft $supportCaller, ?Map $spawnLocation): array
     {
-        $randomLocation = $supportCaller === null ? $this->getRandomMapLocation() : $supportCaller->getLocation();
+        $randomLocation = $spawnLocation ?? $supportCaller?->getLocation() ?? $this->getRandomMapLocation();
 
         $randomAlertLevel = SpacecraftAlertStateEnum::getRandomAlertLevel();
 
@@ -324,12 +320,10 @@ class PirateCreation implements PirateCreationInterface
     {
         $defaultLayer = $this->layerRepository->getDefaultLayer();
 
-        do {
-            $map = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage($defaultLayer);
-        } while (
-            in_array($map->getAdminRegionId(), self::FORBIDDEN_ADMIN_AREAS)
-            || $map->getFieldType()->hasEffect(FieldTypeEffectEnum::NO_PIRATES)
-        );
+        $map = $this->mapRepository->getRandomPirateSpawnLocation($defaultLayer);
+        if ($map === null) {
+            throw new RuntimeException(sprintf('Keine zulässige Spawnposition für Piraten auf Layer %s vorhanden', $defaultLayer->getName()));
+        }
 
         $this->logger->log(sprintf('    randomMapLocation: %s', $map->getSectorString()));
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Pirate;
 
 use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Spacecraft;
 
 interface PirateCreationInterface
@@ -12,5 +13,5 @@ interface PirateCreationInterface
     /** @return array<Fleet> */
     public function createPirateFleetsIfNeeded(): array;
 
-    public function createPirateFleet(?Spacecraft $supportCaller = null, ?int $pirateSetupId = null): Fleet;
+    public function createPirateFleet(?Spacecraft $supportCaller = null, ?int $pirateSetupId = null, ?Map $spawnLocation = null): Fleet;
 }

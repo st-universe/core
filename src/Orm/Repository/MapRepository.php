@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use RuntimeException;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -25,6 +24,8 @@ use Stu\Orm\Entity\User;
  */
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
+    use MapRandomLocationTrait;
+
     #[\Override]
     public function getAmountByLayer(Layer $layer): int
     {
@@ -972,53 +973,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $subset = array_slice($mapIdResultSet, 0, $amount);
 
         return array_map(fn (array $data) => $data['id'], $subset);
-    }
-
-    #[\Override]
-    public function getRandomPassableUnoccupiedWithoutDamage(Layer $layer, bool $isAtBorder = false): Map
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id', 'integer');
-
-        $borderCriteria = $isAtBorder
-            ? sprintf(
-                'AND (l.cx in (1, %d) OR l.cy in (1, %d))',
-                $layer->getWidth(),
-                $layer->getHeight()
-            ) : '';
-
-        $randomMapId = (int) $this->getEntityManager()
-            ->createNativeQuery(
-                sprintf(
-                    'SELECT m.id
-                    FROM stu_map m
-                    JOIN stu_location l
-                    ON m.id = l.id
-                    JOIN stu_map_ftypes mft
-                    ON l.field_id = mft.id
-                    WHERE NOT EXISTS (SELECT s.id FROM stu_spacecraft s WHERE s.location_id = m.id)
-                    AND l.layer_id = :layerId
-                    AND mft.x_damage = 0
-                    AND mft.passable = :true
-                    %s
-                    ORDER BY RANDOM()
-                    LIMIT 1',
-                    $borderCriteria
-                ),
-                $rsm
-            )
-            ->setParameters([
-                'layerId' => $layer->getId(),
-                'true' => true
-            ])
-            ->getSingleScalarResult();
-
-        $map = $this->find($randomMapId);
-        if ($map === null) {
-            throw new RuntimeException('this should not happen');
-        }
-
-        return $map;
     }
 
     #[\Override]

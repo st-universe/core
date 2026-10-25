@@ -192,6 +192,8 @@ interface MapRepositoryInterface extends ObjectRepository
 
     public function getRandomPassableUnoccupiedWithoutDamage(Layer $layer, bool $isAtBorder = false): Map;
 
+    public function getRandomPirateSpawnLocation(Layer $layer): ?Map;
+
     /** @return array<CellDataInterface> */
     public function getSubspaceLayerData(PanelBoundaries $boundaries, ResultSetMapping $rsm): array;
 
