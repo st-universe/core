@@ -11,6 +11,8 @@ use request;
 use stdClass;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Module\Starmap\Lib\StarmapRelations;
+use Stu\Module\Starmap\Lib\StarmapSensorCoverage;
 use Stu\Module\Starmap\Lib\StarmapSensorData;
 use Stu\Module\Station\Lib\StationLoaderInterface;
 use Stu\Module\Station\Lib\StationWrapperInterface;
@@ -29,7 +31,9 @@ class ScanUserStarmapTest extends StuTestCase
     private MapRepositoryInterface&MockInterface $mapRepository;
     private StationLoaderInterface&MockInterface $stationLoader;
     private ActionControllerContext&MockInterface $context;
+    private StarmapRelations $relations;
     private StarmapSensorData $sensorData;
+    private StarmapSensorCoverage $sensorCoverage;
     private ScanUserStarmap $subject;
     private User&MockInterface $user;
     private Layer&MockInterface $layer;
@@ -46,8 +50,10 @@ class ScanUserStarmapTest extends StuTestCase
         $this->layer = $this->mock(Layer::class);
         $contacts = $this->mock(ContactRepositoryInterface::class);
         $relations = $this->mock(RelationRepositoryInterface::class);
-        $this->sensorData = new StarmapSensorData(new Parser(), $relations, $contacts, $this->mapRepository);
-        $this->subject = new ScanUserStarmap($layerRepository, $this->spacecraftRepository, $this->stationLoader, $this->sensorData);
+        $this->relations = new StarmapRelations($relations, $contacts);
+        $this->sensorData = new StarmapSensorData(new Parser(), $this->relations);
+        $this->sensorCoverage = new StarmapSensorCoverage($this->mapRepository);
+        $this->subject = new ScanUserStarmap($layerRepository, $this->spacecraftRepository, $this->stationLoader, $this->sensorData, $this->sensorCoverage, $this->relations);
 
         $this->context->shouldReceive('getUser')->andReturn($this->user);
         $this->user->shouldReceive('getId')->andReturn(1);
@@ -137,8 +143,8 @@ class ScanUserStarmapTest extends StuTestCase
     public function testForeignLiveContactsStayAnonymousUntilScanning(): void
     {
         $this->mapRepository->shouldReceive('getLssBlockadeLocations')->andReturn([]);
-        $coverage = $this->sensorData->buildSensorCoverage($this->layer, [$this->range()]);
-        $relations = $this->sensorData->getRelationContext($this->user);
+        $coverage = $this->sensorCoverage->buildSensorCoverage($this->layer, [$this->range()]);
+        $relations = $this->relations->getRelationContext($this->user);
         $relations['enemyUserIds'][7] = true;
         $live = $this->sensorData->normalizeVisibleSpacecraft($this->contact(100, 7), $this->user, false, $relations, $coverage);
         $scanned = $this->sensorData->normalizeVisibleSpacecraft($this->contact(100, 7), $this->user, false, $relations, $coverage, true);
@@ -173,8 +179,8 @@ class ScanUserStarmapTest extends StuTestCase
         $this->mapRepository->shouldReceive('getLssBlockadeLocations')->andReturn([]);
         $range = $this->range();
         $range['tachyon_range'] = 1;
-        $coverage = $this->sensorData->buildSensorCoverage($this->layer, [$range]);
-        $relations = $this->sensorData->getRelationContext($this->user);
+        $coverage = $this->sensorCoverage->buildSensorCoverage($this->layer, [$range]);
+        $relations = $this->relations->getRelationContext($this->user);
         $scanned = $this->sensorData->normalizeVisibleSpacecraft($this->contact(103, 7, 5, true), $this->user, false, $relations, $coverage, true);
         self::assertSame('?', $scanned['name']);
         self::assertSame(0, $scanned['userId']);
@@ -184,8 +190,8 @@ class ScanUserStarmapTest extends StuTestCase
     public function testPassiveFeedsConcealFieldContactsButAuthorizedScansStillWork(): void
     {
         $this->mapRepository->shouldReceive('getLssBlockadeLocations')->andReturn([]);
-        $coverage = $this->sensorData->buildSensorCoverage($this->layer, [$this->range()]);
-        $relations = $this->sensorData->getRelationContext($this->user);
+        $coverage = $this->sensorCoverage->buildSensorCoverage($this->layer, [$this->range()]);
+        $relations = $this->relations->getRelationContext($this->user);
         foreach (['NO_SPACECRAFT_COUNT', 'DUBIOUS_SPACECRAFT_COUNT'] as $effect) {
             $row = $this->contact(100, 7) + ['field_effects' => '["' . $effect . '"]'];
             $passive = $this->sensorData->normalizeVisibleSpacecraft($row, $this->user, false, $relations, $coverage);

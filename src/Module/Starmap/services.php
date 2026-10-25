@@ -7,6 +7,8 @@ namespace Stu\Module\Starmap;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Starmap\Action\ScanUserStarmap\ScanUserStarmap;
+use Stu\Module\Starmap\Lib\StarmapRelations;
+use Stu\Module\Starmap\Lib\StarmapSensorCoverage;
 use Stu\Module\Starmap\Lib\StarmapSensorData;
 use Stu\Module\Starmap\Lib\StarmapUiFactory;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
@@ -41,5 +43,7 @@ return [
         ShowUserStarmapScan::VIEW_IDENTIFIER => autowire(ShowUserStarmapScan::class)
     ],
     StarmapUiFactoryInterface::class => autowire(StarmapUiFactory::class),
+    StarmapRelations::class => autowire(StarmapRelations::class),
+    StarmapSensorCoverage::class => autowire(StarmapSensorCoverage::class),
     StarmapSensorData::class => autowire(StarmapSensorData::class),
 ];

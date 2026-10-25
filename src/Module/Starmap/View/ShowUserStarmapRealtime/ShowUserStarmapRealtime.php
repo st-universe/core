@@ -17,6 +17,8 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Starmap\Lib\StarmapRelations;
+use Stu\Module\Starmap\Lib\StarmapSensorCoverage;
 use Stu\Module\Starmap\Lib\StarmapSensorData;
 use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Orm\Entity\Layer;
@@ -44,6 +46,8 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         private ConfigInterface $config,
         private AllianceJobManagerInterface $allianceJobManager,
         private StarmapSensorData $sensorData,
+        private StarmapSensorCoverage $sensorCoverage,
+        private StarmapRelations $relations,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private RealtimeChannels $channels,
         private UserRepositoryInterface $userRepository,
@@ -55,6 +59,16 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
      */
     #[\Override]
     public function handle(ViewControllerContext $game): void
+    {
+        $response = $this->getResponse($game);
+
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store');
+        echo $response;
+        exit;
+    }
+
+    private function getResponse(ViewControllerContext $game): string
     {
         $layerId = request::getIntFatal('layerid');
         $layer = $this->layerRepository->find($layerId);
@@ -88,12 +102,12 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $this->userRepository->lockUsersForUpdate($userIds);
             $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
         }
-        $coverage = $this->sensorData->buildSensorCoverage($layer, $ranges);
+        $coverage = $this->sensorCoverage->buildSensorCoverage($layer, $ranges);
 
         $sensorSpacecrafts = $ranges === []
             ? []
             : $this->spacecraftRepository->getUserStarmapRealtimeSpacecrafts($user->getId(), $layer->getId());
-        $relationContext = $this->sensorData->getRelationContext($user);
+        $relationContext = $this->relations->getRelationContext($user);
         $sharedSpacecrafts =
             $relationContext['sharedUserIds'] === [] && $relationContext['sharedAllianceIds'] === []
                 ? []
@@ -132,7 +146,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             if ($source === null) {
                 continue;
             }
-            $sourceCoverage = $this->sensorData->buildSensorCoverage($layer, [$range]);
+            $sourceCoverage = $this->sensorCoverage->buildSensorCoverage($layer, [$range]);
             $sources[] = [
                 'id' => $source->getId(),
                 'name' => $this->sensorData->parseBbCodeText($source->getName()),
@@ -159,10 +173,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $coverageGeneration
         );
 
-        header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-store');
-
-        echo json_encode([
+        return json_encode([
             'generatedAt' => time(),
             'sensorSources' => $sources,
             'dubiousFields' => array_values($dubiousFields),
@@ -183,8 +194,6 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             'spacecrafts' => array_map(static fn (array $spacecraft): array => $spacecraft['isOwn'] || $spacecraft['isFriendly']
                 ? $spacecraft : array_replace($spacecraft, ['id' => -random_int(1, 2 ** 48 - 1)]), $spacecrafts)
         ], self::JSON_FLAGS);
-
-        exit();
     }
 
     private function getCoverageGeneration(int $layerId): ?int
