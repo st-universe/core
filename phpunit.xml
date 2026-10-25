@@ -8,12 +8,24 @@
   displayDetailsOnTestsThatTriggerDeprecations="true">
   <source>
     <include>
-      <directory>src</directory>
+      <directory>src/admin</directory>
+      <directory>src/Component</directory>
+      <directory>src/Config</directory>
+      <directory>src/Exception</directory>
+      <directory>src/Extension</directory>
+      <directory>src/Lib</directory>
+      <directory>src/Module</directory>
+      <directory>src/Orm</directory>
     </include>
     <exclude>
-      <directory suffix="services.php">src</directory>
-      <directory>src/Migrations</directory>
-      <directory>src/Public</directory>
+      <directory suffix="services.php">src/admin</directory>
+      <directory suffix="services.php">src/Component</directory>
+      <directory suffix="services.php">src/Config</directory>
+      <directory suffix="services.php">src/Exception</directory>
+      <directory suffix="services.php">src/Extension</directory>
+      <directory suffix="services.php">src/Lib</directory>
+      <directory suffix="services.php">src/Module</directory>
+      <directory suffix="services.php">src/Orm</directory>
     </exclude>
   </source>
   <testsuites>
