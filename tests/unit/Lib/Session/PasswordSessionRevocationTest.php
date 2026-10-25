@@ -54,7 +54,7 @@ final class PasswordSessionRevocationTest extends StuTestCase
         $_SESSION = ['uid' => 101, 'login' => 1];
         SessionCredential::bind($user);
         $oldSession = $_SESSION;
-        $user->getRegistration()->setPassword(password_hash('Recovered123', PASSWORD_DEFAULT));
+        $user->getRegistration()->setPassword(password_hash('Recovered123', PASSWORD_BCRYPT, ['cost' => 4]));
         foreach ([ModuleEnum::GAME, ModuleEnum::OPTIONS] as $module) {
             $_SESSION = $oldSession;
             $this->assertDirectRoute($user, $module, false);
@@ -86,7 +86,7 @@ final class PasswordSessionRevocationTest extends StuTestCase
     private function createUser(): User
     {
         $user = $this->mock(User::class);
-        $registration = new UserRegistration($user)->setPassword(password_hash('Original123', PASSWORD_DEFAULT));
+        $registration = new UserRegistration($user)->setPassword(password_hash('Original123', PASSWORD_BCRYPT, ['cost' => 4]));
         $user->shouldReceive('getId')->andReturn(101);
         $user->shouldReceive('getLastAction')->andReturn(new UserLastAction($user));
         $user->shouldReceive('getRegistration')->andReturn($registration);
@@ -104,7 +104,7 @@ final class PasswordSessionRevocationTest extends StuTestCase
         $context = $this->mock(ActionControllerContext::class);
         $context->shouldReceive('getUser')->andReturn($user);
         $context->shouldReceive('getInfo->addInformation')->once();
-        new ChangePassword($request, $users)->handle($context);
+        new ChangePassword($request, $users, new PasswordHasher(4))->handle($context);
         self::assertTrue(password_verify('Changed123', $user->getRegistration()->getPassword()));
     }
 

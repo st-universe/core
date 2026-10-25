@@ -8,8 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Dom\Element;
 use Dom\HTMLDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use request;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
@@ -44,8 +42,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\TwigTestCase;
 use Twig\Environment;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
 final class StoredPostAndLogRenderingTest extends TwigTestCase
 {
     private const string ATTACK = "Anfang\n</textarea><img src=\"x\" onerror=\"alert(1)\">Ende & \"Zitat\"";

@@ -55,7 +55,7 @@ final class LoginThrottlingTest extends StuTestCase
     private function subject(bool $successful = false): SessionLogin
     {
         $user = $this->mock(User::class);
-        $registration = new UserRegistration($user)->setPassword(password_hash('valid-password', PASSWORD_DEFAULT));
+        $registration = new UserRegistration($user)->setPassword(password_hash('valid-password', PASSWORD_BCRYPT, ['cost' => 4]));
         $user->shouldReceive('getId')->andReturn(101);
         $user->shouldReceive('getRegistration')->andReturn($registration);
         $users = $this->mock(UserRepositoryInterface::class);
@@ -73,7 +73,7 @@ final class LoginThrottlingTest extends StuTestCase
             $user->shouldReceive('isLocked')->andReturnFalse();
             $user->shouldReceive('getState')->andReturn(UserStateEnum::ACTIVE);
             $user->shouldReceive('isVacationMode')->andReturnFalse();
-            $users->shouldReceive('save')->with($user)->once();
+            $users->shouldReceive('save')->with($user)->twice();
             $session->shouldReceive('setUser')->with($user)->once()->andReturnSelf();
             $strings->shouldReceive('truncate')->with($user)->once();
             $settings->shouldReceive('isSaveLogin')->with($user)->andReturnTrue();

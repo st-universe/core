@@ -10,6 +10,7 @@ use RuntimeException;
 use Stu\Exception\InvalidParamException;
 use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
+use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
@@ -24,7 +25,8 @@ final class ResetPassword implements ActionControllerInterface
         private MailFactoryInterface $mailFactory,
         private ConfigInterface $config,
         private UserRepositoryInterface $userRepository,
-        private PasswordGeneratorInterface $passwordGenerator
+        private PasswordGeneratorInterface $passwordGenerator,
+        private PasswordHasherInterface $passwordHasher
     ) {}
 
     #[\Override]
@@ -44,7 +46,7 @@ final class ResetPassword implements ActionControllerInterface
         $password = $this->passwordGenerator->generatePassword();
         $registration = $user->getRegistration();
 
-        $registration->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $registration->setPassword($this->passwordHasher->hash($password));
         $registration->setPasswordToken('');
 
         $this->userRepository->save($user);

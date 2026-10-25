@@ -11,6 +11,7 @@ use Stu\Exception\InvalidParamException;
 use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
+use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Index\Action\ResetPassword\ResetPassword;
@@ -73,7 +74,7 @@ final class RecoveryTokenSecurityTest extends StuTestCase
         } else {
             $request = $this->mock(ResetPasswordRequestInterface::class);
             $request->shouldReceive('getToken')->once()->andReturn($token);
-            new ResetPassword($request, $this->mock(MailFactoryInterface::class), $this->mock(ConfigInterface::class), $users, $this->mock(PasswordGeneratorInterface::class))->handle($this->mock(ActionControllerContext::class));
+            new ResetPassword($request, $this->mock(MailFactoryInterface::class), $this->mock(ConfigInterface::class), $users, $this->mock(PasswordGeneratorInterface::class), $this->mock(PasswordHasherInterface::class))->handle($this->mock(ActionControllerContext::class));
         }
     }
 

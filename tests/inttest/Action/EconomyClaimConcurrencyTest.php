@@ -6,6 +6,7 @@ namespace Stu\Action;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,7 @@ use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\NPCQuestUser;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
@@ -50,20 +52,32 @@ final class EconomyClaimConcurrencyTest extends TestCase
         $connection->executeStatement('CREATE SCHEMA ' . $connection->quoteIdentifier($schema));
         try {
             $em = $this->manager($schema);
-            $isolated = new SchemaTool($em)->getSchemaFromMetadata($em->getMetadataFactory()->getAllMetadata());
+            $isolated = new SchemaTool($em)->getSchemaFromMetadata(array_map(
+                $em->getClassMetadata(...),
+                [NPCQuestUser::class, Deals::class, TradeOffer::class, Storage::class]
+            ));
             foreach ($isolated->getTables() as $table) {
                 foreach ($table->getForeignKeys() as $foreignKey) {
                     $table->removeForeignKey($foreignKey->getName());
                 }
             }
+            $em->getConnection()->beginTransaction();
             foreach ($isolated->toSql($em->getConnection()->getDatabasePlatform()) as $sql) {
                 $em->getConnection()->executeStatement($sql);
             }
+            $em->getConnection()->commit();
+            $claims = [];
+            foreach ([['quest', false], ['auction', false], ['offer', false], ['partial', false], ['quest', true], ['auction', true], ['offer', true]] as [$kind, $rollback]) {
+                $entity = $this->createClaim($em, $kind);
+                $em->persist($entity);
+                $claims[] = [$kind, $rollback, $entity];
+            }
+            $em->flush();
             $em->getConnection()->close();
             $connection->close();
 
-            foreach ([['quest', false], ['auction', false], ['offer', false], ['partial', false], ['quest', true], ['auction', true], ['offer', true]] as [$kind, $rollback]) {
-                $this->checkConcurrentClaim($schema, $kind, $rollback);
+            foreach ($claims as [$kind, $rollback, $entity]) {
+                $this->checkConcurrentClaim($schema, $kind, $rollback, $entity::class, $entity->getId());
             }
         } finally {
             $connection->executeStatement('DROP SCHEMA ' . $connection->quoteIdentifier($schema) . ' CASCADE');
@@ -74,26 +88,22 @@ final class EconomyClaimConcurrencyTest extends TestCase
     private function manager(string $schema): EntityManagerInterface
     {
         $connection = DriverManager::getConnection($this->source->getConnection()->getParams());
-        $connection->executeStatement('SET search_path TO ' . $connection->quoteIdentifier($schema));
-        $connection->executeStatement("SET lock_timeout = '5s'");
-        $connection->executeStatement("SET statement_timeout = '10s'");
+        $connection->executeStatement('SET search_path TO ' . $connection->quoteIdentifier($schema) . "; SET lock_timeout = '5s'; SET statement_timeout = '10s'");
 
         return new EntityManager($connection, $this->source->getConfiguration());
     }
 
-    private function checkConcurrentClaim(string $schema, string $kind, bool $rollback): void
+    private function createClaim(EntityManagerInterface $em, string $kind): object
     {
-        $em = $this->manager($schema);
-        $entity = match ($kind) {
+        return match ($kind) {
             'quest' => new NPCQuestUser()->setQuest($em->getReference(NPCQuest::class, 1))->setQuestId(1)->setUser($em->getReference(User::class, 101))->setUserId(101)->setMode(QuestUserModeEnum::ACTIVE_MEMBER),
             'auction' => new Deals()->setAuction(true)->setStart(1)->setEnd(2)->setAuctionUser(101),
             'offer', 'partial' => new TradeOffer()->setUser($em->getReference(User::class, 101))->setTradePost($em->getReference(TradePost::class, 2))->setWantedCommodity($em->getReference(Commodity::class, 50))->setOfferedCommodity($em->getReference(Commodity::class, 2))->setOfferCount($kind === 'partial' ? 3 : 1)->setWantedCommodityCount(1)->setOfferedCommodityCount(1)
         };
-        $em->persist($entity);
-        $em->flush();
-        $id = $entity->getId();
-        $class = $entity::class;
-        $em->getConnection()->close();
+    }
+
+    private function checkConcurrentClaim(string $schema, string $kind, bool $rollback, string $class, int $id): void
+    {
         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
         self::assertIsArray($sockets);
         foreach ($sockets as $socket) {
@@ -111,7 +121,18 @@ final class EconomyClaimConcurrencyTest extends TestCase
                     exit(2);
                 }
                 $worker->getConnection()->beginTransaction();
-                fwrite($sockets[1], "started\n");
+                $worker->getConnection()->executeStatement("SET LOCAL lock_timeout = '10ms'");
+                try {
+                    $this->locked($worker, $kind, $id);
+                    throw new \RuntimeException('Der zweite Zugriff wurde nicht durch die Zeilensperre blockiert');
+                } catch (DriverException $error) {
+                    if ($error->getSQLState() !== '55P03') {
+                        throw $error;
+                    }
+                    $worker->getConnection()->rollBack();
+                }
+                fwrite($sockets[1], "blocked\n");
+                $worker->getConnection()->beginTransaction();
                 $fresh = $this->locked($worker, $kind, $id);
                 fwrite($sockets[1], json_encode(['fresh' => $this->state($fresh, $kind)], JSON_THROW_ON_ERROR) . "\n");
                 $worker->getConnection()->commit();
@@ -131,15 +152,15 @@ final class EconomyClaimConcurrencyTest extends TestCase
         try {
             $loaded = fgets($sockets[0]);
             self::assertNotFalse($loaded);
-            self::assertArrayHasKey('loaded', json_decode($loaded, true, 512, JSON_THROW_ON_ERROR));
+            self::assertArrayHasKey('loaded', json_decode($loaded, true, 512, JSON_THROW_ON_ERROR), $loaded);
             $connection->beginTransaction();
             $current = $this->locked($em, $kind, $id);
             fwrite($sockets[0], "go\n");
-            self::assertSame('started', trim(fgets($sockets[0])));
+            self::assertSame('blocked', trim(fgets($sockets[0])));
             $read = [$sockets[0]];
             $write = null;
             $except = null;
-            self::assertSame(0, stream_select($read, $write, $except, 0, 150000), 'Der zweite Zugriff muss auf die Zeilensperre warten');
+            self::assertSame(0, stream_select($read, $write, $except, 0, 0), 'Der zweite Zugriff muss auf die Zeilensperre warten');
             match ($kind) {
                 'quest' => $current->setRewardReceived(true),
                 'auction' => $current->setTakenTime(12345),

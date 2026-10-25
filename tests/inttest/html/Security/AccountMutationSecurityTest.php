@@ -10,8 +10,6 @@ use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Noodlehaus\Parser\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use ReflectionClass;
 use request;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
@@ -52,8 +50,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\UserSettingRepositoryInterface;
 use Stu\TwigTestCase;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
 final class AccountMutationSecurityTest extends TwigTestCase
 {
     private const string ORIGINAL_AVATAR = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';

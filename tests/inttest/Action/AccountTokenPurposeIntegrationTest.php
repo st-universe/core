@@ -13,6 +13,7 @@ use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
 use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
+use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Index\Action\DeletionConfirmation\DeletionConfirmation;
 use Stu\Module\Index\Action\DeletionConfirmation\DeletionConfirmationRequestInterface;
@@ -80,7 +81,7 @@ final class AccountTokenPurposeIntegrationTest extends ActionTestCase
         $resetRequest->shouldReceive('getToken')->once()->andReturn($recoveryToken);
         $generator = $this->mock(PasswordGeneratorInterface::class);
         $generator->shouldReceive('generatePassword')->once()->andReturn('Neues-Testpasswort-123!');
-        new ResetPassword($resetRequest, $mail, $config, $users, $generator)->handle($this->context());
+        new ResetPassword($resetRequest, $mail, $config, $users, $generator, $dic->get(PasswordHasherInterface::class))->handle($this->context());
         $em->flush();
         $em->refresh($registration);
         self::assertTrue(password_verify('Neues-Testpasswort-123!', $registration->getPassword()));

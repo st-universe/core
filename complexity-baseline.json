@@ -1,0 +1,1771 @@
+{
+    "src/Component/Admin/Reset/ResetManager.php": {
+        "Stu\\Component\\Admin\\Reset\\ResetManager::performReset": {
+            "methodLength": 64
+        }
+    },
+    "src/Component/Alliance/Enum/AllianceJobPermissionEnum.php": {
+        "Stu\\Component\\Alliance\\Enum\\AllianceJobPermissionEnum::getDescription": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Component/Anomaly/Type/SubspaceEllipseHandler.php": {
+        "Stu\\Component\\Anomaly\\Type\\SubspaceEllipseHandler::handleSpacecraftTick": {
+            "methodLength": 62
+        }
+    },
+    "src/Component/Colony/ColonyMenuEnum.php": {
+        "Stu\\Component\\Colony\\ColonyMenuEnum::getNeededBuildingFunction": {
+            "methodComplexity": 16
+        },
+        "Stu\\Component\\Colony\\ColonyMenuEnum::getViewIdentifier": {
+            "methodComplexity": 21
+        },
+        "Stu\\Component\\Colony\\ColonyMenuEnum::getTemplate": {
+            "methodComplexity": 21
+        },
+        "Stu\\Component\\Colony\\ColonyMenuEnum::getNecessaryGuiComponents": {
+            "methodComplexity": 18
+        },
+        "Stu\\Component\\Colony\\ColonyMenuEnum": {
+            "classComplexity": 84
+        }
+    },
+    "src/Component/Crew/CrewRaceGraphics.php": {
+        "Stu\\Component\\Crew\\CrewRaceGraphics::store": {
+            "methodComplexity": 18,
+            "methodLength": 62
+        },
+        "Stu\\Component\\Crew\\CrewRaceGraphics::getValidatedGraphics": {
+            "methodComplexity": 14
+        },
+        "Stu\\Component\\Crew\\CrewRaceGraphics": {
+            "classComplexity": 54
+        }
+    },
+    "src/Component/Crew/Skill/CrewSkillLevelEnum.php": {
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getRankNumber": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getNeededExpertise": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getBonusPercentage": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getNextSkillRank": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getFederationDescription": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getKlingonDescription": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getRomulanDescription": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getCardassianDescription": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getFerengiDescription": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum::getForExpertise": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Crew\\Skill\\CrewSkillLevelEnum": {
+            "classComplexity": 130
+        }
+    },
+    "src/Component/Game/ModuleEnum.php": {
+        "Stu\\Component\\Game\\ModuleEnum::getTitle": {
+            "methodComplexity": 20
+        },
+        "Stu\\Component\\Game\\ModuleEnum::getTemplate": {
+            "methodComplexity": 18
+        }
+    },
+    "src/Component/Player/Register/PlayerCreator.php": {
+        "Stu\\Component\\Player\\Register\\PlayerCreator::checkForException": {
+            "methodComplexity": 14
+        }
+    },
+    "src/Component/Ship/Retrofit/CancelRetrofit.php": {
+        "Stu\\Component\\Ship\\Retrofit\\CancelRetrofit::cancelRetrofit": {
+            "methodComplexity": 11,
+            "methodLength": 73
+        }
+    },
+    "src/Component/Ship/Wormhole/WormholeEntryPrivilegeUtility.php": {
+        "Stu\\Component\\Ship\\Wormhole\\WormholeEntryPrivilegeUtility::isAllowed": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Component/Spacecraft/Module/ModuleRecycling.php": {
+        "Stu\\Component\\Spacecraft\\Module\\ModuleRecycling::retrieveSomeModules": {
+            "methodComplexity": 13,
+            "methodLength": 78
+        }
+    },
+    "src/Component/Spacecraft/ModuleSpecialAbilityEnum.php": {
+        "Stu\\Component\\Spacecraft\\ModuleSpecialAbilityEnum::getDescription": {
+            "methodComplexity": 18
+        },
+        "Stu\\Component\\Spacecraft\\ModuleSpecialAbilityEnum::getSystemType": {
+            "methodComplexity": 18
+        }
+    },
+    "src/Component/Spacecraft/Repair/CancelRepair.php": {
+        "Stu\\Component\\Spacecraft\\Repair\\CancelRepair": {
+            "classComplexity": 56
+        }
+    },
+    "src/Component/Spacecraft/Repair/RepairUtil.php": {
+        "Stu\\Component\\Spacecraft\\Repair\\RepairUtil": {
+            "classComplexity": 67
+        }
+    },
+    "src/Component/Spacecraft/SpacecraftModuleTypeEnum.php": {
+        "Stu\\Component\\Spacecraft\\SpacecraftModuleTypeEnum::getSystemType": {
+            "methodComplexity": 11
+        },
+        "Stu\\Component\\Spacecraft\\SpacecraftModuleTypeEnum::getDescription": {
+            "methodComplexity": 12
+        },
+        "Stu\\Component\\Spacecraft\\SpacecraftModuleTypeEnum::getModuleRumpWrapperCallable": {
+            "methodComplexity": 12
+        },
+        "Stu\\Component\\Spacecraft\\SpacecraftModuleTypeEnum::getOrder": {
+            "methodComplexity": 12
+        },
+        "Stu\\Component\\Spacecraft\\SpacecraftModuleTypeEnum": {
+            "classComplexity": 51
+        }
+    },
+    "src/Component/Spacecraft/System/Control/AlertStateManager.php": {
+        "Stu\\Component\\Spacecraft\\System\\Control\\AlertStateManager::setAlertStateShip": {
+            "methodComplexity": 13
+        }
+    },
+    "src/Component/Spacecraft/System/Data/ShipSystemDataFactory.php": {
+        "Stu\\Component\\Spacecraft\\System\\Data\\ShipSystemDataFactory::createSystemData": {
+            "methodComplexity": 21
+        }
+    },
+    "src/Component/Spacecraft/System/SpacecraftSystemManager.php": {
+        "Stu\\Component\\Spacecraft\\System\\SpacecraftSystemManager::checkActivationConditions": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Component/Spacecraft/System/SpacecraftSystemTypeEnum.php": {
+        "Stu\\Component\\Spacecraft\\System\\SpacecraftSystemTypeEnum::getDescription": {
+            "methodComplexity": 36
+        },
+        "Stu\\Component\\Spacecraft\\System\\SpacecraftSystemTypeEnum::getIcon": {
+            "methodComplexity": 17
+        },
+        "Stu\\Component\\Spacecraft\\System\\SpacecraftSystemTypeEnum": {
+            "classComplexity": 75
+        }
+    },
+    "src/Component/Station/StationUtility.php": {
+        "Stu\\Component\\Station\\StationUtility::finishScrapping": {
+            "methodComplexity": 13,
+            "methodLength": 89
+        }
+    },
+    "src/Config/Init.php": {
+        "Stu\\Config\\Init::getContainer": {
+            "methodLength": 82
+        }
+    },
+    "src/Extension/ExtensionRegistry.php": {
+        "Stu\\Extension\\ExtensionRegistry::__construct": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Lib/Interaction/InteractionCheckType.php": {
+        "Stu\\Lib\\Interaction\\InteractionCheckType::getReason": {
+            "methodComplexity": 19
+        }
+    },
+    "src/Lib/Interaction/Member/SpacecraftMember.php": {
+        "Stu\\Lib\\Interaction\\Member\\SpacecraftMember::canAccess": {
+            "methodComplexity": 14
+        },
+        "Stu\\Lib\\Interaction\\Member\\SpacecraftMember::canBeAccessedFrom": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Lib/Map/FieldTypeEffectEnum.php": {
+        "Stu\\Lib\\Map\\FieldTypeEffectEnum::getDescription": {
+            "methodComplexity": 18
+        },
+        "Stu\\Lib\\Map\\FieldTypeEffectEnum::getFlightDestinationInfo": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Lib/Map/VisualPanel/Layer/Render/BorderLayerRenderer.php": {
+        "Stu\\Lib\\Map\\VisualPanel\\Layer\\Render\\BorderLayerRenderer::getBorderColor": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Lib/Map/VisualPanel/Layer/Render/SpacecraftCountLayerRenderer.php": {
+        "Stu\\Lib\\Map\\VisualPanel\\Layer\\Render\\SpacecraftCountLayerRenderer::getDisplayCount": {
+            "methodComplexity": 17
+        }
+    },
+    "src/Lib/Map/VisualPanel/LssBlockade/LssBlockadeGrid.php": {
+        "Stu\\Lib\\Map\\VisualPanel\\LssBlockade\\LssBlockadeGrid::isVisible": {
+            "methodComplexity": 14
+        }
+    },
+    "src/Lib/Pirate/Behaviour/AssaultPhalanxBehaviour.php": {
+        "Stu\\Lib\\Pirate\\Behaviour\\AssaultPhalanxBehaviour::action": {
+            "methodLength": 105
+        }
+    },
+    "src/Lib/Pirate/Behaviour/RageBehaviour.php": {
+        "Stu\\Lib\\Pirate\\Behaviour\\RageBehaviour::action": {
+            "methodLength": 65
+        }
+    },
+    "src/Lib/Pirate/Behaviour/RubColonyBehaviour.php": {
+        "Stu\\Lib\\Pirate\\Behaviour\\RubColonyBehaviour::rubColony": {
+            "methodLength": 65
+        }
+    },
+    "src/Lib/Pirate/PirateBehaviourEnum.php": {
+        "Stu\\Lib\\Pirate\\PirateBehaviourEnum::getProbability": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Lib/Pirate/PirateCreation.php": {
+        "Stu\\Lib\\Pirate\\PirateCreation::createPirateFleetsIfNeeded": {
+            "methodLength": 87
+        }
+    },
+    "src/Lib/Pirate/PirateReaction.php": {
+        "Stu\\Lib\\Pirate\\PirateReaction::react": {
+            "methodLength": 68
+        }
+    },
+    "src/Lib/Request/RequestRateLimiter.php": {
+        "Stu\\Lib\\Request\\RequestRateLimiter::consume": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Lib/SpacecraftManagement/Manager/ManageCrew.php": {
+        "Stu\\Lib\\SpacecraftManagement\\Manager\\ManageCrew::descreaseCrew": {
+            "methodLength": 69
+        }
+    },
+    "src/Lib/SpacecraftManagement/Manager/ManageReactor.php": {
+        "Stu\\Lib\\SpacecraftManagement\\Manager\\ManageReactor::manage": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Lib/SpacecraftManagement/Manager/ManageWarpcoreTransfer.php": {
+        "Stu\\Lib\\SpacecraftManagement\\Manager\\ManageWarpcoreTransfer::manage": {
+            "methodComplexity": 11,
+            "methodLength": 64
+        }
+    },
+    "src/Lib/Transfer/CommodityTransfer.php": {
+        "Stu\\Lib\\Transfer\\CommodityTransfer::transferCommodity": {
+            "methodComplexity": 13,
+            "methodLength": 70
+        }
+    },
+    "src/Lib/Transfer/IndividualCrewTransferCapacityValidator.php": {
+        "Stu\\Lib\\Transfer\\IndividualCrewTransferCapacityValidator::validate": {
+            "methodComplexity": 16
+        }
+    },
+    "src/Lib/Transfer/IndividualCrewTransferSelectionValidator.php": {
+        "Stu\\Lib\\Transfer\\IndividualCrewTransferSelectionValidator::validate": {
+            "methodComplexity": 15,
+            "methodLength": 64
+        }
+    },
+    "src/Lib/Transfer/Strategy/TorpedoTransferStrategy.php": {
+        "Stu\\Lib\\Transfer\\Strategy\\TorpedoTransferStrategy::transfer": {
+            "methodComplexity": 13,
+            "methodLength": 62
+        }
+    },
+    "src/Lib/Transfer/Strategy/TroopTransferStrategy.php": {
+        "Stu\\Lib\\Transfer\\Strategy\\TroopTransferStrategy::transfer": {
+            "methodComplexity": 15,
+            "methodLength": 70
+        }
+    },
+    "src/Lib/Transfer/TransferInformation.php": {
+        "Stu\\Lib\\Transfer\\TransferInformation::isTorpedoTransferPossible": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Lib/Transfer/Wrapper/ColonyStorageEntityWrapper.php": {
+        "Stu\\Lib\\Transfer\\Wrapper\\ColonyStorageEntityWrapper::transfer": {
+            "methodComplexity": 13
+        }
+    },
+    "src/Lib/Transfer/Wrapper/SpacecraftStorageCommodityLogic.php": {
+        "Stu\\Lib\\Transfer\\Wrapper\\SpacecraftStorageCommodityLogic::transferPerSpacecraft": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Lib/Transfer/Wrapper/SpacecraftStorageCrewLogic.php": {
+        "Stu\\Lib\\Transfer\\Wrapper\\SpacecraftStorageCrewLogic::acceptsCrewFrom": {
+            "methodComplexity": 12
+        },
+        "Stu\\Lib\\Transfer\\Wrapper\\SpacecraftStorageCrewLogic::postCrewTransfer": {
+            "methodComplexity": 14
+        }
+    },
+    "src/Lib/Upload/PngUpload.php": {
+        "Stu\\Lib\\Upload\\PngUpload::readFile": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Module/Admin/Action/ChargeSpacecraftResources.php": {
+        "Stu\\Module\\Admin\\Action\\ChargeSpacecraftResources::handle": {
+            "methodComplexity": 18,
+            "methodLength": 70
+        },
+        "Stu\\Module\\Admin\\Action\\ChargeSpacecraftResources::chargeSpacecraft": {
+            "methodComplexity": 12
+        },
+        "Stu\\Module\\Admin\\Action\\ChargeSpacecraftResources": {
+            "classComplexity": 73
+        }
+    },
+    "src/Module/Admin/Action/ClearFaultyBBCodes.php": {
+        "Stu\\Module\\Admin\\Action\\ClearFaultyBBCodes::handle": {
+            "methodComplexity": 11,
+            "methodLength": 80
+        }
+    },
+    "src/Module/Admin/Action/CreateRump.php": {
+        "Stu\\Module\\Admin\\Action\\CreateRump::readData": {
+            "methodComplexity": 53,
+            "methodLength": 247
+        },
+        "Stu\\Module\\Admin\\Action\\CreateRump::persistConfigurations": {
+            "methodComplexity": 13,
+            "methodLength": 86
+        },
+        "Stu\\Module\\Admin\\Action\\CreateRump": {
+            "classComplexity": 185,
+            "classLength": 969
+        }
+    },
+    "src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php": {
+        "Stu\\Module\\Admin\\Action\\Map\\CreateInfluenceAreas\\CreateInfluenceAreas::handle": {
+            "methodLength": 72
+        },
+        "Stu\\Module\\Admin\\Action\\Map\\CreateInfluenceAreas\\CreateInfluenceAreas::spreadInCircle": {
+            "methodComplexity": 22
+        },
+        "Stu\\Module\\Admin\\Action\\Map\\CreateInfluenceAreas\\CreateInfluenceAreas": {
+            "classComplexity": 56
+        }
+    },
+    "src/Module/Admin/Action/Map/EditEffects/EditEffects.php": {
+        "Stu\\Module\\Admin\\Action\\Map\\EditEffects\\EditEffects::handle": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Admin/Action/Map/EditFullMapField/EditFullMapField.php": {
+        "Stu\\Module\\Admin\\Action\\Map\\EditFullMapField\\EditFullMapField::handle": {
+            "methodComplexity": 41,
+            "methodLength": 169
+        },
+        "Stu\\Module\\Admin\\Action\\Map\\EditFullMapField\\EditFullMapField": {
+            "classComplexity": 62
+        }
+    },
+    "src/Module/Admin/View/Map/LiveMap/ShowLiveMapData.php": {
+        "Stu\\Module\\Admin\\View\\Map\\LiveMap\\ShowLiveMapData::handle": {
+            "methodLength": 67
+        }
+    },
+    "src/Module/Admin/View/Map/ShowMapInfluenceAreas.php": {
+        "Stu\\Module\\Admin\\View\\Map\\ShowMapInfluenceAreas::buildImage": {
+            "methodComplexity": 15,
+            "methodLength": 81
+        }
+    },
+    "src/Module/Admin/View/Map/ShowMapOverall.php": {
+        "Stu\\Module\\Admin\\View\\Map\\ShowMapOverall::handle": {
+            "methodComplexity": 17,
+            "methodLength": 79
+        }
+    },
+    "src/Module/Alliance/Action/AcceptOffer/AcceptOffer.php": {
+        "Stu\\Module\\Alliance\\Action\\AcceptOffer\\AcceptOffer::handle": {
+            "methodComplexity": 15,
+            "methodLength": 105
+        }
+    },
+    "src/Module/Alliance/Action/CancelContract/CancelContract.php": {
+        "Stu\\Module\\Alliance\\Action\\CancelContract\\CancelContract::handle": {
+            "methodComplexity": 13,
+            "methodLength": 91
+        }
+    },
+    "src/Module/Alliance/Action/CancelOffer/CancelOffer.php": {
+        "Stu\\Module\\Alliance\\Action\\CancelOffer\\CancelOffer::handle": {
+            "methodComplexity": 14,
+            "methodLength": 73
+        }
+    },
+    "src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php": {
+        "Stu\\Module\\Alliance\\Action\\ChangeAvatar\\ChangeAvatar::handle": {
+            "methodLength": 61
+        }
+    },
+    "src/Module/Alliance/Action/CreateAlliance/CreateAlliance.php": {
+        "Stu\\Module\\Alliance\\Action\\CreateAlliance\\CreateAlliance::handle": {
+            "methodLength": 67
+        }
+    },
+    "src/Module/Alliance/Action/CreateRelation/CreateRelation.php": {
+        "Stu\\Module\\Alliance\\Action\\CreateRelation\\CreateRelation::handle": {
+            "methodComplexity": 14,
+            "methodLength": 86
+        }
+    },
+    "src/Module/Alliance/Action/EditDetails/EditDetails.php": {
+        "Stu\\Module\\Alliance\\Action\\EditDetails\\EditDetails::handle": {
+            "methodComplexity": 16,
+            "methodLength": 105
+        }
+    },
+    "src/Module/Alliance/Action/PromotePlayer/PromotePlayer.php": {
+        "Stu\\Module\\Alliance\\Action\\PromotePlayer\\PromotePlayer::handle": {
+            "methodComplexity": 12,
+            "methodLength": 66
+        }
+    },
+    "src/Module/Alliance/Action/SaveJobs/SaveJobs.php": {
+        "Stu\\Module\\Alliance\\Action\\SaveJobs\\SaveJobs::handle": {
+            "methodComplexity": 26,
+            "methodLength": 124
+        },
+        "Stu\\Module\\Alliance\\Action\\SaveJobs\\SaveJobs::cleanPermissions": {
+            "methodComplexity": 22,
+            "methodLength": 73
+        },
+        "Stu\\Module\\Alliance\\Action\\SaveJobs\\SaveJobs": {
+            "classComplexity": 52
+        }
+    },
+    "src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php": {
+        "Stu\\Module\\Alliance\\Action\\SuggestPeace\\SuggestPeace::handle": {
+            "methodComplexity": 11,
+            "methodLength": 74
+        }
+    },
+    "src/Module/Alliance/Action/UserRelation/ManageUserRelation.php": {
+        "Stu\\Module\\Alliance\\Action\\UserRelation\\ManageUserRelation::handle": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Alliance/View/Management/Management.php": {
+        "Stu\\Module\\Alliance\\View\\Management\\Management::handle": {
+            "methodComplexity": 13,
+            "methodLength": 69
+        }
+    },
+    "src/Module/Alliance/View/Relations/Relations.php": {
+        "Stu\\Module\\Alliance\\View\\Relations\\Relations::handle": {
+            "methodLength": 79
+        }
+    },
+    "src/Module/Alliance/View/Topic/Topic.php": {
+        "Stu\\Module\\Alliance\\View\\Topic\\Topic::handle": {
+            "methodLength": 69
+        }
+    },
+    "src/Module/Colony/Action/BuildOnField/BuildOnField.php": {
+        "Stu\\Module\\Colony\\Action\\BuildOnField\\BuildOnField::handle": {
+            "methodComplexity": 24,
+            "methodLength": 135
+        },
+        "Stu\\Module\\Colony\\Action\\BuildOnField\\BuildOnField::checkBuildingCosts": {
+            "methodLength": 67
+        }
+    },
+    "src/Module/Colony/Action/BuildShip/BuildShip.php": {
+        "Stu\\Module\\Colony\\Action\\BuildShip\\BuildShip::handle": {
+            "methodComplexity": 40,
+            "methodLength": 232
+        },
+        "Stu\\Module\\Colony\\Action\\BuildShip\\BuildShip": {
+            "classComplexity": 51
+        }
+    },
+    "src/Module/Colony/Action/BuildTorpedos/BuildTorpedos.php": {
+        "Stu\\Module\\Colony\\Action\\BuildTorpedos\\BuildTorpedos::handle": {
+            "methodComplexity": 11,
+            "methodLength": 69
+        }
+    },
+    "src/Module/Colony/Action/CancelModuleCreation/CancelModuleCreation.php": {
+        "Stu\\Module\\Colony\\Action\\CancelModuleCreation\\CancelModuleCreation::handle": {
+            "methodComplexity": 11,
+            "methodLength": 66
+        }
+    },
+    "src/Module/Colony/Action/CreateBuildplan/CreateBuildplan.php": {
+        "Stu\\Module\\Colony\\Action\\CreateBuildplan\\CreateBuildplan::handle": {
+            "methodComplexity": 26,
+            "methodLength": 171
+        }
+    },
+    "src/Module/Colony/Action/CreateModules/CreateModules.php": {
+        "Stu\\Module\\Colony\\Action\\CreateModules\\CreateModules::handle": {
+            "methodComplexity": 27,
+            "methodLength": 165
+        }
+    },
+    "src/Module/Colony/Action/LandShip/LandShip.php": {
+        "Stu\\Module\\Colony\\Action\\LandShip\\LandShip::handle": {
+            "methodLength": 62
+        }
+    },
+    "src/Module/Colony/Action/ManageOrbitalShuttles/ManageOrbitalShuttles.php": {
+        "Stu\\Module\\Colony\\Action\\ManageOrbitalShuttles\\ManageOrbitalShuttles::handle": {
+            "methodComplexity": 25,
+            "methodLength": 131
+        },
+        "Stu\\Module\\Colony\\Action\\ManageOrbitalShuttles\\ManageOrbitalShuttles::transferShuttles": {
+            "methodLength": 61
+        }
+    },
+    "src/Module/Colony/Action/ReactivateShipRepair/ReactivateShipRepair.php": {
+        "Stu\\Module\\Colony\\Action\\ReactivateShipRepair\\ReactivateShipRepair::handle": {
+            "methodComplexity": 13
+        }
+    },
+    "src/Module/Colony/Action/RepairBuilding/RepairBuilding.php": {
+        "Stu\\Module\\Colony\\Action\\RepairBuilding\\RepairBuilding::handle": {
+            "methodComplexity": 15,
+            "methodLength": 107
+        }
+    },
+    "src/Module/Colony/Action/RepairShip/RepairShip.php": {
+        "Stu\\Module\\Colony\\Action\\RepairShip\\RepairShip::handle": {
+            "methodComplexity": 19,
+            "methodLength": 116
+        }
+    },
+    "src/Module/Colony/Action/RetrofitShip/RetrofitShip.php": {
+        "Stu\\Module\\Colony\\Action\\RetrofitShip\\RetrofitShip::handle": {
+            "methodComplexity": 42,
+            "methodLength": 255
+        }
+    },
+    "src/Module/Colony/Action/StartAirfieldShip/StartAirfieldShip.php": {
+        "Stu\\Module\\Colony\\Action\\StartAirfieldShip\\StartAirfieldShip::handle": {
+            "methodComplexity": 11,
+            "methodLength": 102
+        }
+    },
+    "src/Module/Colony/Action/Terraform/Terraform.php": {
+        "Stu\\Module\\Colony\\Action\\Terraform\\Terraform::doColonyCheckAndConsume": {
+            "methodLength": 80
+        }
+    },
+    "src/Module/Colony/Action/TrainCrew/TrainCrew.php": {
+        "Stu\\Module\\Colony\\Action\\TrainCrew\\TrainCrew::handle": {
+            "methodComplexity": 13,
+            "methodLength": 82
+        }
+    },
+    "src/Module/Colony/Action/UpgradeBuilding/UpgradeBuilding.php": {
+        "Stu\\Module\\Colony\\Action\\UpgradeBuilding\\UpgradeBuilding::handle": {
+            "methodComplexity": 12,
+            "methodLength": 83
+        }
+    },
+    "src/Module/Colony/Lib/ColonyCorrector.php": {
+        "Stu\\Module\\Colony\\Lib\\ColonyCorrector::correct": {
+            "methodLength": 87
+        }
+    },
+    "src/Module/Colony/Lib/Gui/Component/EpsBarProvider.php": {
+        "Stu\\Module\\Colony\\Lib\\Gui\\Component\\EpsBarProvider::getEpsStatusBar": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Module/Colony/Lib/Gui/Component/ManagementProvider.php": {
+        "Stu\\Module\\Colony\\Lib\\Gui\\Component\\ManagementProvider::setTemplateVariables": {
+            "methodComplexity": 11,
+            "methodLength": 64
+        }
+    },
+    "src/Module/Colony/View/ShowField/ShowField.php": {
+        "Stu\\Module\\Colony\\View\\ShowField\\ShowField::handle": {
+            "methodComplexity": 11,
+            "methodLength": 103
+        }
+    },
+    "src/Module/Colony/View/ShowModuleFab/ShowModuleFab.php": {
+        "Stu\\Module\\Colony\\View\\ShowModuleFab\\ShowModuleFab::setRumpModules": {
+            "methodComplexity": 11
+        },
+        "Stu\\Module\\Colony\\View\\ShowModuleFab\\ShowModuleFab": {
+            "classComplexity": 61
+        }
+    },
+    "src/Module/Colony/View/ShowModuleScreen/ShowModuleScreen.php": {
+        "Stu\\Module\\Colony\\View\\ShowModuleScreen\\ShowModuleScreen::handle": {
+            "methodLength": 67
+        }
+    },
+    "src/Module/Colony/View/ShowModuleScreenBuildplan/ShowModuleScreenBuildplan.php": {
+        "Stu\\Module\\Colony\\View\\ShowModuleScreenBuildplan\\ShowModuleScreenBuildplan::handle": {
+            "methodLength": 66
+        }
+    },
+    "src/Module/Colony/View/ShowModuleScreenRetrofit/ShowModuleScreenRetrofit.php": {
+        "Stu\\Module\\Colony\\View\\ShowModuleScreenRetrofit\\ShowModuleScreenRetrofit::handle": {
+            "methodLength": 76
+        }
+    },
+    "src/Module/Communication/Action/AcceptQuestInvitation/AcceptQuestInvitation.php": {
+        "Stu\\Module\\Communication\\Action\\AcceptQuestInvitation\\AcceptQuestInvitation::handle": {
+            "methodLength": 77
+        }
+    },
+    "src/Module/Communication/Action/AddKnPost/AddKnPost.php": {
+        "Stu\\Module\\Communication\\Action\\AddKnPost\\AddKnPost::handle": {
+            "methodComplexity": 14,
+            "methodLength": 92
+        }
+    },
+    "src/Module/Communication/Action/ApplyForQuest/ApplyForQuest.php": {
+        "Stu\\Module\\Communication\\Action\\ApplyForQuest\\ApplyForQuest::handle": {
+            "methodComplexity": 14,
+            "methodLength": 100
+        }
+    },
+    "src/Module/Communication/Action/ApplyKnPostToPlot/ApplyKnPostToPlot.php": {
+        "Stu\\Module\\Communication\\Action\\ApplyKnPostToPlot\\ApplyKnPostToPlot::handle": {
+            "methodLength": 68
+        }
+    },
+    "src/Module/Communication/Action/ClaimQuestReward/ClaimQuestReward.php": {
+        "Stu\\Module\\Communication\\Action\\ClaimQuestReward\\ClaimQuestReward::handle": {
+            "methodComplexity": 11,
+            "methodLength": 68
+        }
+    },
+    "src/Module/Communication/Action/EditKnPost/EditKnPost.php": {
+        "Stu\\Module\\Communication\\Action\\EditKnPost\\EditKnPost::handle": {
+            "methodComplexity": 33,
+            "methodLength": 164
+        }
+    },
+    "src/Module/Communication/Action/PostKnComment/PostKnComment.php": {
+        "Stu\\Module\\Communication\\Action\\PostKnComment\\PostKnComment::handle": {
+            "methodLength": 74
+        }
+    },
+    "src/Module/Communication/Action/RejectQuestInvitation/RejectQuestInvitation.php": {
+        "Stu\\Module\\Communication\\Action\\RejectQuestInvitation\\RejectQuestInvitation::handle": {
+            "methodLength": 76
+        }
+    },
+    "src/Module/Communication/View/ShowArchiveSearchResult/ShowUserArchiveSearchResult.php": {
+        "Stu\\Module\\Communication\\View\\ShowArchiveSearchResult\\ShowUserArchiveSearchResult::handle": {
+            "methodLength": 71
+        }
+    },
+    "src/Module/Communication/View/ShowKnArchive/ShowKnArchive.php": {
+        "Stu\\Module\\Communication\\View\\ShowKnArchive\\ShowKnArchive::handle": {
+            "methodComplexity": 12,
+            "methodLength": 79
+        }
+    },
+    "src/Module/Communication/View/ShowKnPlot/ShowKnPlot.php": {
+        "Stu\\Module\\Communication\\View\\ShowKnPlot\\ShowKnPlot::handle": {
+            "methodLength": 61
+        }
+    },
+    "src/Module/Communication/View/ShowQuest/ShowQuest.php": {
+        "Stu\\Module\\Communication\\View\\ShowQuest\\ShowQuest::handle": {
+            "methodComplexity": 25,
+            "methodLength": 127
+        }
+    },
+    "src/Module/Communication/View/ShowQuestList/ShowQuestList.php": {
+        "Stu\\Module\\Communication\\View\\ShowQuestList\\ShowQuestList::handle": {
+            "methodComplexity": 11,
+            "methodLength": 63
+        }
+    },
+    "src/Module/Config/Model/SettingsFactory.php": {
+        "Stu\\Module\\Config\\Model\\SettingsFactory::createSettings": {
+            "methodComplexity": 14,
+            "methodLength": 74
+        }
+    },
+    "src/Module/Config/StuConfigSettingEnum.php": {
+        "Stu\\Module\\Config\\StuConfigSettingEnum::getConfigPath": {
+            "methodComplexity": 14
+        }
+    },
+    "src/Module/Crew/Lib/CrewCreator.php": {
+        "Stu\\Module\\Crew\\Lib\\CrewCreator::create": {
+            "methodComplexity": 11,
+            "methodLength": 61
+        },
+        "Stu\\Module\\Crew\\Lib\\CrewCreator::createCrewAssignments": {
+            "methodComplexity": 15,
+            "methodLength": 63
+        }
+    },
+    "src/Module/Database/Action/DismissCrew/DismissCrew.php": {
+        "Stu\\Module\\Database\\Action\\DismissCrew\\DismissCrew::handle": {
+            "methodComplexity": 14,
+            "methodLength": 73
+        }
+    },
+    "src/Module/Database/Action/ModerateCrewRace/ModerateCrewRace.php": {
+        "Stu\\Module\\Database\\Action\\ModerateCrewRace\\ModerateCrewRace::handle": {
+            "methodComplexity": 17
+        }
+    },
+    "src/Module/Database/Action/UpdateCrewRaceModeration/UpdateCrewRaceModeration.php": {
+        "Stu\\Module\\Database\\Action\\UpdateCrewRaceModeration\\UpdateCrewRaceModeration::handle": {
+            "methodComplexity": 13
+        }
+    },
+    "src/Module/Database/View/DatabaseEntry/ShowDatabaseEntry.php": {
+        "Stu\\Module\\Database\\View\\DatabaseEntry\\ShowDatabaseEntry::addSpecialVars": {
+            "methodComplexity": 25,
+            "methodLength": 169
+        },
+        "Stu\\Module\\Database\\View\\DatabaseEntry\\ShowDatabaseEntry::prepareRegionMapData": {
+            "methodLength": 91
+        },
+        "Stu\\Module\\Database\\View\\DatabaseEntry\\ShowDatabaseEntry": {
+            "classComplexity": 56
+        }
+    },
+    "src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocations.php": {
+        "Stu\\Module\\Database\\View\\ShowCommoditiesLocations\\ShowCommoditiesLocations::handle": {
+            "methodLength": 65
+        }
+    },
+    "src/Module/Database/View/ShowPirateRound/ShowPirateRound.php": {
+        "Stu\\Module\\Database\\View\\ShowPirateRound\\ShowPirateRound::handle": {
+            "methodLength": 66
+        }
+    },
+    "src/Module/Game/Action/Transfer/Transfer.php": {
+        "Stu\\Module\\Game\\Action\\Transfer\\Transfer::handle": {
+            "methodComplexity": 13,
+            "methodLength": 114
+        }
+    },
+    "src/Module/Game/Lib/View/Provider/CommunicationProvider.php": {
+        "Stu\\Module\\Game\\Lib\\View\\Provider\\CommunicationProvider::setTemplateVariables": {
+            "methodLength": 61
+        }
+    },
+    "src/Module/Game/Lib/View/Provider/MaindeskProvider.php": {
+        "Stu\\Module\\Game\\Lib\\View\\Provider\\MaindeskProvider::setTemplateVariables": {
+            "methodLength": 102
+        }
+    },
+    "src/Module/Game/Lib/View/Provider/Message/ClassicStyleProvider.php": {
+        "Stu\\Module\\Game\\Lib\\View\\Provider\\Message\\ClassicStyleProvider::setTemplateVariables": {
+            "methodLength": 62
+        }
+    },
+    "src/Module/Game/Lib/View/Provider/Message/MessengerStyleProvider.php": {
+        "Stu\\Module\\Game\\Lib\\View\\Provider\\Message\\MessengerStyleProvider::setTemplateVariables": {
+            "methodLength": 62
+        }
+    },
+    "src/Module/Game/Lib/View/Provider/UserProfileProvider.php": {
+        "Stu\\Module\\Game\\Lib\\View\\Provider\\UserProfileProvider::setTemplateVariables": {
+            "methodLength": 63
+        }
+    },
+    "src/Module/Game/View/ShowTransfer/ShowTransfer.php": {
+        "Stu\\Module\\Game\\View\\ShowTransfer\\ShowTransfer::handle": {
+            "methodLength": 64
+        }
+    },
+    "src/Module/Index/Action/CheckInput/CheckInput.php": {
+        "Stu\\Module\\Index\\Action\\CheckInput\\CheckInput::handle": {
+            "methodComplexity": 18,
+            "methodLength": 73
+        }
+    },
+    "src/Module/Index/Action/Register/Register.php": {
+        "Stu\\Module\\Index\\Action\\Register\\Register::handle": {
+            "methodComplexity": 11,
+            "methodLength": 75
+        }
+    },
+    "src/Module/Maindesk/Action/CheckInput/CheckInput.php": {
+        "Stu\\Module\\Maindesk\\Action\\CheckInput\\CheckInput::handle": {
+            "methodComplexity": 23,
+            "methodLength": 76
+        }
+    },
+    "src/Module/Maindesk/Action/FirstColony/FirstColony.php": {
+        "Stu\\Module\\Maindesk\\Action\\FirstColony\\FirstColony::handle": {
+            "methodLength": 66
+        }
+    },
+    "src/Module/Maintenance/EndLotteryPeriod.php": {
+        "Stu\\Module\\Maintenance\\EndLotteryPeriod::handle": {
+            "methodComplexity": 11,
+            "methodLength": 87
+        }
+    },
+    "src/Module/Maintenance/IdleUserWarning.php": {
+        "Stu\\Module\\Maintenance\\IdleUserWarning::handle": {
+            "methodComplexity": 22,
+            "methodLength": 189
+        }
+    },
+    "src/Module/Maintenance/OldTradeOffersDeletion.php": {
+        "Stu\\Module\\Maintenance\\OldTradeOffersDeletion::handle": {
+            "methodLength": 63
+        }
+    },
+    "src/Module/Maintenance/OrionSlaveTrade.php": {
+        "Stu\\Module\\Maintenance\\OrionSlaveTrade::getRankForStage": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Module/Message/Action/AddContact/AddContact.php": {
+        "Stu\\Module\\Message\\Action\\AddContact\\AddContact::handle": {
+            "methodComplexity": 15,
+            "methodLength": 84
+        }
+    },
+    "src/Module/Message/View/ShowWriteQuickPm/ShowWriteQuickPm.php": {
+        "Stu\\Module\\Message\\View\\ShowWriteQuickPm\\ShowWriteQuickPm::determineTo": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/NPC/Action/AcceptQuestApplication/AcceptQuestApplication.php": {
+        "Stu\\Module\\NPC\\Action\\AcceptQuestApplication\\AcceptQuestApplication::handle": {
+            "methodLength": 69
+        }
+    },
+    "src/Module/NPC/Action/CommodityCheat.php": {
+        "Stu\\Module\\NPC\\Action\\CommodityCheat::handle": {
+            "methodComplexity": 27,
+            "methodLength": 145
+        }
+    },
+    "src/Module/NPC/Action/CreateBuildplan.php": {
+        "Stu\\Module\\NPC\\Action\\CreateBuildplan::handle": {
+            "methodComplexity": 24,
+            "methodLength": 157
+        }
+    },
+    "src/Module/NPC/Action/CreateDeal/CreateDeal.php": {
+        "Stu\\Module\\NPC\\Action\\CreateDeal\\CreateDeal::handle": {
+            "methodComplexity": 41,
+            "methodLength": 168
+        },
+        "Stu\\Module\\NPC\\Action\\CreateDeal\\CreateDeal": {
+            "classComplexity": 56
+        }
+    },
+    "src/Module/NPC/Action/CreateHistoryEntry.php": {
+        "Stu\\Module\\NPC\\Action\\CreateHistoryEntry::handle": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Module/NPC/Action/CreateNPCQuest/CreateNPCQuest.php": {
+        "Stu\\Module\\NPC\\Action\\CreateNPCQuest\\CreateNPCQuest::handle": {
+            "methodComplexity": 34,
+            "methodLength": 170
+        },
+        "Stu\\Module\\NPC\\Action\\CreateNPCQuest\\CreateNPCQuest::parseDateTime": {
+            "methodComplexity": 11
+        },
+        "Stu\\Module\\NPC\\Action\\CreateNPCQuest\\CreateNPCQuest": {
+            "classComplexity": 73
+        }
+    },
+    "src/Module/NPC/Action/CreateNpcAward.php": {
+        "Stu\\Module\\NPC\\Action\\CreateNpcAward::handle": {
+            "methodComplexity": 24,
+            "methodLength": 122
+        }
+    },
+    "src/Module/NPC/Action/CreateShip.php": {
+        "Stu\\Module\\NPC\\Action\\CreateShip::handle": {
+            "methodComplexity": 21,
+            "methodLength": 105
+        }
+    },
+    "src/Module/NPC/Action/DeleteSpacecraft.php": {
+        "Stu\\Module\\NPC\\Action\\DeleteSpacecraft::handle": {
+            "methodComplexity": 14,
+            "methodLength": 72
+        }
+    },
+    "src/Module/NPC/Action/ExcludeQuestUsers/ExcludeQuestUsers.php": {
+        "Stu\\Module\\NPC\\Action\\ExcludeQuestUsers\\ExcludeQuestUsers::handle": {
+            "methodComplexity": 13,
+            "methodLength": 94
+        }
+    },
+    "src/Module/NPC/Action/GiveNpcAward.php": {
+        "Stu\\Module\\NPC\\Action\\GiveNpcAward::handle": {
+            "methodComplexity": 16,
+            "methodLength": 99
+        }
+    },
+    "src/Module/NPC/Action/InviteQuestUsers/InviteQuestUsers.php": {
+        "Stu\\Module\\NPC\\Action\\InviteQuestUsers\\InviteQuestUsers::handle": {
+            "methodComplexity": 14,
+            "methodLength": 104
+        }
+    },
+    "src/Module/NPC/Action/PrestigeCheat.php": {
+        "Stu\\Module\\NPC\\Action\\PrestigeCheat::handle": {
+            "methodComplexity": 13,
+            "methodLength": 67
+        }
+    },
+    "src/Module/NPC/Action/RejectQuestApplication/RejectQuestApplication.php": {
+        "Stu\\Module\\NPC\\Action\\RejectQuestApplication\\RejectQuestApplication::handle": {
+            "methodLength": 68
+        }
+    },
+    "src/Module/NPC/View/NPCLog/NPCLog.php": {
+        "Stu\\Module\\NPC\\View\\NPCLog\\NPCLog::handle": {
+            "methodComplexity": 16,
+            "methodLength": 73
+        }
+    },
+    "src/Module/NPC/View/ShowBuildplanCreator/ShowBuildplanCreator.php": {
+        "Stu\\Module\\NPC\\View\\ShowBuildplanCreator\\ShowBuildplanCreator::handle": {
+            "methodComplexity": 18,
+            "methodLength": 154
+        },
+        "Stu\\Module\\NPC\\View\\ShowBuildplanCreator\\ShowBuildplanCreator::getModuleEffects": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/NPC/View/ShowShipCreator/ShowShipCreator.php": {
+        "Stu\\Module\\NPC\\View\\ShowShipCreator\\ShowShipCreator::handle": {
+            "methodComplexity": 13,
+            "methodLength": 81
+        }
+    },
+    "src/Module/PlayerProfile/Action/ChangeCharacter/ChangeCharacter.php": {
+        "Stu\\Module\\PlayerProfile\\Action\\ChangeCharacter\\ChangeCharacter::handle": {
+            "methodComplexity": 15,
+            "methodLength": 67
+        }
+    },
+    "src/Module/PlayerProfile/Action/CreateCharacter/CreateCharacter.php": {
+        "Stu\\Module\\PlayerProfile\\Action\\CreateCharacter\\CreateCharacter::handle": {
+            "methodComplexity": 11,
+            "methodLength": 61
+        }
+    },
+    "src/Module/PlayerSetting/Action/ChangeAvatar/ChangeAvatar.php": {
+        "Stu\\Module\\PlayerSetting\\Action\\ChangeAvatar\\ChangeAvatar::handle": {
+            "methodComplexity": 14
+        }
+    },
+    "src/Module/PlayerSetting/Lib/UserSettingEnum.php": {
+        "Stu\\Module\\PlayerSetting\\Lib\\UserSettingEnum::getDescription": {
+            "methodComplexity": 17
+        },
+        "Stu\\Module\\PlayerSetting\\Lib\\UserSettingEnum::getUserValue": {
+            "methodComplexity": 17
+        }
+    },
+    "src/Module/PlayerSetting/View/ShowCrewRaceManagement/ShowCrewRaceManagement.php": {
+        "Stu\\Module\\PlayerSetting\\View\\ShowCrewRaceManagement\\ShowCrewRaceManagement::handle": {
+            "methodComplexity": 23,
+            "methodLength": 66
+        }
+    },
+    "src/Module/Research/TechlistRetriever.php": {
+        "Stu\\Module\\Research\\TechlistRetriever::getResearchList": {
+            "methodComplexity": 17,
+            "methodLength": 88
+        }
+    },
+    "src/Module/Ship/Action/AstroMapping/StartAstroMapping.php": {
+        "Stu\\Module\\Ship\\Action\\AstroMapping\\StartAstroMapping::handle": {
+            "methodComplexity": 11,
+            "methodLength": 65
+        }
+    },
+    "src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php": {
+        "Stu\\Module\\Ship\\Action\\AttackTrackedShip\\AttackTrackedShip::handle": {
+            "methodComplexity": 18,
+            "methodLength": 107
+        }
+    },
+    "src/Module/Ship/Action/BuildConstruction/BuildConstruction.php": {
+        "Stu\\Module\\Ship\\Action\\BuildConstruction\\BuildConstruction::handle": {
+            "methodComplexity": 27,
+            "methodLength": 178
+        }
+    },
+    "src/Module/Ship/Action/Colonize/Colonize.php": {
+        "Stu\\Module\\Ship\\Action\\Colonize\\Colonize::handle": {
+            "methodLength": 102
+        }
+    },
+    "src/Module/Ship/Action/ColonyBlocking/StartBlocking.php": {
+        "Stu\\Module\\Ship\\Action\\ColonyBlocking\\StartBlocking::handle": {
+            "methodComplexity": 12,
+            "methodLength": 61
+        }
+    },
+    "src/Module/Ship/Action/DockShip/DockShip.php": {
+        "Stu\\Module\\Ship\\Action\\DockShip\\DockShip::handle": {
+            "methodComplexity": 14,
+            "methodLength": 112
+        },
+        "Stu\\Module\\Ship\\Action\\DockShip\\DockShip::fleetDock": {
+            "methodComplexity": 12,
+            "methodLength": 75
+        }
+    },
+    "src/Module/Ship/Action/EscapeTractorBeam/EscapeTractorBeam.php": {
+        "Stu\\Module\\Ship\\Action\\EscapeTractorBeam\\EscapeTractorBeam::handle": {
+            "methodLength": 65
+        }
+    },
+    "src/Module/Ship/Action/FakeWarpSignature/FakeWarpSignature.php": {
+        "Stu\\Module\\Ship\\Action\\FakeWarpSignature\\FakeWarpSignature::handle": {
+            "methodComplexity": 13,
+            "methodLength": 93
+        }
+    },
+    "src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php": {
+        "Stu\\Module\\Ship\\Action\\JoinFleet\\AbstractJoinFleet::tryToAddToFleet": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Module/Ship/Action/LandShuttle/LandShuttle.php": {
+        "Stu\\Module\\Ship\\Action\\LandShuttle\\LandShuttle::handle": {
+            "methodComplexity": 13,
+            "methodLength": 87
+        }
+    },
+    "src/Module/Ship/Action/Mining/GatherResources.php": {
+        "Stu\\Module\\Ship\\Action\\Mining\\GatherResources::handle": {
+            "methodComplexity": 11,
+            "methodLength": 71
+        }
+    },
+    "src/Module/Ship/Action/SalvageCrew/SalvageCrew.php": {
+        "Stu\\Module\\Ship\\Action\\SalvageCrew\\SalvageCrew::handle": {
+            "methodComplexity": 15,
+            "methodLength": 87
+        }
+    },
+    "src/Module/Ship/Action/TholianWeb/CreateTholianWeb.php": {
+        "Stu\\Module\\Ship\\Action\\TholianWeb\\CreateTholianWeb::handle": {
+            "methodComplexity": 12,
+            "methodLength": 94
+        }
+    },
+    "src/Module/Ship/Action/TholianWeb/ImplodeTholianWeb.php": {
+        "Stu\\Module\\Ship\\Action\\TholianWeb\\ImplodeTholianWeb::handle": {
+            "methodLength": 75
+        }
+    },
+    "src/Module/Ship/Action/TholianWeb/SupportTholianWeb.php": {
+        "Stu\\Module\\Ship\\Action\\TholianWeb\\SupportTholianWeb::handle": {
+            "methodLength": 75
+        }
+    },
+    "src/Module/Ship/Action/TrackShip/TrackShip.php": {
+        "Stu\\Module\\Ship\\Action\\TrackShip\\TrackShip::handle": {
+            "methodLength": 69
+        }
+    },
+    "src/Module/Ship/Action/Transwarp/Transwarp.php": {
+        "Stu\\Module\\Ship\\Action\\Transwarp\\Transwarp::isSanityCheckFaultyConcrete": {
+            "methodComplexity": 15,
+            "methodLength": 75
+        }
+    },
+    "src/Module/Ship/Action/UndockShip/UndockShip.php": {
+        "Stu\\Module\\Ship\\Action\\UndockShip\\UndockShip::handle": {
+            "methodComplexity": 17,
+            "methodLength": 80
+        }
+    },
+    "src/Module/Ship/Lib/CancelColonyBlockOrDefend.php": {
+        "Stu\\Module\\Ship\\Lib\\CancelColonyBlockOrDefend::work": {
+            "methodLength": 92
+        }
+    },
+    "src/Module/Ship/Lib/ShipRetrofit.php": {
+        "Stu\\Module\\Ship\\Lib\\ShipRetrofit::updateBy": {
+            "methodLength": 67
+        }
+    },
+    "src/Module/Ship/View/ShowTradeMenuPayment/ShowTradeMenuPayment.php": {
+        "Stu\\Module\\Ship\\View\\ShowTradeMenuPayment\\ShowTradeMenuPayment::handle": {
+            "methodLength": 77
+        }
+    },
+    "src/Module/Spacecraft/Action/ActivateTractorBeam/ActivateTractorBeam.php": {
+        "Stu\\Module\\Spacecraft\\Action\\ActivateTractorBeam\\ActivateTractorBeam::handle": {
+            "methodComplexity": 21,
+            "methodLength": 143
+        }
+    },
+    "src/Module/Spacecraft/Action/AddWormholeRestriction/AddWormholeRestriction.php": {
+        "Stu\\Module\\Spacecraft\\Action\\AddWormholeRestriction\\AddWormholeRestriction::handle": {
+            "methodComplexity": 13
+        }
+    },
+    "src/Module/Spacecraft/Action/AssignCrewSlot/AssignCrewSlot.php": {
+        "Stu\\Module\\Spacecraft\\Action\\AssignCrewSlot\\AssignCrewSlot::handle": {
+            "methodComplexity": 15,
+            "methodLength": 72
+        }
+    },
+    "src/Module/Spacecraft/Action/AttackBuilding/AttackBuilding.php": {
+        "Stu\\Module\\Spacecraft\\Action\\AttackBuilding\\AttackBuilding::handle": {
+            "methodComplexity": 25,
+            "methodLength": 191
+        }
+    },
+    "src/Module/Spacecraft/Action/AttackSpacecraft/AttackSpacecraft.php": {
+        "Stu\\Module\\Spacecraft\\Action\\AttackSpacecraft\\AttackSpacecraft::handle": {
+            "methodComplexity": 12,
+            "methodLength": 86
+        }
+    },
+    "src/Module/Spacecraft/Action/BoardShip/BoardShip.php": {
+        "Stu\\Module\\Spacecraft\\Action\\BoardShip\\BoardShip::handle": {
+            "methodComplexity": 20,
+            "methodLength": 174
+        }
+    },
+    "src/Module/Spacecraft/Action/DoSubspaceAnalysis/DoSubspaceAnalysis.php": {
+        "Stu\\Module\\Spacecraft\\Action\\DoSubspaceAnalysis\\DoSubspaceAnalysis::handle": {
+            "methodLength": 70
+        }
+    },
+    "src/Module/Spacecraft/Action/DoTachyonScan/DoTachyonScan.php": {
+        "Stu\\Module\\Spacecraft\\Action\\DoTachyonScan\\DoTachyonScan::handle": {
+            "methodComplexity": 11,
+            "methodLength": 68
+        }
+    },
+    "src/Module/Spacecraft/Action/DropBuoy/DropBuoy.php": {
+        "Stu\\Module\\Spacecraft\\Action\\DropBuoy\\DropBuoy::handle": {
+            "methodComplexity": 16,
+            "methodLength": 83
+        }
+    },
+    "src/Module/Spacecraft/Action/DumpForeignCrewman/DumpForeignCrewman.php": {
+        "Stu\\Module\\Spacecraft\\Action\\DumpForeignCrewman\\DumpForeignCrewman::handle": {
+            "methodLength": 61
+        }
+    },
+    "src/Module/Spacecraft/Action/EpsTransfer/EpsTransfer.php": {
+        "Stu\\Module\\Spacecraft\\Action\\EpsTransfer\\EpsTransfer::handle": {
+            "methodLength": 86
+        }
+    },
+    "src/Module/Spacecraft/Action/InterceptShip/InterceptShip.php": {
+        "Stu\\Module\\Spacecraft\\Action\\InterceptShip\\InterceptShip::handle": {
+            "methodLength": 76
+        }
+    },
+    "src/Module/Spacecraft/Action/LoadReactor/LoadReactor.php": {
+        "Stu\\Module\\Spacecraft\\Action\\LoadReactor\\LoadReactor::handle": {
+            "methodComplexity": 16,
+            "methodLength": 111
+        }
+    },
+    "src/Module/Spacecraft/Action/MoveShip/AbstractDirectedMovement.php": {
+        "Stu\\Module\\Spacecraft\\Action\\MoveShip\\AbstractDirectedMovement::isSanityCheckFaulty": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Spacecraft/Action/RemoveWaste/RemoveWaste.php": {
+        "Stu\\Module\\Spacecraft\\Action\\RemoveWaste\\RemoveWaste::handle": {
+            "methodComplexity": 13,
+            "methodLength": 72
+        }
+    },
+    "src/Module/Spacecraft/Action/SalvageEmergencyPods/SalvageEmergencyPods.php": {
+        "Stu\\Module\\Spacecraft\\Action\\SalvageEmergencyPods\\SalvageEmergencyPods::handle": {
+            "methodComplexity": 13,
+            "methodLength": 78
+        },
+        "Stu\\Module\\Spacecraft\\Action\\SalvageEmergencyPods\\SalvageEmergencyPods::sendPMsToCrewOwners": {
+            "methodComplexity": 11,
+            "methodLength": 70
+        }
+    },
+    "src/Module/Spacecraft/Action/SalvageEmergencyPods/TransferToClosestLocation.php": {
+        "Stu\\Module\\Spacecraft\\Action\\SalvageEmergencyPods\\TransferToClosestLocation::transfer": {
+            "methodComplexity": 11,
+            "methodLength": 61
+        }
+    },
+    "src/Module/Spacecraft/Action/SelfDestruct/SelfDestruct.php": {
+        "Stu\\Module\\Spacecraft\\Action\\SelfDestruct\\SelfDestruct::handle": {
+            "methodLength": 62
+        }
+    },
+    "src/Module/Spacecraft/Action/Selfrepair/Selfrepair.php": {
+        "Stu\\Module\\Spacecraft\\Action\\Selfrepair\\Selfrepair::handle": {
+            "methodComplexity": 14,
+            "methodLength": 97
+        }
+    },
+    "src/Module/Spacecraft/Action/StartShuttle/StartShuttle.php": {
+        "Stu\\Module\\Spacecraft\\Action\\StartShuttle\\StartShuttle::handle": {
+            "methodComplexity": 14,
+            "methodLength": 88
+        }
+    },
+    "src/Module/Spacecraft/Action/StartTakeover/StartTakeover.php": {
+        "Stu\\Module\\Spacecraft\\Action\\StartTakeover\\StartTakeover::handle": {
+            "methodComplexity": 15,
+            "methodLength": 106
+        }
+    },
+    "src/Module/Spacecraft/Action/StoreShuttle/StoreShuttle.php": {
+        "Stu\\Module\\Spacecraft\\Action\\StoreShuttle\\StoreShuttle::handle": {
+            "methodComplexity": 11,
+            "methodLength": 91
+        }
+    },
+    "src/Module/Spacecraft/Action/TakeBuoy/TakeBuoy.php": {
+        "Stu\\Module\\Spacecraft\\Action\\TakeBuoy\\TakeBuoy::handle": {
+            "methodLength": 72
+        }
+    },
+    "src/Module/Spacecraft/Action/TransferFromAccount/TransferFromAccount.php": {
+        "Stu\\Module\\Spacecraft\\Action\\TransferFromAccount\\TransferFromAccount::handle": {
+            "methodComplexity": 18,
+            "methodLength": 81
+        }
+    },
+    "src/Module/Spacecraft/Action/TransferToAccount/TransferToAccount.php": {
+        "Stu\\Module\\Spacecraft\\Action\\TransferToAccount\\TransferToAccount::handle": {
+            "methodComplexity": 18,
+            "methodLength": 84
+        }
+    },
+    "src/Module/Spacecraft/Action/TransferWarpcoreCharge/TransferWarpcoreCharge.php": {
+        "Stu\\Module\\Spacecraft\\Action\\TransferWarpcoreCharge\\TransferWarpcoreCharge::handle": {
+            "methodComplexity": 13,
+            "methodLength": 84
+        }
+    },
+    "src/Module/Spacecraft/Lib/Battle/AlertDetection/AlertReactionFacade.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\AlertDetection\\AlertReactionFacade::doItAll": {
+            "methodLength": 68
+        },
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\AlertDetection\\AlertReactionFacade::performAttackCycle": {
+            "methodLength": 88
+        }
+    },
+    "src/Module/Spacecraft/Lib/Battle/FightLib.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\FightLib::canAttackTarget": {
+            "methodComplexity": 17
+        }
+    },
+    "src/Module/Spacecraft/Lib/Battle/SpacecraftAttackCycle.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\SpacecraftAttackCycle::cycle": {
+            "methodLength": 68
+        }
+    },
+    "src/Module/Spacecraft/Lib/Battle/Weapon/EnergyWeaponPhase.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\Weapon\\EnergyWeaponPhase::fire": {
+            "methodLength": 84
+        },
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\Weapon\\EnergyWeaponPhase::fireAtBuilding": {
+            "methodLength": 78
+        }
+    },
+    "src/Module/Spacecraft/Lib/Battle/Weapon/ProjectileWeaponPhase.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\Weapon\\ProjectileWeaponPhase::fire": {
+            "methodLength": 73
+        },
+        "Stu\\Module\\Spacecraft\\Lib\\Battle\\Weapon\\ProjectileWeaponPhase::fireAtBuilding": {
+            "methodComplexity": 11,
+            "methodLength": 85
+        }
+    },
+    "src/Module/Spacecraft/Lib/Creation/SpacecraftCreator.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Creation\\SpacecraftCreator::createBy": {
+            "methodLength": 67
+        }
+    },
+    "src/Module/Spacecraft/Lib/Destruction/SpacecraftDestructionCauseEnum.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Destruction\\SpacecraftDestructionCauseEnum::getHistoryEntryText": {
+            "methodComplexity": 11,
+            "methodLength": 63
+        }
+    },
+    "src/Module/Spacecraft/Lib/Interaction/InterceptShipCore.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Interaction\\InterceptShipCore::intercept": {
+            "methodLength": 66
+        }
+    },
+    "src/Module/Spacecraft/Lib/Movement/Component/Consequence/PostFlight/DeflectorConsequence.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Movement\\Component\\Consequence\\PostFlight\\DeflectorConsequence::triggerSpecific": {
+            "methodLength": 71
+        }
+    },
+    "src/Module/Spacecraft/Lib/Movement/Component/Consequence/PostFlight/PostFlightAstroMappingConsequence.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Movement\\Component\\Consequence\\PostFlight\\PostFlightAstroMappingConsequence::triggerSpecific": {
+            "methodComplexity": 12,
+            "methodLength": 73
+        }
+    },
+    "src/Module/Spacecraft/Lib/Movement/Route/CheckDestination.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Movement\\Route\\CheckDestination::validate": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Spacecraft/Lib/Movement/ShipMovementInformationAdder.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\Movement\\ShipMovementInformationAdder::reachedDestination": {
+            "methodComplexity": 14,
+            "methodLength": 81
+        },
+        "Stu\\Module\\Spacecraft\\Lib\\Movement\\ShipMovementInformationAdder::reachedDestinationDestroyed": {
+            "methodComplexity": 11,
+            "methodLength": 74
+        }
+    },
+    "src/Module/Spacecraft/Lib/PassiveRepairProjectionCalculator.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\PassiveRepairProjectionCalculator::calculate": {
+            "methodLength": 62
+        }
+    },
+    "src/Module/Spacecraft/Lib/ReactorUtil.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\ReactorUtil::loadReactor": {
+            "methodComplexity": 13,
+            "methodLength": 102
+        }
+    },
+    "src/Module/Spacecraft/Lib/SpacecraftGroup.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\SpacecraftGroup::sortSpacecraftCollection": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Module/Spacecraft/Lib/SpacecraftLoader.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\SpacecraftLoader::getByIdAndUserAndTargetIntern": {
+            "methodLength": 65
+        }
+    },
+    "src/Module/Spacecraft/Lib/SpacecraftStateChanger.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\SpacecraftStateChanger::changeState": {
+            "methodComplexity": 12
+        },
+        "Stu\\Module\\Spacecraft\\Lib\\SpacecraftStateChanger::changeAlertState": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Spacecraft/Lib/SpacecraftWrapper.php": {
+        "Stu\\Module\\Spacecraft\\Lib\\SpacecraftWrapper": {
+            "classComplexity": 53
+        }
+    },
+    "src/Module/Spacecraft/View/ShowColonyScan/ShowColonyScan.php": {
+        "Stu\\Module\\Spacecraft\\View\\ShowColonyScan\\ShowColonyScan::handle": {
+            "methodComplexity": 12,
+            "methodLength": 88
+        }
+    },
+    "src/Module/Spacecraft/View/ShowScan/ShowScan.php": {
+        "Stu\\Module\\Spacecraft\\View\\ShowScan\\ShowScan::handle": {
+            "methodComplexity": 14,
+            "methodLength": 105
+        }
+    },
+    "src/Module/Spacecraft/View/ShowSpacecraft/ShowSpacecraft.php": {
+        "Stu\\Module\\Spacecraft\\View\\ShowSpacecraft\\ShowSpacecraft::handle": {
+            "methodComplexity": 14,
+            "methodLength": 109
+        }
+    },
+    "src/Module/Spacecraft/View/ShowSpacecraftDetails/ShowSpacecraftDetails.php": {
+        "Stu\\Module\\Spacecraft\\View\\ShowSpacecraftDetails\\ShowSpacecraftDetails::handle": {
+            "methodComplexity": 13,
+            "methodLength": 82
+        }
+    },
+    "src/Module/Spacecraft/View/ShowSystemSettings/AggregrationSystemSettings.php": {
+        "Stu\\Module\\Spacecraft\\View\\ShowSystemSettings\\AggregrationSystemSettings::setTemplateVariables": {
+            "methodLength": 66
+        }
+    },
+    "src/Module/Spacecraft/View/ShowSystemSettings/WebEmitterSystemSettings.php": {
+        "Stu\\Module\\Spacecraft\\View\\ShowSystemSettings\\WebEmitterSystemSettings::setTemplateVariables": {
+            "methodComplexity": 12,
+            "methodLength": 66
+        }
+    },
+    "src/Module/Starmap/Action/ScanUserStarmap/ScanUserStarmap.php": {
+        "Stu\\Module\\Starmap\\Action\\ScanUserStarmap\\ScanUserStarmap::scan": {
+            "methodComplexity": 13,
+            "methodLength": 63
+        }
+    },
+    "src/Module/Starmap/Lib/ExplorableStarMapItem.php": {
+        "Stu\\Module\\Starmap\\Lib\\ExplorableStarMapItem": {
+            "classComplexity": 56
+        }
+    },
+    "src/Module/Starmap/Lib/StarmapSensorCoverage.php": {
+        "Stu\\Module\\Starmap\\Lib\\StarmapSensorCoverage::buildSensorCoverage": {
+            "methodComplexity": 17,
+            "methodLength": 61
+        }
+    },
+    "src/Module/Starmap/Lib/StarmapSensorData.php": {
+        "Stu\\Module\\Starmap\\Lib\\StarmapSensorData::normalizeSpacecraft": {
+            "methodComplexity": 14,
+            "methodLength": 70
+        }
+    },
+    "src/Module/Starmap/View/ShowUserStarmapData/ShowUserStarmapData.php": {
+        "Stu\\Module\\Starmap\\View\\ShowUserStarmapData\\ShowUserStarmapData::handle": {
+            "methodLength": 72
+        },
+        "Stu\\Module\\Starmap\\View\\ShowUserStarmapData\\ShowUserStarmapData::getRelationContext": {
+            "methodComplexity": 23,
+            "methodLength": 76
+        },
+        "Stu\\Module\\Starmap\\View\\ShowUserStarmapData\\ShowUserStarmapData::getSpacecraftRelationship": {
+            "methodComplexity": 12
+        },
+        "Stu\\Module\\Starmap\\View\\ShowUserStarmapData\\ShowUserStarmapData": {
+            "classComplexity": 72
+        }
+    },
+    "src/Module/Starmap/View/ShowUserStarmapImage/ShowUserStarmapImage.php": {
+        "Stu\\Module\\Starmap\\View\\ShowUserStarmapImage\\ShowUserStarmapImage": {
+            "classComplexity": 63
+        }
+    },
+    "src/Module/Starmap/View/ShowUserStarmapRealtime/ShowUserStarmapRealtime.php": {
+        "Stu\\Module\\Starmap\\View\\ShowUserStarmapRealtime\\ShowUserStarmapRealtime::getResponse": {
+            "methodComplexity": 15,
+            "methodLength": 127
+        }
+    },
+    "src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php": {
+        "Stu\\Module\\Station\\Action\\BuildShipyardShip\\BuildShipyardShip::handle": {
+            "methodComplexity": 13,
+            "methodLength": 88
+        }
+    },
+    "src/Module/Station/Action/BuildStation/BuildStation.php": {
+        "Stu\\Module\\Station\\Action\\BuildStation\\BuildStation::handle": {
+            "methodLength": 79
+        }
+    },
+    "src/Module/Station/Action/DockFleet/DockFleet.php": {
+        "Stu\\Module\\Station\\Action\\DockFleet\\DockFleet::fleetDock": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Station/Action/DockTractoredShip/DockTractoredShip.php": {
+        "Stu\\Module\\Station\\Action\\DockTractoredShip\\DockTractoredShip::handle": {
+            "methodLength": 68
+        }
+    },
+    "src/Module/Station/Action/ManageShuttles/ManageShuttles.php": {
+        "Stu\\Module\\Station\\Action\\ManageShuttles\\ManageShuttles::handle": {
+            "methodComplexity": 23,
+            "methodLength": 131
+        },
+        "Stu\\Module\\Station\\Action\\ManageShuttles\\ManageShuttles::transferShuttles": {
+            "methodLength": 62
+        }
+    },
+    "src/Module/Station/Action/RepairShip/RepairShip.php": {
+        "Stu\\Module\\Station\\Action\\RepairShip\\RepairShip::handle": {
+            "methodComplexity": 11,
+            "methodLength": 90
+        }
+    },
+    "src/Module/Station/Action/TransformResources/TransformResources.php": {
+        "Stu\\Module\\Station\\Action\\TransformResources\\TransformResources::handle": {
+            "methodComplexity": 12,
+            "methodLength": 68
+        }
+    },
+    "src/Module/Station/View/ShowSensorScan/ShowSensorScan.php": {
+        "Stu\\Module\\Station\\View\\ShowSensorScan\\ShowSensorScan::handle": {
+            "methodComplexity": 19,
+            "methodLength": 101
+        }
+    },
+    "src/Module/Station/View/ShowShuttleManagement/ShowShuttleManagement.php": {
+        "Stu\\Module\\Station\\View\\ShowShuttleManagement\\ShowShuttleManagement::handle": {
+            "methodLength": 61
+        }
+    },
+    "src/Module/Tick/Colony/Component/ProceedStorage.php": {
+        "Stu\\Module\\Tick\\Colony\\Component\\ProceedStorage::work": {
+            "methodComplexity": 11,
+            "methodLength": 65
+        }
+    },
+    "src/Module/Tick/Process/EndPirateRound.php": {
+        "Stu\\Module\\Tick\\Process\\EndPirateRound": {
+            "classComplexity": 63
+        }
+    },
+    "src/Module/Tick/Process/FinishPassiveShipRepairJobs.php": {
+        "Stu\\Module\\Tick\\Process\\FinishPassiveShipRepairJobs::processQueue": {
+            "methodLength": 76
+        },
+        "Stu\\Module\\Tick\\Process\\FinishPassiveShipRepairJobs": {
+            "classComplexity": 56
+        }
+    },
+    "src/Module/Tick/Process/FinishShipRetrofitJobs.php": {
+        "Stu\\Module\\Tick\\Process\\FinishShipRetrofitJobs::work": {
+            "methodComplexity": 15
+        }
+    },
+    "src/Module/Tick/Process/FinishTholianWebs.php": {
+        "Stu\\Module\\Tick\\Process\\FinishTholianWebs::handleFleetConstellations": {
+            "methodComplexity": 12,
+            "methodLength": 68
+        }
+    },
+    "src/Module/Tick/Spacecraft/Handler/AggregationSystemHandler.php": {
+        "Stu\\Module\\Tick\\Spacecraft\\Handler\\AggregationSystemHandler::handleSpacecraftTick": {
+            "methodComplexity": 14,
+            "methodLength": 68
+        }
+    },
+    "src/Module/Tick/Spacecraft/Handler/BussardCollectorHandler.php": {
+        "Stu\\Module\\Tick\\Spacecraft\\Handler\\BussardCollectorHandler::handleSpacecraftTick": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Tick/Spacecraft/Handler/StationPassiveRepairHandler.php": {
+        "Stu\\Module\\Tick\\Spacecraft\\Handler\\StationPassiveRepairHandler::doRepairStation": {
+            "methodLength": 76
+        }
+    },
+    "src/Module/Tick/Spacecraft/ManagerComponent/CrewLimitations.php": {
+        "Stu\\Module\\Tick\\Spacecraft\\ManagerComponent\\CrewLimitations::work": {
+            "methodComplexity": 12
+        }
+    },
+    "src/Module/Trade/Action/BasicTradeBuy/BasicTradeBuy.php": {
+        "Stu\\Module\\Trade\\Action\\BasicTradeBuy\\BasicTradeBuy::handle": {
+            "methodLength": 80
+        }
+    },
+    "src/Module/Trade/Action/BasicTradeSell/BasicTradeSell.php": {
+        "Stu\\Module\\Trade\\Action\\BasicTradeSell\\BasicTradeSell::handle": {
+            "methodLength": 79
+        }
+    },
+    "src/Module/Trade/Action/CreateOffer/CreateOffer.php": {
+        "Stu\\Module\\Trade\\Action\\CreateOffer\\CreateOffer::handle": {
+            "methodComplexity": 19,
+            "methodLength": 117
+        }
+    },
+    "src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php": {
+        "Stu\\Module\\Trade\\Action\\DealsBidAuction\\DealsBidAuction::handle": {
+            "methodComplexity": 11
+        },
+        "Stu\\Module\\Trade\\Action\\DealsBidAuction\\DealsBidAuction::checkAndCollectCosts": {
+            "methodLength": 86
+        }
+    },
+    "src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php": {
+        "Stu\\Module\\Trade\\Action\\DealsTakeAuction\\DealsTakeAuction::handle": {
+            "methodComplexity": 15,
+            "methodLength": 116
+        }
+    },
+    "src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php": {
+        "Stu\\Module\\Trade\\Action\\DealsTakeOffer\\DealsTakeOffer::handle": {
+            "methodComplexity": 34,
+            "methodLength": 169
+        }
+    },
+    "src/Module/Trade/Action/OrionBidAuction/OrionBidAuction.php": {
+        "Stu\\Module\\Trade\\Action\\OrionBidAuction\\OrionBidAuction::handle": {
+            "methodComplexity": 14,
+            "methodLength": 69
+        }
+    },
+    "src/Module/Trade/Action/TakeOffer/TakeOffer.php": {
+        "Stu\\Module\\Trade\\Action\\TakeOffer\\TakeOffer::handle": {
+            "methodComplexity": 15,
+            "methodLength": 140
+        }
+    },
+    "src/Module/Trade/Action/TransferCommodities/TransferCommodities.php": {
+        "Stu\\Module\\Trade\\Action\\TransferCommodities\\TransferCommodities::handle": {
+            "methodComplexity": 13,
+            "methodLength": 87
+        }
+    },
+    "src/Module/Trade/View/ShowDeals/ShowDeals.php": {
+        "Stu\\Module\\Trade\\View\\ShowDeals\\ShowDeals::handle": {
+            "methodLength": 70
+        }
+    },
+    "src/Module/Twig/TrustedTemplateLoader.php": {
+        "Stu\\Module\\Twig\\TrustedTemplateLoader::findTemplate": {
+            "methodComplexity": 11
+        }
+    },
+    "src/Module/Twig/TwigHelper.php": {
+        "Stu\\Module\\Twig\\TwigHelper::registerFilters": {
+            "methodLength": 75
+        },
+        "Stu\\Module\\Twig\\TwigHelper::registerFunctions": {
+            "methodLength": 71
+        }
+    },
+    "src/Orm/Entity/Colony.php": {
+        "Stu\\Orm\\Entity\\Colony": {
+            "classComplexity": 54
+        }
+    },
+    "src/Orm/Entity/PlanetField.php": {
+        "Stu\\Orm\\Entity\\PlanetField": {
+            "classComplexity": 54
+        }
+    },
+    "src/Orm/Entity/Spacecraft.php": {
+        "Stu\\Orm\\Entity\\Spacecraft": {
+            "classComplexity": 61
+        }
+    },
+    "src/Orm/Entity/SpacecraftRump.php": {
+        "Stu\\Orm\\Entity\\SpacecraftRump": {
+            "classComplexity": 77,
+            "classLength": 570
+        }
+    },
+    "src/Orm/Entity/User.php": {
+        "Stu\\Orm\\Entity\\User": {
+            "classComplexity": 57
+        }
+    },
+    "src/Orm/Repository/BuildingRepository.php": {
+        "Stu\\Orm\\Repository\\BuildingRepository::getBuildmenuBuildings": {
+            "methodLength": 63
+        }
+    },
+    "src/Orm/Repository/ColonyRepository.php": {
+        "Stu\\Orm\\Repository\\ColonyRepository::getPirateTargets": {
+            "methodLength": 64
+        }
+    },
+    "src/Orm/Repository/DealsRepository.php": {
+        "Stu\\Orm\\Repository\\DealsRepository": {
+            "classLength": 710
+        }
+    },
+    "src/Orm/Repository/FlightSignatureRepository.php": {
+        "Stu\\Orm\\Repository\\FlightSignatureRepository::getSignaturesInSensorRange": {
+            "methodLength": 61
+        }
+    },
+    "src/Orm/Repository/LocationRepository.php": {
+        "Stu\\Orm\\Repository\\LocationRepository::getForSubspaceEllipseCreation": {
+            "methodLength": 97
+        }
+    },
+    "src/Orm/Repository/MapRepository.php": {
+        "Stu\\Orm\\Repository\\MapRepository::getAdminLiveMapOverlayFields": {
+            "methodLength": 63
+        },
+        "Stu\\Orm\\Repository\\MapRepository::getExplored": {
+            "methodLength": 73
+        },
+        "Stu\\Orm\\Repository\\MapRepository::getUserStarmapFields": {
+            "methodLength": 77
+        },
+        "Stu\\Orm\\Repository\\MapRepository::getShipSubspaceLayerData": {
+            "methodLength": 73
+        },
+        "Stu\\Orm\\Repository\\MapRepository": {
+            "classLength": 1344
+        }
+    },
+    "src/Orm/Repository/ShipRepository.php": {
+        "Stu\\Orm\\Repository\\ShipRepository::getFleetShipsScannerResults": {
+            "methodLength": 82
+        }
+    },
+    "src/Orm/Repository/SpacecraftRepository.php": {
+        "Stu\\Orm\\Repository\\SpacecraftRepository::getSingleSpacecraftScannerResults": {
+            "methodLength": 79
+        },
+        "Stu\\Orm\\Repository\\SpacecraftRepository::getAdminLiveMapSpacecrafts": {
+            "methodLength": 69
+        },
+        "Stu\\Orm\\Repository\\SpacecraftRepository::getUserStarmapSpacecrafts": {
+            "methodLength": 142
+        },
+        "Stu\\Orm\\Repository\\SpacecraftRepository::getUserStarmapRealtimeSpacecrafts": {
+            "methodLength": 63
+        },
+        "Stu\\Orm\\Repository\\SpacecraftRepository::getStarmapRealtimeSharedSpacecrafts": {
+            "methodLength": 62
+        },
+        "Stu\\Orm\\Repository\\SpacecraftRepository::getRealtimeContactPositionSql": {
+            "methodLength": 69
+        },
+        "Stu\\Orm\\Repository\\SpacecraftRepository": {
+            "classLength": 942
+        }
+    },
+    "src/Orm/Repository/StarSystemMapRepository.php": {
+        "Stu\\Orm\\Repository\\StarSystemMapRepository::getShipSubspaceLayerData": {
+            "methodLength": 69
+        },
+        "Stu\\Orm\\Repository\\StarSystemMapRepository::getRandomSystemMapIdsForAstroMeasurement": {
+            "methodLength": 85
+        },
+        "Stu\\Orm\\Repository\\StarSystemMapRepository": {
+            "classLength": 572
+        }
+    },
+    "src/Orm/Repository/StationRepository.php": {
+        "Stu\\Orm\\Repository\\StationRepository::getStationScannerResults": {
+            "methodLength": 79
+        }
+    },
+    "src/Orm/Repository/TradePostRepository.php": {
+        "Stu\\Orm\\Repository\\TradePostRepository::getClosestTradePost": {
+            "methodLength": 62
+        }
+    }
+}
