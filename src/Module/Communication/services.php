@@ -55,6 +55,9 @@ use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequestInterface;
 use Stu\Module\Communication\Action\RejectQuestInvitation\RejectQuestInvitation;
 use Stu\Module\Communication\Action\RejectQuestInvitation\RejectQuestInvitationRequest;
 use Stu\Module\Communication\Action\RejectQuestInvitation\RejectQuestInvitationRequestInterface;
+use Stu\Module\Communication\Action\ReopenKnPlot\ReopenKnPlot;
+use Stu\Module\Communication\Action\ReopenKnPlot\ReopenKnPlotRequest;
+use Stu\Module\Communication\Action\ReopenKnPlot\ReopenKnPlotRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
@@ -144,6 +147,7 @@ return [
     DeleteKnPlotMemberRequestInterface::class => autowire(DeleteKnPlotMemberRequest::class),
     CreateKnPlotRequestInterface::class => autowire(CreateKnPlotRequest::class),
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
+    ReopenKnPlotRequestInterface::class => autowire(ReopenKnPlotRequest::class),
     ShowSingleKnRequestInterface::class => autowire(ShowSingleKnRequest::class),
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
     ShowKnArchiveRequestInterface::class => autowire(ShowKnArchiveRequest::class),
@@ -174,6 +178,7 @@ return [
         DeleteKnPlotMember::ACTION_IDENTIFIER => autowire(DeleteKnPlotMember::class),
         CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
+        ReopenKnPlot::ACTION_IDENTIFIER => autowire(ReopenKnPlot::class),
         RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
         KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class),
         ApplyForQuest::ACTION_IDENTIFIER => autowire(ApplyForQuest::class),
