@@ -9,6 +9,8 @@ use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\ViewContextMetadataTypeEnum;
+use Stu\Module\Starmap\Lib\StarmapRelations;
+use Stu\Module\Starmap\Lib\StarmapSensorCoverage;
 use Stu\Module\Starmap\Lib\StarmapSensorData;
 use Stu\Module\Starmap\View\ShowUserStarmapScan\ShowUserStarmapScan;
 use Stu\Module\Station\Lib\StationLoaderInterface;
@@ -27,7 +29,9 @@ final class ScanUserStarmap implements ActionControllerInterface
         private LayerRepositoryInterface $layerRepository,
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private StationLoaderInterface $stationLoader,
-        private StarmapSensorData $sensorData
+        private StarmapSensorData $sensorData,
+        private StarmapSensorCoverage $sensorCoverage,
+        private StarmapRelations $relations
     ) {}
 
     #[\Override]
@@ -64,7 +68,7 @@ final class ScanUserStarmap implements ActionControllerInterface
         $wrapper = $this->stationLoader->getWrapperByIdAndUser($sourceId, $user->getId(), true);
         $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
         $sourceRanges = array_values(array_filter($ranges, static fn (array $range): bool => (int) $range['source_id'] === $sourceId));
-        $coverage = $this->sensorData->buildSensorCoverage($layer, $sourceRanges);
+        $coverage = $this->sensorCoverage->buildSensorCoverage($layer, $sourceRanges);
         $key = sprintf('%d:%d', $x, $y);
         if (!isset($coverage['visibleKeys'][$key])) {
             return json_encode(['success' => false, 'message' => 'Feld liegt außerhalb des Sensorbereichs'], JSON_THROW_ON_ERROR);
@@ -80,7 +84,7 @@ final class ScanUserStarmap implements ActionControllerInterface
             ], JSON_THROW_ON_ERROR);
         }
 
-        $relations = $this->sensorData->getRelationContext($user);
+        $relations = $this->relations->getRelationContext($user);
         $contacts = [];
         foreach ($this->spacecraftRepository->getUserStarmapRealtimeSpacecrafts($user->getId(), $layer->getId()) as $row) {
             if ((int) $row['x'] !== $x || (int) $row['y'] !== $y) {

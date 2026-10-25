@@ -23,6 +23,16 @@ final class ShowUserStarmapScan implements ViewControllerInterface
     #[\Override]
     public function handle(ViewControllerContext $game): void
     {
+        $response = $this->getResponse($game);
+
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store');
+        echo $response;
+        exit;
+    }
+
+    private function getResponse(ViewControllerContext $game): string
+    {
         $result = $game->getViewContextMetadata(ViewContextMetadataTypeEnum::STARMAP_SCAN_RESULT);
         if (!is_string($result)) {
             $result = json_encode(['success' => false, 'message' => 'Scan nicht möglich. Bitte erneut versuchen'], JSON_THROW_ON_ERROR);
@@ -51,9 +61,6 @@ final class ShowUserStarmapScan implements ViewControllerInterface
         $this->entityManager->flush();
         $this->entityManager->commit();
 
-        header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-store');
-        echo '{"sessionString":' . json_encode($sessionString, JSON_THROW_ON_ERROR) . ',"result":' . $result . '}';
-        exit;
+        return '{"sessionString":' . json_encode($sessionString, JSON_THROW_ON_ERROR) . ',"result":' . $result . '}';
     }
 }
