@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting;
 
 use Mockery;
 use Noodlehaus\ConfigInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionProperty;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Lib\Upload\PngUpload;
@@ -18,7 +19,8 @@ use Stu\StuTestCase;
 
 final class AvatarReplacementSecurityTest extends StuTestCase
 {
-    public function testRepeatedReplacementUsesTheSameStorageRootAndLeavesOnlyTheCurrentImage(): void
+    #[DataProvider('previousNames')]
+    public function testRepeatedReplacementUsesTheSameStorageRootAndLeavesOnlyTheCurrentImage(string $oldName): void
     {
         $previousMethod = $_SERVER['REQUEST_METHOD'] ?? null;
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -26,7 +28,6 @@ final class AvatarReplacementSecurityTest extends StuTestCase
         mkdir($root . '/avatars', 0o755, true);
         $user = new User();
         new ReflectionProperty(User::class, 'id')->setValue($user, 100);
-        $oldName = str_repeat('a', 32);
         $oldPath = $root . '/avatars/' . $oldName . '.png';
         file_put_contents($oldPath, 'old avatar');
         $currentName = $oldName;
@@ -54,8 +55,12 @@ final class AvatarReplacementSecurityTest extends StuTestCase
         $_FILES['avatar'] = ['tmp_name' => '/tmp/upload', 'error' => UPLOAD_ERR_OK];
         try {
             $subject = new ChangeAvatar($setter, $provider, $config, $upload);
+            $storedName = null;
             for ($i = 0; $i < 3; $i++) {
                 $subject->handle($context);
+                self::assertMatchesRegularExpression('/^[a-f0-9]{64}$/D', $currentName);
+                $storedName ??= $currentName;
+                self::assertSame($storedName, $currentName);
                 self::assertFileDoesNotExist($oldPath);
                 self::assertCount(1, glob($root . '/avatars/*') ?: []);
                 self::assertFileExists($root . '/avatars/' . $currentName . '.png');
@@ -74,5 +79,11 @@ final class AvatarReplacementSecurityTest extends StuTestCase
                 $_SERVER['REQUEST_METHOD'] = $previousMethod;
             }
         }
+    }
+
+    public static function previousNames(): iterable
+    {
+        yield 'previous MD5 name' => [str_repeat('a', 32)];
+        yield 'previous SHA-256 name' => [str_repeat('a', 64)];
     }
 }
