@@ -43,7 +43,7 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $avatar = $this->userSettingsProvider->getAvatar($user);
         $directory = sprintf('%s/%s', rtrim($this->config->get('game.webroot'), '/'), trim($this->config->get('game.user_avatar_path'), '/'));
-        $imageName = md5('user-avatar-' . $user->getId());
+        $imageName = hash('sha256', 'user-avatar-' . $user->getId());
         $path = $directory . '/' . $imageName . '.png';
         $temporaryPath = tempnam($directory, 'avatar-');
         if ($temporaryPath === false) {
@@ -59,7 +59,7 @@ final class ChangeAvatar implements ActionControllerInterface
             unlink($temporaryPath);
             throw new RuntimeException('Avatar could not be replaced');
         }
-        if ($avatar !== '' && $avatar !== $imageName && preg_match('/^[a-f0-9]{32}$/D', $avatar) === 1) {
+        if ($avatar !== '' && $avatar !== $imageName && preg_match('/^(?:[a-f0-9]{32}|[a-f0-9]{64})$/D', $avatar) === 1) {
             $oldPath = $directory . '/' . $avatar . '.png';
             if (is_file($oldPath) && !@unlink($oldPath) && is_file($oldPath)) {
                 throw new RuntimeException('Old avatar could not be deleted');
