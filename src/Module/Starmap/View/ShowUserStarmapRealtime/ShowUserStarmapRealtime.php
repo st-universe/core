@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowUserStarmapRealtime;
 
+use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use Noodlehaus\ConfigInterface;
 use request;
@@ -13,7 +14,6 @@ use Stu\Component\Realtime\RealtimeRedisFactory;
 use Stu\Component\Realtime\StarmapRealtimeTokenFactory;
 use Stu\Lib\Trait\LayerExplorationTrait;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
-use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
@@ -24,7 +24,6 @@ use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Throwable;
 
 final class ShowUserStarmapRealtime implements ViewControllerInterface
@@ -50,8 +49,7 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
         private StarmapRelations $relations,
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory,
         private RealtimeChannels $channels,
-        private UserRepositoryInterface $userRepository,
-        private StuConfigInterface $stuConfig
+        private EntityManagerInterface $entityManager
     ) {}
 
     /**
@@ -83,6 +81,12 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             exit();
         }
 
+        $this->entityManager->flush();
+        $this->entityManager->commit();
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
+
         $coverageGeneration = $this->getCoverageGeneration($layerId);
         $alliance = $user->getAlliance();
         $canSeeAllianceShips = $alliance !== null
@@ -95,13 +99,6 @@ final class ShowUserStarmapRealtime implements ViewControllerInterface
             $user->getId(),
             $layer->getId()
         );
-        if ($ranges !== [] && !$this->stuConfig->getDbSettings()->useSqlite()) {
-            $sourceIds = array_map(static fn (array $range): int => (int) $range['source_id'], $ranges);
-            $userIds = $this->spacecraftRepository->getUserIdsForSpacecrafts($sourceIds);
-            sort($userIds, SORT_NUMERIC);
-            $this->userRepository->lockUsersForUpdate($userIds);
-            $ranges = $this->spacecraftRepository->getUserStarmapRealtimeSensorRanges($user->getId(), $layer->getId());
-        }
         $coverage = $this->sensorCoverage->buildSensorCoverage($layer, $ranges);
 
         $sensorSpacecrafts = $ranges === []
