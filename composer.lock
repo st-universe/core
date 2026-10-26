@@ -2001,37 +2001,39 @@
         },
         {
             "name": "mnsami/composer-custom-directory-installer",
-            "version": "2.2.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mnsami/composer-custom-directory-installer.git",
-                "reference": "23b7039ea7cf18b5846faae2b9f4d9c9445e0039"
+                "reference": "66df9d4430c32f191ff12476ddbaea68915f2999"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mnsami/composer-custom-directory-installer/zipball/23b7039ea7cf18b5846faae2b9f4d9c9445e0039",
-                "reference": "23b7039ea7cf18b5846faae2b9f4d9c9445e0039",
+                "url": "https://api.github.com/repos/mnsami/composer-custom-directory-installer/zipball/66df9d4430c32f191ff12476ddbaea68915f2999",
+                "reference": "66df9d4430c32f191ff12476ddbaea68915f2999",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^2.0",
+                "composer-plugin-api": "^2.3",
                 "php": ">=8.1"
             },
             "require-dev": {
                 "composer/composer": "^2.0",
+                "composer/installers": "^2.3",
                 "friendsofphp/php-cs-fixer": "^3.75",
+                "phpstan/phpstan": "^2.3",
                 "phpunit/phpunit": "^10.5"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": [
                     "Composer\\CustomDirectoryInstaller\\LibraryPlugin",
-                    "Composer\\CustomDirectoryInstaller\\PearPlugin",
                     "Composer\\CustomDirectoryInstaller\\PluginPlugin"
                 ],
                 "branch-alias": {
-                    "dev-master": "2.2.x-dev"
-                }
+                    "dev-master": "2.3.x-dev"
+                },
+                "plugin-modifies-install-path": true
             },
             "autoload": {
                 "psr-4": {
@@ -2049,6 +2051,7 @@
                 }
             ],
             "description": "A composer plugin, to help install packages of different types in custom paths.",
+            "homepage": "https://github.com/mnsami/composer-custom-directory-installer",
             "keywords": [
                 "composer",
                 "composer-installer",
@@ -2061,15 +2064,16 @@
             ],
             "support": {
                 "issues": "https://github.com/mnsami/composer-custom-directory-installer/issues",
-                "source": "https://github.com/mnsami/composer-custom-directory-installer/tree/2.2.1"
+                "security": "https://github.com/mnsami/composer-custom-directory-installer/security/policy",
+                "source": "https://github.com/mnsami/composer-custom-directory-installer"
             },
             "funding": [
                 {
-                    "url": "https://github.com/mnsami",
+                    "url": "https://github.com/sponsors/mnsami",
                     "type": "github"
                 }
             ],
-            "time": "2026-05-20T07:57:55+00:00"
+            "time": "2026-10-13T23:16:14+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -10094,5 +10098,5 @@
         "ext-xsl": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
