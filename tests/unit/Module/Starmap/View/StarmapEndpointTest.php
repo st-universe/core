@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use JBBCode\Parser;
 use Noodlehaus\Config;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use request;
 use Stu\Component\Realtime\RealtimeChannels;
 use Stu\Component\Realtime\RealtimeRedisFactory;
 use Stu\Component\Realtime\StarmapRealtimeTokenFactory;
 use Stu\Module\Alliance\Lib\AllianceJobManagerInterface;
 use Stu\Module\Config\Model\CacheSettingsInterface;
-use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -32,24 +32,40 @@ use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\RelationRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 final class StarmapEndpointTest extends StuTestCase
 {
+    #[RunInSeparateProcess]
+    public function testRealtimeReleasesTheSessionBeforeCalculatingCoverage(): void
+    {
+        $directory = sys_get_temp_dir() . '/stu-starmap-session-' . bin2hex(random_bytes(8));
+        mkdir($directory, 0700);
+        try {
+            session_start(['save_path' => $directory, 'use_cookies' => false, 'cache_limiter' => '']);
+            $_SESSION['uid'] = 101;
+            $this->endpoint('realtime');
+            self::assertSame(PHP_SESSION_NONE, session_status());
+        } finally {
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                session_write_close();
+            }
+            unlink($directory . '/sess_' . session_id());
+            rmdir($directory);
+        }
+    }
+
     public function testRealtimeJsonUsesOpaqueIdsButRetainsAuthorizedOwnAndFriendlyIds(): void
     {
-        foreach (['realtime', 'realtime-locked'] as $mode) {
-            $first = $this->endpoint($mode);
-            $second = $this->endpoint($mode);
-            self::assertSame([501, 502], array_column(array_slice($first['spacecrafts'], 0, 2), 'id'));
-            foreach ([2, 3] as $index) {
-                self::assertLessThan(0, $first['spacecrafts'][$index]['id']);
-                self::assertNotSame($first['spacecrafts'][$index]['id'], $second['spacecrafts'][$index]['id']);
-                self::assertSame(0, $first['spacecrafts'][$index]['userId']);
-            }
-            self::assertSame([501, 502, 0, 0], array_map(static fn (array $spacecraft): int => $spacecraft['isOwn'] || $spacecraft['isFriendly'] ? $spacecraft['id'] : 0, $first['spacecrafts']));
+        $first = $this->endpoint('realtime');
+        $second = $this->endpoint('realtime');
+        self::assertSame([501, 502], array_column(array_slice($first['spacecrafts'], 0, 2), 'id'));
+        foreach ([2, 3] as $index) {
+            self::assertLessThan(0, $first['spacecrafts'][$index]['id']);
+            self::assertNotSame($first['spacecrafts'][$index]['id'], $second['spacecrafts'][$index]['id']);
+            self::assertSame(0, $first['spacecrafts'][$index]['userId']);
         }
+        self::assertSame([501, 502, 0, 0], array_map(static fn (array $spacecraft): int => $spacecraft['isOwn'] || $spacecraft['isFriendly'] ? $spacecraft['id'] : 0, $first['spacecrafts']));
     }
 
     public function testScanJsonHidesInternalIdsInsideAuthenticatedEncryptionWithOrWithoutAConnection(): void
@@ -124,20 +140,17 @@ final class StarmapEndpointTest extends StuTestCase
             $relations = $this->mock(RelationRepositoryInterface::class);
             $relations->shouldReceive('getByUserAndAlliance')->andReturn([]);
             $maps = $this->mock(MapRepositoryInterface::class);
-            $maps->shouldReceive('getLssBlockadeLocations')->andReturn([]);
+            $em = $this->mock(EntityManagerInterface::class);
+            $em->shouldReceive('flush')->once()->globally()->ordered();
+            $em->shouldReceive('commit')->once()->globally()->ordered();
+            $maps->shouldReceive('getLssBlockadeLocations')->once()->globally()->ordered()->andReturnUsing(static function (): array {
+                self::assertSame(PHP_SESSION_NONE, session_status());
+                return [];
+            });
             $spacecrafts = $this->mock(SpacecraftRepositoryInterface::class);
             $ranges = [['source_id' => 777, 'x' => 5, 'y' => 5, 'sensor_range' => 1, 'tachyon_range' => 1]];
-            if ($mode === 'realtime-locked') {
-                $spacecrafts->shouldReceive('getUserStarmapRealtimeSensorRanges')->once()->globally()->ordered()->andReturn($ranges);
-                $spacecrafts->shouldReceive('getUserIdsForSpacecrafts')->with([777])->once()->globally()->ordered()->andReturn([201, 101]);
-            } else {
-                $spacecrafts->shouldReceive('getUserStarmapRealtimeSensorRanges')->once()->andReturn($ranges);
-            }
-            $userRepository = $this->mock(UserRepositoryInterface::class);
-            if ($mode === 'realtime-locked') {
-                $userRepository->shouldReceive('lockUsersForUpdate')->with([101, 201])->once()->globally()->ordered();
-                $spacecrafts->shouldReceive('getUserStarmapRealtimeSensorRanges')->once()->globally()->ordered()->andReturn($ranges);
-            }
+            $spacecrafts->shouldReceive('getUserStarmapRealtimeSensorRanges')->once()->andReturn($ranges);
+            $spacecrafts->shouldNotReceive('getUserIdsForSpacecrafts');
             $rows = [];
             foreach ([101, 102, 103, 104] as $index => $owner) {
                 $rows[] = [
@@ -157,9 +170,6 @@ final class StarmapEndpointTest extends StuTestCase
             $cache->shouldReceive('getRedisHost')->andReturn('127.0.0.1');
             $cache->shouldReceive('getRedisPort')->andReturn(1);
             $stuConfig->shouldReceive('getCacheSettings')->andReturn($cache);
-            $db = $this->mock(DbSettingsInterface::class);
-            $db->shouldReceive('useSqlite')->andReturn($mode !== 'realtime-locked');
-            $stuConfig->shouldReceive('getDbSettings')->andReturn($db);
 
             $starmapRelations = new StarmapRelations($relations, $contacts);
 
@@ -175,8 +185,7 @@ final class StarmapEndpointTest extends StuTestCase
                 $starmapRelations,
                 $this->mock(SpacecraftWrapperFactoryInterface::class),
                 new RealtimeChannels($config),
-                $userRepository,
-                $stuConfig
+                $em
             );
 
             return json_decode($this->getMethod($subject, 'getResponse')->invoke($subject, $game), true, 512, JSON_THROW_ON_ERROR);

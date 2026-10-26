@@ -28,6 +28,7 @@ const WS_PATH = process.env.STU_REALTIME_PATH || realtimeConfig.path || "/realti
 const SECRET = realtimeSecret(config);
 
 const redis = createRedisClient();
+const streamRedis = redis.duplicate();
 const clients = new Set();
 const admission = new StarmapAdmission();
 let lastStreamId = "$";
@@ -35,8 +36,11 @@ let lastStreamId = "$";
 redis.on("error", function (error) {
 	console.error("Redis error:", error.message);
 });
+streamRedis.on("error", function (error) {
+	console.error("Redis stream error:", error.message);
+});
 
-await redis.connect();
+await Promise.all([redis.connect(), streamRedis.connect()]);
 
 const server = http.createServer(function (_request, response) {
 	response.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
@@ -211,7 +215,7 @@ async function consumeAuthorizationNonce(auth) {
 
 async function readStream() {
 	for (;;) {
-		const response = await redis.xRead(
+		const response = await streamRedis.xRead(
 			{
 				key: STREAM_KEY,
 				id: lastStreamId
