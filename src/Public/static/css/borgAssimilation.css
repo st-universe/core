@@ -1,0 +1,242 @@
+@property --borg-panel-level {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+}
+
+html[data-borg-assimilation] {
+    --borg-mix: 0%;
+    --borg-image-shift: 0;
+    --borg-text: color-mix(in srgb, #8897cf calc(100% - var(--borg-mix)), #b9d5ad);
+    --borg-border: color-mix(in srgb, #2d3243 calc(100% - var(--borg-mix)), #496b34);
+    --borg-panel: color-mix(in srgb, #262323 calc(100% - var(--borg-mix)), #13200f);
+}
+
+html[data-borg-assimilation] .borg-console {
+    --borg-skin: none;
+    --borg-mix: calc(var(--borg-panel-level) * 100%);
+    --borg-text: color-mix(in srgb, #8897cf calc(100% - var(--borg-mix)), var(--borg-text-tone));
+    --borg-image-shift: var(--borg-panel-level);
+    --color-11: color-mix(in srgb, var(--borg-base-color-11) calc(100% - var(--borg-mix)), var(--borg-panel-tone));
+    --color-38: color-mix(in srgb, var(--borg-base-color-38) calc(100% - var(--borg-mix)), var(--borg-panel-tone));
+    --color-42: color-mix(in srgb, var(--borg-base-color-42) calc(100% - var(--borg-mix)), var(--borg-panel-tone));
+    --color-43: color-mix(in srgb, var(--borg-base-color-43) calc(100% - var(--borg-mix)), var(--borg-panel-tone));
+    --color-16: color-mix(in srgb, var(--borg-base-color-16) calc(100% - var(--borg-mix)), var(--borg-edge-tone));
+    --color-22: color-mix(in srgb, var(--borg-base-color-22) calc(100% - var(--borg-mix)), var(--borg-edge-tone));
+    --color-53: color-mix(in srgb, var(--borg-base-color-53) calc(100% - var(--borg-mix)), var(--borg-edge-tone));
+    --borg-panel: color-mix(in srgb, #262323 calc(100% - var(--borg-mix)), var(--borg-panel-tone));
+    --borg-border: color-mix(in srgb, #2d3243 calc(100% - var(--borg-mix)), var(--borg-edge-tone));
+}
+
+html[data-borg-assimilation] :is(.borg-console, .borg-link-host) {
+    --borg-links: none;
+    --borg-links-size: 100% 100%;
+    --borg-links-position: 0 0;
+    --borg-links-repeat: no-repeat;
+    --borg-links-origin: border-box;
+    --borg-links-attachment: local;
+    background-image: var(--borg-links, none), var(--borg-skin, none), var(--borg-original-image, none) !important;
+    background-size: var(--borg-links-size, 100% 100%), var(--borg-skin-size, 100% 100%), var(--borg-original-size, auto) !important;
+    background-position: var(--borg-links-position, 0 0), 0 0, var(--borg-original-position, 0% 0%) !important;
+    background-repeat: var(--borg-links-repeat, no-repeat), no-repeat, var(--borg-original-repeat, repeat) !important;
+    background-origin: var(--borg-links-origin, border-box), border-box, var(--borg-original-origin, padding-box) !important;
+    background-clip: var(--borg-links-origin, border-box), border-box, var(--borg-original-clip, border-box) !important;
+    background-attachment: var(--borg-links-attachment, local), scroll, var(--borg-original-attachment, scroll) !important;
+}
+
+html[data-borg-assimilation] .borg-link-host:not(.borg-console) {
+    --borg-skin: none;
+}
+
+html[data-borg-assimilation] .borg-console[data-borg-shell] {
+    background-color: color-mix(in srgb, var(--borg-original-color) calc(100% - var(--borg-mix)), var(--borg-surface-tone)) !important;
+}
+
+html[data-borg-surface="game"] :is(.box, .navigation_item, .header_box).borg-console {
+    color: var(--color-6);
+}
+
+html[data-borg-assimilation] body {
+    isolation: isolate;
+}
+
+.borg-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    contain: layout paint;
+    opacity: 0;
+    background-image:
+        var(--borg-background-network, none),
+        radial-gradient(ellipse at 0% 100%, #344b1c2e, #0b1b1305 90%),
+        radial-gradient(ellipse at 80% 24%, #16534117, transparent 58%);
+    background-size: 100% 100%;
+}
+
+.borg-backdrop-node {
+    position: absolute;
+    opacity: 0.85;
+    transform: translate(-50%, -50%);
+    max-width: 52vw;
+    max-height: 52vw;
+}
+
+.borg-backdrop-activity {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.borg-backdrop-frame,
+.borg-backdrop-core,
+.borg-backdrop-signal {
+    position: absolute;
+    left: var(--borg-art-left);
+    top: var(--borg-art-top);
+    width: var(--borg-art-width);
+    height: var(--borg-art-height);
+    display: block;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.borg-backdrop-core {
+    animation: borg-background-pulse var(--borg-pulse-duration) ease-in-out infinite;
+    animation-delay: var(--borg-background-clock);
+}
+
+.borg-backdrop-signal {
+    animation: borg-background-signal var(--borg-signal-duration) ease-in-out infinite;
+    animation-delay: var(--borg-signal-delay);
+}
+
+.borg-backdrop-packet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #a8d879;
+    box-shadow: 0 0 6px #60b672, 0 0 12px #87c56166;
+    opacity: 0;
+}
+
+html[data-borg-motion="still"] :is(.borg-backdrop-core, .borg-backdrop-signal) {
+    animation-play-state: paused;
+}
+
+@keyframes borg-background-pulse {
+    0%, 100% { opacity: 0.38; }
+    19% { opacity: 0.76; }
+    37% { opacity: 0.5; }
+    68% { opacity: 1; }
+    84% { opacity: 0.57; }
+}
+
+@keyframes borg-background-signal {
+    0%, 22%, 49%, 76%, 100% { opacity: 0.03; }
+    9% { opacity: 0.6; }
+    34% { opacity: 0.19; }
+    61% { opacity: 0.78; }
+    89% { opacity: 0.31; }
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] body > .container,
+html[data-borg-assimilation][data-borg-surface="public"] .nav_box_content,
+html[data-borg-assimilation][data-borg-surface="public"] .modal-title {
+    color: var(--borg-text);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] :is(.mainbar_box_header, .mainbar_nav_box_header, .sidebar_box_header) {
+    color: var(--borg-text);
+    border-color: var(--borg-border);
+    background-color: var(--borg-panel);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] :is(.mainbar_box_content, .sidebar_box_content, .link-box) {
+    color: var(--borg-text);
+    border-color: var(--borg-border);
+    background-color: color-mix(in srgb, #000 calc(100% - var(--borg-mix)), #060b05);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] :is(.registration_box_content, .news_box_content, .dropdown-menu) {
+    color: var(--borg-text);
+    border-color: var(--borg-border);
+    background-color: color-mix(in srgb, #121212 calc(100% - var(--borg-mix)), #0a1208);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] .modal-content {
+    border-color: var(--borg-border) !important;
+    background-color: color-mix(in srgb, #121212 calc(100% - var(--borg-mix)), #0a1208) !important;
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] :is(.btn-stu, input.form-control, .stu-select) {
+    border-color: color-mix(in srgb, #8897cf calc(100% - var(--borg-mix)), #648d43);
+    color: color-mix(in srgb, #fff calc(100% - var(--borg-mix)), #d5e8c8);
+    background-color: color-mix(in srgb, #262323 calc(100% - var(--borg-mix)), #162610);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] :is(input.form-control, .stu-select, .stu-border-faction) {
+    background-color: color-mix(in srgb, #121212 calc(100% - var(--borg-mix)), #070e05);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] .stu-border-faction {
+    border-color: color-mix(in srgb, #8897cf calc(100% - var(--borg-mix)), #648d43);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] .stu-bg-dark {
+    background-color: var(--borg-panel);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] #main #faq .card,
+html[data-borg-assimilation][data-borg-surface="public"] #main #faq .card .card-header .btn-header-link,
+html[data-borg-assimilation][data-borg-surface="public"] #main #faq .card .collapse.show {
+    color: var(--borg-text);
+    background-color: color-mix(in srgb, #121212 calc(100% - var(--borg-mix)), #0a1208);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] .tooltip-box {
+    color: color-mix(in srgb, #c2b942 calc(100% - var(--borg-mix)), #c4e8a5);
+    border-color: color-mix(in srgb, #c2b942 calc(100% - var(--borg-mix)), #759b47);
+    background-color: color-mix(in srgb, #121212 calc(100% - var(--borg-mix)), #0a1208);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] :is(.btn-stu, .link-box):hover,
+html[data-borg-assimilation][data-borg-surface="public"] input.form-control:focus {
+    border-color: color-mix(in srgb, #c2b942 calc(100% - var(--borg-mix)), #a6e65c);
+    color: color-mix(in srgb, #c2b942 calc(100% - var(--borg-mix)), #d2ff9c);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] input.form-control:focus {
+    color: color-mix(in srgb, #fff calc(100% - var(--borg-mix)), #d2ff9c);
+    background-color: var(--borg-panel);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] .container a:not(.btn-stu, .link-box, .dropdown-item) {
+    color: color-mix(in srgb, #007bff calc(100% - var(--borg-mix)), #9edc68);
+}
+
+html[data-borg-assimilation][data-borg-surface="public"] #banner img {
+    filter: grayscale(calc(var(--borg-image-shift) * 0.8)) sepia(calc(var(--borg-image-shift) * 0.6)) hue-rotate(calc(var(--borg-image-shift) * 40deg));
+}
+
+@media (max-width: 768px) {
+    html[data-borg-assimilation][data-borg-surface="public"] :is(#dropdownMenuButton, #dropdownMenuButton2) {
+        color: color-mix(in srgb, #c2b942 calc(100% - var(--borg-mix)), #b4e97d);
+        border-color: var(--borg-border);
+        background-color: color-mix(in srgb, #121212 calc(100% - var(--borg-mix)), #0a1208);
+    }
+
+    html[data-borg-assimilation][data-borg-surface="public"] .dropdown-item {
+        color: color-mix(in srgb, #c2b942 calc(100% - var(--borg-mix)), #b4e97d);
+    }
+}
+
+@media print {
+    .borg-backdrop {
+        display: none !important;
+    }
+}

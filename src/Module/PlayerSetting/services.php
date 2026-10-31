@@ -8,6 +8,7 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
 use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
+use Stu\Module\PlayerSetting\Action\ChangeBorgAssimilation\ChangeBorgAssimilation;
 use Stu\Module\PlayerSetting\Action\ChangeCrewRankNames\ChangeCrewRankNames;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescriptionRequest;
@@ -53,6 +54,7 @@ return [
         ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
         ChangeCrewRankNames::ACTION_IDENTIFIER => autowire(ChangeCrewRankNames::class),
         ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
+        ChangeBorgAssimilation::ACTION_IDENTIFIER => autowire(ChangeBorgAssimilation::class),
         ActivateVacation::ACTION_IDENTIFIER => autowire(ActivateVacation::class),
         CreateTutorials::ACTION_IDENTIFIER => autowire(CreateTutorials::class),
         DeleteAccount::ACTION_IDENTIFIER => autowire(DeleteAccount::class),

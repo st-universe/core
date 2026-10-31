@@ -4,6 +4,26 @@
 
 <head>
   <meta charset="utf-8" />
+  <style>html[data-borg-preparing] { background: #000; } html[data-borg-preparing] body { opacity: 0; }</style>
+<script>
+(() => {
+    const config = {"elapsed":0,"epoch":1732214228,"duration":150000,"user":101,"surface":"public","enabled":true,"restarted":false};
+    let elapsed = config.elapsed;
+    try {
+        const stored = JSON.parse(sessionStorage.getItem('stu:anniversary:25:borg'));
+        const owner = config.user === null ? 'guest' : String(config.user);
+        if (!config.enabled && stored && (stored.owner === owner || stored.owner === 'guest')) {
+            sessionStorage.removeItem('stu:anniversary:25:borg');
+        }
+        if (config.enabled && !config.restarted && stored && (!config.epoch || !stored.epoch || stored.epoch === config.epoch)
+            && (stored.owner === owner || (stored.owner === 'guest' && owner !== 'guest'))
+            && Number.isFinite(stored.elapsed) && Number.isFinite(stored.savedAt)) {
+            elapsed = Math.max(elapsed, stored.elapsed + Math.max(0, Date.now() - stored.savedAt));
+        }
+    } catch {}
+    if (config.enabled && elapsed > config.duration * 0.02) document.documentElement.setAttribute('data-borg-preparing', '');
+})();
+</script>
   <meta name="theme-color" content="#000000" />
   <title>Partnerseiten - Star Trek Universe</title>
   <link rel="shortcut icon" href="/assets/favicon.ico" />
@@ -39,6 +59,9 @@
     "contributors": []
 }
 </script>
+  <link rel="stylesheet" href="/static/css/borgAssimilation.css" />
+<script id="borg-assimilation-config" type="application/json">{"elapsed":0,"epoch":1732214228,"duration":150000,"user":101,"surface":"public","enabled":true,"restarted":false}</script>
+<script src="/static/js/borgAssimilation.js" onerror="document.documentElement.removeAttribute('data-borg-preparing')"></script>
 </head>
 
 <body onload="if (document.getElementById('login')) document.getElementById('login').focus(); updateBannerImage();">

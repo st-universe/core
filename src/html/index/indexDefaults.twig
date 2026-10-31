@@ -4,6 +4,7 @@
 
 <head>
   <meta charset="utf-8" />
+  {% include 'html/borgAssimilation.twig' with {borgBootstrap: true, borgSurface: 'public'} %}
   <meta name="theme-color" content="#000000" />
   <title>{{ PAGETITLE }}</title>
   <link rel="shortcut icon" href="/assets/favicon.ico" />
@@ -22,6 +23,7 @@
 
   {% include ['html/index/meta.twig', 'html/index/meta.dist.twig'] %}
 
+  {% include 'html/borgAssimilation.twig' with {borgSurface: 'public'} %}
 </head>
 
 <body onload="if (document.getElementById('login')) document.getElementById('login').focus(); updateBannerImage();">
