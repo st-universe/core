@@ -10,3 +10,9 @@
     </option>
     {% endfor %}
 </select>
+{% if setting.getType.value == 'css_color_sheet' %}
+{% set assimilationEnabled = BORG_ASSIMILATION_ENABLED is not defined or BORG_ASSIMILATION_ENABLED %}
+<button type="submit" name="B_CHANGE_BORG_ASSIMILATION" value="{{ assimilationEnabled ? 'disable' : 'enable' }}" class="button">
+    {{ assimilationEnabled ? 'Deassimilieren' : 'Reassimilieren' }}
+</button>
+{% endif %}

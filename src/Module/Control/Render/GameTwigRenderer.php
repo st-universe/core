@@ -17,6 +17,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Control\GameUserRoleCheckerInterface;
 use Stu\Module\Control\JavascriptExecutionInterface;
+use Stu\Module\Game\Lib\BorgAssimilation;
 use Stu\Module\Game\Lib\GameTurnProviderInterface;
 use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\User;
@@ -41,7 +42,8 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         private readonly GameUserRoleCheckerInterface $gameUserRoleChecker,
         private readonly GameTurnProviderInterface $gameTurnProvider,
         private readonly SessionStringFactoryInterface $sessionStringFactory,
-        private readonly AdminImpersonationInterface $impersonation
+        private readonly AdminImpersonationInterface $impersonation,
+        private readonly BorgAssimilation $borgAssimilation
     ) {}
 
     #[\Override]
@@ -52,6 +54,9 @@ final class GameTwigRenderer implements GameTwigRendererInterface
 
         $this->setGameVariables($game);
         $this->setUserVariables($user);
+        $this->twigPage->setVar('BORG_ASSIMILATION_ELAPSED', $this->borgAssimilation->getElapsedMilliseconds($user), true);
+        $this->twigPage->setVar('BORG_ASSIMILATION_STARTED_AT', $this->borgAssimilation->getStartedAt(), true);
+        $this->twigPage->setVar('BORG_ASSIMILATION_ENABLED', $this->borgAssimilation->isEnabled($user), true);
 
         $this->twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
         $this->twigPage->setVar('FORUM', $this->config->get('board.base_url'));

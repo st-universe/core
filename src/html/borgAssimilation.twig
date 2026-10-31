@@ -1,0 +1,39 @@
+{% set borgConfig = {
+    elapsed: BORG_ASSIMILATION_ELAPSED|default(0),
+    epoch: BORG_ASSIMILATION_STARTED_AT|default(0),
+    duration: constant('Stu\\Module\\Game\\Lib\\BorgAssimilation::DURATION_MILLISECONDS'),
+    user: USER ? USER.getId : null,
+    surface: borgSurface|default('game'),
+    enabled: BORG_ASSIMILATION_ENABLED is not defined or BORG_ASSIMILATION_ENABLED,
+    restarted: BORG_ASSIMILATION_RESTARTED|default(false)
+} %}
+{% if borgBootstrap|default(false) %}
+<style>html[data-borg-preparing] { background: #000; } html[data-borg-preparing] body { opacity: 0; }</style>
+<script>
+(() => {
+    const config = {{ borgConfig|json_encode|raw }};
+    let elapsed = config.elapsed;
+    try {
+        const stored = JSON.parse(sessionStorage.getItem('stu:anniversary:25:borg'));
+        const owner = config.user === null ? 'guest' : String(config.user);
+        if (!config.enabled && stored && (stored.owner === owner || stored.owner === 'guest')) {
+            sessionStorage.removeItem('stu:anniversary:25:borg');
+        }
+        if (config.enabled && !config.restarted && stored && (!config.epoch || !stored.epoch || stored.epoch === config.epoch)
+            && (stored.owner === owner || (stored.owner === 'guest' && owner !== 'guest'))
+            && Number.isFinite(stored.elapsed) && Number.isFinite(stored.savedAt)) {
+            elapsed = Math.max(elapsed, stored.elapsed + Math.max(0, Date.now() - stored.savedAt));
+        }
+    } catch {}
+    if (config.enabled && elapsed > config.duration * 0.02) document.documentElement.setAttribute('data-borg-preparing', '');
+})();
+</script>
+{% else %}
+{% if borgConfig.enabled %}
+<link rel="stylesheet" href="{{ JAVASCRIPTPATH }}/css/borgAssimilation.css" />
+{% endif %}
+<script id="borg-assimilation-config" type="application/json">{{ borgConfig|json_encode|raw }}</script>
+{% if borgConfig.enabled %}
+<script src="{{ JAVASCRIPTPATH }}/js/borgAssimilation.js" onerror="document.documentElement.removeAttribute('data-borg-preparing')"></script>
+{% endif %}
+{% endif %}

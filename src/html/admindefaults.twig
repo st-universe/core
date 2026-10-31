@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
+    {% include 'html/borgAssimilation.twig' with {borgBootstrap: true} %}
     <meta name="theme-color" content="#121220" />
     <script src="{{ JAVASCRIPTPATH }}/js/prototype.js"></script>
     <script src="{{ JAVASCRIPTPATH }}/js/lib/Sortable.min.js"></script>
@@ -17,6 +18,7 @@
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/{{ USER.getCss }}.css" />
     <link rel="STYLESHEET" type="text/css" href="{{ JAVASCRIPTPATH }}/css/stu.css" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
+    {% include 'html/borgAssimilation.twig' %}
 </head>
 
 <body onload="startUp();">
