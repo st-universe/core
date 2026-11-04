@@ -188,6 +188,8 @@ use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Entity\WormholeRestriction;
 
 return [
+    SpecialResearchDefinitionRepositoryInterface::class => \DI\autowire(SpecialResearchDefinitionRepository::class),
+    SpecialResearchRepositoryInterface::class => \DI\autowire(SpecialResearchRepository::class),
     AwayMissionRepositoryInterface::class => \DI\autowire(AwayMissionRepository::class),
     ColonyProtectionRepositoryInterface::class => \DI\autowire(ColonyProtectionRepository::class),
     AllianceRepositoryInterface::class =>

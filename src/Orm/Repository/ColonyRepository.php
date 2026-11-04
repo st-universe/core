@@ -58,6 +58,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     {
         $em = $this->getEntityManager();
 
+        new \Stu\Component\Research\SpecialResearchDeletionHandler(new SpecialResearchRepository($em))->detachColony($colony);
+
         new AwayMissionDeletionHandler(new AwayMissionRepository($em), new ColonyProtectionRepository($em))->deleteByColony($colony);
 
         $em->remove($colony);

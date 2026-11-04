@@ -178,6 +178,12 @@
                             class="fabutton">Technologiecenter-Produktion</a>
                     </div>
                     {% endif %}
+                    {% if BUILDING_FUNCTION.isSpecialResearch %}
+                    <div class="fabutton">
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(20);"
+                            class="fabutton">Sonderforschung</a>
+                    </div>
+                    {% endif %}
                     {% if BUILDING_FUNCTION.isSubspaceTelescope %}
                     <div class="fabutton">
                         <a href="javascript:void(0);"

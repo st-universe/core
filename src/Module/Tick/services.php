@@ -119,6 +119,7 @@ return [
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
     ProcessTickHandlerInterface::class => [
+        autowire(\Stu\Module\Tick\Process\FinishSpecialResearchJobs::class),
         autowire(FinishBuildJobs::class),
         autowire(FinishShipBuildJobs::class),
         autowire(FinishPassiveShipRepairJobs::class),

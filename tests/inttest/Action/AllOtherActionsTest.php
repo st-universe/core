@@ -66,7 +66,7 @@ class AllOtherActionsTest extends ActionTestCase
         }
 
         $context = $dic->get(ActionContextFactoryInterface::class)->createActionContext($game);
-        if (in_array($key, ['TRADE_ACTIONS-B_TAKE_OFFER', 'TRADE_ACTIONS-B_DEALS_TAKE_AUCTION'], true)) {
+        if (in_array($key, ['TRADE_ACTIONS-B_TAKE_OFFER', 'TRADE_ACTIONS-B_DEALS_TAKE_AUCTION', 'COLONY_ACTIONS-B_START_SPECIAL_RESEARCH'], true)) {
             $dic->get(EntityManagerInterface::class)->wrapInTransaction(static fn () => $subject->handle($context));
             return;
         }
@@ -122,6 +122,7 @@ class AllOtherActionsTest extends ActionTestCase
             'SPACECRAFT_ACTIONS-B_EASTER_EGG' => ['target' => 2],
             'SPACECRAFT_ACTIONS-B_DELETE_WORMHOLE_RESTRICTION' => ['entryId' => 42, 'restrictionId' => 1],
             'SPACECRAFT_ACTIONS-B_SPLIT_REACTOR_OUTPUT' => ['fleet' => 0, 'autocarryover' => 1],
+            'COLONY_ACTIONS-B_START_SPECIAL_RESEARCH' => ['research_type' => 'sensors'],
             'COLONY_ACTIONS-B_REMOVE_WASTE' => ['commodity' => [2 => 100, 4 => 100]],
             'COLONY_ACTIONS-B_CHANGE_TORPS' => ['torpid' => 0],
             'COLONY_ACTIONS-B_CHANGE_FREQUENCY' => ['frequency' => '123'],

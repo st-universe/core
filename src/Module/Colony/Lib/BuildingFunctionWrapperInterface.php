@@ -24,6 +24,8 @@ interface BuildingFunctionWrapperInterface
 
     public function isTechCenter(): bool;
 
+    public function isSpecialResearch(): bool;
+
     public function isSubspaceTelescope(): bool;
 
     public function getShipyardBuildingFunctionId(): ?int;

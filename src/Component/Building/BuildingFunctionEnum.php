@@ -29,6 +29,7 @@ enum BuildingFunctionEnum: int
     case REPAIR_SHIPYARD = 22;
     case WAREHOUSE = 23;
     case SUBSPACE_TELESCOPE = 31;
+    case SPECIAL_RESEARCH = 32;
 
     // planetary defense
     case SHIELD_GENERATOR = 24;

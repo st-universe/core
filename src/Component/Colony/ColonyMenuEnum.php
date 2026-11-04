@@ -24,6 +24,7 @@ use Stu\Module\Colony\View\ShowSocial\ShowSocial;
 use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
+use Stu\Module\Colony\View\ShowSpecialResearch\ShowSpecialResearch;
 
 enum ColonyMenuEnum: int
 {
@@ -47,6 +48,7 @@ enum ColonyMenuEnum: int
     case MENU_SHIP_DISASSEMBLY = 17;
     case MENU_SHIP_REPAIR = 18;
     case MENU_SHIP_RETROFIT = 19;
+    case MENU_SPECIAL_RESEARCH = 20;
 
     public static function getFor(mixed $value): ColonyMenuEnum
     {
@@ -85,75 +87,77 @@ enum ColonyMenuEnum: int
     /** @return array<BuildingFunctionEnum>|null */
     public function getNeededBuildingFunction(): ?array
     {
-        return match ($this) {
-            self::MENU_AIRFIELD => [BuildingFunctionEnum::AIRFIELD],
-            self::MENU_MODULEFAB => BuildingFunctionEnum::getModuleFabs(),
-            self::MENU_SHIPYARD => BuildingFunctionEnum::getShipyards(),
-            self::MENU_BUILDPLANS => BuildingFunctionEnum::getShipyards(),
-            self::MENU_FIGHTER_SHIPYARD => [BuildingFunctionEnum::FIGHTER_SHIPYARD],
-            self::MENU_TORPEDOFAB => [BuildingFunctionEnum::TORPEDO_FAB],
-            self::MENU_ACADEMY => [BuildingFunctionEnum::ACADEMY],
-            self::MENU_WASTE => [BuildingFunctionEnum::WAREHOUSE],
-            self::MENU_FAB_HALL => [BuildingFunctionEnum::FABRICATION_HALL],
-            self::MENU_TECH_CENTER => [BuildingFunctionEnum::TECH_CENTER],
-            self::MENU_SUBSPACE_TELESCOPE => [BuildingFunctionEnum::SUBSPACE_TELESCOPE],
-            self::MENU_SHIP_DISASSEMBLY => BuildingFunctionEnum::getShipyards(),
-            self::MENU_SHIP_REPAIR => BuildingFunctionEnum::getShipyards(),
-            self::MENU_SHIP_RETROFIT => BuildingFunctionEnum::getShipyards(),
-            default => null
-        };
+        return [
+            self::MENU_AIRFIELD->value => [BuildingFunctionEnum::AIRFIELD],
+            self::MENU_MODULEFAB->value => BuildingFunctionEnum::getModuleFabs(),
+            self::MENU_SHIPYARD->value => BuildingFunctionEnum::getShipyards(),
+            self::MENU_BUILDPLANS->value => BuildingFunctionEnum::getShipyards(),
+            self::MENU_FIGHTER_SHIPYARD->value => [BuildingFunctionEnum::FIGHTER_SHIPYARD],
+            self::MENU_TORPEDOFAB->value => [BuildingFunctionEnum::TORPEDO_FAB],
+            self::MENU_ACADEMY->value => [BuildingFunctionEnum::ACADEMY],
+            self::MENU_WASTE->value => [BuildingFunctionEnum::WAREHOUSE],
+            self::MENU_FAB_HALL->value => [BuildingFunctionEnum::FABRICATION_HALL],
+            self::MENU_TECH_CENTER->value => [BuildingFunctionEnum::TECH_CENTER],
+            self::MENU_SUBSPACE_TELESCOPE->value => [BuildingFunctionEnum::SUBSPACE_TELESCOPE],
+            self::MENU_SPECIAL_RESEARCH->value => [BuildingFunctionEnum::SPECIAL_RESEARCH],
+            self::MENU_SHIP_DISASSEMBLY->value => BuildingFunctionEnum::getShipyards(),
+            self::MENU_SHIP_REPAIR->value => BuildingFunctionEnum::getShipyards(),
+            self::MENU_SHIP_RETROFIT->value => BuildingFunctionEnum::getShipyards(),
+        ][$this->value] ?? null;
     }
 
     public function getViewIdentifier(): string
     {
-        return match ($this) {
-            self::MENU_MAINSCREEN => ShowMainscreen::VIEW_IDENTIFIER,
-            self::MENU_BUILD => ShowBuildMenu::VIEW_IDENTIFIER,
-            self::MENU_INFO => ShowManagement::VIEW_IDENTIFIER,
-            self::MENU_OPTION => ShowMisc::VIEW_IDENTIFIER,
-            self::MENU_SOCIAL => ShowSocial::VIEW_IDENTIFIER,
-            self::MENU_BUILDINGS => ShowBuildingManagement::VIEW_IDENTIFIER,
-            self::MENU_AIRFIELD => ShowAirfield::VIEW_IDENTIFIER,
-            self::MENU_MODULEFAB => ShowModuleFab::VIEW_IDENTIFIER,
-            self::MENU_SHIPYARD => ShowShipyard::VIEW_IDENTIFIER,
-            self::MENU_BUILDPLANS => ShowBuildPlans::VIEW_IDENTIFIER,
-            self::MENU_FIGHTER_SHIPYARD => ShowFighterShipyard::VIEW_IDENTIFIER,
-            self::MENU_TORPEDOFAB => ShowTorpedoFab::VIEW_IDENTIFIER,
-            self::MENU_ACADEMY => ShowAcademy::VIEW_IDENTIFIER,
-            self::MENU_WASTE => ShowWaste::VIEW_IDENTIFIER,
-            self::MENU_FAB_HALL => ShowModuleFab::VIEW_IDENTIFIER,
-            self::MENU_TECH_CENTER => ShowModuleFab::VIEW_IDENTIFIER,
-            self::MENU_SUBSPACE_TELESCOPE => ShowSubspaceTelescope::VIEW_IDENTIFIER,
-            self::MENU_SHIP_DISASSEMBLY => ShowShipDisassembly::VIEW_IDENTIFIER,
-            self::MENU_SHIP_REPAIR => ShowShipRepair::VIEW_IDENTIFIER,
-            self::MENU_SHIP_RETROFIT => ShowShipRetrofit::VIEW_IDENTIFIER
-        };
+        return [
+            self::MENU_MAINSCREEN->value => ShowMainscreen::VIEW_IDENTIFIER,
+            self::MENU_BUILD->value => ShowBuildMenu::VIEW_IDENTIFIER,
+            self::MENU_INFO->value => ShowManagement::VIEW_IDENTIFIER,
+            self::MENU_OPTION->value => ShowMisc::VIEW_IDENTIFIER,
+            self::MENU_SOCIAL->value => ShowSocial::VIEW_IDENTIFIER,
+            self::MENU_BUILDINGS->value => ShowBuildingManagement::VIEW_IDENTIFIER,
+            self::MENU_AIRFIELD->value => ShowAirfield::VIEW_IDENTIFIER,
+            self::MENU_MODULEFAB->value => ShowModuleFab::VIEW_IDENTIFIER,
+            self::MENU_SHIPYARD->value => ShowShipyard::VIEW_IDENTIFIER,
+            self::MENU_BUILDPLANS->value => ShowBuildPlans::VIEW_IDENTIFIER,
+            self::MENU_FIGHTER_SHIPYARD->value => ShowFighterShipyard::VIEW_IDENTIFIER,
+            self::MENU_TORPEDOFAB->value => ShowTorpedoFab::VIEW_IDENTIFIER,
+            self::MENU_ACADEMY->value => ShowAcademy::VIEW_IDENTIFIER,
+            self::MENU_WASTE->value => ShowWaste::VIEW_IDENTIFIER,
+            self::MENU_FAB_HALL->value => ShowModuleFab::VIEW_IDENTIFIER,
+            self::MENU_TECH_CENTER->value => ShowModuleFab::VIEW_IDENTIFIER,
+            self::MENU_SUBSPACE_TELESCOPE->value => ShowSubspaceTelescope::VIEW_IDENTIFIER,
+            self::MENU_SPECIAL_RESEARCH->value => ShowSpecialResearch::VIEW_IDENTIFIER,
+            self::MENU_SHIP_DISASSEMBLY->value => ShowShipDisassembly::VIEW_IDENTIFIER,
+            self::MENU_SHIP_REPAIR->value => ShowShipRepair::VIEW_IDENTIFIER,
+            self::MENU_SHIP_RETROFIT->value => ShowShipRetrofit::VIEW_IDENTIFIER
+        ][$this->value];
     }
 
     public function getTemplate(): string
     {
-        return match ($this) {
-            self::MENU_MAINSCREEN => 'html/colony/menu/mainscreen.twig',
-            self::MENU_BUILD => 'html/colony/menu/buildmenues.twig',
-            self::MENU_INFO => 'html/colony/menu/management.twig',
-            self::MENU_OPTION => 'html/colony/menu/miscellaneous.twig',
-            self::MENU_SOCIAL => 'html/colony/menu/social.twig',
-            self::MENU_BUILDINGS => 'html/colony/menu/buildingManagement.twig',
-            self::MENU_AIRFIELD => 'html/colony/menu/airfield.twig',
-            self::MENU_MODULEFAB => 'html/colony/menu/moduleFab.twig',
-            self::MENU_SHIPYARD => 'html/colony/menu/shipyard.twig',
-            self::MENU_BUILDPLANS => 'html/colony/menu/shipBuildplans.twig',
-            self::MENU_FIGHTER_SHIPYARD => 'html/colony/menu/fighterShipyard.twig',
-            self::MENU_TORPEDOFAB => 'html/colony/menu/torpedoFab.twig',
-            self::MENU_ACADEMY => 'html/colony/menu/academy.twig',
-            self::MENU_WASTE => 'html/colony/menu/waste.twig',
-            self::MENU_FAB_HALL => 'html/colony/menu/componentFab.twig',
-            self::MENU_TECH_CENTER => 'html/colony/menu/componentFab.twig',
-            self::MENU_SUBSPACE_TELESCOPE => 'html/colony/menu/telescope.twig',
-            self::MENU_SHIP_DISASSEMBLY => 'html/colony/menu/shipDisassembly.twig',
-            self::MENU_SHIP_REPAIR => 'html/colony/menu/shipRepair.twig',
-            self::MENU_SHIP_RETROFIT => 'html/colony/menu/shipRetrofit.twig'
-        };
+        return [
+            self::MENU_MAINSCREEN->value => 'html/colony/menu/mainscreen.twig',
+            self::MENU_BUILD->value => 'html/colony/menu/buildmenues.twig',
+            self::MENU_INFO->value => 'html/colony/menu/management.twig',
+            self::MENU_OPTION->value => 'html/colony/menu/miscellaneous.twig',
+            self::MENU_SOCIAL->value => 'html/colony/menu/social.twig',
+            self::MENU_BUILDINGS->value => 'html/colony/menu/buildingManagement.twig',
+            self::MENU_AIRFIELD->value => 'html/colony/menu/airfield.twig',
+            self::MENU_MODULEFAB->value => 'html/colony/menu/moduleFab.twig',
+            self::MENU_SHIPYARD->value => 'html/colony/menu/shipyard.twig',
+            self::MENU_BUILDPLANS->value => 'html/colony/menu/shipBuildplans.twig',
+            self::MENU_FIGHTER_SHIPYARD->value => 'html/colony/menu/fighterShipyard.twig',
+            self::MENU_TORPEDOFAB->value => 'html/colony/menu/torpedoFab.twig',
+            self::MENU_ACADEMY->value => 'html/colony/menu/academy.twig',
+            self::MENU_WASTE->value => 'html/colony/menu/waste.twig',
+            self::MENU_FAB_HALL->value => 'html/colony/menu/componentFab.twig',
+            self::MENU_TECH_CENTER->value => 'html/colony/menu/componentFab.twig',
+            self::MENU_SUBSPACE_TELESCOPE->value => 'html/colony/menu/telescope.twig',
+            self::MENU_SPECIAL_RESEARCH->value => 'html/colony/menu/specialResearch.twig',
+            self::MENU_SHIP_DISASSEMBLY->value => 'html/colony/menu/shipDisassembly.twig',
+            self::MENU_SHIP_REPAIR->value => 'html/colony/menu/shipRepair.twig',
+            self::MENU_SHIP_RETROFIT->value => 'html/colony/menu/shipRetrofit.twig'
+        ][$this->value];
     }
 
     /** @return array<ColonyComponentEnum> */
@@ -173,7 +177,9 @@ enum ColonyMenuEnum: int
             // submenues
             self::MENU_BUILD => [ColonyComponentEnum::BUILD_MENUES],
             self::MENU_INFO => [ColonyComponentEnum::MANAGEMENT, ColonyComponentEnum::EFFECTS],
-            self::MENU_OPTION => [],
+            self::MENU_OPTION,
+            self::MENU_WASTE,
+            self::MENU_SUBSPACE_TELESCOPE => [],
             self::MENU_SOCIAL => [ColonyComponentEnum::SOCIAL],
             self::MENU_BUILDINGS => [ColonyComponentEnum::BUILDING_MANAGEMENT],
 
@@ -187,8 +193,7 @@ enum ColonyMenuEnum: int
             self::MENU_FIGHTER_SHIPYARD => [ColonyComponentEnum::FIGHTER_SHIPYARD],
             self::MENU_TORPEDOFAB => [ColonyComponentEnum::TORPEDO_FAB],
             self::MENU_ACADEMY => [ColonyComponentEnum::ACADEMY],
-            self::MENU_WASTE => [],
-            self::MENU_SUBSPACE_TELESCOPE => [],
+            self::MENU_SPECIAL_RESEARCH => [ColonyComponentEnum::SPECIAL_RESEARCH],
             self::MENU_SHIP_DISASSEMBLY => [ColonyComponentEnum::SHIP_DISASSEMBLY],
             self::MENU_SHIP_REPAIR => [ColonyComponentEnum::SHIP_REPAIR],
             self::MENU_SHIP_RETROFIT => [ColonyComponentEnum::SHIP_RETROFIT]

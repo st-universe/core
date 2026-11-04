@@ -49,6 +49,12 @@ final class BuildingFunctionWrapper implements BuildingFunctionWrapperInterface
     }
 
     #[\Override]
+    public function isSpecialResearch(): bool
+    {
+        return $this->hasFunction(BuildingFunctionEnum::SPECIAL_RESEARCH);
+    }
+
+    #[\Override]
     public function isShipyard(): bool
     {
         return array_any(

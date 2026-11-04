@@ -1,0 +1,52 @@
+<div class="box" style="width: 40vw; max-width: 100%;">
+    <div class="box_title">Sonderforschung</div>
+    <div class="box_body">
+        {% if not SPECIAL_RESEARCH_ACTIVE %}
+        <p>Für den Start wird ein aktives Forschungszentrum oder Technologiecenter benötigt</p>
+        {% endif %}
+        {% if SPECIAL_RESEARCH_RUNNING %}
+        <p>Laufende Grundlagenforschung: {{ SPECIAL_RESEARCH_RUNNING.getResearchType.getDescription }}
+            – Abschluss ab {{ SPECIAL_RESEARCH_RUNNING.getFinishTime|stuDateTime }} Uhr</p>
+        {% endif %}
+        {% for row in SPECIAL_RESEARCH_ROWS %}
+        <div class="divhead">Grundlagenforschung: {{ row.type.getDescription }}</div>
+        <div class="divbody">
+            {% if row.completed %}
+            Erfolgreich abgeschlossen
+            {% else %}
+            {% if row.research and row.research.getStatus.value == 'failed' %}
+            <p>Der letzte Versuch ist fehlgeschlagen</p>
+            {% endif %}
+            <table class="tcal">
+                <tr><th>Material</th><th>Benötigt</th><th>Im Lager</th></tr>
+                {% for cost in row.costs %}
+                <tr>
+                    <td><img src="/assets/commodities/{{ cost.commodity.getId }}.png" title="{{ cost.commodity.getName }}" /> {{ cost.commodity.getName }}</td>
+                    <td>{{ cost.needed }}</td>
+                    <td class="{% if cost.stored < cost.needed %}negative{% else %}positive{% endif %}">{{ cost.stored }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <table class="tcal">
+                <tr><th>Forschungsdauer</th><th>Fehlschlagswahrscheinlichkeit</th></tr>
+                <tr>
+                    <td>{% if row.duration is divisible by(86400) %}{{ row.duration / 86400 }} {{ row.duration == 86400 ? 'Tag' : 'Tage' }}{% else %}{{ row.duration|formatSeconds }}{% endif %}</td>
+                    <td>{{ row.failureChance }} %</td>
+                </tr>
+            </table>
+            {% if row.canStart %}
+            <form action="colony.php" method="post">
+                <input type="hidden" name="id" value="{{ HOST.getId }}" />
+                <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+                <input type="hidden" name="research_type" value="{{ row.type.value }}" />
+                <input type="submit" name="B_START_SPECIAL_RESEARCH" value="Grundlagenforschung starten" />
+            </form>
+            {% endif %}
+            {% endif %}
+        </div>
+        <br />
+        {% else %}
+        <p>Für eine Grundlagenforschung wird ein entsprechender Datensatz im Kolonielager benötigt</p>
+        {% endfor %}
+    </div>
+</div>

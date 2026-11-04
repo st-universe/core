@@ -33,6 +33,7 @@ enum ColonyComponentEnum: string implements ComponentEnumInterface
     case SHIP_REPAIR = 'SHIP_REPAIR';
     case SHIP_DISASSEMBLY = 'SHIP_DISASSEMBLY';
     case SHIP_RETROFIT = 'SHIP_RETROFIT';
+    case SPECIAL_RESEARCH = 'SPECIAL_RESEARCH';
 
     #[\Override]
     public function getModuleView(): ModuleEnum

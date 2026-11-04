@@ -235,6 +235,7 @@ return [
     RenameBuildplanRequestInterface::class => autowire(RenameBuildplanRequest::class),
     BuildPlanDeleterInterface::class => autowire(BuildPlanDeleter::class),
     'COLONY_ACTIONS' => [
+        \Stu\Module\Colony\Action\StartSpecialResearch\StartSpecialResearch::ACTION_IDENTIFIER => autowire(\Stu\Module\Colony\Action\StartSpecialResearch\StartSpecialResearch::class),
         GiveUp::ACTION_IDENTIFIER => autowire(GiveUp::class),
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
         ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
@@ -282,6 +283,7 @@ return [
         CreateSandbox::ACTION_IDENTIFIER => get(CreateSandbox::class)
     ],
     'COLONY_VIEWS' => [
+        \Stu\Module\Colony\View\ShowSpecialResearch\ShowSpecialResearch::VIEW_IDENTIFIER => autowire(\Stu\Module\Colony\View\ShowSpecialResearch\ShowSpecialResearch::class),
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowColony::VIEW_IDENTIFIER => autowire(ShowColony::class),
         ShowMainscreen::VIEW_IDENTIFIER => autowire(ShowMainscreen::class),
@@ -342,6 +344,7 @@ return [
         ColonyComponentEnum::SHIPYARD->value => autowire(ShipyardProvider::class),
         ColonyComponentEnum::FIGHTER_SHIPYARD->value => autowire(FighterShipyardProvider::class),
         ColonyComponentEnum::SHIP_BUILDPLANS->value => autowire(SpacecraftBuildplansProvider::class),
+        ColonyComponentEnum::SPECIAL_RESEARCH->value => autowire(\Stu\Module\Colony\Lib\Gui\Component\SpecialResearchProvider::class),
         ColonyComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
         ColonyComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
         ColonyComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class)
