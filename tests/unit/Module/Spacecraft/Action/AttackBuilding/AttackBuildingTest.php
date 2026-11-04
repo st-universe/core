@@ -26,6 +26,7 @@ use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\ColonyProtectionRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -36,6 +37,7 @@ final class AttackBuildingTest extends ActionControllerTestCase
     private MockInterface&PlanetFieldRepositoryInterface $planetFieldRepository;
     private MockInterface&ColonyRepositoryInterface $colonyRepository;
     private MockInterface&PrivateMessageSenderInterface $privateMessageSender;
+    private MockInterface&ColonyProtectionRepositoryInterface $protectionRepository;
 
     private AttackBuilding $subject;
 
@@ -48,6 +50,8 @@ final class AttackBuildingTest extends ActionControllerTestCase
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
+        $this->protectionRepository = $this->mock(ColonyProtectionRepositoryInterface::class);
+        $this->protectionRepository->shouldReceive('isProtected')->andReturnFalse()->byDefault();
 
         $this->subject = new AttackBuilding(
             $this->spacecraftLoader,
@@ -64,8 +68,30 @@ final class AttackBuildingTest extends ActionControllerTestCase
             $this->mock(BattlePartyFactoryInterface::class),
             $this->mock(MessageFactoryInterface::class),
             $this->mock(PlayerRelationDeterminatorInterface::class),
-            $this->mock(EventDispatcherInterface::class)
+            $this->mock(EventDispatcherInterface::class),
+            $this->protectionRepository
         );
+    }
+
+    public function testProtectedColonyCannotBeAttacked(): void
+    {
+        request::setMockVars(['id' => 11, 'colonyid' => 22, 'field' => 33]);
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
+        $wrapper = $this->mock(SpacecraftWrapperInterface::class);
+        $information = new InformationWrapper();
+        $this->game->shouldReceive('getUser')->andReturn($user);
+        $this->game->shouldReceive('getInfo')->andReturn($information);
+        $user->shouldReceive('getId')->andReturn(44);
+        $this->colonyRepository->shouldReceive('getUserIdOfColony')->with(22)->andReturn(55);
+        $this->colonyRepository->shouldReceive('find')->with(22)->andReturn($colony);
+        $this->spacecraftLoader->shouldReceive('getWrapperByIdAndUserAndTargetUser')->with(11, 44, 55)->andReturn($wrapper);
+        $this->protectionRepository->shouldReceive('isProtected')->with($colony)->once()->andReturnTrue();
+        $this->planetFieldRepository->shouldNotReceive('find');
+
+        $this->subject->handle($this->game);
+
+        self::assertSame(['Diese Kolonie ist geschützt und kann nicht angegriffen werden'], $information->getInformations());
     }
 
     public function testHandlesShowsInfoIfBuildingDoesNotExist(): void

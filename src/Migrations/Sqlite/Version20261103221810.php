@@ -7,7 +7,7 @@ namespace Stu\Migrations\Sqlite;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20261025093842 extends AbstractMigration
+final class Version20261103221810 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -61,6 +61,22 @@ final class Version20261025093842 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_award (id INTEGER NOT NULL, prestige INTEGER NOT NULL, description CLOB NOT NULL, is_npc BOOLEAN DEFAULT NULL, user_id INTEGER DEFAULT NULL, PRIMARY KEY (id), CONSTRAINT FK_8CCE880A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX award_user_idx ON stu_award (user_id)');
         $this->addSql('CREATE INDEX award_is_npc_idx ON stu_award (is_npc)');
+        $this->addSql('CREATE TABLE stu_away_mission (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title VARCHAR(255) NOT NULL, reward_amount INTEGER NOT NULL, colony_id INTEGER NOT NULL, quest_id INTEGER NOT NULL, reward_commodity_id INTEGER DEFAULT NULL, CONSTRAINT FK_51C57DE296ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_51C57DE2209E9EF4 FOREIGN KEY (quest_id) REFERENCES stu_npc_quests (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_51C57DE2DC64E407 FOREIGN KEY (reward_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE UNIQUE INDEX away_mission_colony_idx ON stu_away_mission (colony_id)');
+        $this->addSql('CREATE INDEX IDX_51C57DE2209E9EF4 ON stu_away_mission (quest_id)');
+        $this->addSql('CREATE INDEX IDX_51C57DE2DC64E407 ON stu_away_mission (reward_commodity_id)');
+        $this->addSql('CREATE TABLE stu_away_mission_dialogue (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, page INTEGER NOT NULL, position INTEGER NOT NULL, speaker SMALLINT DEFAULT NULL, text CLOB NOT NULL, show_surface BOOLEAN DEFAULT 0 NOT NULL, mission_id INTEGER NOT NULL, faction_id INTEGER DEFAULT NULL, CONSTRAINT FK_A5281F0BBE6CAE90 FOREIGN KEY (mission_id) REFERENCES stu_away_mission (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A5281F0B4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE UNIQUE INDEX away_mission_dialogue_idx ON stu_away_mission_dialogue (mission_id, page, position, faction_id)');
+        $this->addSql('CREATE INDEX IDX_A5281F0BBE6CAE90 ON stu_away_mission_dialogue (mission_id)');
+        $this->addSql('CREATE INDEX IDX_A5281F0B4448F8DA ON stu_away_mission_dialogue (faction_id)');
+        $this->addSql('CREATE TABLE stu_away_mission_field (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, field_id INTEGER NOT NULL, mission_id INTEGER NOT NULL, CONSTRAINT FK_A7EE6D80BE6CAE90 FOREIGN KEY (mission_id) REFERENCES stu_away_mission (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE UNIQUE INDEX away_mission_field_idx ON stu_away_mission_field (mission_id, field_id)');
+        $this->addSql('CREATE INDEX IDX_A7EE6D80BE6CAE90 ON stu_away_mission_field (mission_id)');
+        $this->addSql('CREATE TABLE stu_away_mission_progress (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, scanned_fields CLOB NOT NULL, started BOOLEAN NOT NULL, last_page INTEGER NOT NULL, reward_received BOOLEAN NOT NULL, research_system VARCHAR(255) DEFAULT NULL, reporting_crew_id INTEGER DEFAULT NULL, mission_id INTEGER NOT NULL, user_id INTEGER NOT NULL, contact_faction_id INTEGER DEFAULT NULL, CONSTRAINT FK_76A3F174BE6CAE90 FOREIGN KEY (mission_id) REFERENCES stu_away_mission (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76A3F174A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_76A3F17483F1A14D FOREIGN KEY (contact_faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE UNIQUE INDEX away_mission_progress_idx ON stu_away_mission_progress (mission_id, user_id)');
+        $this->addSql('CREATE INDEX IDX_76A3F174BE6CAE90 ON stu_away_mission_progress (mission_id)');
+        $this->addSql('CREATE INDEX IDX_76A3F174A76ED395 ON stu_away_mission_progress (user_id)');
+        $this->addSql('CREATE INDEX IDX_76A3F17483F1A14D ON stu_away_mission_progress (contact_faction_id)');
         $this->addSql('CREATE TABLE stu_basic_trade (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, faction_id INTEGER DEFAULT NULL, commodity_id INTEGER NOT NULL, buy_sell SMALLINT NOT NULL, value INTEGER NOT NULL, date_ms BIGINT DEFAULT NULL, uniqid VARCHAR(255) NOT NULL, user_id INTEGER DEFAULT NULL, CONSTRAINT FK_15ACD9904448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_15ACD990B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX base_trade_idx ON stu_basic_trade (faction_id, commodity_id, date_ms)');
         $this->addSql('CREATE INDEX IDX_15ACD9904448F8DA ON stu_basic_trade (faction_id)');
@@ -151,6 +167,9 @@ final class Version20261025093842 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_BD7DF1EAB4ACC212 ON stu_colony_deposit_mining (commodity_id)');
         $this->addSql('CREATE TABLE stu_colony_fieldtype (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, field_id INTEGER NOT NULL, description VARCHAR(255) NOT NULL, normal_id INTEGER NOT NULL, category INTEGER NOT NULL)');
         $this->addSql('CREATE INDEX field_id_idx ON stu_colony_fieldtype (field_id)');
+        $this->addSql('CREATE TABLE stu_colony_protection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_id INTEGER NOT NULL, quest_id INTEGER DEFAULT NULL, CONSTRAINT FK_F641B1596ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_F641B15209E9EF4 FOREIGN KEY (quest_id) REFERENCES stu_npc_quests (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE UNIQUE INDEX colony_protection_colony_idx ON stu_colony_protection (colony_id)');
+        $this->addSql('CREATE INDEX IDX_F641B15209E9EF4 ON stu_colony_protection (quest_id)');
         $this->addSql('CREATE TABLE stu_colony_sandbox (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, bev_work INTEGER NOT NULL, bev_max INTEGER NOT NULL, max_eps INTEGER NOT NULL, max_storage INTEGER NOT NULL, mask CLOB DEFAULT NULL, CONSTRAINT FK_7F824EAB96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7F824EAB96ADBADE ON stu_colony_sandbox (colony_id)');
         $this->addSql('CREATE TABLE stu_colony_scan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, colony_id INTEGER NOT NULL, user_id INTEGER NOT NULL, colony_user_id INTEGER NOT NULL, colony_name VARCHAR(255) DEFAULT NULL, colony_user_name VARCHAR(255) NOT NULL, mask CLOB NOT NULL, date INTEGER NOT NULL, CONSTRAINT FK_2853B5FC96ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2853B5FCA76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -632,6 +651,10 @@ final class Version20261025093842 extends AbstractMigration
         $this->addSql('DROP TABLE stu_astro_entry');
         $this->addSql('DROP TABLE stu_auction_bid');
         $this->addSql('DROP TABLE stu_award');
+        $this->addSql('DROP TABLE stu_away_mission');
+        $this->addSql('DROP TABLE stu_away_mission_dialogue');
+        $this->addSql('DROP TABLE stu_away_mission_field');
+        $this->addSql('DROP TABLE stu_away_mission_progress');
         $this->addSql('DROP TABLE stu_basic_trade');
         $this->addSql('DROP TABLE stu_blocked_user');
         $this->addSql('DROP TABLE stu_buildings');
@@ -656,6 +679,7 @@ final class Version20261025093842 extends AbstractMigration
         $this->addSql('DROP TABLE stu_colony_class_restriction');
         $this->addSql('DROP TABLE stu_colony_deposit_mining');
         $this->addSql('DROP TABLE stu_colony_fieldtype');
+        $this->addSql('DROP TABLE stu_colony_protection');
         $this->addSql('DROP TABLE stu_colony_sandbox');
         $this->addSql('DROP TABLE stu_colony_scan');
         $this->addSql('DROP TABLE stu_commodity');

@@ -1,0 +1,68 @@
+<div id="away-mission" data-ship-id="{{ SHIP.getId }}" data-session-string="{{ SESSIONSTRING }}"
+    class="away-mission {{ MISSION_DIALOGUE ? 'away-mission-story' : 'away-mission-surface' }}">
+    {% if INFORMATION %}
+    {% include 'html/systeminformation.twig' %}
+    {% endif %}
+    {% if MISSION_DIALOGUE %}
+    <div class="away-mission-dialogue">
+        {% for entry in MISSION_ENTRIES %}
+        {% if entry.speaker is null %}
+        <div class="away-mission-narration away-mission-text">{{ entry.text|bbcode|nl2br }}</div>
+        {% else %}
+        <div class="away-mission-speech{{ entry.right ? ' away-mission-speech-right' : '' }}">
+            <img class="away-mission-portrait" src="{{ entry.image }}" alt="{{ entry.speaker|bbcode2txt }}" />
+            <div class="away-mission-bubble">
+                <strong>{{ entry.speaker|bbcode }}:</strong>
+                <div class="away-mission-text">{{ entry.text|bbcode|nl2br }}</div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="away-mission-scan">
+        <div id="mission-scan-label">Scanfortschritt: {{ SCAN_COUNT }} / {{ SCAN_TOTAL }}</div>
+        <div class="away-mission-scan-track" role="progressbar" aria-labelledby="mission-scan-label"
+            aria-valuenow="{{ SCAN_COUNT }}" aria-valuemin="0" aria-valuemax="{{ SCAN_TOTAL ?: 1 }}">
+            {% if SCAN_TOTAL > 0 %}
+            {% for step in 1..SCAN_TOTAL %}
+            <span class="away-mission-scan-segment{{ step <= SCAN_COUNT ? ' away-mission-scan-segment-complete' : '' }}"></span>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="away-mission-grid" style="{{ SURFACE.getSurfaceTileStyle }}">
+        {% for field in SURFACE.getSurface %}
+        {% set dayNightPrefix = getDayNightPrefix(field) %}
+        {% set scanned = field.getFieldId in MISSION_PROGRESS.getScannedFields %}
+        <div class="{{ field.getCssClass }} away-mission-field{{ scanned ? ' away-mission-field-scanned' : '' }}">
+            <a href="javascript:void(0);" onclick="awayMissionAction('scan', {{ MISSION_PAGE }}, {{ field.getFieldId }});"
+                aria-label="Feld {{ field.getFieldId }} scannen{% if scanned %}, bereits gescannt{% endif %}"
+                style="background-image: url(assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png);">
+                {% if field.hasBuilding %}
+                <img title="Feld scannen: {{ field|planetFieldTitle }}"
+                    src="assets/generated/buildings/{{ getPlanetFieldPictureType(field) }}{{ dayNightPrefix }}.png" />
+                {% else %}
+                <img title="Feld scannen: {{ field|planetFieldTitle }}"
+                    src="assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png" />
+                {% endif %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="away-mission-navigation">
+        {% if MISSION_PAGE > 1 %}
+        <button type="button" class="button" onclick="awayMissionAction('page', {{ MISSION_PAGE - 1 }});">Zurück</button>
+        {% else %}<span></span>{% endif %}
+        <span>Seite {{ MISSION_PAGE }} von {{ MISSION_PAGE_COUNT }}</span>
+        {% if MISSION_PAGE < MISSION_PAGE_COUNT %}
+        <button type="button" class="button" onclick="awayMissionAction('page', {{ MISSION_PAGE + 1 }});"{% if not MISSION_CAN_CONTINUE %} disabled="disabled"{% endif %}>Weiter</button>
+        {% else %}<span></span>{% endif %}
+    </div>
+    {% if MISSION_PAGE == MISSION_PAGE_COUNT and not MISSION_PROGRESS.isRewardReceived and AWAY_MISSION.getRewardCommodity and AWAY_MISSION.getRewardAmount > 0 %}
+    <div class="away-mission-actions">
+        <button type="button" class="button" onclick="awayMissionAction('reward', {{ MISSION_PAGE }});">Belohnung einsammeln</button>
+    </div>
+    {% endif %}
+</div>

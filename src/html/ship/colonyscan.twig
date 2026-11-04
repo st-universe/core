@@ -28,11 +28,15 @@
     <div class="{{ field.getCssClass }}" style="width: 40px; height: 40px;" id="field{{ field.getFieldId }}">
         <div
             style="background-image: url(assets/generated/fields/{{ dayNightPrefix }}{{ field.getFieldType }}.png); width: 40px; height: 40px;">
+            {% if not COLONY_PROTECTED|default(false) %}
             <a
                 href="?id={{ SHIP.getId }}&B_ATTACK_BUILDING=1&colonyid={{ currentColony.getId }}&field={{ field.getId }}&sstr={{ SESSIONSTRING }}">
-                <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: {{ field|planetFieldTitle }}"
+            {% endif %}
+                <img style="width: 40px; height: 40px;" title="{% if not COLONY_PROTECTED|default(false) %}Gebäude bombardieren: {% endif %}{{ field|planetFieldTitle }}"
                     src="assets/generated/buildings/{{ getPlanetFieldPictureType(field) }}{{ dayNightPrefix }}.png" />
+            {% if not COLONY_PROTECTED|default(false) %}
             </a>
+            {% endif %}
         </div>
     </div>
     {% endif %}

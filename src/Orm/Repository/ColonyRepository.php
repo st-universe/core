@@ -9,13 +9,16 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Quest\AwayMission\AwayMissionDeletionHandler;
 use Stu\Module\Commodity\CommodityTypeConstants;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\AwayMission;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\ColonyProtection;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Location;
 use Stu\Orm\Entity\Map;
@@ -54,6 +57,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     public function delete(Colony $colony): void
     {
         $em = $this->getEntityManager();
+
+        new AwayMissionDeletionHandler(new AwayMissionRepository($em), new ColonyProtectionRepository($em))->deleteByColony($colony);
 
         $em->remove($colony);
         $em->flush(); //TODO really neccessary?
@@ -94,6 +99,14 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                         SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
                             SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
                         ) AND m.id IN (SELECT l.id FROM %s l WHERE l.layer IN (SELECT ly FROM %s ly WHERE ly.is_colonizable = :true))
+                    )
+                    AND NOT EXISTS (
+                        SELECT p.id FROM %s p LEFT JOIN p.quest pq
+                        WHERE p.colony = c AND (p.quest IS NULL OR pq.end IS NULL)
+                    )
+                    AND NOT EXISTS (
+                        SELECT am.id FROM %s am JOIN am.quest aq
+                        WHERE am.colony = c AND aq.end IS NULL
                     )',
                     Colony::class,
                     StarSystemMap::class,
@@ -101,7 +114,9 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     Map::class,
                     MapRegionSettlement::class,
                     Location::class,
-                    Layer::class
+                    Layer::class,
+                    ColonyProtection::class,
+                    AwayMission::class
                 )
             )
             ->setParameters([

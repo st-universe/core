@@ -69,6 +69,7 @@ return [
             autowire(UserRelationDeletionHandler::class),
             autowire(ContactDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
+            autowire(\Stu\Component\Quest\AwayMission\AwayMissionDeletionHandler::class),
             autowire(ColonyDeletionHandler::class),
             autowire(PrivateMessageDeletionHandler::class),
             autowire(KnPostDeletionHandler::class),

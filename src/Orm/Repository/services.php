@@ -188,6 +188,8 @@ use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Entity\WormholeRestriction;
 
 return [
+    AwayMissionRepositoryInterface::class => \DI\autowire(AwayMissionRepository::class),
+    ColonyProtectionRepositoryInterface::class => \DI\autowire(ColonyProtectionRepository::class),
     AllianceRepositoryInterface::class =>
         fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Alliance::class),
     AllianceApplicationRepositoryInterface::class =>

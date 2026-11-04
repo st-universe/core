@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassResearchRepositoryInterface;
+use Stu\Orm\Repository\ColonyProtectionRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -33,18 +34,33 @@ class ColonizationCheckerTest extends StuTestCase
 
     private ?ColonizationChecker $checker;
 
+    private MockInterface&ColonyProtectionRepositoryInterface $protectionRepository;
+
     #[\Override]
     public function setUp(): void
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
         $this->colonyClassResearchRepository = $this->mock(ColonyClassResearchRepositoryInterface::class);
         $this->colonyLimitCalculator = $this->mock(ColonyLimitCalculatorInterface::class);
+        $this->protectionRepository = $this->mock(ColonyProtectionRepositoryInterface::class);
+        $this->protectionRepository->shouldReceive('isProtected')->andReturnFalse()->byDefault();
 
         $this->checker = new ColonizationChecker(
             $this->researchedRepository,
             $this->colonyClassResearchRepository,
-            $this->colonyLimitCalculator
+            $this->colonyLimitCalculator,
+            $this->protectionRepository
         );
+    }
+
+    public function testProtectedColonyCannotBeColonized(): void
+    {
+        $user = $this->mock(User::class);
+        $colony = $this->mock(Colony::class);
+        $colony->shouldReceive('isFree')->once()->andReturnTrue();
+        $this->protectionRepository->shouldReceive('isProtected')->with($colony)->once()->andReturnTrue();
+
+        self::assertFalse($this->checker->canColonize($user, $colony));
     }
 
     public function testCanColonizeReturnsFalseIfNotFree(): void

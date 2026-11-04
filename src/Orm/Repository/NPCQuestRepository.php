@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Quest\AwayMission\AwayMissionDeletionHandler;
 use Stu\Orm\Entity\NPCQuest;
 
 /**
@@ -30,6 +31,8 @@ final class NPCQuestRepository extends EntityRepository implements NPCQuestRepos
     public function delete(NPCQuest $quest): void
     {
         $em = $this->getEntityManager();
+
+        new AwayMissionDeletionHandler(new AwayMissionRepository($em), new ColonyProtectionRepository($em))->deleteByQuest($quest);
 
         $em->remove($quest);
         $em->flush();

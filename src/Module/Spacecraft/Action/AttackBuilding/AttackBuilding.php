@@ -32,6 +32,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Repository\ColonyProtectionRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -55,7 +56,8 @@ final class AttackBuilding implements ActionControllerInterface
         private BattlePartyFactoryInterface $battlePartyFactory,
         private MessageFactoryInterface $messageFactory,
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private ColonyProtectionRepositoryInterface $colonyProtectionRepository
     ) {}
 
     #[\Override]
@@ -73,9 +75,8 @@ final class AttackBuilding implements ActionControllerInterface
             $this->colonyRepository->getUserIdOfColony($colonyId)
         );
 
-        $colony = $this->colonyRepository->find($colonyId);
+        $colony = $this->getAttackableColony($colonyId, $context);
         if ($colony === null) {
-            $context->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 
@@ -248,6 +249,21 @@ final class AttackBuilding implements ActionControllerInterface
         } else {
             $context->getInfo()->addInformationWrapper($informations);
         }
+    }
+
+    private function getAttackableColony(int $colonyId, ActionControllerContext $context): ?Colony
+    {
+        $colony = $this->colonyRepository->find($colonyId);
+        if ($colony === null) {
+            $context->getInfo()->addInformation(_('Feld oder Kolonie nicht vorhanden'));
+            return null;
+        }
+        if ($this->colonyProtectionRepository->isProtected($colony)) {
+            $context->getInfo()->addInformation('Diese Kolonie ist geschützt und kann nicht angegriffen werden');
+            return null;
+        }
+
+        return $colony;
     }
 
     private function awardExperienceForForeignColonyAttack(

@@ -8,16 +8,21 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyClassResearchRepositoryInterface;
+use Stu\Orm\Repository\ColonyProtectionRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class ColonizationChecker implements ColonizationCheckerInterface
 {
-    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ColonyClassResearchRepositoryInterface $colonyClassResearchRepository, private ColonyLimitCalculatorInterface $colonyLimitCalculator) {}
+    public function __construct(private ResearchedRepositoryInterface $researchedRepository, private ColonyClassResearchRepositoryInterface $colonyClassResearchRepository, private ColonyLimitCalculatorInterface $colonyLimitCalculator, private ColonyProtectionRepositoryInterface $colonyProtectionRepository) {}
 
     #[\Override]
     public function canColonize(User $user, Colony $colony): bool
     {
         if (!$colony->isFree()) {
+            return false;
+        }
+
+        if ($this->colonyProtectionRepository->isProtected($colony)) {
             return false;
         }
 

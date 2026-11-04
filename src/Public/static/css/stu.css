@@ -1504,6 +1504,135 @@ div.error {
   font-weight: bold;
 }
 
+.away-mission {
+  color: var(--color-6);
+}
+
+.away-mission-surface {
+  width: min-content;
+}
+
+.away-mission-story {
+  box-sizing: border-box;
+  width: 620px;
+  max-width: calc(100vw - 8px);
+  padding: 0 10px;
+}
+
+.away-mission-dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 0;
+}
+
+.away-mission-speech {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.away-mission-speech-right {
+  flex-direction: row-reverse;
+}
+
+.away-mission-portrait {
+  width: 51px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.away-mission-bubble {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--color-53);
+  border-radius: 12px;
+  padding: 10px;
+  background-color: var(--color-34);
+}
+
+.away-mission-bubble .away-mission-text {
+  margin-top: 5px;
+}
+
+.away-mission-text {
+  overflow-wrap: anywhere;
+}
+
+.away-mission-text img {
+  max-width: 100%;
+  height: auto;
+}
+
+.away-mission-narration {
+  padding: 10px;
+}
+
+.away-mission-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.away-mission-actions {
+  margin-top: 10px;
+}
+
+.away-mission-actions p {
+  margin-bottom: 6px;
+}
+
+.away-mission-scan {
+  margin: 8px 0 12px;
+}
+
+.away-mission-scan-track {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+  padding: 2px;
+  margin-top: 4px;
+  border: 1px solid var(--color-53);
+  border-radius: 6px;
+  background-color: var(--color-51);
+}
+
+.away-mission-scan-segment {
+  flex: 1;
+  min-width: 0;
+  background-color: var(--color-34);
+}
+
+.away-mission-scan-segment:first-child {
+  border-radius: 3px 0 0 3px;
+}
+
+.away-mission-scan-segment:last-child {
+  border-radius: 0 3px 3px 0;
+}
+
+.away-mission-scan-segment-complete {
+  background-color: var(--color-53);
+}
+
+.away-mission-field,
+.away-mission-field a,
+.away-mission-field img {
+  width: 40px;
+  height: 40px;
+}
+
+.away-mission-field a {
+  display: block;
+}
+
+.away-mission-field-scanned {
+  outline: 2px solid var(--color-53);
+  outline-offset: -2px;
+}
+
 a.linkbutton,
 button.linkbutton {
   text-align: center;

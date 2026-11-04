@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
+use Stu\Component\Quest\AwayMission\AwayMissionService;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\MatrixScannerShipSystem;
 use Stu\Exception\SanityCheckException;
@@ -21,8 +22,13 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\AwayMissionRepositoryInterface;
+use Stu\Orm\Repository\ColonyProtectionRepositoryInterface;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
 
 final class ShowColonyScan implements ViewControllerInterface
@@ -37,7 +43,11 @@ final class ShowColonyScan implements ViewControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender,
         private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private AwayMissionRepositoryInterface $missionRepository,
+        private AwayMissionService $missionService,
+        private ShowAwayMission $showAwayMission,
+        private ColonyProtectionRepositoryInterface $protectionRepository
     ) {}
 
     #[\Override]
@@ -110,9 +120,6 @@ final class ShowColonyScan implements ViewControllerInterface
             );
         }
 
-        $colonySurface = $this->colonyLibFactory->createColonySurface($colony, null, false);
-        $colonySurface->updateSurface();
-
         if (!$colony->getUser()->isNpc() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $colony->getUser())) {
             $this->eventDispatcher->dispatch(new CrewExperienceEvent(
                 $ship,
@@ -120,12 +127,28 @@ final class ShowColonyScan implements ViewControllerInterface
             ));
         }
 
+        $this->showScanResult($colony, $ship, $game);
+    }
+
+    private function showScanResult(Colony $colony, Spacecraft $ship, ViewControllerContext $game): void
+    {
+        $colonySurface = $this->colonyLibFactory->createColonySurface($colony, null, false);
+        $colonySurface->updateSurface();
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('DEPOSITS', $colony->getColonyClass()->getColonyClassDeposits());
         $game->setTemplateVar('SURFACE', $colonySurface);
 
         $this->createColonyScan($game->getUser(), $colony);
+
+        $mission = $this->missionRepository->getByColony($colony);
+        if ($ship instanceof Ship && $mission !== null && $this->missionService->isAvailable($mission)) {
+            $progress = $this->missionRepository->initializeProgress($mission, $game->getUser());
+            $this->showAwayMission->render($mission, $progress, $ship, $game);
+            return;
+        }
+
+        $game->setTemplateVar('COLONY_PROTECTED', $this->protectionRepository->isProtected($colony));
         $game->setMacroInAjaxWindow('html/ship/colonyscan.twig');
     }
 

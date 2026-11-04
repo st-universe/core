@@ -1220,6 +1220,42 @@ function showRegionInfo(element, region) {
 function showColonyScan(element) {
   updatePopupAtElement(element, "?SHOW_COLONY_SCAN=1&id=" + spacecraftid);
 }
+function awayMissionAction(action, page = 0, field = 0) {
+  const mission = document.getElementById('away-mission');
+  if (!mission || mission.dataset.busy === 'true') {
+    return;
+  }
+  mission.dataset.busy = 'true';
+  new Ajax.Request('ship.php', {
+    method: 'post',
+    parameters: {
+      B_AWAY_MISSION: 1,
+      id: mission.dataset.shipId,
+      sstr: mission.dataset.sessionString,
+      mission_action: action,
+      mission_page: page,
+      field: field,
+      switch: 1
+    },
+    onSuccess: function (response) {
+      const content = new DOMParser().parseFromString(response.responseText, 'text/html');
+      if (action === 'reward' && content.querySelector('#shipform')) {
+        $('innerContent').update(response.responseText);
+        closeAjaxWindow();
+        window.history.pushState(null, '', 'ship.php?SHOW_SPACECRAFT=1&id=' + encodeURIComponent(mission.dataset.shipId));
+        if (typeof initTooltips === 'function') {
+          initTooltips();
+        }
+        return;
+      }
+      $('popupContent').update(response.responseText);
+      enablePopupDrag();
+    },
+    onComplete: function () {
+      mission.dataset.busy = 'false';
+    }
+  });
+}
 function showColonyMessage(element) {
   updatePopupAtElement(element, "?SHOW_COLONY_MESSAGE=1&id=" + spacecraftid, 500);
 }

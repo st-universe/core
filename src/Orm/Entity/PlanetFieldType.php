@@ -79,4 +79,11 @@ class PlanetFieldType
     {
         return $this->category;
     }
+
+    public function setCategory(int $category): PlanetFieldType
+    {
+        $this->category = $category;
+
+        return $this;
+    }
 }
