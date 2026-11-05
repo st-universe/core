@@ -49,7 +49,7 @@ final class ChangeBorgAssimilationTest extends ActionControllerTestCase
             $storage->shouldReceive('storeSessionData')->with('anniversary_25_borg_disabled', true, true)->once();
             $this->game->shouldReceive('getUser')->once()->andReturn(new User());
             $this->game->shouldReceive('getInfo->addInformation')->once()
-                ->with('Die Assimilation ist für deinen Account deaktiviert. Dein gewähltes Interface-Design bleibt erhalten');
+                ->with('Deassimilierung abgeschlossen');
 
             new ChangeBorgAssimilation(new BorgAssimilation($storage, $this->mock(StuTime::class)))->handle($this->game);
         } finally {
@@ -77,7 +77,7 @@ final class ChangeBorgAssimilationTest extends ActionControllerTestCase
             $time->shouldReceive('time')->once()->andReturn(1000);
             $this->game->shouldReceive('getUser')->once()->andReturn(new User());
             $this->game->shouldReceive('setTemplateVar')->with('BORG_ASSIMILATION_RESTARTED', true)->once();
-            $this->game->shouldReceive('getInfo->addInformation')->with('Die Assimilation wurde neu gestartet')->once();
+            $this->game->shouldReceive('getInfo->addInformation')->with('Sie werden assimiliert werden! Wiederstand ist zwecklos!')->once();
 
             new ChangeBorgAssimilation(new BorgAssimilation($storage, $time))->handle($this->game);
         } finally {

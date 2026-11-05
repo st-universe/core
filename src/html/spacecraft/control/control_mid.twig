@@ -1,5 +1,5 @@
 {% macro control_mid(wrapper, astroStateSystem, astroStateRegion, isTachyonActive, starSystemEntryTal, currentColony,
-canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, isAdmin) %}
+canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, isAdmin, hasActiveAwayMission) %}
 
 {% from 'html/macros.twig' import onClickSpacecraft %}
 
@@ -405,7 +405,7 @@ canColonize, closestAnomalyDistance, storedShuttleCount, closescolonydistance, i
             </div>
         </td>
         <td style="width: 50%;">
-            {% if not ownsCurrentColony and SPACECRAFT.isMatrixScannerHealthy and not SPACECRAFT.isCloaked %}
+            {% if not ownsCurrentColony and (SPACECRAFT.isMatrixScannerHealthy or hasActiveAwayMission) and not SPACECRAFT.isCloaked %}
             <div style="float: left; margin-top: 5px; margin-right: 5px;">
                 <a href="javascript:void(0);" onclick="showColonyScan(this);"
                     onmouseover="cp('coloScanButton','buttons/lupe2')"

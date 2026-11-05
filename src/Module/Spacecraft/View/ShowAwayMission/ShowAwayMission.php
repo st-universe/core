@@ -39,7 +39,7 @@ final class ShowAwayMission implements ViewControllerInterface
         }
         $progress = $this->missionRepository->getProgress($mission, $game->getUser(), true);
         if ($progress === null) {
-            $game->getInfo()->addInformation('Scanne zuerst die Oberfläche mit den Matrixsensoren');
+            $game->getInfo()->addInformation('Scanne zuerst die Oberfläche');
             return;
         }
 
