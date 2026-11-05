@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use request;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
+use Stu\Component\Quest\AwayMission\AwayMissionAccess;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\Nbs\NbsUtilityInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -60,6 +61,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         private readonly ColonizationCheckerInterface $colonizationChecker,
         private readonly SessionStorageInterface $sessionStorage,
         private LoggerUtilFactoryInterface $loggerUtilFactory,
+        private readonly AwayMissionAccess $awayMissionAccess,
         private readonly ?ExtensionHooks $extensions = null
     ) {
         $this->loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
@@ -71,7 +73,6 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $user = $game->getUser();
         $userId = $user->getId();
         $this->extensions?->view('ship.view', $game);
-        $ownsCurrentColony = false;
         $spacecraftId = request::indInt('id');
 
         $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
@@ -97,17 +98,6 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         // check if tachyon scan still active
         if (!$tachyonActive) {
             $tachyonActive = $this->nbsUtility->isTachyonActive($spacecraft);
-        }
-
-        $rump = $spacecraft->getRump();
-
-        $colony = $this->getColony($spacecraft);
-        $canColonize = false;
-        if ($colony !== null) {
-            if ($rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE)) {
-                $canColonize = $this->colonizationChecker->canColonize($user, $colony);
-            }
-            $ownsCurrentColony = $colony->getUser()->getId() === $user->getId();
         }
 
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
@@ -143,9 +133,7 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $this->nbsUtility->setNbsTemplateVars($spacecraft, $game, $this->sessionStorage, $tachyonActive);
 
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
-        $game->setTemplateVar('CAN_COLONIZE', $canColonize);
-        $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
-        $game->setTemplateVar('CURRENT_COLONY', $colony);
+        $this->setColonyTemplateVariables($spacecraft, $user, $game);
         $game->setTemplateVar('CLOSEST_ANOMALY_DISTANCE', $this->anomalyRepository->getClosestAnomalyDistance($wrapper));
         $game->setTemplateVar('HAS_FREE_SHUTTLE_SPACE', $this->hasFreeShuttleSpace($spacecraft));
         $game->setTemplateVar('STORED_SHUTTLE_COUNT', $this->getStoredShuttleCount($spacecraft));
@@ -173,6 +161,26 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $this->addWarpcoreSplitJavascript($wrapper, $game);
 
         $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));
+    }
+
+    private function setColonyTemplateVariables(Spacecraft $spacecraft, User $user, ViewControllerContext $game): void
+    {
+        $ownsCurrentColony = false;
+        $rump = $spacecraft->getRump();
+
+        $colony = $this->getColony($spacecraft);
+        $canColonize = false;
+        if ($colony !== null) {
+            if ($rump->hasSpecialAbility(SpacecraftRump::SPECIAL_ABILITY_COLONIZE)) {
+                $canColonize = $this->colonizationChecker->canColonize($user, $colony);
+            }
+            $ownsCurrentColony = $colony->getUser()->getId() === $user->getId();
+        }
+
+        $game->setTemplateVar('CAN_COLONIZE', $canColonize);
+        $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
+        $game->setTemplateVar('CURRENT_COLONY', $colony);
+        $game->setTemplateVar('HAS_ACTIVE_AWAY_MISSION', $this->awayMissionAccess->getAvailableMission($spacecraft) !== null);
     }
 
     private function createUserLayerIfNecessary(User $user, Spacecraft $spacecraft): void

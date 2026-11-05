@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
-use Stu\Component\Quest\AwayMission\AwayMissionService;
+use Stu\Component\Quest\AwayMission\AwayMissionAccess;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Component\Spacecraft\System\Type\MatrixScannerShipSystem;
 use Stu\Exception\SanityCheckException;
@@ -23,6 +23,7 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission;
+use Stu\Orm\Entity\AwayMission;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
@@ -45,7 +46,7 @@ final class ShowColonyScan implements ViewControllerInterface
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         private EventDispatcherInterface $eventDispatcher,
         private AwayMissionRepositoryInterface $missionRepository,
-        private AwayMissionService $missionService,
+        private AwayMissionAccess $missionAccess,
         private ShowAwayMission $showAwayMission,
         private ColonyProtectionRepositoryInterface $protectionRepository
     ) {}
@@ -79,7 +80,8 @@ final class ShowColonyScan implements ViewControllerInterface
             throw new SanityCheckException('ship is not over colony');
         }
 
-        if (!$ship->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER)) {
+        $mission = $this->missionAccess->getAvailableMission($ship);
+        if ($mission === null && !$ship->isSystemHealthy(SpacecraftSystemTypeEnum::MATRIX_SCANNER)) {
             throw new SanityCheckException('matrix scanner is not healthy');
         }
 
@@ -120,17 +122,22 @@ final class ShowColonyScan implements ViewControllerInterface
             );
         }
 
+        $this->addScanExperience($ship, $colony);
+
+        $this->showScanResult($colony, $ship, $mission, $game);
+    }
+
+    private function addScanExperience(Spacecraft $ship, Colony $colony): void
+    {
         if (!$colony->getUser()->isNpc() && !$this->playerRelationDeterminator->isFriend($ship->getUser(), $colony->getUser())) {
             $this->eventDispatcher->dispatch(new CrewExperienceEvent(
                 $ship,
                 SkillEnhancementEnum::FOREIGN_COLONY_SCAN
             ));
         }
-
-        $this->showScanResult($colony, $ship, $game);
     }
 
-    private function showScanResult(Colony $colony, Spacecraft $ship, ViewControllerContext $game): void
+    private function showScanResult(Colony $colony, Spacecraft $ship, ?AwayMission $mission, ViewControllerContext $game): void
     {
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony, null, false);
         $colonySurface->updateSurface();
@@ -141,8 +148,7 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $this->createColonyScan($game->getUser(), $colony);
 
-        $mission = $this->missionRepository->getByColony($colony);
-        if ($ship instanceof Ship && $mission !== null && $this->missionService->isAvailable($mission)) {
+        if ($ship instanceof Ship && $mission !== null) {
             $progress = $this->missionRepository->initializeProgress($mission, $game->getUser());
             $this->showAwayMission->render($mission, $progress, $ship, $game);
             return;

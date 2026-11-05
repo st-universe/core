@@ -12,15 +12,18 @@ use ReflectionProperty;
 use request;
 use Stu\ActionTestCase;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Quest\AwayMission\AwayMissionAccess;
 use Stu\Component\Quest\AwayMission\AwayMissionDeletionHandler;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
 use Stu\Component\Quest\AwayMission\AwayMissionService;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Spacecraft\Action\AwayMission\AwayMission as AwayMissionAction;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -125,37 +128,80 @@ final class AwayMissionIntegrationTest extends ActionTestCase
         parent::tearDown();
     }
 
-    public function testMatrixScanIsRequiredAndQuestMembershipIsNotRequired(): void
+    public function testInitialSurfaceScanIsRequiredAndQuestMembershipIsNotRequired(): void
     {
         self::assertNull($this->getContainer()->get(NPCQuestUserRepositoryInterface::class)->getByQuestAndUser($this->mission->getQuest()->getId(), 101));
         self::assertTrue($this->service->isAvailable($this->mission));
         $information = $this->dispatch('scan', field: 23);
-        self::assertContains('Scanne zuerst die Oberfläche mit den Matrixsensoren', $information->getInformations());
+        self::assertContains('Scanne zuerst die Oberfläche', $information->getInformations());
         self::assertNull($this->missions->getProgress($this->mission, $this->user));
     }
 
     public function testNormalMatrixScanOpensPlayerDialogueAndInitializesProgress(): void
     {
-        $macro = null;
-        $variables = [];
-        $view = $this->mock(ViewControllerContext::class);
-        $view->shouldReceive('getUser')->andReturn($this->user);
-        $view->shouldReceive('getInfo')->andReturn(new InformationWrapper());
-        $view->shouldReceive('setPageTitle');
-        $view->shouldReceive('setMacroInAjaxWindow')->andReturnUsing(function (string $value) use (&$macro): void {
-            $macro = $value;
-        });
-        $view->shouldReceive('setTemplateVar')->andReturnUsing(function (string $key, mixed $value) use (&$variables): void {
-            $variables[$key] = $value;
-        });
-        request::setMockVars(['id' => 42]);
-        $this->em->wrapInTransaction(fn () => $this->getContainer()->get(ShowColonyScan::class)->handle($view));
+        ['macro' => $macro, 'variables' => $variables] = $this->openSurfaceScan();
         self::assertSame('html/ship/awayMission.twig', $macro);
         self::assertNotNull($this->missions->getProgress($this->mission, $this->user));
         self::assertTrue($variables['MISSION_DIALOGUE']);
         self::assertSame(1, $variables['MISSION_PAGE']);
         self::assertArrayHasKey('MISSION_ENTRIES', $variables);
         self::assertArrayNotHasKey('MISSION_VARIANTS', $variables);
+    }
+
+    public function testActiveMissionCanBeOpenedAndScannedWithoutMatrixScanner(): void
+    {
+        $this->removeMatrixScanner();
+        $result = $this->openSurfaceScan();
+        self::assertSame('html/ship/awayMission.twig', $result['macro']);
+        self::assertTrue($result['variables']['MISSION_DIALOGUE']);
+        $this->dispatch('page', 2);
+        $this->dispatch('scan', field: 23);
+        self::assertSame([23], $this->missions->getProgress($this->mission, $this->user)->getScannedFields());
+    }
+
+    public function testUnrelatedColonyStillRequiresMatrixScanner(): void
+    {
+        $this->removeMatrixScanner();
+        $this->getContainer()->get(AwayMissionDeletionHandler::class)->deleteByQuest($this->mission->getQuest());
+        $this->em->flush();
+        $this->expectException(SanityCheckException::class);
+        $this->expectExceptionMessage('matrix scanner is not healthy');
+        $this->openSurfaceScan();
+    }
+
+    /** @return iterable<string, array{bool}> */
+    public static function inactiveMissionStates(): iterable
+    {
+        yield 'not started' => [false];
+        yield 'completed' => [true];
+    }
+
+    #[DataProvider('inactiveMissionStates')]
+    public function testInactiveMissionStillRequiresMatrixScanner(bool $completed): void
+    {
+        $this->removeMatrixScanner();
+        $quest = $this->mission->getQuest();
+        if ($completed) {
+            $quest->setEnd(time());
+        } else {
+            $quest->setStart(time() + 3600);
+        }
+        $this->em->flush();
+        $this->expectException(SanityCheckException::class);
+        $this->expectExceptionMessage('matrix scanner is not healthy');
+        $this->openSurfaceScan();
+    }
+
+    public function testScanButtonWithoutMatrixScannerIsOnlyVisibleForActiveMission(): void
+    {
+        $this->removeMatrixScanner();
+        $this->mission->getColony()->setUser($this->em->find(User::class, 1));
+        $this->em->flush();
+        self::assertStringContainsString('onclick="showColonyScan(this);"', $this->renderScanControls());
+        $this->mission->getQuest()->setStart(time() + 3600);
+        self::assertStringNotContainsString('onclick="showColonyScan(this);"', $this->renderScanControls());
+        $this->mission->getQuest()->setStart(time() - 1)->setEnd(time());
+        self::assertStringNotContainsString('onclick="showColonyScan(this);"', $this->renderScanControls());
     }
 
     public function testScanCountsEachConfiguredFieldOnceAndDoesNotChangeEnergy(): void
@@ -478,14 +524,15 @@ final class AwayMissionIntegrationTest extends ActionTestCase
         self::assertSame([], $progress->getScannedFields());
     }
 
-    public function testBrokenMatrixScannerPreventsFurtherScanning(): void
+    public function testBrokenMatrixScannerDoesNotPreventMissionScanning(): void
     {
-        $progress = $this->initializeProgress();
         $this->ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::MATRIX_SCANNER)->setStatus(0);
         $this->em->flush();
-        $information = $this->dispatch('scan', field: 23);
-        self::assertSame([], $progress->getScannedFields());
-        self::assertStringContainsString('funktionsfähigen Matrixsensoren', $information->getInformations()[0]);
+        $result = $this->openSurfaceScan();
+        self::assertSame('html/ship/awayMission.twig', $result['macro']);
+        $this->dispatch('page', 2);
+        $this->dispatch('scan', field: 23);
+        self::assertSame([23], $this->missions->getProgress($this->mission, $this->user)->getScannedFields());
     }
 
     public function testGetRequestCannotChangeProgress(): void
@@ -597,6 +644,46 @@ final class AwayMissionIntegrationTest extends ActionTestCase
         $this->getContainer()->make(TwigHelper::class, ['environment' => $twig])->registerFiltersAndFunctions();
 
         return $twig->render('html/ship/awayMission.twig', $variables);
+    }
+
+    /** @return array{macro: ?string, variables: array<string, mixed>} */
+    private function openSurfaceScan(): array
+    {
+        $macro = null;
+        $variables = [];
+        $view = $this->mock(ViewControllerContext::class);
+        $view->shouldReceive('getUser')->andReturn($this->user);
+        $view->shouldReceive('getInfo')->andReturn(new InformationWrapper());
+        $view->shouldReceive('setPageTitle');
+        $view->shouldReceive('setMacroInAjaxWindow')->andReturnUsing(function (string $value) use (&$macro): void {
+            $macro = $value;
+        });
+        $view->shouldReceive('setTemplateVar')->andReturnUsing(function (string $key, mixed $value) use (&$variables): void {
+            $variables[$key] = $value;
+        });
+        request::setMockVars(['id' => 42]);
+        $this->em->wrapInTransaction(fn () => $this->getContainer()->get(ShowColonyScan::class)->handle($view));
+        return ['macro' => $macro, 'variables' => $variables];
+    }
+
+    private function removeMatrixScanner(): void
+    {
+        $matrix = $this->ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::MATRIX_SCANNER);
+        $this->ship->getSystems()->remove(SpacecraftSystemTypeEnum::MATRIX_SCANNER->value);
+        $this->em->remove($matrix);
+        $this->em->flush();
+    }
+
+    private function renderScanControls(): string
+    {
+        $twig = new Environment($this->getContainer()->get(Environment::class)->getLoader(), ['cache' => false]);
+        $this->getContainer()->make(TwigHelper::class, ['environment' => $twig])->registerFiltersAndFunctions();
+        $template = $twig->createTemplate("{% from 'html/spacecraft/control/control_mid.twig' import control_mid %}{{ control_mid(wrapper, null, null, false, null, colony, false, null, 0, null, false, activeMission) }}");
+        return $template->render([
+            'wrapper' => $this->getContainer()->get(SpacecraftWrapperFactoryInterface::class)->wrapShip($this->ship),
+            'colony' => $this->mission->getColony(),
+            'activeMission' => $this->getContainer()->get(AwayMissionAccess::class)->getAvailableMission($this->ship) !== null
+        ]);
     }
 
     private function initializeProgress(): AwayMissionProgress

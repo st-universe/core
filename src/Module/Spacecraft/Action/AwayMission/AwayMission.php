@@ -51,7 +51,7 @@ final class AwayMission implements ActionControllerInterface
 
         $progress = $this->missionRepository->getProgress($mission, $context->getUser(), true);
         if ($progress === null) {
-            $context->getInfo()->addInformation('Scanne zuerst die Oberfläche mit den Matrixsensoren');
+            $context->getInfo()->addInformation('Scanne zuerst die Oberfläche');
             return;
         }
 
