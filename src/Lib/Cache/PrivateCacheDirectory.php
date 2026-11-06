@@ -46,9 +46,7 @@ final class PrivateCacheDirectory
         if (@lstat($path) === false) {
             try {
                 $file = new SplFileObject($path, 'x+b');
-                if (!chmod($path, 0o600)) {
-                    throw new RuntimeException('Cacheberechtigungen können nicht gesetzt werden');
-                }
+                $this->setPrivateFilePermissions($path);
             } catch (RuntimeException $error) {
                 if (!file_exists($path)) {
                     throw $error;
@@ -80,9 +78,7 @@ final class PrivateCacheDirectory
                 }
                 throw $error;
             }
-            if (!chmod($path, 0o600)) {
-                throw new RuntimeException('Cacheberechtigungen können nicht gesetzt werden');
-            }
+            $this->setPrivateFilePermissions($path);
             $this->validateFile($path);
             return $file;
         }
@@ -113,7 +109,13 @@ final class PrivateCacheDirectory
             clearstatcache(true, $this->directory);
         }
         $stat = @lstat($this->directory);
-        if ($stat === false || ($stat['mode'] & 0o170000) !== 0o040000 || $stat['uid'] !== $this->owner || ($stat['mode'] & 0o077) !== 0) {
+        // Windows reports POSIX-like mode bits that do not describe its ACLs.
+        if (
+            $stat === false
+            || ($stat['mode'] & 0o170000) !== 0o040000
+            || $stat['uid'] !== $this->owner
+            || (PHP_OS_FAMILY !== 'Windows' && ($stat['mode'] & 0o077) !== 0)
+        ) {
             throw new RuntimeException('Unsicheres privates Cacheverzeichnis');
         }
     }
@@ -125,8 +127,20 @@ final class PrivateCacheDirectory
         if ($stat === false) {
             return;
         }
-        if (($stat['mode'] & 0o170000) !== 0o100000 || $stat['uid'] !== $this->owner || $stat['nlink'] !== 1 || ($stat['mode'] & 0o077) !== 0) {
+        if (
+            ($stat['mode'] & 0o170000) !== 0o100000
+            || $stat['uid'] !== $this->owner
+            || $stat['nlink'] !== 1
+            || (PHP_OS_FAMILY !== 'Windows' && ($stat['mode'] & 0o077) !== 0)
+        ) {
             throw new RuntimeException('Unsichere Cachedatei');
+        }
+    }
+
+    private function setPrivateFilePermissions(string $path): void
+    {
+        if (PHP_OS_FAMILY !== 'Windows' && !chmod($path, 0o600)) {
+            throw new RuntimeException('Cacheberechtigungen können nicht gesetzt werden');
         }
     }
 }

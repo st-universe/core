@@ -43,8 +43,10 @@ final class PrivateCacheDirectoryTest extends StuTestCase
         $file = $cache->open('normal.json');
         $file->fwrite('test');
         $file->fflush();
-        self::assertSame(0o700, fileperms($this->directory) & 0o777);
-        self::assertSame(0o600, $file->fstat()['mode'] & 0o777);
+        if (PHP_OS_FAMILY !== 'Windows') {
+            self::assertSame(0o700, fileperms($this->directory) & 0o777);
+            self::assertSame(0o600, $file->fstat()['mode'] & 0o777);
+        }
         $second = new PrivateCacheDirectory($this->directory)->open('normal.json');
         self::assertSame('test', $second->fread(4));
     }
@@ -54,13 +56,19 @@ final class PrivateCacheDirectoryTest extends StuTestCase
         $target = $this->sandbox . '/target';
         mkdir($target, 0o700);
         file_put_contents($target . '/keep', 'testdata');
-        symlink($target, $this->directory);
+        if (!@symlink($target, $this->directory)) {
+            self::markTestSkipped('Symlinks können in dieser Umgebung nicht erstellt werden.');
+        }
         $this->expectException(RuntimeException::class);
         new PrivateCacheDirectory($this->directory);
     }
 
     public function testSharedReadableDirectoryIsRejected(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('POSIX-Berechtigungsbits sind unter Windows nicht verfügbar.');
+        }
+
         mkdir($this->directory, 0o700);
         chmod($this->directory, 0o755);
         $this->expectException(RuntimeException::class);
@@ -73,7 +81,9 @@ final class PrivateCacheDirectoryTest extends StuTestCase
         $target = $cache->open('target');
         $target->fwrite('secret');
         $target->fflush();
-        symlink($target->getPathname(), $this->directory . '/evil.lock');
+        if (!@symlink($target->getPathname(), $this->directory . '/evil.lock')) {
+            self::markTestSkipped('Symlinks können in dieser Umgebung nicht erstellt werden.');
+        }
         try {
             $cache->open('evil.lock');
             self::fail('Symlink akzeptiert');
@@ -95,8 +105,10 @@ final class PrivateCacheDirectoryTest extends StuTestCase
             self::assertSame(2, lstat($this->directory . '/linked')['nlink']);
         }
         unlink($this->directory . '/linked');
-        chmod($this->directory . '/target', 0o644);
-        $this->expectException(RuntimeException::class);
-        $cache->open('target');
+        if (PHP_OS_FAMILY !== 'Windows') {
+            chmod($this->directory . '/target', 0o644);
+            $this->expectException(RuntimeException::class);
+            $cache->open('target');
+        }
     }
 }
