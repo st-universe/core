@@ -97,7 +97,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
                             $blue = 100;
 
                             $ret = [];
-                            if (mb_eregi("[#]?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", $rgbCode, $ret)) {
+                            if (1 === preg_match('/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i', $rgbCode, $ret)) {
                                 $red = (int) hexdec($ret[1]);
                                 $green = (int) hexdec($ret[2]);
                                 $blue = (int) hexdec($ret[3]);
