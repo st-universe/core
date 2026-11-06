@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\ActionTestCase;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
+use Stu\Component\Player\Password\PasswordGeneratorInterface;
 use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
 use Stu\Lib\Mail\StuMailInterface;
