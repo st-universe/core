@@ -6,11 +6,11 @@ namespace Stu\Html\PlayerSetting;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Dom\HTMLDocument;
-use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Player\Password\PasswordGeneratorInterface;
 use Stu\Lib\Mail\MailFactory;
 use Stu\Lib\Session\PasswordHasherInterface;
 use Stu\Lib\Session\SessionStringFactory;

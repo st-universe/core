@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
-use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
-use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
@@ -14,6 +12,8 @@ use Psr\Container\ContainerInterface;
 use Stu\Component\Cache\CacheProvider;
 use Stu\Component\Cache\CacheProviderInterface;
 use Stu\Component\Logging\Sql\SqlLogger;
+use Stu\Component\Player\Password\PasswordGenerator;
+use Stu\Component\Player\Password\PasswordGeneratorInterface;
 use Stu\Lib\Json\JsonMapperInterface;
 use Stu\Lib\Json\JsonMapperWrapper;
 use Stu\Lib\ParserWithImage;
@@ -84,16 +84,5 @@ return [
 
         return $bench;
     },
-    PasswordGeneratorInterface::class => function (): PasswordGeneratorInterface {
-        $generator = new ComputerPasswordGenerator();
-
-        $generator
-            ->setOptionValue(ComputerPasswordGenerator::OPTION_UPPER_CASE, true)
-            ->setOptionValue(ComputerPasswordGenerator::OPTION_LOWER_CASE, true)
-            ->setOptionValue(ComputerPasswordGenerator::OPTION_NUMBERS, true)
-            ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
-            ->setOptionValue(ComputerPasswordGenerator::OPTION_LENGTH, 10);
-
-        return $generator;
-    },
+    PasswordGeneratorInterface::class => autowire(PasswordGenerator::class)
 ];
