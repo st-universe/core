@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\ResetPassword;
 
-use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
 use RuntimeException;
+use Stu\Component\Player\Password\PasswordGeneratorInterface;
 use Stu\Exception\InvalidParamException;
 use Stu\Lib\AccountToken;
 use Stu\Lib\Mail\MailFactoryInterface;
