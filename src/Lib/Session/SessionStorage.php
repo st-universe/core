@@ -50,7 +50,8 @@ final class SessionStorage implements SessionStorageInterface
     private function getSessionDataUnserialized(User $user): array
     {
         if (!array_key_exists($user->getId(), $this->sessionDataPerUser)) {
-            $sessiondataUnserialized = unserialize($user->getSessionData());
+            $sessionData = $user->getSessionData();
+            $sessiondataUnserialized = $sessionData === '' ? [] : unserialize($sessionData);
             if (!is_array($sessiondataUnserialized)) {
                 $sessiondataUnserialized = [];
             }
