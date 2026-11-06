@@ -80,4 +80,17 @@ final class SessionTest extends StuTestCase
         $storage->deleteSessionData('hiddenshiplistfleets', 42);
         self::assertSame(['hiddenshiplistfleets' => []], unserialize($data));
     }
+
+    public function testEmptySessionDataIsTreatedAsEmptyArray(): void
+    {
+        $player = $this->mock(User::class);
+        $player->shouldReceive('getId')->andReturn(101);
+        $player->shouldReceive('getSessiondata')->andReturn('');
+        $users = $this->mock(UserRepositoryInterface::class);
+        $session = $this->mock(SessionInterface::class);
+        $session->shouldReceive('getUser')->andReturn($player);
+        $storage = new SessionStorage($users, $session);
+
+        self::assertFalse($storage->hasSessionValue('some-key', 'some-value'));
+    }
 }
