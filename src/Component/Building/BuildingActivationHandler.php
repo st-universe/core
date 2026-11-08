@@ -69,7 +69,7 @@ final class BuildingActivationHandler
         return true;
     }
 
-    public function deactivate(PlanetField $field): void
+    public function deactivate(PlanetField $field, bool $force = false): void
     {
         $building = $field->getBuilding();
 
@@ -77,7 +77,7 @@ final class BuildingActivationHandler
             return;
         }
 
-        if (!$field->isActivateable()) {
+        if (!$force && !$field->isActivateable()) {
             return;
         }
 

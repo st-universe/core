@@ -37,6 +37,7 @@
             {% if row.canStart %}
             <form action="colony.php" method="post">
                 <input type="hidden" name="id" value="{{ HOST.getId }}" />
+                <input type="hidden" name="fid" value="{{ SPECIAL_RESEARCH_FIELD.getId }}" />
                 <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
                 <input type="hidden" name="research_type" value="{{ row.type.value }}" />
                 <input type="submit" name="B_START_SPECIAL_RESEARCH" value="Grundlagenforschung starten" />

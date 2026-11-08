@@ -7,7 +7,7 @@ namespace Stu\Migrations\Sqlite;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20261104221915 extends AbstractMigration
+final class Version20261108194343 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -490,8 +490,9 @@ final class Version20261104221915 extends AbstractMigration
         $this->addSql('CREATE INDEX spacecraft_system_mode_idx ON stu_spacecraft_system (mode)');
         $this->addSql('CREATE INDEX IDX_2AD626BCAFC2B591 ON stu_spacecraft_system (module_id)');
         $this->addSql('CREATE INDEX IDX_2AD626BC1C6AF6FD ON stu_spacecraft_system (spacecraft_id)');
-        $this->addSql('CREATE TABLE stu_special_research (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, research_type VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, start_time INTEGER NOT NULL, finish_time INTEGER NOT NULL, failure_chance SMALLINT DEFAULT 10 NOT NULL, user_id INTEGER NOT NULL, colony_id INTEGER DEFAULT NULL, CONSTRAINT FK_64F26B58A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_64F26B5896ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_special_research (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, research_type VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, start_time INTEGER NOT NULL, finish_time INTEGER NOT NULL, failure_chance SMALLINT DEFAULT 10 NOT NULL, field_id INTEGER DEFAULT NULL, building_id INTEGER DEFAULT NULL, failure_settings CLOB DEFAULT NULL, user_id INTEGER NOT NULL, colony_id INTEGER DEFAULT NULL, CONSTRAINT FK_64F26B58A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_64F26B5896ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX special_research_due_idx ON stu_special_research (status, finish_time)');
+        $this->addSql('CREATE INDEX special_research_field_idx ON stu_special_research (field_id, status)');
         $this->addSql('CREATE UNIQUE INDEX special_research_user_type_idx ON stu_special_research (user_id, research_type)');
         $this->addSql('CREATE INDEX IDX_64F26B58A76ED395 ON stu_special_research (user_id)');
         $this->addSql('CREATE INDEX IDX_64F26B5896ADBADE ON stu_special_research (colony_id)');
@@ -499,7 +500,7 @@ final class Version20261104221915 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX special_research_cost_commodity_idx ON stu_special_research_cost (definition_id, commodity_id)');
         $this->addSql('CREATE INDEX IDX_169619F2D11EA911 ON stu_special_research_cost (definition_id)');
         $this->addSql('CREATE INDEX IDX_169619F2B4ACC212 ON stu_special_research_cost (commodity_id)');
-        $this->addSql('CREATE TABLE stu_special_research_definition (id INTEGER NOT NULL, research_type VARCHAR(255) NOT NULL, data_amount INTEGER NOT NULL, duration INTEGER NOT NULL, failure_chance SMALLINT NOT NULL, faction_id INTEGER DEFAULT NULL, data_commodity_id INTEGER NOT NULL, PRIMARY KEY (id), CONSTRAINT FK_CA0591B4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CA0591B225AAAC3 FOREIGN KEY (data_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_special_research_definition (id INTEGER NOT NULL, research_type VARCHAR(255) NOT NULL, data_amount INTEGER NOT NULL, duration INTEGER NOT NULL, failure_chance SMALLINT NOT NULL, failure_damage_percent SMALLINT DEFAULT 15 NOT NULL, failure_worker_min_percent SMALLINT DEFAULT 25 NOT NULL, failure_worker_max_percent SMALLINT DEFAULT 75 NOT NULL, failure_population_min SMALLINT DEFAULT 3 NOT NULL, failure_population_max SMALLINT DEFAULT 12 NOT NULL, faction_id INTEGER DEFAULT NULL, data_commodity_id INTEGER NOT NULL, PRIMARY KEY (id), CONSTRAINT FK_CA0591B4448F8DA FOREIGN KEY (faction_id) REFERENCES stu_factions (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_CA0591B225AAAC3 FOREIGN KEY (data_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX special_research_definition_faction_idx ON stu_special_research_definition (research_type, faction_id)');
         $this->addSql('CREATE INDEX IDX_CA0591B4448F8DA ON stu_special_research_definition (faction_id)');
         $this->addSql('CREATE INDEX IDX_CA0591B225AAAC3 ON stu_special_research_definition (data_commodity_id)');
