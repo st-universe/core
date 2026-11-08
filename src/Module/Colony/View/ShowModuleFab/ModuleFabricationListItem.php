@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
+use Stu\Component\Research\ModuleProductionQuality;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleCost;
@@ -26,7 +27,8 @@ final class ModuleFabricationListItem
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
         private Module $module,
         private Colony $colony,
-        private int $amountInStockAccountWide = 0
+        private int $amountInStockAccountWide = 0,
+        private ?ModuleProductionQuality $productionQuality = null
     ) {}
 
     public function getModule(): Module
@@ -68,6 +70,21 @@ final class ModuleFabricationListItem
     public function getConstructionCosts(): array
     {
         return $this->module->getCostSorted();
+    }
+
+    /** @return list<array{optimized: bool, label: string, costs: array<int, ModuleCost>}> */
+    public function getProductionVariants(): array
+    {
+        $variants = [['optimized' => false, 'label' => 'Standard (+0 %)', 'costs' => $this->getConstructionCosts()]];
+        $steps = $this->productionQuality?->getImprovementSteps($this->colony->getUser(), $this->module) ?? 0;
+        if ($steps > 0) {
+            $variants[] = [
+                'optimized' => true,
+                'label' => sprintf('Fertigungsbonus (+%s %%)', number_format($steps / 10, 1, ',', '')),
+                'costs' => $this->productionQuality->getCosts($this->module, $steps)
+            ];
+        }
+        return $variants;
     }
 
     public function getAmountQueued(): int

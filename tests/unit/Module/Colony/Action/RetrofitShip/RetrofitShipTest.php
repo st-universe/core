@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RetrofitShip;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery;
 use Mockery\MockInterface;
+use Override;
+use ReflectionProperty;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
@@ -13,8 +16,11 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Lib\ModuleScreen\ModuleSelectorEntryInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -22,6 +28,10 @@ use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\ColonyChangeable;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\Ship;
@@ -61,9 +71,12 @@ final class RetrofitShipTest extends StuTestCase
     private MockInterface&SpacecraftRump $rump;
     private MockInterface&ShipWrapperInterface $wrapper;
     private MockInterface&User $user;
+    private MockInterface&ModuleRepositoryInterface $modules;
+    private MockInterface&StorageManagerInterface $storage;
+    private MockInterface&ColonyLibFactoryInterface $colonyFactory;
     private RetrofitShip $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -78,6 +91,9 @@ final class RetrofitShipTest extends StuTestCase
         $this->colonies = $this->mock(ColonyRepositoryInterface::class);
         $this->ships = $this->mock(ShipLoaderInterface::class);
         $this->signatures = $this->mock(BuildplanSignatureCreationInterface::class);
+        $this->modules = $this->mock(ModuleRepositoryInterface::class);
+        $this->storage = $this->mock(StorageManagerInterface::class);
+        $this->colonyFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->subject = new RetrofitShip(
             $this->functions,
             $this->moduleLevels,
@@ -85,11 +101,11 @@ final class RetrofitShipTest extends StuTestCase
             $this->mock(BuildplanModuleRepositoryInterface::class),
             $this->rumpFunctions,
             $this->plans,
-            $this->mock(ModuleRepositoryInterface::class),
+            $this->modules,
             $this->queues,
             $this->rumps,
-            $this->mock(StorageManagerInterface::class),
-            $this->mock(ColonyLibFactoryInterface::class),
+            $this->storage,
+            $this->colonyFactory,
             $this->crewCalculator,
             $this->colonies,
             $this->ships,
@@ -184,6 +200,95 @@ final class RetrofitShipTest extends StuTestCase
         self::assertSame($plan, $queue->getSpacecraftBuildplan());
         self::assertSame(SpacecraftStateEnum::RETROFIT, $condition->getState());
         self::assertSame(80, $changeable->getEps());
+    }
+
+    public function testQualityChangeConsumesExactVariantAndKeepsUnchangedQualityWithoutSpareModules(): void
+    {
+        [$weapon, $computer, $changeable] = $this->prepareQualityChange(17);
+        $this->context->shouldReceive('setView')->twice();
+        $selector = $this->mock(ModuleSelector::class);
+        $selector->shouldReceive('getAvailableModules')->once()->andReturn([101 => $this->mock(ModuleSelectorEntryInterface::class)]);
+        $this->colonyFactory->shouldReceive('createModuleSelector')->with(SpacecraftModuleTypeEnum::PHASER, $this->colony, $this->rump, $this->user)->once()->andReturn($selector);
+        $this->storage->shouldReceive('removeStorage')->with($this->colony, $weapon->getCommodity(), 1, 17)->once()->andReturn([17 => 1]);
+        $this->signatures->shouldReceive('createSignature')->with(Mockery::on(fn (array $modules): bool => $modules[101] === $weapon && $modules[102] === $computer), 0, [101 => 17, 102 => 33])->once()->andReturn('improved-signature');
+        $newPlan = $this->qualityPlan($weapon, 17, $computer);
+        $this->plans->shouldReceive('getByUserShipRumpAndSignature')->with(42, 6, 'improved-signature')->once()->andReturn($newPlan);
+        $queue = new ColonyShipQueue();
+        $this->queues->shouldReceive('prototype')->once()->andReturn($queue);
+        $this->queues->shouldReceive('save')->with($queue)->once();
+        $this->colonies->shouldReceive('save')->with($this->colony)->once();
+        $condition = new SpacecraftCondition($this->ship);
+        $this->ship->shouldReceive('getCondition')->once()->andReturn($condition);
+        $this->ship->shouldReceive('getName')->once()->andReturn('Testschiff');
+
+        $this->subject->handle($this->context);
+
+        self::assertSame($newPlan, $queue->getSpacecraftBuildplan());
+        self::assertSame(17, $newPlan->getModuleImprovementSteps($weapon));
+        self::assertSame(33, $newPlan->getModuleImprovementSteps($computer));
+        self::assertSame(80, $changeable->getEps());
+        self::assertSame(SpacecraftStateEnum::RETROFIT, $condition->getState());
+    }
+
+    public function testQualityChangeCannotSubstituteStandardStockForTheRequestedImprovedVariant(): void
+    {
+        [, , $changeable] = $this->prepareQualityChange(0);
+        $this->context->shouldReceive('setView')->once();
+        $this->storage->shouldNotReceive('removeStorage');
+        $this->queues->shouldNotReceive('prototype');
+
+        $this->subject->handle($this->context);
+
+        self::assertSame(100, $changeable->getEps());
+    }
+
+    /** @return array{Module, Module, ColonyChangeable} */
+    private function prepareQualityChange(int $availableGrade): array
+    {
+        request::setMockVars(['id' => 4, 'shipid' => 5, 'rumpid' => 6, 'mod_7' => [101], 'mod_6' => [102], 'module_quality' => [101 => 17]]);
+        $this->prepareShip();
+        $weapon = $this->qualityModule(101, SpacecraftModuleTypeEnum::PHASER);
+        $computer = $this->qualityModule(102, SpacecraftModuleTypeEnum::COMPUTER);
+        $oldPlan = $this->qualityPlan($weapon, 0, $computer);
+        $this->ship->shouldReceive('getBuildplan')->once()->andReturn($oldPlan);
+        $function = new ShipRumpBuildingFunction()->setBuildingFunction(BuildingFunctionEnum::BASE_CAMP);
+        $this->rumpFunctions->shouldReceive('getByShipRump')->with($this->rump)->once()->andReturn([$function]);
+        $this->functions->shouldReceive('hasActiveFunction')->with($this->colony, BuildingFunctionEnum::BASE_CAMP)->once()->andReturn(true);
+        $this->queues->shouldReceive('getAmountByColonyAndBuildingFunctionAndMode')->with(4, BuildingFunctionEnum::BASE_CAMP, 1)->once()->andReturn(0);
+        $this->queues->shouldReceive('getAmountByColonyAndBuildingFunctionAndMode')->with(4, BuildingFunctionEnum::BASE_CAMP, 2)->once()->andReturn(0);
+        $changeable = new ColonyChangeable($this->colony)->setEps(100);
+        $this->colony->shouldReceive('getChangeable')->once()->andReturn($changeable);
+        $this->rump->shouldReceive('getEpsCost')->andReturn(20);
+        $this->colony->shouldReceive('isBlocked')->once()->andReturn(false);
+        $levels = $this->mock(ShipRumpModuleLevel::class);
+        $this->moduleLevels->shouldReceive('getByShipRump')->with($this->rump)->once()->andReturn($levels);
+        $levels->shouldReceive('isMandatory')->andReturn(false);
+        $this->rump->shouldReceive('getBaseValues->getSpecialSlots')->andReturn(0);
+        $this->modules->shouldReceive('find')->with(101)->once()->andReturn($weapon);
+        $this->modules->shouldReceive('find')->with(102)->once()->andReturn($computer);
+        $this->crewCalculator->shouldReceive('getCrewUsage')->once()->andReturn(0);
+        $this->crewCalculator->shouldReceive('getMaxCrewCountByRump')->with($this->rump)->once()->andReturn(10);
+        $stock = new Storage()->setAmount(2)->addModuleQualityAmounts([$availableGrade => 1]);
+        $this->colony->shouldReceive('getStorage')->once()->andReturn(new ArrayCollection([101 => $stock]));
+        $this->context->shouldReceive('getInfo')->andReturn(new InformationWrapper());
+        return [$weapon, $computer, $changeable];
+    }
+
+    private function qualityModule(int $id, SpacecraftModuleTypeEnum $type): Module
+    {
+        $module = new Module()->setName('Testmodul')->setType($type);
+        new ReflectionProperty(Module::class, 'id')->setValue($module, $id);
+        new ReflectionProperty(Module::class, 'commodity_id')->setValue($module, $id);
+        new ReflectionProperty(Module::class, 'commodity')->setValue($module, new Commodity());
+        return $module;
+    }
+
+    private function qualityPlan(Module $weapon, int $weaponGrade, Module $computer): SpacecraftBuildplan
+    {
+        $plan = new SpacecraftBuildplan()->setUser($this->user)->setRump($this->rump)->setName('Testplan')->setBuildtime(30);
+        $plan->getModules()->set(101, new BuildplanModule()->setModule($weapon)->setModuleType($weapon->getType())->setImprovementSteps($weaponGrade));
+        $plan->getModules()->set(102, new BuildplanModule()->setModule($computer)->setModuleType($computer->getType())->setImprovementSteps(33));
+        return $plan;
     }
 
     private function prepareShip(string $condition = ''): void

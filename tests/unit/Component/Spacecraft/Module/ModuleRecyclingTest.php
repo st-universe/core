@@ -6,6 +6,7 @@ namespace Stu\Component\Spacecraft\Module;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -29,7 +30,7 @@ class ModuleRecyclingTest extends StuTestCase
 
     private ModuleRecyclingInterface $subject;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         $this->storageManager = $this->mock(StorageManagerInterface::class);
@@ -59,14 +60,18 @@ class ModuleRecyclingTest extends StuTestCase
     {
         $buildplan = $this->mock(SpacecraftBuildplan::class);
         $systemHealth100 = $this->mock(SpacecraftSystem::class);
+        $systemHealth100->shouldReceive('getImprovementSteps')->andReturn(0);
         $systemHealth50 = $this->mock(SpacecraftSystem::class);
+        $systemHealth50->shouldReceive('getImprovementSteps')->andReturn(0);
         $systemHealth1 = $this->mock(SpacecraftSystem::class);
+        $systemHealth1->shouldReceive('getImprovementSteps')->andReturn(0);
         $moduleHealth100 = $this->mock(Module::class);
         $moduleHealth50 = $this->mock(Module::class);
         $moduleHealth1 = $this->mock(Module::class);
         $commodityHealth100 = $this->mock(Commodity::class);
         $commodityHealth50 = $this->mock(Commodity::class);
         $buildplanModuleHealth50 = $this->mock(BuildplanModule::class);
+        $buildplanModuleHealth50->shouldReceive('getImprovementSteps')->andReturn(0);
 
         $this->spacecraft->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -158,11 +163,11 @@ class ModuleRecyclingTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(99);
 
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($this->entity, $commodityHealth100, 1)
+        $this->storageManager->shouldReceive('addStorage')
+            ->with($this->entity, $commodityHealth100, [0 => 1])
             ->once();
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($this->entity, $commodityHealth50, 7)
+        $this->storageManager->shouldReceive('addStorage')
+            ->with($this->entity, $commodityHealth50, [0 => 7])
             ->once();
 
         $this->information->shouldReceive('addInformation')
@@ -188,7 +193,9 @@ class ModuleRecyclingTest extends StuTestCase
         $commodityCount1 = $this->mock(Commodity::class);
         $commodityCount11 = $this->mock(Commodity::class);
         $buildplanModuleCount1 = $this->mock(BuildplanModule::class);
+        $buildplanModuleCount1->shouldReceive('getImprovementSteps')->andReturn(0);
         $buildplanModuleCount11 = $this->mock(BuildplanModule::class);
+        $buildplanModuleCount11->shouldReceive('getImprovementSteps')->andReturn(0);
 
         $this->spacecraft->shouldReceive('getBuildplan')
             ->withNoArgs()
@@ -268,11 +275,11 @@ class ModuleRecyclingTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(99);
 
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($this->entity, $commodityCount1, 1)
+        $this->storageManager->shouldReceive('addStorage')
+            ->with($this->entity, $commodityCount1, [0 => 1])
             ->once();
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($this->entity, $commodityCount11, 7)
+        $this->storageManager->shouldReceive('addStorage')
+            ->with($this->entity, $commodityCount11, [0 => 7])
             ->once();
 
         $this->information->shouldReceive('addInformation')
@@ -295,6 +302,7 @@ class ModuleRecyclingTest extends StuTestCase
         $buildplan = $this->mock(SpacecraftBuildplan::class);
         $module = $this->mock(Module::class);
         $buildplanModule = $this->mock(BuildplanModule::class);
+        $buildplanModule->shouldReceive('getImprovementSteps')->andReturn(0);
 
         $this->spacecraft->shouldReceive('getBuildplan')
             ->withNoArgs()

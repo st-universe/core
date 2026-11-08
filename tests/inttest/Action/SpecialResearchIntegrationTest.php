@@ -7,14 +7,21 @@ namespace Stu\Action;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Mockery;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
+use Stu\Component\Building\BuildingActivationHandler;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Building\BuildingRemovalHandler;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
 use Stu\Component\Research\SpecialResearchCatalog;
+use Stu\Component\Research\SpecialResearchCompletion;
 use Stu\Component\Research\SpecialResearchDefinitionDeletionHandler;
 use Stu\Component\Research\SpecialResearchDeletionHandler;
+use Stu\Component\Research\SpecialResearchFacility;
+use Stu\Component\Research\SpecialResearchFailure;
 use Stu\Component\Research\SpecialResearchService;
 use Stu\Component\Research\SpecialResearchStatusEnum;
 use Stu\Exception\AccessViolationException;
@@ -30,6 +37,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Module\Tick\Process\FinishSpecialResearchJobs;
 use Stu\Module\Twig\TwigHelper;
+use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
@@ -39,6 +47,7 @@ use Stu\Orm\Entity\SpecialResearch;
 use Stu\Orm\Entity\SpecialResearchCost;
 use Stu\Orm\Entity\SpecialResearchDefinition;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\SpecialResearchRepositoryInterface;
 use Twig\Environment;
 
@@ -50,7 +59,7 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
     private SpecialResearchService $service;
     private SpecialResearchRepositoryInterface $repository;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
@@ -297,7 +306,7 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
     #[DataProvider('outcomes')]
     public function testProcessTickFinishesOnlyDueResearchOnce(int $roll, SpecialResearchStatusEnum $expected): void
     {
-        $research = $this->newResearch(AwayMissionResearchEnum::SENSORS, SpecialResearchStatusEnum::RUNNING)->setFinishTime(1000);
+        $research = $this->newResearch(AwayMissionResearchEnum::SENSORS, SpecialResearchStatusEnum::RUNNING)->setFinishTime(900);
         $future = $this->newResearch(AwayMissionResearchEnum::EPS, SpecialResearchStatusEnum::RUNNING)->setFinishTime(1001);
         $this->em->persist($research);
         $this->em->persist($future);
@@ -305,21 +314,23 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->once()->with(1, 100)->andReturn($roll);
         $time = $this->mock(StuTime::class);
-        $time->shouldReceive('time')->twice()->andReturn(1000);
+        $time->shouldReceive('time')->times(3)->andReturn(1000);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
-        $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
+        $messages->shouldReceive('send')->once()->with(1, 101, Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
         $process = new FinishSpecialResearchJobs(
             $this->repository,
             $random,
             $time,
-            new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $time),
-            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class),
-            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFailure::class)
+            new SpecialResearchCompletion($this->repository, $messages, $time),
+            $this->getContainer()->get(SpecialResearchFacility::class),
+            $this->getContainer()->get(SpecialResearchFailure::class)
         );
         $this->em->wrapInTransaction(fn () => $process->work());
         $this->em->wrapInTransaction(fn () => $process->work());
         self::assertSame($expected, $research->getStatus());
         self::assertSame(SpecialResearchStatusEnum::RUNNING, $future->getStatus());
+        self::assertSame(1000, $research->getFinishTime());
+        self::assertSame(1001, $future->getFinishTime());
     }
 
     public function testDeletingColonyPreservesUserProgressAndDeletingPlayerRemovesIt(): void
@@ -400,16 +411,16 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->once()->with(1, 100)->andReturn(37);
         $time = $this->mock(StuTime::class);
-        $time->shouldReceive('time')->once()->andReturn(1000);
+        $time->shouldReceive('time')->twice()->andReturn(1000);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
-        $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
+        $messages->shouldReceive('send')->once()->with(1, 101, Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
         $process = new FinishSpecialResearchJobs(
             $this->repository,
             $random,
             $time,
-            new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $time),
-            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class),
-            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFailure::class)
+            new SpecialResearchCompletion($this->repository, $messages, $time),
+            $this->getContainer()->get(SpecialResearchFacility::class),
+            $this->getContainer()->get(SpecialResearchFailure::class)
         );
         $this->em->wrapInTransaction(fn () => $process->work());
         self::assertSame(SpecialResearchStatusEnum::FAILED, $research->getStatus());
@@ -425,7 +436,11 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $this->em->persist($this->newResearch(AwayMissionResearchEnum::SENSORS, SpecialResearchStatusEnum::COMPLETED));
         $this->em->flush();
         $html = $this->renderPanel();
-        self::assertStringContainsString('Erfolgreich abgeschlossen', $html);
+        self::assertStringContainsString('Abgeschlossene Forschungen (1)', $html);
+        self::assertStringContainsString('<td>Grundlagenforschung</td>', $html);
+        self::assertStringContainsString('<td>Sensoren</td>', $html);
+        self::assertStringNotContainsString('Erfolgreich abgeschlossen', $html);
+        self::assertStringNotContainsString('<div class="divhead">Grundlagenforschung: Sensoren</div>', $html);
         self::assertStringNotContainsString('B_START_SPECIAL_RESEARCH', $html);
     }
 
@@ -562,9 +577,9 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $this->em->persist($other);
         $this->em->flush();
         $messages = $this->mock(PrivateMessageSenderInterface::class);
-        $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::on(static fn (string $text): bool => str_contains($text, 'entfernt, zerstört') && !str_contains($text, 'assimiliert')), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
-        $completion = new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $this->getContainer()->get(StuTime::class));
-        $removal = $this->getContainer()->make(\Stu\Component\Building\BuildingRemovalHandler::class, ['researchCompletion' => $completion]);
+        $messages->shouldReceive('send')->once()->with(1, 101, Mockery::on(static fn (string $text): bool => str_contains($text, 'entfernt, zerstört') && !str_contains($text, 'assimiliert')), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
+        $completion = new SpecialResearchCompletion($this->repository, $messages, $this->getContainer()->get(StuTime::class));
+        $removal = $this->getContainer()->make(BuildingRemovalHandler::class, ['researchCompletion' => $completion]);
         if ($destroyed) {
             $this->field->setIntegrity(0);
         }
@@ -588,10 +603,15 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $time = $this->mock(StuTime::class);
         $time->shouldReceive('time')->once()->andReturn(1000);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
-        $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
-        $process = new FinishSpecialResearchJobs($this->repository, $random, $time,
-            new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $time),
-            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class), $this->accident($random));
+        $messages->shouldReceive('send')->once()->with(1, 101, Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
+        $process = new FinishSpecialResearchJobs(
+            $this->repository,
+            $random,
+            $time,
+            new SpecialResearchCompletion($this->repository, $messages, $time),
+            $this->getContainer()->get(SpecialResearchFacility::class),
+            $this->accident($random)
+        );
         $this->em->wrapInTransaction(fn () => $process->work());
         self::assertSame(SpecialResearchStatusEnum::FAILED, $research->getStatus());
         self::assertSame(1000, $research->getFinishTime());
@@ -611,7 +631,7 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
 
     private function addAccidentBuilding(int $index, int $workers, bool $research = false): PlanetField
     {
-        $building = new \Stu\Orm\Entity\Building()->setName('Testgebäude ' . $index)->setWorkers($workers)->setIntegrity(1000)->setIsActivateable(true);
+        $building = new Building()->setName('Testgebäude ' . $index)->setWorkers($workers)->setIntegrity(1000)->setIsActivateable(true);
         $this->em->persist($building);
         $this->em->flush();
         if ($research) {
@@ -638,13 +658,14 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
             ->setField($this->field)->setFailureSettings($this->definition(AwayMissionResearchEnum::SENSORS)->getFailureSettings());
     }
 
-    private function accident(StuRandom $random): \Stu\Component\Research\SpecialResearchFailure
+    private function accident(StuRandom $random): SpecialResearchFailure
     {
-        return new \Stu\Component\Research\SpecialResearchFailure(
-            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class),
+        return new SpecialResearchFailure(
+            $this->getContainer()->get(SpecialResearchFacility::class),
             $this->getContainer()->get(SpecialResearchCatalog::class),
-            $this->getContainer()->get(\Stu\Component\Building\BuildingActivationHandler::class),
-            $this->getContainer()->get(\Stu\Orm\Repository\PlanetFieldRepositoryInterface::class), $random
+            $this->getContainer()->get(BuildingActivationHandler::class),
+            $this->getContainer()->get(PlanetFieldRepositoryInterface::class),
+            $random
         );
     }
 

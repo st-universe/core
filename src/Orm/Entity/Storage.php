@@ -13,7 +13,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use InvalidArgumentException;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
+use Stu\Lib\Transfer\Storage\ModuleQualityPacket;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\StorageRepository;
 
@@ -94,6 +96,99 @@ class Storage
     #[JoinColumn(name: 'trumfield_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Trumfield $trumfield = null;
 
+    /** @var array<int, int>|null */
+    #[Column(name: 'module_quality', type: 'json', nullable: true)]
+    private ?array $moduleQuality = null;
+
+    /** @return array<int, int> */
+    public function getModuleQualityAmounts(): array
+    {
+        $qualities = $this->moduleQuality ?? [];
+        $standard = $this->count - array_sum($qualities);
+        if ($standard > 0) {
+            $qualities[0] = $standard;
+        }
+        ksort($qualities, SORT_NUMERIC);
+        return $qualities;
+    }
+
+    /** @return list<array{steps: int, amount: int, label: string}> */
+    public function getModuleQualityVariants(): array
+    {
+        $variants = [];
+        foreach ($this->getModuleQualityAmounts() as $steps => $amount) {
+            $variants[] = ['steps' => $steps, 'amount' => $amount, 'label' => $steps === 0 ? 'Standard' : '+' . number_format($steps / 10, 1, ',', '') . ' %'];
+        }
+        return $variants;
+    }
+
+    public function hasImprovedModules(): bool
+    {
+        return ($this->moduleQuality ?? []) !== [];
+    }
+
+    public function getModuleQualityDescription(): string
+    {
+        return implode(', ', array_map(static fn (array $variant): string => $variant['amount'] . ' × ' . $variant['label'], $this->getModuleQualityVariants()));
+    }
+
+    /** @param array<int, int> $qualities */
+    public function addModuleQualityAmounts(array $qualities): self
+    {
+        ModuleQualityPacket::validate($qualities);
+        $updated = $this->moduleQuality ?? [];
+        foreach ($qualities as $steps => $amount) {
+            if ($steps !== 0 && $amount !== 0) {
+                $updated[$steps] = ($updated[$steps] ?? 0) + $amount;
+            }
+        }
+        if (array_sum($updated) > $this->count) {
+            throw new InvalidArgumentException('Module qualities exceed storage amount');
+        }
+        $this->moduleQuality = $updated === [] ? null : $updated;
+        return $this;
+    }
+
+    /** @return array<int, int> */
+    public function removeAmount(int $amount, ?int $quality = null): array
+    {
+        $available = $this->getModuleQualityAmounts();
+        if ($amount < 0 || $amount > $this->getAmountForQuality($quality)) {
+            throw new InvalidArgumentException('Insufficient module quality stock');
+        }
+        $remaining = $amount;
+        $removed = [];
+        foreach ($available as $steps => $stored) {
+            if ($remaining === 0) {
+                break;
+            }
+            if ($quality !== null && $steps !== $quality) {
+                continue;
+            }
+            $take = min($remaining, $stored);
+            if ($take === 0) {
+                continue;
+            }
+            $removed[$steps] = $take;
+            $remaining -= $take;
+            $this->lowerQualityAmount($steps, $stored - $take);
+        }
+        $this->count -= $amount;
+        return $removed;
+    }
+
+    private function lowerQualityAmount(int $steps, int $amount): void
+    {
+        if ($steps === 0) {
+            return;
+        }
+        if ($amount === 0) {
+            unset($this->moduleQuality[$steps]);
+        } else {
+            $this->moduleQuality[$steps] = $amount;
+        }
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -116,6 +211,11 @@ class Storage
         return $this->commodity_id;
     }
 
+    public function getAmountForQuality(?int $quality): int
+    {
+        return $quality === null ? $this->getAmount() : ($this->getModuleQualityAmounts()[$quality] ?? 0);
+    }
+
     public function getAmount(): int
     {
         return $this->count;
@@ -123,7 +223,14 @@ class Storage
 
     public function setAmount(int $amount): Storage
     {
-        $this->count = $amount;
+        if ($amount < 0) {
+            throw new InvalidArgumentException('Storage amount cannot be negative');
+        }
+        if ($amount < $this->count) {
+            $this->removeAmount($this->count - $amount);
+        } else {
+            $this->count = $amount;
+        }
 
         return $this;
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony;
 
+use Stu\Component\Research\SpecialResearchCompletion;
+use Stu\Component\Research\TechnologyBuildingLifecycle;
 use Stu\Module\Colony\Action\ActivateBuilding\ActivateBuilding;
 use Stu\Module\Colony\Action\ActivateBuildings\ActivateBuildings;
 use Stu\Module\Colony\Action\ActivateShields\ActivateShields;
@@ -56,6 +58,8 @@ use Stu\Module\Colony\Action\Sandbox\CreateSandbox;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
 use Stu\Module\Colony\Action\SetPopulationLimit\SetPopulationLimit;
 use Stu\Module\Colony\Action\StartAirfieldShip\StartAirfieldShip;
+use Stu\Module\Colony\Action\StartSpecialResearch\StartSpecialResearch;
+use Stu\Module\Colony\Action\StartTechnology\StartTechnology;
 use Stu\Module\Colony\Action\SwitchColonyMenu\SwitchColonyMenu;
 use Stu\Module\Colony\Action\Terraform\Terraform;
 use Stu\Module\Colony\Action\TrainCrew\TrainCrew;
@@ -99,6 +103,7 @@ use Stu\Module\Colony\Lib\Gui\Component\ShipRetrofitProvider;
 use Stu\Module\Colony\Lib\Gui\Component\ShipyardProvider;
 use Stu\Module\Colony\Lib\Gui\Component\SocialProvider;
 use Stu\Module\Colony\Lib\Gui\Component\SpacecraftBuildplansProvider;
+use Stu\Module\Colony\Lib\Gui\Component\SpecialResearchProvider;
 use Stu\Module\Colony\Lib\Gui\Component\StorageProvider;
 use Stu\Module\Colony\Lib\Gui\Component\SurfaceProvider;
 use Stu\Module\Colony\Lib\Gui\Component\TorpedoFabProvider;
@@ -175,6 +180,7 @@ use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagement;
 use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequest;
 use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequestInterface;
 use Stu\Module\Colony\View\ShowSocial\ShowSocial;
+use Stu\Module\Colony\View\ShowSpecialResearch\ShowSpecialResearch;
 use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowSubspaceTelescopeScan\ShowSubspaceTelescopeScan;
 use Stu\Module\Colony\View\ShowSurface\ShowSurface;
@@ -194,6 +200,8 @@ use function DI\autowire;
 use function DI\get;
 
 return [
+    SpecialResearchCompletion::class => autowire(SpecialResearchCompletion::class)
+        ->constructorParameter('technology', get(TechnologyBuildingLifecycle::class)),
     ApplyBuildingDamageInterface::class => autowire(ApplyBuildingDamage::class),
     BuildingActionInterface::class => autowire(BuildingAction::class),
     BuildingActionEffects::class => autowire(BuildingActionEffects::class),
@@ -235,7 +243,8 @@ return [
     RenameBuildplanRequestInterface::class => autowire(RenameBuildplanRequest::class),
     BuildPlanDeleterInterface::class => autowire(BuildPlanDeleter::class),
     'COLONY_ACTIONS' => [
-        \Stu\Module\Colony\Action\StartSpecialResearch\StartSpecialResearch::ACTION_IDENTIFIER => autowire(\Stu\Module\Colony\Action\StartSpecialResearch\StartSpecialResearch::class),
+        StartTechnology::ACTION_IDENTIFIER => autowire(StartTechnology::class),
+        StartSpecialResearch::ACTION_IDENTIFIER => autowire(StartSpecialResearch::class),
         GiveUp::ACTION_IDENTIFIER => autowire(GiveUp::class),
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
         ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
@@ -283,7 +292,7 @@ return [
         CreateSandbox::ACTION_IDENTIFIER => get(CreateSandbox::class)
     ],
     'COLONY_VIEWS' => [
-        \Stu\Module\Colony\View\ShowSpecialResearch\ShowSpecialResearch::VIEW_IDENTIFIER => autowire(\Stu\Module\Colony\View\ShowSpecialResearch\ShowSpecialResearch::class),
+        ShowSpecialResearch::VIEW_IDENTIFIER => autowire(ShowSpecialResearch::class),
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowColony::VIEW_IDENTIFIER => autowire(ShowColony::class),
         ShowMainscreen::VIEW_IDENTIFIER => autowire(ShowMainscreen::class),
@@ -344,7 +353,7 @@ return [
         ColonyComponentEnum::SHIPYARD->value => autowire(ShipyardProvider::class),
         ColonyComponentEnum::FIGHTER_SHIPYARD->value => autowire(FighterShipyardProvider::class),
         ColonyComponentEnum::SHIP_BUILDPLANS->value => autowire(SpacecraftBuildplansProvider::class),
-        ColonyComponentEnum::SPECIAL_RESEARCH->value => autowire(\Stu\Module\Colony\Lib\Gui\Component\SpecialResearchProvider::class),
+        ColonyComponentEnum::SPECIAL_RESEARCH->value => autowire(SpecialResearchProvider::class),
         ColonyComponentEnum::SHIP_REPAIR->value => autowire(ShipRepairProvider::class),
         ColonyComponentEnum::SHIP_RETROFIT->value => autowire(ShipRetrofitProvider::class),
         ColonyComponentEnum::SHIP_DISASSEMBLY->value => autowire(ShipDisassemblyProvider::class)

@@ -7,7 +7,7 @@
             <td>
                 Wie oft soll das Angebot angenommen werden?<br /><br />
                 <div style="width: 100%; text-align: center;">
-                    <img src="assets/commodities/{{ SELECTED_OFFER.getOfferedCommodityId }}.png" />
+                    <img src="assets/commodities/{{ SELECTED_OFFER.getOfferedCommodityId }}.png" title="{{ SELECTED_OFFER.getOfferedCommodity.getName }}{% if SELECTED_OFFER.getStorage.hasImprovedModules %} · {{ SELECTED_OFFER.getStorage.getModuleQualityDescription }}{% endif %}" />
                     {{ SELECTED_OFFER.getOfferedCommodityCount }}
                     gegen
                     <img src="assets/commodities/{{ SELECTED_OFFER.getWantedCommodityId }}.png" />
@@ -18,6 +18,9 @@
                         name="B_TAKE_OFFER" />
                 </div>
                 <br />
+                {% if STORED_STORAGE.hasImprovedModules %}
+                <table class="tcal">{% include 'html/trade/moduleQualitySelection.twig' with {'STOR': STORED_STORAGE} %}</table>
+                {% endif %}
                 {% if STORED %}
                 <div style="text-align: center;">
                     Lagernd auf diesem Handelsposten:

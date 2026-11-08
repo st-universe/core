@@ -185,13 +185,21 @@ Keine Waren vorhanden
         <td style="width: 20px;">
             <img src="/assets/commodities/{{ commodityId }}.png"
                 onclick="this.up('tr').down('.commodityAmount').value={{ amount }}" style="cursor: pointer;"
-                title="{{ name }}" />
+                title="{{ name }}{% if storage.hasImprovedModules %}: {{ storage.getModuleQualityDescription }}{% endif %}" />
         </td>
         <td style="width: 60px; vertical-align: middle;">
             {{ amount }}
         </td>
         <td>
             <input type="text" size="3" name="count[]" class="commodityAmount" />
+{% if storage.hasImprovedModules %}
+            <select name="quality[{{ commodityId }}]" title="Modulqualität auswählen">
+                <option value="all">Alle Qualitäten</option>
+                {% for variant in storage.getModuleQualityVariants %}
+                <option value="{{ variant.steps }}">{{ variant.amount }} × {{ variant.label }}</option>
+                {% endfor %}
+            </select>
+{% endif %}
         </td>
     </tr>
 </table>

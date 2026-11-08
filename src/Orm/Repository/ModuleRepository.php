@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\Colony;
@@ -24,7 +25,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
      * @param list<int> $levels
      * @return list<Module>
      */
-    #[\Override]
+    #[Override]
     public function getNonFactionNonSpecialByLevels(array $levels): array
     {
         return $this->createQueryBuilder('module')
@@ -37,8 +38,25 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
+    #[Override]
+    public function getStandardAndFactionByLevels(int $factionId, array $levels): array
+    {
+        return $this->createQueryBuilder('module')
+            ->where('module.level IN (:levels)')
+            ->andWhere('(module.faction_id IS NULL OR module.faction_id = :factionId)')
+            ->andWhere('(module.is_npc IS NULL OR module.is_npc = :npc)')
+            ->setParameter('levels', $levels)
+            ->setParameter('factionId', $factionId)
+            ->setParameter('npc', false)
+            ->orderBy('module.type', 'ASC')
+            ->addOrderBy('module.level', 'ASC')
+            ->addOrderBy('module.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // used for ModuleSelector
-    #[\Override]
+    #[Override]
     public function getBySpecialTypeAndRumpAndRole(
         Colony|Ship $host,
         SpacecraftModuleTypeEnum $moduleType,
@@ -81,7 +99,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function getBySpecialTypeAndRump(
         Colony|Spacecraft $host,
         SpacecraftModuleTypeEnum $moduleType,
@@ -117,7 +135,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
 
 
     // used for ModuleSelector
-    #[\Override]
+    #[Override]
     public function getByTypeColonyAndLevel(
         int $colonyId,
         SpacecraftModuleTypeEnum $moduleType,
@@ -157,7 +175,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for admin createBuildplan
-    #[\Override]
+    #[Override]
     public function getByTypeAndLevel(
         int $moduleTypeId,
         SpacecraftRumpRoleEnum $shipRumpRole,
@@ -190,7 +208,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     }
 
     // used for admin createBuildplan
-    #[\Override]
+    #[Override]
     public function getBySpecialTypeIds(array $specialTypeIds): array
     {
         return $this->getEntityManager()
@@ -210,7 +228,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function getBySpecialTypeAndRumpWithoutHost(
         SpacecraftModuleTypeEnum $moduleType,
         int $rumpId
@@ -239,7 +257,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function getByCommodityIds(array $commodityIds): array
     {
         if ($commodityIds === []) {

@@ -4,6 +4,9 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Override;
+use Stu\Component\Borg\BorgSphereAttackContext;
+use Stu\Module\Control\StuRandom;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -11,10 +14,22 @@ use Stu\Orm\Entity\Station;
 
 class AttackedBattleParty extends AbstractBattleParty
 {
-    #[\Override]
+    public function __construct(
+        SpacecraftWrapperInterface $leader,
+        StuRandom $stuRandom,
+        private ?BorgSphereAttackContext $borgSphereAttackContext = null
+    ) {
+        parent::__construct($leader, $stuRandom);
+    }
+
+    #[Override]
     public function getActiveMembers(bool $canFire = false, bool $filterDisabled = true): Collection
     {
         $target = $this->leader->get();
+        if (!$canFire && $this->borgSphereAttackContext?->allowsDestruction($target)) {
+            return parent::getActiveMembers(false, false)->filter(fn (SpacecraftWrapperInterface $wrapper): bool =>
+                !$wrapper->get()->getCondition()->isDisabled() || $wrapper->get() === $target);
+        }
         $isOrphanedTradepost = $target instanceof Station
             && $target->getTradePost()?->getUserId() === UserConstants::USER_NOONE;
 
@@ -24,7 +39,7 @@ class AttackedBattleParty extends AbstractBattleParty
         );
     }
 
-    #[\Override]
+    #[Override]
     protected function initMembers(): Collection
     {
         $fleetWrapper = $this->leader->getFleetWrapper();

@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateOffer;
 
+use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
@@ -25,7 +28,7 @@ final class CreateOffer implements ActionControllerInterface
 
     public function __construct(private CreateOfferRequestInterface $createOfferRequest, private CommodityRepositoryInterface $commodityRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private StorageRepositoryInterface $storageRepository) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -102,7 +105,8 @@ final class CreateOffer implements ActionControllerInterface
             $giveCommodityId,
             $giveAmount,
             $wantedCommodityId,
-            $wantedAmount
+            $wantedAmount,
+            ModuleQualitySelection::readCommodity($giveCommodityId)
         )) {
             $context->getInfo()->addInformation("Du hast auf diesem Handelsposten bereits ein vergleichbares Angebot");
             return;
@@ -115,12 +119,8 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        if ($offerAmount > 99) {
-            $offerAmount = 1;
-        }
-        if ($offerAmount * $giveAmount > $storage->getAmount()) {
-            $offerAmount = (int)(floor($storage->getAmount() / $giveAmount));
-        }
+        $quality = ModuleQualitySelection::readCommodity($giveCommodityId);
+        $offerAmount = $this->determineOfferAmount($storage, $offerAmount, $giveAmount, $quality);
         if ($offerAmount < 1) {
             return;
         }
@@ -135,10 +135,8 @@ final class CreateOffer implements ActionControllerInterface
             $offerAmount
         );
 
-        $this->saveStorage($offer);
-
-        $storageManager->lowerStorage($giveCommodityId, $offerAmount * $giveAmount);
-
+        $qualities = $storageManager->removeStorage($giveCommodityId, $offerAmount * $giveAmount, $quality);
+        $this->saveStorage($offer, $qualities);
 
         $context->getInfo()->addInformation('Das Angebot wurde erstellt');
     }
@@ -167,13 +165,15 @@ final class CreateOffer implements ActionControllerInterface
         return $offer;
     }
 
-    private function saveStorage(TradeOffer $tradeOffer): void
+    /** @param array<int, int> $qualities */
+    private function saveStorage(TradeOffer $tradeOffer, array $qualities): void
     {
         $storage = $this->storageRepository->prototype();
         $storage->setUser($tradeOffer->getUser());
         $storage->setTradeOffer($tradeOffer);
         $storage->setCommodity($tradeOffer->getOfferedCommodity());
         $storage->setAmount($tradeOffer->getOfferedCommodityCount() * $tradeOffer->getOfferCount());
+        $storage->addModuleQualityAmounts($qualities);
 
         $this->storageRepository->save($storage);
     }
@@ -184,12 +184,13 @@ final class CreateOffer implements ActionControllerInterface
         int $giveCommodityId,
         int $giveAmount,
         int $wantedCommodityId,
-        int $wantedAmount
+        int $wantedAmount,
+        ?int $quality
     ): bool {
         $offers = $this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePostId, $userId, $giveCommodityId, $wantedCommodityId);
 
         foreach ($offers as $offer) {
-            if (round($giveAmount / $wantedAmount, 2) === round($offer->getOfferedCommodityCount() / $offer->getWantedCommodityCount(), 2)) {
+            if ($this->matchesQuality($offer->getStorage(), $quality) && round($giveAmount / $wantedAmount, 2) === round($offer->getOfferedCommodityCount() / $offer->getWantedCommodityCount(), 2)) {
                 return true;
             }
         }
@@ -197,7 +198,18 @@ final class CreateOffer implements ActionControllerInterface
         return false;
     }
 
-    #[\Override]
+    private function determineOfferAmount(Storage $storage, int $offerAmount, int $giveAmount, ?int $quality): int
+    {
+        $offerAmount = $offerAmount > 99 ? 1 : $offerAmount;
+        return min($offerAmount, (int) floor($storage->getAmountForQuality($quality) / $giveAmount));
+    }
+
+    private function matchesQuality(Storage $storage, ?int $quality): bool
+    {
+        return $quality === null || array_keys($storage->getModuleQualityAmounts()) === [$quality];
+    }
+
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
@@ -19,7 +20,7 @@ class TradepostDestruction implements SpacecraftDestructionHandlerInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,
@@ -54,10 +55,10 @@ class TradepostDestruction implements SpacecraftDestructionHandlerInterface
             }
 
             //add to trumfield storage
-            $this->storageManager->upperStorage(
+            $this->storageManager->addStorage(
                 $tradePost->getStation(),
                 $storage->getCommodity(),
-                $amount
+                $storage->removeAmount($amount)
             );
 
             $this->storageRepository->delete($storage);

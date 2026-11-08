@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\DealsBidAuction;
 
 use Mockery\MockInterface;
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionProperty;
 use Stu\ActionControllerTestCase;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\Lib\TradePostStorageManagerInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\AuctionBid;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Deals;
+use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\AuctionBidRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -37,7 +44,7 @@ class DealsBidAuctionTest extends ActionControllerTestCase
 
     private DealsBidAuction $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -133,6 +140,68 @@ class DealsBidAuctionTest extends ActionControllerTestCase
             ['Dein neues Maximalgebot muss über deinem bisherigen Maximalgebot liegen'],
             $info->getInformations()
         );
+    }
+
+    /** @return iterable<string, array{string}> */
+    public static function commodityBids(): iterable
+    {
+        yield 'first bid' => ['first'];
+        yield 'raise own bid' => ['own'];
+        yield 'outbid and refund previous bidder' => ['other'];
+    }
+
+    #[DataProvider('commodityBids')]
+    public function testModuleQualityIsReservedAndRefundedExactly(string $mode): void
+    {
+        $user = new User()->setUsername('Bidder');
+        $other = new User()->setUsername('Previous bidder');
+        $this->setPrivateProperty($user, 'id', 42);
+        $this->setPrivateProperty($other, 'id', 77);
+        $commodity = new Commodity()->setName('Impulsantrieb');
+        $this->setPrivateProperty($commodity, 'id', 10401);
+        $auction = new Deals()->setAuction(true)->setAuctionAmount($mode === 'first' ? 0 : 5)
+            ->setWantedCommodity($commodity)->setStart(1)->setEnd(100);
+        $old = new AuctionBid()->setUser($mode === 'own' ? $user : $other)->setUserId($mode === 'own' ? 42 : 77)
+            ->setAuction($auction)->setMaxAmount(10)->setModuleQualityAmounts([4 => 4, 70 => 6]);
+        if ($mode !== 'first') {
+            $auction->getAuctionBids()->add($old);
+        }
+        $created = new AuctionBid();
+        $post = new TradePost();
+        $storage = $this->mock(TradePostStorageManagerInterface::class);
+        $this->request->shouldReceive('getDealId')->once()->andReturn(123);
+        $this->request->shouldReceive('getMaxAmount')->once()->andReturn(15);
+        $this->dealsRepository->shouldReceive('find')->with(123)->once()->andReturn($auction);
+        if ($mode !== 'own') {
+            $this->dealsRepository->shouldReceive('save')->with($auction)->once();
+        }
+        $this->stuTime->shouldReceive('time')->once()->andReturn(50);
+        $this->tradeLicenseRepository->shouldReceive('hasFergLicense')->with(42)->once()->andReturnTrue();
+        $this->storageRepository->shouldReceive('getByTradepostAndUserAndCommodity')
+            ->with(TradeEnum::DEALS_FERG_TRADEPOST_ID, 42, 10401)->once()->andReturn(new Storage()->setAmount(40));
+        $this->tradepostRepository->shouldReceive('find')->with(TradeEnum::DEALS_FERG_TRADEPOST_ID)->once()->andReturn($post);
+        $this->tradeLibFactory->shouldReceive('createTradePostStorageManager')->with($post, $user)->once()->andReturn($storage);
+        $needed = $mode === 'own' ? 5 : 15;
+        $storage->shouldReceive('removeStorage')->with(10401, $needed)->once()->andReturn([17 => $needed]);
+        if ($mode === 'other') {
+            $refundStorage = $this->mock(TradePostStorageManagerInterface::class);
+            $this->tradeLibFactory->shouldReceive('createTradePostStorageManager')->with($post, $other)->once()->andReturn($refundStorage);
+            $refundStorage->shouldReceive('addStorage')->with(10401, [4 => 4, 70 => 6])->once();
+            $this->privateMessageSender->shouldReceive('send')->once();
+        }
+        if ($mode === 'own') {
+            $this->auctionBidRepository->shouldReceive('save')->with($old)->once();
+        } else {
+            $this->auctionBidRepository->shouldReceive('prototype')->once()->andReturn($created);
+            $this->auctionBidRepository->shouldReceive('save')->with($created)->once();
+        }
+        $this->game->shouldReceive('getUser')->andReturn($user);
+        $this->game->shouldReceive('setView')->with(ShowDeals::VIEW_IDENTIFIER)->once();
+        $this->game->shouldReceive('getInfo')->andReturn(new InformationWrapper());
+        $this->subject->handle($this->game);
+        $bid = $mode === 'own' ? $old : $created;
+        self::assertSame(15, $bid->getMaxAmount());
+        self::assertSame($mode === 'own' ? [4 => 4, 17 => 5, 70 => 6] : [17 => 15], $bid->getModuleQualityAmounts());
     }
 
     private function setPrivateProperty(object $object, string $property, mixed $value): void

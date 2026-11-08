@@ -7,6 +7,9 @@ namespace Stu\Module\Colony\View\ShowModuleFab;
 use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use Mockery\MockInterface;
+use Override;
+use Stu\Component\Research\ModuleOptimizationProgress;
+use Stu\Component\Research\ModuleProductionQuality;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -30,6 +33,8 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftBuildplanRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRumpRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
+use Stu\Orm\Repository\TechnologyRepositoryInterface;
+use Stu\Orm\Repository\UserModuleOptimizationRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShowModuleFabTest extends StuTestCase
@@ -49,7 +54,7 @@ class ShowModuleFabTest extends StuTestCase
 
     private ShowModuleFab $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -79,7 +84,8 @@ class ShowModuleFabTest extends StuTestCase
             $this->moduleRepository,
             $this->buildplanHangarRepository,
             $this->shipRumpCostRepository,
-            $this->storageRepository
+            $this->storageRepository,
+            new ModuleProductionQuality(new ModuleOptimizationProgress($this->mock(UserModuleOptimizationRepositoryInterface::class)), $this->mock(TechnologyRepositoryInterface::class))
         );
     }
 

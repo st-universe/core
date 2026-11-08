@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Research\ModuleProductionQuality;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
@@ -12,15 +14,15 @@ use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleQueueLib implements ModuleQueueLibInterface
 {
-    public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private StorageManagerInterface $storageManager) {}
+    public function __construct(private ModuleQueueRepositoryInterface $moduleQueueRepository, private StorageManagerInterface $storageManager, private ModuleProductionQuality $productionQuality) {}
 
-    #[\Override]
+    #[Override]
     public function cancelModuleQueues(Colony $colony, BuildingFunctionEnum $buildingFunction): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, [$buildingFunction->value]);
     }
 
-    #[\Override]
+    #[Override]
     public function cancelModuleQueuesForBuilding(Colony $colony, Building $building): void
     {
         $this->cancelModuleQueuesForBuildingFunctions($colony, $building->getFunctions()->getKeys());
@@ -38,7 +40,7 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
             $count = $queue->getAmount();
             $this->moduleQueueRepository->delete($queue);
 
-            foreach ($module->getCost() as $cost) {
+            foreach ($this->productionQuality->getCosts($module, $queue->getImprovementSteps()) as $cost) {
                 if ($colony->getStorageSum() >= $colony->getMaxStorage()) {
                     break;
                 }

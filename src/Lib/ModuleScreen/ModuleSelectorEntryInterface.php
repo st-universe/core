@@ -12,6 +12,11 @@ interface ModuleSelectorEntryInterface
 
     public function isDisabled(): bool;
 
+    public function getSelectedQuality(): int;
+
+    /** @return list<array{steps: int, amount: int, label: string}> */
+    public function getQualityVariants(): array;
+
     public function getModule(): Module;
 
     public function getNeededCrew(): int;

@@ -15,6 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\Lib\CommodityEscrow;
 use Stu\Module\Trade\Lib\TradePostStorageManagerInterface;
 use Stu\Module\Trade\View\ShowOrionSlaveTrade\ShowOrionSlaveTrade;
 use Stu\Orm\Entity\OrionAuction;
@@ -29,6 +30,9 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 final class OrionBidAuction implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_ORION_BID_AUCTION';
+
+    /** @var array<int, int> */
+    private array $collectedQualities = [];
 
     public function __construct(
         private OrionBidAuctionRequestInterface $request,
@@ -62,7 +66,6 @@ final class OrionBidAuction implements ActionControllerInterface
             $context->getInfo()->addInformation('Das Gebot muss höher als das aktuelle Gebot sein');
             return;
         }
-
         $highestBid = $this->orionAuctionBidRepository->getHighestBid($auction);
         if ($highestBid === null) {
             if (!$this->collect($auction, $amount, $context)) {
@@ -72,6 +75,7 @@ final class OrionBidAuction implements ActionControllerInterface
                 ->setAuction($auction)
                 ->setUser($user)
                 ->setMaxAmount($amount);
+            $this->assignCollected($bid);
             $this->orionAuctionBidRepository->save($bid);
             $auction->setAuctionAmount($amount);
             $this->orionAuctionRepository->save($auction);
@@ -88,7 +92,9 @@ final class OrionBidAuction implements ActionControllerInterface
             if (!$this->collect($auction, $additionalAmount, $context)) {
                 return;
             }
+            $previous = $highestBid->getModuleQualityAmounts();
             $highestBid->setMaxAmount($amount);
+            $this->assignCollected($highestBid, $previous);
             $this->orionAuctionBidRepository->save($highestBid);
             $auction->setAuctionAmount($amount);
             $this->orionAuctionRepository->save($auction);
@@ -102,12 +108,10 @@ final class OrionBidAuction implements ActionControllerInterface
         $this->refund($auction, $highestBid);
         $this->sendOverbidMessage($auction, $highestBid);
         $this->orionAuctionBidRepository->delete($highestBid);
-        $this->orionAuctionBidRepository->save(
-            $this->orionAuctionBidRepository->prototype()
-                ->setAuction($auction)
-                ->setUser($user)
-                ->setMaxAmount($amount)
-        );
+        $bid = $this->orionAuctionBidRepository->prototype()
+            ->setAuction($auction)->setUser($user)->setMaxAmount($amount);
+        $this->assignCollected($bid);
+        $this->orionAuctionBidRepository->save($bid);
         $auction->setAuctionAmount($amount);
         $this->orionAuctionRepository->save($auction);
         $context->getInfo()->addInformationf('Du bist mit %d aktuell Meistbietender', $amount);
@@ -115,6 +119,7 @@ final class OrionBidAuction implements ActionControllerInterface
 
     private function collect(OrionAuction $auction, int $amount, ActionControllerContext $context): bool
     {
+        $this->collectedQualities = [];
         if (!$this->hasEnough($auction, $amount, $context)) {
             return false;
         }
@@ -126,8 +131,16 @@ final class OrionBidAuction implements ActionControllerInterface
             return true;
         }
 
-        $this->getZagosStorageManager($user)->lowerStorage($wantedCommodity->getId(), $amount);
+        $this->collectedQualities = $this->getZagosStorageManager($user)->removeStorage($wantedCommodity->getId(), $amount);
         return true;
+    }
+
+    /** @param array<int, int> $previous */
+    private function assignCollected(OrionAuctionBid $bid, array $previous = []): void
+    {
+        if ($this->collectedQualities !== []) {
+            $bid->setModuleQualityAmounts(CommodityEscrow::merge($previous, $this->collectedQualities));
+        }
     }
 
     private function hasEnough(OrionAuction $auction, int $amount, ActionControllerContext $context): bool
@@ -161,7 +174,7 @@ final class OrionBidAuction implements ActionControllerInterface
             $this->createPrestigeLog->createLog($bid->getMaxAmount(), sprintf('%d Prestige: Rückerstattung aus der Orion-Auktion', $bid->getMaxAmount()), $bid->getUser(), $this->stuTime->time());
             return;
         }
-        $this->getZagosStorageManager($bid->getUser())->upperStorage($wantedCommodity->getId(), $bid->getMaxAmount());
+        $this->getZagosStorageManager($bid->getUser())->addStorage($wantedCommodity->getId(), $bid->getModuleQualityAmounts());
     }
 
     private function sendOverbidMessage(OrionAuction $auction, OrionAuctionBid $bid): void

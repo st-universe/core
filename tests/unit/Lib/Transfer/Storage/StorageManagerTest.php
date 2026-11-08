@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\Exception\CommodityMissingException;
@@ -32,7 +33,7 @@ class StorageManagerTest extends StuTestCase
 
     private StorageManagerInterface $manager;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
@@ -132,6 +133,8 @@ class StorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($amount);
 
+        $storageItem->shouldReceive('removeAmount')->with($amount, null)->once()->andReturn([0 => $amount]);
+
         $this->storageRepository->shouldReceive('delete')
             ->with($storageItem)
             ->once();
@@ -169,9 +172,10 @@ class StorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storedAmount);
-        $storageItem->shouldReceive('setAmount')
-            ->with($storedAmount - $amount)
-            ->once();
+        $storageItem->shouldReceive('removeAmount')
+            ->with($amount, null)
+            ->once()
+            ->andReturn([0 => $amount]);
 
         $this->storageRepository->shouldReceive('save')
             ->with($storageItem)

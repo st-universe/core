@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use InvalidArgumentException;
+use Stu\Lib\Transfer\Storage\ModuleQualityPacket;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\OrionAuctionBidRepository;
 
@@ -29,6 +31,10 @@ class OrionAuctionBid
     #[Column(type: 'integer')]
     private int $max_amount;
 
+    /** @var array<int, int> */
+    #[Column(name: 'module_quality_amounts', type: 'json', options: ['default' => '{}'])]
+    private array $moduleQualityAmounts = [];
+
     #[ManyToOne(targetEntity: OrionAuction::class)]
     #[JoinColumn(name: 'auction_id', referencedColumnName: 'id', nullable: false)]
     private OrionAuction $auction;
@@ -36,6 +42,22 @@ class OrionAuctionBid
     #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
+
+    /** @return array<int, int> */
+    public function getModuleQualityAmounts(): array
+    {
+        return $this->moduleQualityAmounts === [] ? [0 => $this->getMaxAmount()] : $this->moduleQualityAmounts;
+    }
+
+    /** @param array<int, int> $qualities */
+    public function setModuleQualityAmounts(array $qualities): self
+    {
+        if (ModuleQualityPacket::validate($qualities) !== $this->getMaxAmount()) {
+            throw new InvalidArgumentException('Bid quality amounts must match the reserved amount');
+        }
+        $this->moduleQualityAmounts = $qualities;
+        return $this;
+    }
 
     public function getId(): int
     {

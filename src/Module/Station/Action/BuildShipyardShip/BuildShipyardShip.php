@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\BuildShipyardShip;
 
+use Override;
 use request;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,7 +28,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         private StorageManagerInterface $storageManager
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $wrapper = $this->stationLoader->getWrapperByIdAndUser(
@@ -82,7 +83,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         foreach ($modules as $moduleObj) {
             $module = $moduleObj->getModule();
 
-            if (!$storage->containsKey($module->getCommodityId())) {
+            if ((($storage->get($module->getCommodityId())?->getModuleQualityAmounts()[$moduleObj->getImprovementSteps()] ?? 0) < 1)) {
                 $context->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
@@ -91,7 +92,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         foreach ($modules as $moduleObj) {
             $module = $moduleObj->getModule();
 
-            $this->storageManager->lowerStorage($shipyard, $module->getCommodity(), 1);
+            $this->storageManager->removeStorage($shipyard, $module->getCommodity(), 1, $moduleObj->getImprovementSteps());
         }
 
         $queue = $this->shipyardShipQueueRepository->prototype();
@@ -116,7 +117,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         );
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

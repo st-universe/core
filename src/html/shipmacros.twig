@@ -287,7 +287,14 @@
         </a>
     </div>
     {% endif %}
-    {% if nbsItem.hasCrew %}
+    {% if isBorgSphere(nbsItem) and not nbsItem.isSelectable and not nbsItem.isCloaked %}
+    <div style="float:left; margin-right:4px;">
+        <a href="javascript:void(0);" onclick="showBorgSphereWindow(this, {{ spacecraftId }}, {{ targetId }});"
+            onmouseover="cp('borg_{{ targetId }}','buttons/boa2')" onmouseout="cp('borg_{{ targetId }}','buttons/boa1')">
+            <img src="/assets/buttons/boa1.png" name="borg_{{ targetId }}" title="Außenmission zur Borg-Sphäre" />
+        </a>
+    </div>
+    {% elseif nbsItem.hasCrew %}
     {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_BOARD_SHIP=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"

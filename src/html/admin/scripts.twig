@@ -102,6 +102,18 @@
         </div>
     </div>
     <br />
+{% if BORG_SPHERE_CONFIGURATIONS %}
+    <div class="divhead">Borg-Event</div>
+    <div class="divbody">
+        <select name="borg_configuration_id">
+            {% for configuration in BORG_SPHERE_CONFIGURATIONS %}
+            <option value="{{ configuration.getId }}">{{ configuration.getQuest.getTitle|bbcode2txt }} – {{ configuration.getColony.getName|bbcode2txt }} ({{ configuration.getId }})</option>
+            {% endfor %}
+        </select>
+        <input type="submit" class="button" name="B_SPAWN_BORG_SPHERE" value="Borg-Sphäre spawnen" />
+    </div>
+    <br />
+{% endif %}
     <div class="divhead">Crew</div>
     <div class="divbody">
         <div>

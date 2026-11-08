@@ -557,8 +557,14 @@ function calculateLocalCrew() {
  */
 
 var moduleProductionInputs = new Map();
+var moduleProductionOptimizations = new Map();
 function clearModuleInputs() {
 	moduleProductionInputs.clear();
+	moduleProductionOptimizations.clear();
+	document.querySelectorAll('.module-production-quality').forEach(select => {
+		select.value = '0';
+		updateModuleProductionCosts(select.getAttribute('data-module-id'), false);
+	});
 	updateModuleProductionPreview();
 }
 
@@ -577,14 +583,42 @@ function syncAllInputFields(input) {
 	});
 }
 
+function setModuleProductionQuality(select) {
+	const moduleId = select.getAttribute('data-module-id');
+	const optimized = select.value === '1';
+	moduleProductionOptimizations.set(moduleId, optimized);
+	document.querySelectorAll(`select.module-production-quality[data-module-id="${moduleId}"]`).forEach(other => {
+		other.value = optimized ? '1' : '0';
+	});
+	updateModuleProductionCosts(moduleId, optimized);
+	updateModuleProductionPreview();
+}
+
+function updateModuleProductionCosts(moduleId, optimized) {
+	document.querySelectorAll(`.module-production-costs[data-module-id="${moduleId}"]`).forEach(costs => {
+		const isOptimized = costs.getAttribute('data-optimized') === '1';
+		costs.style.display = isOptimized === optimized ? 'flex' : 'none';
+	});
+}
+
 function startModuleProduction() {
-
-	let colonyId = document.getElementById('colony-id').value;
-	let func = document.getElementById('func').value;
-	let moduleIds = [...moduleProductionInputs.keys()].join("&moduleids[]=");
-	let values = [...moduleProductionInputs.values()].join("&values[]=");
-
-	actionToInnerContent('B_CREATE_MODULES', `id=${colonyId}&func=${func}&moduleids[]=${moduleIds}&values[]=${values}&sstr=${sstr}`);
+	const parameters = new URLSearchParams({
+		id: document.getElementById('colony-id').value,
+		func: document.getElementById('func').value,
+		sstr: sstr
+	});
+	moduleProductionInputs.forEach((value, moduleId) => {
+		parameters.append('moduleids[]', moduleId);
+		parameters.append('values[]', value);
+		if (moduleProductionOptimizations.get(moduleId)) {
+			parameters.append(`optimizations[${moduleId}]`, '1');
+		}
+	});
+	if (moduleProductionInputs.size === 0) {
+		parameters.append('moduleids[]', '');
+		parameters.append('values[]', '');
+	}
+	actionToInnerContent('B_CREATE_MODULES', parameters.toString());
 }
 
 function updateModuleProductionPreview() {
@@ -615,9 +649,17 @@ function updateModuleProductionPreview() {
 		hasSelection = true;
 		energyTotal += (parseInt(input.getAttribute('data-energy-cost'), 10) || 0) * count;
 
-		document.querySelectorAll(`.module-production-preview-cost[data-module-id="${moduleId}"]`).forEach(cost => {
+		const optimized = moduleProductionOptimizations.get(moduleId) ? '1' : '0';
+		const costs = document.querySelector(`.module-production-costs[data-module-id="${moduleId}"][data-optimized="${optimized}"]`);
+		if (!costs) {
+			return;
+		}
+		costs.querySelectorAll('.module-production-preview-cost').forEach(cost => {
 			const commodityId = cost.getAttribute('data-commodity-id');
 			const requiredAmount = (parseInt(cost.getAttribute('data-cost'), 10) || 0) * count;
+			if (requiredAmount < 1) {
+				return;
+			}
 			const existing = resourceTotals.get(commodityId) || {
 				id: commodityId,
 				name: cost.getAttribute('data-commodity-name') || '',
@@ -892,4 +934,12 @@ function createNewSandbox(sstr) {
 	let name = document.getElementById('sandbox-name').value;
 
 	actionToInnerContent('B_CREATE_SANDBOX', `colonyid=${colonyId}&name=${name}&sstr=${sstr}`);
+}
+
+function updateTechnologyChance(form) {
+    const modules = form.elements.module_count;
+    const nanites = form.elements.nanite_count;
+    const share = (input) => Math.max(0, Math.min(1, (Number(input.value) - Number(input.min)) / (Number(input.max) - Number(input.min))));
+    const chance = Number(form.dataset.technologyBase) + (share(modules) + share(nanites)) * Number(form.dataset.technologyExtra) / 2;
+    form.querySelector('[data-technology-chance]').textContent = chance.toLocaleString('de-DE', { maximumFractionDigits: 2 });
 }

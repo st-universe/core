@@ -17,7 +17,8 @@ final class SpecialResearchCompletion
     public function __construct(
         private SpecialResearchRepositoryInterface $repository,
         private PrivateMessageSenderInterface $messages,
-        private StuTime $time
+        private StuTime $time,
+        private ?TechnologyBuildingLifecycle $technology = null
     ) {}
 
     public function finish(SpecialResearch $research, bool $failed, string $details = ''): void
@@ -25,7 +26,15 @@ final class SpecialResearchCompletion
         if ($research->getStatus() !== SpecialResearchStatusEnum::RUNNING) {
             return;
         }
-        $research->setStatus($failed ? SpecialResearchStatusEnum::FAILED : SpecialResearchStatusEnum::COMPLETED);
+        $this->finishAt($research, $failed, $details, $this->time->time());
+    }
+
+    private function finishAt(SpecialResearch $research, bool $failed, string $details, int $finishedAt): void
+    {
+        if ($research->getStatus() !== SpecialResearchStatusEnum::RUNNING) {
+            return;
+        }
+        $research->setStatus($failed ? SpecialResearchStatusEnum::FAILED : SpecialResearchStatusEnum::COMPLETED)->setFinishTime($finishedAt);
         $this->repository->save($research);
         $parts = [sprintf('Die Grundlagenforschung für %s ist %s', $research->getResearchType()->getDescription(), $failed ? 'fehlgeschlagen' : 'erfolgreich abgeschlossen')];
         if ($details !== '') {
@@ -42,12 +51,12 @@ final class SpecialResearchCompletion
         if ($research->getStatus() !== SpecialResearchStatusEnum::RUNNING) {
             return;
         }
-        $research->setFinishTime(min($research->getFinishTime(), $timestamp));
-        $this->finish($research, true, 'Das Forschungsgebäude wurde entfernt, zerstört oder steht nicht mehr zur Verfügung');
+        $this->finishAt($research, true, 'Das Forschungsgebäude wurde entfernt, zerstört oder steht nicht mehr zur Verfügung', $timestamp);
     }
 
     public function buildingRemoved(PlanetField $field): void
     {
+        $this->technology?->buildingRemoved($field);
         foreach ($this->repository->getRunningByField($field) as $research) {
             $this->facilityLost($research, $this->time->time());
         }

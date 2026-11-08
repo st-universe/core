@@ -36,7 +36,7 @@
           <td>
             {% for module in data.getModulesOrdered %}
             <img src="/assets/commodities/{{ module.getModule.getCommodityId }}.png"
-              name="{{ module.getModule.getName }}" />
+              title="{{ module.getModule.getName }} · {{ module.getQualityLabel }}" />
             {% endfor %}
           </td>
         </tr>

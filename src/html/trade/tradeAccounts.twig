@@ -32,7 +32,7 @@
 					<a href="javascript:void(0);" onclick="showTradeOfferMenu(this, {{ stor.getId }});"
 						style="display: block; padding: 4px;" class="tradebutton">
 						<img src="assets/commodities/{{ stor.getCommodity.getId }}.png"
-							title="{{ stor.getCommodity.getName }}" /> {{ stor.getAmount }}
+							title="{{ stor.getCommodity.getName }}{% if stor.hasImprovedModules %} · {{ stor.getModuleQualityDescription }}{% endif %}" /> {{ stor.getAmount }}
 					</a>
 				</div>
 				{% endfor %}

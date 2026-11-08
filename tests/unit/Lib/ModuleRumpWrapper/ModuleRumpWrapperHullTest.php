@@ -6,6 +6,7 @@ namespace Stu\Lib\ModuleRumpWrapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Module;
@@ -28,7 +29,7 @@ class ModuleRumpWrapperHullTest extends StuTestCase
 
     private ModuleRumpWrapperHull $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -36,6 +37,7 @@ class ModuleRumpWrapperHullTest extends StuTestCase
         $this->rump = $this->mock(SpacecraftRump::class);
         $this->baseValues = $this->mock(SpacecraftRumpBaseValues::class);
         $this->buildplan = $this->mock(SpacecraftBuildplan::class);
+        $this->buildplan->shouldReceive('getModuleImprovementSteps')->andReturn(0);
         $this->module = $this->mock(Module::class);
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);
         $this->ship = $this->mock(Ship::class);

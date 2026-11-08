@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RetrofitShip;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -12,6 +13,7 @@ use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -52,7 +54,7 @@ final class RetrofitShip implements ActionControllerInterface
         private BuildplanSignatureCreationInterface $buildplanSignatureCreation
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $user = $context->getUser();
@@ -138,14 +140,9 @@ final class RetrofitShip implements ActionControllerInterface
         /** @var array<int, Module> */
         $modules = [];
 
-        /** @var array<int, array<int, Module>> */
-        $oldModulesOfType = [];
-
         foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
             $value = $moduleType->value;
             $module = request::postArray('mod_' . $value);
-
-            $oldModulesOfType[$value] = $oldplan->getModulesByType($moduleType)->toArray();
 
             if (
                 $moduleType != SpacecraftModuleTypeEnum::SPECIAL
@@ -200,13 +197,14 @@ final class RetrofitShip implements ActionControllerInterface
             return;
         }
 
+        $qualities = ModuleQualitySelection::read($modules, $oldplan);
         $storage = $colony->getStorage();
         $modulesToLower = [];
         foreach ($modules as $module) {
-            $isNewModule = !array_filter($oldModulesOfType[$module->getType()->value], fn (Module $oldModule): bool => $oldModule->getId() === $module->getId());
+            $isNewModule = !ModuleQualitySelection::matchesPlan($module, $oldplan, $qualities[$module->getId()]);
 
             if ($isNewModule) {
-                if (!$storage->containsKey($module->getCommodityId())) {
+                if ((($storage->get($module->getCommodityId())?->getModuleQualityAmounts()[$qualities[$module->getId()]] ?? 0) < 1)) {
                     $context->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                     return;
                 }
@@ -226,13 +224,13 @@ final class RetrofitShip implements ActionControllerInterface
 
 
         foreach ($modulesToLower as $module) {
-            $this->storageManager->lowerStorage($colony, $module->getCommodity(), 1);
+            $this->storageManager->removeStorage($colony, $module->getCommodity(), 1, $qualities[$module->getId()]);
         }
 
         $context->setView(ShowColony::VIEW_IDENTIFIER);
 
 
-        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
+        $signature = ModuleQualitySelection::createSignature($this->buildplanSignatureCreation, $modules, $crewUsage, $qualities);
         $plan = $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan == $oldplan) {
             $context->getInfo()->addInformation(_('Es wurden keine Änderungen ausgewählt'));
@@ -271,7 +269,7 @@ final class RetrofitShip implements ActionControllerInterface
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType($obj->getType());
                 $mod->setBuildplan($plan);
-                $mod->setModule($obj);
+                $mod->setModule($obj)->setImprovementSteps($qualities[$obj->getId()]);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 
                 $this->buildplanModuleRepository->save($mod);
@@ -308,7 +306,7 @@ final class RetrofitShip implements ActionControllerInterface
         );
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Override;
 use Stu\Component\Research\SpecialResearchStatusEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
@@ -18,14 +19,14 @@ final class SpecialResearchRepository implements SpecialResearchRepositoryInterf
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[\Override]
+    #[Override]
     public function getByUser(User $user): array
     {
         return $this->entityManager->createQuery('SELECT r FROM ' . SpecialResearch::class . ' r WHERE r.user = :user')
             ->setParameter('user', $user)->setHint(Query::HINT_REFRESH, true)->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function getRunning(): array
     {
         return $this->entityManager->createQuery(
@@ -34,7 +35,7 @@ final class SpecialResearchRepository implements SpecialResearchRepositoryInterf
             ->setHint(Query::HINT_REFRESH, true)->setLockMode(LockMode::PESSIMISTIC_WRITE)->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function getRunningByField(PlanetField $field): array
     {
         return $this->entityManager->createQuery(
@@ -42,7 +43,7 @@ final class SpecialResearchRepository implements SpecialResearchRepositoryInterf
         )->setParameters(['status' => SpecialResearchStatusEnum::RUNNING, 'field' => $field->getId()])->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function lockStorage(Colony $colony, PlanetField $field): void
     {
         $this->entityManager->lock($colony->getUser(), LockMode::PESSIMISTIC_WRITE);
@@ -55,22 +56,24 @@ final class SpecialResearchRepository implements SpecialResearchRepositoryInterf
             ->setLockMode(LockMode::PESSIMISTIC_WRITE)->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function save(SpecialResearch $research): void
     {
         $this->entityManager->persist($research);
     }
 
-    #[\Override]
+    #[Override]
     public function deleteByUser(User $user): void
     {
+        new TechnologyRepository($this->entityManager)->deleteByUser($user);
         $this->entityManager->createQuery('DELETE FROM ' . SpecialResearch::class . ' r WHERE r.user = :user')
             ->setParameter('user', $user)->execute();
     }
 
-    #[\Override]
+    #[Override]
     public function detachColony(Colony $colony): void
     {
+        new TechnologyRepository($this->entityManager)->detachColony($colony);
         foreach ($this->entityManager->getRepository(SpecialResearch::class)->findBy(['colony' => $colony]) as $research) {
             $research->setColony(null);
         }

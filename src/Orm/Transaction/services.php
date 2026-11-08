@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\ORMSetup;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Borg\BorgSphereDeletionHandler;
+use Stu\Component\Borg\BorgSphereDeletionListener;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -38,7 +40,11 @@ return [
 
         return $emConfig;
     },
-    EntityManagerFactoryInterface::class => autowire(EntityManagerFactory::class),
+    BorgSphereDeletionListener::class => fn (ContainerInterface $c): BorgSphereDeletionListener => new BorgSphereDeletionListener(
+        fn (): BorgSphereDeletionHandler => $c->get(BorgSphereDeletionHandler::class)
+    ),
+    EntityManagerFactoryInterface::class => autowire(EntityManagerFactory::class)
+        ->constructorParameter('borgSphereDeletionListener', get(BorgSphereDeletionListener::class)),
     EntityManagerInterface::class => fn (ContainerInterface $c): EntityManagerInterface => new ReopeningEntityManager(
         $c->get(EntityManagerFactoryInterface::class),
         $c->get(Configuration::class),

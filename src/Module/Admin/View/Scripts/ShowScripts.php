@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Scripts;
 
+use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
 
 final class ShowScripts implements ViewControllerInterface
@@ -17,10 +19,11 @@ final class ShowScripts implements ViewControllerInterface
 
     public function __construct(
         private readonly GameStateInterface $gameState,
-        private readonly PirateSetupRepositoryInterface $pirateSetupRepository
+        private readonly PirateSetupRepositoryInterface $pirateSetupRepository,
+        private readonly BorgSphereRepositoryInterface $borgSphereRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ViewControllerContext $game): void
     {
         $game->setTemplateFile('html/admin/scripts.twig');
@@ -31,5 +34,6 @@ final class ShowScripts implements ViewControllerInterface
         $game->setTemplateVar('PIRATE_SETUPS', $this->pirateSetupRepository->getAllOrderedByName());
         $game->setTemplateVar('CURRENT_GAME_STATE', $this->gameState->getGameState());
         $game->setTemplateVar('GAME_STATES', GameStateEnum::cases());
+        $game->setTemplateVar('BORG_SPHERE_CONFIGURATIONS', $this->borgSphereRepository->getConfigurations());
     }
 }

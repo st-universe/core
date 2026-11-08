@@ -133,7 +133,7 @@
 		</td>
 		<td>
 			<a href="javascript:void(0);" onclick="changeSearchCommodity({{ offeredCommodity.getId }});">
-				<img src="assets/commodities/{{ offeredCommodity.getId }}.png" title="{{ offeredCommodity.getName }}" />
+				<img src="assets/commodities/{{ offeredCommodity.getId }}.png" title="{{ offeredCommodity.getName }}{% if data.getStorage.hasImprovedModules %} · {{ data.getStorage.getModuleQualityDescription }}{% endif %}" />
 				{{ data.getOfferedCommodityCount }}
 			</a>
 		</td>

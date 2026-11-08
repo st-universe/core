@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Player;
 
+use Stu\Component\Borg\BorgSphereDeletionHandler;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Player\ColonyLimitCalculator;
@@ -55,6 +56,8 @@ use Stu\Component\Player\Relation\UserRelationManager;
 use Stu\Component\Player\Relation\UserRelationManagerInterface;
 use Stu\Component\Player\Settings\UserSettingsProvider;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
+use Stu\Component\Quest\AwayMission\AwayMissionDeletionHandler;
+use Stu\Component\Research\SpecialResearchDeletionHandler;
 
 use function DI\autowire;
 
@@ -65,12 +68,13 @@ return [
     PlayerDeletionInterface::class => autowire(PlayerDeletion::class)->constructorParameter(
         'deletionHandlers',
         [
+            autowire(BorgSphereDeletionHandler::class),
             autowire(PirateWrathDeletionHandler::class),
             autowire(UserRelationDeletionHandler::class),
             autowire(ContactDeletionHandler::class),
             autowire(AllianceDeletionHandler::class),
-            autowire(\Stu\Component\Quest\AwayMission\AwayMissionDeletionHandler::class),
-            autowire(\Stu\Component\Research\SpecialResearchDeletionHandler::class),
+            autowire(AwayMissionDeletionHandler::class),
+            autowire(SpecialResearchDeletionHandler::class),
             autowire(ColonyDeletionHandler::class),
             autowire(PrivateMessageDeletionHandler::class),
             autowire(KnPostDeletionHandler::class),

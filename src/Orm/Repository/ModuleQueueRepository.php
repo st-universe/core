@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Override;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ModuleQueue;
 
@@ -13,7 +14,7 @@ use Stu\Orm\Entity\ModuleQueue;
  */
 final class ModuleQueueRepository extends EntityRepository implements ModuleQueueRepositoryInterface
 {
-    #[\Override]
+    #[Override]
     public function getByUser(int $userId): array
     {
         return $this->getEntityManager()
@@ -33,7 +34,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
             ->getResult();
     }
 
-    #[\Override]
+    #[Override]
     public function getByColony(int $colonyId): array
     {
         return $this->findBy([
@@ -41,20 +42,25 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getByColonyAndModuleAndBuilding(
         int $colonyId,
         int $moduleId,
-        int $buildingFunction
+        int $buildingFunction,
+        ?int $improvementSteps = null
     ): ?ModuleQueue {
-        return $this->findOneBy([
+        $criteria = [
             'colony_id' => $colonyId,
             'module_id' => $moduleId,
             'buildingfunction' => $buildingFunction,
-        ]);
+        ];
+        if ($improvementSteps !== null) {
+            $criteria['improvementSteps'] = $improvementSteps;
+        }
+        return $this->findOneBy($criteria, ['improvementSteps' => 'ASC']);
     }
 
-    #[\Override]
+    #[Override]
     public function getByColonyAndBuilding(
         int $colonyId,
         array $buildingFunctions
@@ -65,13 +71,13 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function prototype(): ModuleQueue
     {
         return new ModuleQueue();
     }
 
-    #[\Override]
+    #[Override]
     public function save(ModuleQueue $moduleQueue): void
     {
         $em = $this->getEntityManager();
@@ -79,7 +85,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         $em->persist($moduleQueue);
     }
 
-    #[\Override]
+    #[Override]
     public function delete(ModuleQueue $moduleQueue): void
     {
         $em = $this->getEntityManager();
@@ -87,17 +93,14 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         $em->remove($moduleQueue);
     }
 
-    #[\Override]
+    #[Override]
     public function getAmountByColonyAndModule(int $colonyId, int $moduleId): int
     {
-        $entry = $this->findOneBy([
+        $entries = $this->findBy([
             'colony_id' => $colonyId,
             'module_id' => $moduleId,
         ]);
 
-        if ($entry !== null) {
-            return $entry->getAmount();
-        }
-        return 0;
+        return array_sum(array_map(fn (ModuleQueue $entry): int => $entry->getAmount(), $entries));
     }
 }

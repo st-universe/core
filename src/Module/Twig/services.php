@@ -9,9 +9,11 @@ use Stu\Component\Asset\AssetVersioning;
 use Stu\Component\Asset\AssetVersioningInterface;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 use Twig\Environment;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     AssetVersioningInterface::class => static fn (ContainerInterface $c): AssetVersioningInterface => new AssetVersioning(
@@ -53,4 +55,5 @@ return [
     },
     TwigPageInterface::class => autowire(TwigPage::class),
     TwigHelper::class => autowire(TwigHelper::class)
+        ->constructorParameter('borgSphereRepository', get(BorgSphereRepositoryInterface::class))
 ];

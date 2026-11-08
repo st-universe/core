@@ -79,7 +79,7 @@ final class OrionDeleteAuction implements ActionControllerInterface
             throw new RuntimeException('no Zagos tradepost found');
         }
         $this->tradeLibFactory->createTradePostStorageManager($tradePost, $bid->getUser())
-            ->upperStorage($wantedCommodity->getId(), $bid->getMaxAmount());
+            ->addStorage($wantedCommodity->getId(), $bid->getModuleQualityAmounts());
     }
 
     public function performSessionCheck(): bool

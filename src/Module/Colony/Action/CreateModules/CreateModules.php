@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CreateModules;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Research\ModuleProductionQuality;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
+use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -28,10 +33,11 @@ final class CreateModules implements ActionControllerInterface
         private ModuleQueueRepositoryInterface $moduleQueueRepository,
         private PlanetFieldRepositoryInterface $planetFieldRepository,
         private StorageManagerInterface $storageManager,
-        private ColonyRepositoryInterface $colonyRepository
+        private ColonyRepositoryInterface $colonyRepository,
+        private ModuleProductionQuality $productionQuality
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowColony::VIEW_IDENTIFIER);
@@ -45,10 +51,9 @@ final class CreateModules implements ActionControllerInterface
             $userId
         );
 
-        $colonyId = $colony->getId();
-
         $moduleIds = request::getArrayFatal('moduleids');
         $values = request::getArrayFatal('values');
+        $optimizations = request::returnArray(request::getvars()['optimizations'] ?? null);
         $function = BuildingFunctionEnum::from(request::getIntFatal('func'));
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
@@ -70,7 +75,7 @@ final class CreateModules implements ActionControllerInterface
         $changeable = $colony->getChangeable();
         $projectedStorageAmounts = [];
         foreach ($storage as $storageItem) {
-            $projectedStorageAmounts[$storageItem->getCommodityId()] = $storageItem->getAmount();
+            $projectedStorageAmounts[$storageItem->getCommodity()->getId()] = $storageItem->getAmount();
         }
         $projectedEps = $changeable->getEps();
         $failedModuleIds = [];
@@ -92,7 +97,8 @@ final class CreateModules implements ActionControllerInterface
             if ($moduleEcost > 0 && $moduleEcost * $initialcount > $availableEps) {
                 $count = (int) floor($availableEps / $moduleEcost);
             }
-            $costs = $module->getCost();
+            $quality = $this->selectedQuality($context->getUser(), $module, $optimizations[$moduleId] ?? 0);
+            $costs = $this->productionQuality->getCosts($module, $quality);
 
             $missingcount = 0;
             foreach ($costs as $cost) {
@@ -121,21 +127,8 @@ final class CreateModules implements ActionControllerInterface
                 $projectedEps = max(0, $projectedEps - $count * $moduleEcost);
 
                 $this->colonyRepository->save($colony);
-                if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colonyId, (int) $moduleId, $function->value)) !== null) {
-                    $queue->setAmount($queue->getAmount() + $count);
-
-                    $this->moduleQueueRepository->save($queue);
-                    $moduleAdded = true;
-                } else {
-                    $queue = $this->moduleQueueRepository->prototype();
-                    $queue->setColony($colony);
-                    $queue->setBuildingFunction($function);
-                    $queue->setModule($module);
-                    $queue->setAmount($count);
-
-                    $this->moduleQueueRepository->save($queue);
-                    $moduleAdded = true;
-                }
+                $this->queueModule($colony, $module, $function, $count, $quality);
+                $moduleAdded = true;
             }
             if ($count === $initialcount) {
                 $isEnoughAvailable = true;
@@ -197,10 +190,29 @@ final class CreateModules implements ActionControllerInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;
+    }
+
+    private function selectedQuality(User $user, Module $module, mixed $selection): int
+    {
+        return in_array($selection, [1, '1'], true) ? $this->productionQuality->getImprovementSteps($user, $module) : 0;
+    }
+
+    private function queueModule(Colony $colony, Module $module, BuildingFunctionEnum $function, int $count, int $quality): void
+    {
+        $queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding($colony->getId(), $module->getId(), $function->value, $quality);
+        if ($queue === null) {
+            $queue = $this->moduleQueueRepository->prototype();
+            $queue->setColony($colony);
+            $queue->setBuildingFunction($function);
+            $queue->setModule($module);
+            $queue->setImprovementSteps($quality);
+        }
+        $queue->setAmount($queue->getAmount() + $count);
+        $this->moduleQueueRepository->save($queue);
     }
 
     /**

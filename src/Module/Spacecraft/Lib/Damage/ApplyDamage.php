@@ -4,34 +4,41 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Damage;
 
+use Override;
 use RuntimeException;
+use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Damage\DamageModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Spacecraft;
 
 //TODO unit tests
 final class ApplyDamage implements ApplyDamageInterface
 {
     public function __construct(
         private SpacecraftSystemManagerInterface $spacecraftSystemManager,
-        private SystemDamageInterface $systemDamage
+        private SystemDamageInterface $systemDamage,
+        private ?BorgSphereCombat $borgSphereCombat = null
     ) {}
 
-    #[\Override]
+    #[Override]
     public function damage(
         DamageWrapper $damageWrapper,
         SpacecraftWrapperInterface $wrapper,
         InformationInterface $informations
     ): void {
 
-        if ($damageWrapper->getNetDamage() <= 0) {
-            throw new RuntimeException('this should not happen');
-        }
+        $this->validateDamage($damageWrapper);
 
         $spacecraft = $wrapper->get();
+
+        if ($this->borgSphereCombat?->blocksDamage($spacecraft)) {
+            return;
+        }
+        $this->borgSphereCombat?->registerHit($spacecraft);
 
         if ($spacecraft->isShielded()) {
 
@@ -47,14 +54,17 @@ final class ApplyDamage implements ApplyDamageInterface
 
         $disablemessage = false;
         $damage = (int) $damageWrapper->getDamageRelative($spacecraft, DamageModeEnum::HULL);
+        $unlimitedDamage = $damage;
         $hull = $spacecraft->getCondition()->getHull();
-        if ($spacecraft->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE) && $hull - $damage < round($spacecraft->getMaxHull() / 100 * 10)) {
+        $damage = $this->borgSphereCombat?->limitHullDamage($spacecraft, $damage) ?? $damage;
+        if ($this->isRpgProtectionRequired($spacecraft, $hull, $damage)) {
             $damage = (int) round($hull - $spacecraft->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $spacecraft->getCondition()->setDisabled(true);
         }
         if ($hull > $damage) {
-            $this->damageHull($wrapper, $damageWrapper, $damage, $informations);
+            $this->damageHull($wrapper, $damageWrapper, $damage, $informations, $unlimitedDamage);
+            $this->borgSphereCombat?->finishHit($spacecraft, $informations);
 
             if ($disablemessage) {
                 $informations->addInformation($disablemessage);
@@ -66,6 +76,20 @@ final class ApplyDamage implements ApplyDamageInterface
             $informations->addInformation("- Hüllenschaden: " . $damage);
             $informations->addInformation("-- Das Schiff wurde zerstört!");
             $spacecraft->getCondition()->setIsDestroyed(true);
+        }
+    }
+
+    private function isRpgProtectionRequired(Spacecraft $ship, int $hull, int $damage): bool
+    {
+        return $ship->getSystemState(SpacecraftSystemTypeEnum::RPG_MODULE)
+            && $this->borgSphereCombat?->getEvent($ship) === null
+            && $hull - $damage < round($ship->getMaxHull() / 100 * 10);
+    }
+
+    private function validateDamage(DamageWrapper $damageWrapper): void
+    {
+        if ($damageWrapper->getNetDamage() <= 0) {
+            throw new RuntimeException('this should not happen');
         }
     }
 
@@ -95,7 +119,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $shieldSystemData->setShieldRegenerationTimer(time())->update();
     }
 
-    private function damageHull(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, int $damage, InformationInterface $informations): void
+    private function damageHull(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper, int $damage, InformationInterface $informations, int $unlimitedDamage): void
     {
         $spacecraft = $wrapper->get();
         $condition = $spacecraft->getCondition();
@@ -121,7 +145,7 @@ final class ApplyDamage implements ApplyDamageInterface
                 $wrapper,
                 $damageWrapper,
                 $informations,
-                (int)ceil((100 * $damage * random_int(1, 5)) / $spacecraft->getMaxHull())
+                (int)ceil((100 * $unlimitedDamage * random_int(1, 5)) / $spacecraft->getMaxHull())
             );
         }
     }

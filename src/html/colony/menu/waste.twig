@@ -10,7 +10,7 @@
             <td style="vertical-align: middle;">
                 <div style="display: table-cell; width: 55px;">
                     <img src="/assets/commodities/{{ stor.getCommodity.getId }}.png"
-                        title="{{ stor.getCommodity.getName }}" />
+                        title="{{ stor.getCommodity.getName }}{% if stor.hasImprovedModules %}: {{ stor.getModuleQualityDescription }}{% endif %}" />
                 </div>
                 <div style="display: table-cell; width: 40px; vertical-align:middle;">
                     {{ stor.getAmount }}
@@ -21,6 +21,14 @@
             <td style="vertical-align: middle; text-align: center;">
                 <input type="text" size="2" name="commodity[{{ stor.getCommodity.getId }}]"
                     onkeydown="event.key == 'Enter' && $('removewastebutton').click()" />
+{% if stor.hasImprovedModules %}
+                    <select name="quality[{{ stor.getCommodity.getId }}]">
+                        <option value="all">Alle Varianten</option>
+                        {% for variant in stor.getModuleQualityVariants %}
+                        <option value="{{ variant.steps }}">{{ variant.label }} ({{ variant.amount }})</option>
+                        {% endfor %}
+                    </select>
+{% endif %}
             </td>
         </tr>
         {% endfor %}

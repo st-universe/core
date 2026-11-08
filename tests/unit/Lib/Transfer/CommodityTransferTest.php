@@ -6,6 +6,7 @@ namespace Stu\Lib\Transfer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -28,7 +29,7 @@ class CommodityTransferTest extends StuTestCase
     private CommodityTransferInterface $subject;
 
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         $this->storageManager = $this->mock(StorageManagerInterface::class);
@@ -66,7 +67,7 @@ class CommodityTransferTest extends StuTestCase
     public function testTransferCommodityExpectInfoWhenCommodityNotBeamable(): void
     {
         $colony = $this->mock(Colony::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -78,10 +79,7 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn($user);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
+        $storage->setCommodity($commodity);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -111,7 +109,7 @@ class CommodityTransferTest extends StuTestCase
     public function testTransferCommodityExpectNothingWhenNoEps(): void
     {
         $colony = $this->mock(Colony::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -126,10 +124,7 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(0);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
+        $storage->setCommodity($commodity);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -151,7 +146,7 @@ class CommodityTransferTest extends StuTestCase
     public function testTransferCommodityExpectNothingWhenAmountNotReadable(): void
     {
         $colony = $this->mock(Colony::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -166,10 +161,7 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(1);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
+        $storage->setCommodity($commodity);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -191,7 +183,7 @@ class CommodityTransferTest extends StuTestCase
     public function testTransferCommodityExpectNothingWhenAmountSmallerOne(): void
     {
         $colony = $this->mock(Colony::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -206,10 +198,7 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(1);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
+        $storage->setCommodity($commodity);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -231,7 +220,7 @@ class CommodityTransferTest extends StuTestCase
     public function testTransferCommodityExpectNothingWhenTargetStorageFull(): void
     {
         $colony = $this->mock(Colony::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -252,10 +241,7 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(999);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
+        $storage->setCommodity($commodity);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -278,7 +264,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -312,14 +298,8 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(null);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
-        $storage->shouldReceive('getAmount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(55);
+        $storage->setCommodity($commodity);
+        $storage->setAmount(55);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -334,12 +314,8 @@ class CommodityTransferTest extends StuTestCase
             ->once()
             ->andReturn('COMMODITY');
 
-        $this->storageManager->shouldReceive('lowerStorage')
-            ->with($colony, $commodity, 55)
-            ->once();
-
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($ship, $commodity, 55)
+        $this->storageManager->shouldReceive('transferStorage')
+            ->with($colony, $ship, $commodity, 55, null)
             ->once();
 
         $this->colonyRepository->shouldReceive('save')
@@ -366,7 +342,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -400,13 +376,8 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(null);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
-        $storage->shouldReceive('getAmount')
-            ->withNoArgs()
-            ->andReturn(99);
+        $storage->setCommodity($commodity);
+        $storage->setAmount(99);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -421,12 +392,8 @@ class CommodityTransferTest extends StuTestCase
             ->once()
             ->andReturn('COMMODITY');
 
-        $this->storageManager->shouldReceive('lowerStorage')
-            ->with($colony, $commodity, 99)
-            ->once();
-
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($ship, $commodity, 99)
+        $this->storageManager->shouldReceive('transferStorage')
+            ->with($colony, $ship, $commodity, 99, null)
             ->once();
 
         $this->colonyRepository->shouldReceive('save')
@@ -453,7 +420,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -487,14 +454,8 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(null);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
-        $storage->shouldReceive('getAmount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(55);
+        $storage->setCommodity($commodity);
+        $storage->setAmount(55);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -509,12 +470,8 @@ class CommodityTransferTest extends StuTestCase
             ->once()
             ->andReturn('COMMODITY');
 
-        $this->storageManager->shouldReceive('lowerStorage')
-            ->with($colony, $commodity, 50)
-            ->once();
-
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($ship, $commodity, 50)
+        $this->storageManager->shouldReceive('transferStorage')
+            ->with($colony, $ship, $commodity, 50, null)
             ->once();
 
         $this->colonyRepository->shouldReceive('save')
@@ -542,7 +499,7 @@ class CommodityTransferTest extends StuTestCase
         $colony = $this->mock(Colony::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(Ship::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
         $epsSystem = $this->mock(EpsSystemData::class);
@@ -589,14 +546,8 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
-        $storage->shouldReceive('getAmount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(55);
+        $storage->setCommodity($commodity);
+        $storage->setAmount(55);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -611,12 +562,8 @@ class CommodityTransferTest extends StuTestCase
             ->once()
             ->andReturn('COMMODITY');
 
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($colony, $commodity, 50)
-            ->once();
-
-        $this->storageManager->shouldReceive('lowerStorage')
-            ->with($ship, $commodity, 50)
+        $this->storageManager->shouldReceive('transferStorage')
+            ->with($ship, $colony, $commodity, 50, null)
             ->once();
 
         $this->informations->shouldReceive('addInformationf')
@@ -639,7 +586,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
-        $storage = $this->mock(Storage::class);
+        $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
 
@@ -673,14 +620,8 @@ class CommodityTransferTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(null);
 
-        $storage->shouldReceive('getCommodity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($commodity);
-        $storage->shouldReceive('getAmount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(55);
+        $storage->setCommodity($commodity);
+        $storage->setAmount(55);
 
         $commodity->shouldReceive('isBeamable')
             ->with($user, $user)
@@ -695,12 +636,8 @@ class CommodityTransferTest extends StuTestCase
             ->once()
             ->andReturn('COMMODITY');
 
-        $this->storageManager->shouldReceive('lowerStorage')
-            ->with($colony, $commodity, 10)
-            ->once();
-
-        $this->storageManager->shouldReceive('upperStorage')
-            ->with($ship, $commodity, 10)
+        $this->storageManager->shouldReceive('transferStorage')
+            ->with($colony, $ship, $commodity, 10, null)
             ->once();
 
         $this->colonyRepository->shouldReceive('save')

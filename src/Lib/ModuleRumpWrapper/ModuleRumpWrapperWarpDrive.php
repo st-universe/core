@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Player\Settings\UserSettingsProviderInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -14,7 +15,7 @@ use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[\Override]
+    #[Override]
     public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -25,17 +26,18 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
         return new ModuleValueCalculator()->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rumpBaseValues->getBaseWarpDrive()
+            $this->rumpBaseValues->getBaseWarpDrive(),
+            $this->getImprovementSteps($module)
         );
     }
 
-    #[\Override]
+    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::WARPDRIVE;
     }
 
-    #[\Override]
+    #[Override]
     public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface
     {
         $systemData = $wrapper->getWarpDriveSystemData();
@@ -53,7 +55,7 @@ final class ModuleRumpWrapperWarpDrive extends ModuleRumpWrapperBase implements 
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getWarpDriveSystemData();

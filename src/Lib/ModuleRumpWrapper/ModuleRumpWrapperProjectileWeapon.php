@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
@@ -12,7 +13,7 @@ use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperProjectileWeapon extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[\Override]
+    #[Override]
     public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -23,17 +24,18 @@ final class ModuleRumpWrapperProjectileWeapon extends ModuleRumpWrapperBase impl
         return new ModuleValueCalculator()->calculateModuleValue(
             $this->rump,
             $module,
-            200 //TODO use property of rump / rumpRole
+            200, //TODO use property of rump / rumpRole
+            $this->getImprovementSteps($module)
         );
     }
 
-    #[\Override]
+    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::TORPEDO;
     }
 
-    #[\Override]
+    #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $systemData = $wrapper->getProjectileLauncherSystemData();

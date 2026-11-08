@@ -74,7 +74,7 @@
       <td>
         {% for MOD in TARGETSHIP.getModules %}
         <img style="margin-right: 5px;" src="assets/commodities/{{ MOD.getCommodityId }}.png"
-          title="{{ MOD.getName }}" />
+          title="{{ MOD.getName }}{% if TARGETSHIP.getBuildplan.getModuleImprovementSteps(MOD) %} · +{{ (TARGETSHIP.getBuildplan.getModuleImprovementSteps(MOD) / 10)|number_format(1, ",", "") }} %{% endif %}" />
         {% endfor %}
       </td>
     </tr>

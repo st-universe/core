@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Scripts;
 
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Game\GameStateEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\GameStateInterface;
+use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 use Stu\Orm\Repository\PirateSetupRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -18,9 +20,11 @@ class ShowScriptsTest extends StuTestCase
 
     private MockInterface&PirateSetupRepositoryInterface $pirateSetupRepository;
 
+    private MockInterface&BorgSphereRepositoryInterface $borgSphereRepository;
+
     private ShowScripts $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,9 +32,11 @@ class ShowScriptsTest extends StuTestCase
         $this->gameState = $this->mock(GameStateInterface::class);
         $this->pirateSetupRepository = $this->mock(PirateSetupRepositoryInterface::class);
 
+        $this->borgSphereRepository = $this->mock(BorgSphereRepositoryInterface::class);
         $this->subject = new ShowScripts(
             $this->gameState,
-            $this->pirateSetupRepository
+            $this->pirateSetupRepository,
+            $this->borgSphereRepository
         );
     }
 
@@ -68,6 +74,9 @@ class ShowScriptsTest extends StuTestCase
         $game->shouldReceive('setTemplateVar')
             ->with('GAME_STATES', GameStateEnum::cases())
             ->once();
+
+        $this->borgSphereRepository->shouldReceive('getConfigurations')->withNoArgs()->once()->andReturn([]);
+        $game->shouldReceive('setTemplateVar')->with('BORG_SPHERE_CONFIGURATIONS', [])->once();
 
         $this->subject->handle($game);
     }

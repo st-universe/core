@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsBidAuction;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Exception\AccessViolationException;
@@ -14,6 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Trade\Lib\CommodityEscrow;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\AuctionBid;
@@ -28,6 +30,9 @@ final class DealsBidAuction implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_DEALS_BID_AUCTION';
 
+    /** @var array<int, int> */
+    private array $collectedQualities = [];
+
     private const int BID_TYPE_FIRST = 0;
     private const int BID_TYPE_RAISE_OWN = 1;
     private const int BID_TYPE_RAISE_OTHER = 2;
@@ -36,7 +41,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
     public function __construct(private DealsBidAuctionRequestInterface $dealsbidauctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private AuctionBidRepositoryInterface $auctionBidRepository, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private StorageRepositoryInterface $storageRepository, private PrivateMessageSenderInterface $privateMessageSender, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $userId = $context->getUser()->getId();
@@ -105,6 +110,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $bid = $this->auctionBidRepository->prototype();
         $bid->setUser($context->getUser());
         $bid->setMaxAmount($maxAmount);
+        $this->assignCollected($bid);
         $bid->setAuction($auction);
         $this->auctionBidRepository->save($bid);
 
@@ -123,6 +129,7 @@ final class DealsBidAuction implements ActionControllerInterface
             return;
         }
 
+        $previousQualities = $bid->getModuleQualityAmounts();
         $additionalAmount = $maxAmount - $bid->getMaxAmount();
 
         //check if enough available
@@ -132,6 +139,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $context->getInfo()->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
         $bid->setMaxAmount($maxAmount);
+        $this->assignCollected($bid, $previousQualities);
         $this->auctionBidRepository->save($bid);
     }
 
@@ -188,6 +196,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $bid = $this->auctionBidRepository->prototype();
         $bid->setUser($context->getUser());
         $bid->setMaxAmount($maxAmount);
+        $this->assignCollected($bid);
         $bid->setAuction($auction);
         $this->auctionBidRepository->save($bid);
 
@@ -202,7 +211,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
     private function checkAndCollectCosts(Deals $auction, ?AuctionBid $currentHighestBid, int $neededAmount, int $bidType, ActionControllerContext $context): bool
     {
-        //check for sufficient amount
+        $this->collectedQualities = [];
         if (!$this->isEnoughAvailable($auction, $neededAmount, $context)) {
             return false;
         }
@@ -231,7 +240,7 @@ final class DealsBidAuction implements ActionControllerInterface
         } else {
             $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
 
-            $storageManager->lowerStorage(
+            $this->collectedQualities = $storageManager->removeStorage(
                 $wantedCommodity->getId(),
                 $neededAmount
             );
@@ -263,9 +272,9 @@ final class DealsBidAuction implements ActionControllerInterface
             } else {
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser());
 
-                $storageManager->upperStorage(
+                $storageManager->addStorage(
                     $wantedCommodity->getId(),
-                    $currentHighestBid->getMaxAmount()
+                    $currentHighestBid->getModuleQualityAmounts()
                 );
 
                 $this->privateMessageSender->send(
@@ -285,6 +294,14 @@ final class DealsBidAuction implements ActionControllerInterface
         }
 
         return true;
+    }
+
+    /** @param array<int, int> $previous */
+    private function assignCollected(AuctionBid $bid, array $previous = []): void
+    {
+        if ($this->collectedQualities !== []) {
+            $bid->setModuleQualityAmounts(CommodityEscrow::merge($previous, $this->collectedQualities));
+        }
     }
 
     private function getPrestigeTemplate(int $bidType): string
@@ -334,7 +351,7 @@ final class DealsBidAuction implements ActionControllerInterface
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

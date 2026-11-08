@@ -11,9 +11,6 @@
         {% for row in SPECIAL_RESEARCH_ROWS %}
         <div class="divhead">Grundlagenforschung: {{ row.type.getDescription }}</div>
         <div class="divbody">
-            {% if row.completed %}
-            Erfolgreich abgeschlossen
-            {% else %}
             {% if row.research and row.research.getStatus.value == 'failed' %}
             <p>Der letzte Versuch ist fehlgeschlagen</p>
             {% endif %}
@@ -43,11 +40,27 @@
                 <input type="submit" name="B_START_SPECIAL_RESEARCH" value="Grundlagenforschung starten" />
             </form>
             {% endif %}
-            {% endif %}
         </div>
         <br />
         {% else %}
         <p>Für eine Grundlagenforschung wird ein entsprechender Datensatz im Kolonielager benötigt</p>
         {% endfor %}
+{% include 'html/colony/menu/technologyResearch.twig' %}
+        <details style="margin-top: 10px;">
+            <summary>Abgeschlossene Forschungen ({{ SPECIAL_RESEARCH_HISTORY|length }})</summary>
+            <table class="tcal" style="width: 100%;">
+                <tr><th>Datum</th><th>Forschung</th><th>System / Modul</th><th>Fertigungsbonus</th></tr>
+                {% for entry in SPECIAL_RESEARCH_HISTORY %}
+                <tr>
+                    <td>{{ entry.finishedAt|stuDateTime }} Uhr</td>
+                    <td>{{ entry.research }}</td>
+                    <td>{{ entry.subject }}</td>
+                    <td>{{ entry.bonus ?? '–' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">Noch keine abgeschlossenen Forschungen</td></tr>
+                {% endfor %}
+            </table>
+        </details>
     </div>
 </div>

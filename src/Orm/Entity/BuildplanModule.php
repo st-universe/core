@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use InvalidArgumentException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Orm\Repository\BuildplanModuleRepository;
 
@@ -47,6 +48,29 @@ class BuildplanModule
     #[ManyToOne(targetEntity: Module::class)]
     #[JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private Module $module;
+
+    #[Column(name: 'improvement_steps', type: 'smallint', options: ['default' => 0])]
+    private int $improvementSteps = 0;
+
+    public function getImprovementSteps(): int
+    {
+        return $this->improvementSteps;
+    }
+
+    public function setImprovementSteps(int $steps): self
+    {
+        if ($steps < 0 || $steps > 70) {
+            throw new InvalidArgumentException('Module improvement must be between 0 and 70');
+        }
+        $this->improvementSteps = $steps;
+
+        return $this;
+    }
+
+    public function getQualityLabel(): string
+    {
+        return $this->improvementSteps === 0 ? 'Standard' : '+' . number_format($this->improvementSteps / 10, 1, ',', '') . ' %';
+    }
 
     public function getId(): int
     {

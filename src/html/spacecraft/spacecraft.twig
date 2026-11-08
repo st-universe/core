@@ -185,7 +185,7 @@
 			<td colspan="2">
 				{% if SPACECRAFT.getBuildplan %}
 				{% for mod in SPACECRAFT.getModules %}<img style="margin-right: 5px;"
-					src="/assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}" />{% endfor %}
+					src="/assets/commodities/{{ mod.getCommodityId }}.png" title="{{ mod.getName }}{% if SPACECRAFT.getBuildplan.getModuleImprovementSteps(mod) %} · +{{ (SPACECRAFT.getBuildplan.getModuleImprovementSteps(mod) / 10)|number_format(1, ",", "") }} %{% endif %}" />{% endfor %}
 				{% endif %}
 			</td>
 			<td colspan="5">

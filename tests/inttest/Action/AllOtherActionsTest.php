@@ -66,7 +66,7 @@ class AllOtherActionsTest extends ActionTestCase
         }
 
         $context = $dic->get(ActionContextFactoryInterface::class)->createActionContext($game);
-        if (in_array($key, ['TRADE_ACTIONS-B_TAKE_OFFER', 'TRADE_ACTIONS-B_DEALS_TAKE_AUCTION', 'COLONY_ACTIONS-B_START_SPECIAL_RESEARCH'], true)) {
+        if (in_array($key, ['TRADE_ACTIONS-B_TAKE_OFFER', 'TRADE_ACTIONS-B_DEALS_TAKE_AUCTION', 'COLONY_ACTIONS-B_START_SPECIAL_RESEARCH', 'COLONY_ACTIONS-B_START_TECHNOLOGY'], true)) {
             $dic->get(EntityManagerInterface::class)->wrapInTransaction(static fn () => $subject->handle($context));
             return;
         }
@@ -85,6 +85,7 @@ class AllOtherActionsTest extends ActionTestCase
     private function getSpecificRequestVariables(string $key): array
     {
         return match ($key) {
+            'COLONY_ACTIONS-B_START_TECHNOLOGY' => ['recipe_id' => 1],
             'SHIP_ACTIONS-B_FLEET_UP',
             'SHIP_ACTIONS-B_FLEET_ALERT_GREEN',
             'SHIP_ACTIONS-B_FLEET_ALERT_YELLOW',

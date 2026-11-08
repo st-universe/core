@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftRumpEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -81,19 +82,19 @@ final class StationUtility implements StationUtilityInterface
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public function getStationBuildplansByUser(int $userId): array
     {
         return $this->spacecraftBuildplanRepository->getStationBuildplansByUser($userId);
     }
 
-    #[\Override]
+    #[Override]
     public function getShipyardBuildplansByUser(int $userId): array
     {
         return $this->spacecraftBuildplanRepository->getShipyardBuildplansByUser($userId);
     }
 
-    #[\Override]
+    #[Override]
     public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?SpacecraftBuildplan
     {
         $this->loggerUtil->log(sprintf('getBuidplanIfResearchedByUser. planId: %d, userId: %d', $planId, $userId));
@@ -111,13 +112,13 @@ final class StationUtility implements StationUtilityInterface
         return null;
     }
 
-    #[\Override]
+    #[Override]
     public function getDockedWorkbeeCount(Station $station): int
     {
         return $station->getDockedWorkbeeCount();
     }
 
-    #[\Override]
+    #[Override]
     public function getNeededWorkbeeCount(Station $station, SpacecraftRump $rump): int
     {
         if ($rump->getNeededWorkbees() === null) {
@@ -140,20 +141,20 @@ final class StationUtility implements StationUtilityInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function hasEnoughDockedWorkbees(Station $station, SpacecraftRump $rump): bool
     {
         return $this->getDockedWorkbeeCount($station) >= $this->getNeededWorkbeeCount($station, $rump);
     }
 
-    #[\Override]
+    #[Override]
     public function reduceRemainingTicks(ConstructionProgress $progress): void
     {
         $progress->setRemainingTicks($progress->getRemainingTicks() - 1);
         $this->constructionProgressRepository->save($progress);
     }
 
-    #[\Override]
+    #[Override]
     public function finishStation(ConstructionProgress $progress): void
     {
         $station = $progress->getStation();
@@ -216,7 +217,7 @@ final class StationUtility implements StationUtilityInterface
         $this->tradeLicenseRepository->save($license);
     }
 
-    #[\Override]
+    #[Override]
     public function finishScrapping(ConstructionProgress $progress, InformationInterface $information): void
     {
         $station = $progress->getStation();
@@ -263,10 +264,10 @@ final class StationUtility implements StationUtilityInterface
                 continue;
             }
 
-            $this->storageManager->upperStorage(
+            $this->storageManager->addStorage(
                 $station,
                 $module->getCommodity(),
-                $amount
+                [$buildplanModule->getImprovementSteps() => $amount]
             );
 
             $recycledModules[] = ['module' => $module, 'amount' => $amount];
@@ -306,7 +307,7 @@ final class StationUtility implements StationUtilityInterface
         $this->constructionProgressRepository->save($progress);
     }
 
-    #[\Override]
+    #[Override]
     public function canManageShips(Station $station): bool
     {
         return ($station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::OUTPOST
@@ -314,7 +315,7 @@ final class StationUtility implements StationUtilityInterface
             && $station->hasEnoughCrew();
     }
 
-    #[\Override]
+    #[Override]
     public function canRepairShips(Station $station): bool
     {
         return ($station->getRump()->getShipRumpRole()?->getId() === SpacecraftRumpRoleEnum::SHIPYARD

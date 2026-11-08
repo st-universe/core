@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Research;
 
+use RuntimeException;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Information\InformationInterface;
@@ -14,6 +15,7 @@ use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\SpecialResearch;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\SpecialResearchRepositoryInterface;
+use Stu\Orm\Repository\TechnologyRepositoryInterface;
 
 final class SpecialResearchService
 {
@@ -23,7 +25,8 @@ final class SpecialResearchService
         private CommodityRepositoryInterface $commodities,
         private StorageManagerInterface $storageManager,
         private SpecialResearchFacility $facility,
-        private StuTime $time
+        private StuTime $time,
+        private TechnologyRepositoryInterface $technology
     ) {}
 
     public function start(Colony $colony, PlanetField $field, AwayMissionResearchEnum $type, InformationInterface $information): bool
@@ -38,6 +41,10 @@ final class SpecialResearchService
             return false;
         }
 
+        if ($this->technology->hasRunningResearch($colony->getUser())) {
+            $information->addInformation('Es läuft bereits eine Sonderforschung');
+            return false;
+        }
         $researches = $this->repository->getByUser($colony->getUser());
         if (!$this->canStart($researches, $type, $information)) {
             return false;
@@ -52,7 +59,7 @@ final class SpecialResearchService
             return false;
         }
         foreach ($costs as $commodityId => $amount) {
-            $commodity = $this->commodities->find($commodityId) ?? throw new \RuntimeException('Research commodity missing');
+            $commodity = $this->commodities->find($commodityId) ?? throw new RuntimeException('Research commodity missing');
             $this->storageManager->lowerStorage($colony, $commodity, $amount);
         }
 
