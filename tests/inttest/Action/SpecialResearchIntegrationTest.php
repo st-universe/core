@@ -308,7 +308,14 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $time->shouldReceive('time')->twice()->andReturn(1000);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
         $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
-        $process = new FinishSpecialResearchJobs($this->repository, $random, $time, $messages);
+        $process = new FinishSpecialResearchJobs(
+            $this->repository,
+            $random,
+            $time,
+            new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $time),
+            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class),
+            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFailure::class)
+        );
         $this->em->wrapInTransaction(fn () => $process->work());
         $this->em->wrapInTransaction(fn () => $process->work());
         self::assertSame($expected, $research->getStatus());
@@ -396,7 +403,14 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $time->shouldReceive('time')->once()->andReturn(1000);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
         $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
-        $process = new FinishSpecialResearchJobs($this->repository, $random, $time, $messages);
+        $process = new FinishSpecialResearchJobs(
+            $this->repository,
+            $random,
+            $time,
+            new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $time),
+            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class),
+            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFailure::class)
+        );
         $this->em->wrapInTransaction(fn () => $process->work());
         self::assertSame(SpecialResearchStatusEnum::FAILED, $research->getStatus());
     }
@@ -413,6 +427,225 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $html = $this->renderPanel();
         self::assertStringContainsString('Erfolgreich abgeschlossen', $html);
         self::assertStringNotContainsString('B_START_SPECIAL_RESEARCH', $html);
+    }
+
+    public function testNewResearchStoresTheExactFieldBuildingAndFailureSettings(): void
+    {
+        $this->supply(AwayMissionResearchEnum::SENSORS);
+        self::assertTrue($this->start(AwayMissionResearchEnum::SENSORS));
+        $research = $this->repository->getByUser($this->colony->getUser())[0];
+        self::assertSame($this->field->getId(), $research->getFieldId());
+        self::assertSame($this->field->getBuildingId(), $research->getBuildingId());
+        self::assertSame($this->definition(AwayMissionResearchEnum::SENSORS)->getFailureSettings(), $research->getFailureSettings());
+    }
+
+    public function testAccidentDeactivatesAndDamagesTheLaboratoryBeforeRemovingWorkers(): void
+    {
+        $this->prepareAccidentSite(20);
+        $research = $this->boundResearch();
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->once()->with(5, 15)->andReturn(7);
+        $message = $this->accident($random)->apply($research);
+        $this->em->flush();
+        self::assertFalse($this->field->isActive());
+        self::assertSame(850, $this->field->getIntegrity());
+        self::assertSame(0, $this->colony->getWorkers());
+        self::assertSame(13, $this->colony->getChangeable()->getWorkless());
+        self::assertStringContainsString('7 Arbeiter', $message);
+        self::assertStringContainsString('Sicherheitskräften getötet', $message);
+    }
+
+    public function testWorkerlessBuildingUsesFreePopulationAndCapsDeaths(): void
+    {
+        $this->prepareAccidentSite(0, free: 2);
+        $research = $this->boundResearch();
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->once()->with(3, 12)->andReturn(12);
+        $message = $this->accident($random)->apply($research);
+        self::assertSame(0, $this->colony->getPopulation());
+        self::assertFalse($this->field->isActive());
+        self::assertSame(850, $this->field->getIntegrity());
+        self::assertStringContainsString('2 Personen der freien Bevölkerung', $message);
+    }
+
+    /** @return iterable<array{int}> */
+    public static function cardinalNeighbors(): iterable
+    {
+        foreach ([5, 25, 14, 16] as $index) {
+            yield [$index];
+        }
+    }
+
+    #[DataProvider('cardinalNeighbors')]
+    public function testWorkerlessEmptyColonyUsesExactlyOneCardinalNeighbor(int $index): void
+    {
+        $this->prepareAccidentSite(0);
+        $neighbor = $this->addAccidentBuilding($index, 20);
+        $other = $this->addAccidentBuilding(26, 20);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('array_rand')->once()->andReturn($index);
+        $random->shouldReceive('rand')->once()->with(5, 15)->andReturn(8);
+        $message = $this->accident($random)->apply($this->boundResearch());
+        self::assertFalse($neighbor->isActive());
+        self::assertTrue($other->isActive());
+        self::assertSame(1000, $neighbor->getIntegrity());
+        self::assertSame(20, $this->colony->getWorkers());
+        self::assertSame(12, $this->colony->getChangeable()->getWorkless());
+        self::assertStringContainsString('benachbarte Gebäude', $message);
+        self::assertStringContainsString('8 Arbeiter', $message);
+    }
+
+    /** @return iterable<string, array{int, int}> */
+    public static function nonNeighbors(): iterable
+    {
+        yield 'diagonal' => [15, 26];
+        yield 'right edge' => [10, 11];
+        yield 'left edge' => [11, 10];
+    }
+
+    #[DataProvider('nonNeighbors')]
+    public function testAccidentDoesNotCrossDiagonalsOrGridEdges(int $source, int $other): void
+    {
+        $this->prepareAccidentSite(0, $source);
+        $neighbor = $this->addAccidentBuilding($other, 20);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldNotReceive('rand', 'array_rand');
+        $message = $this->accident($random)->apply($this->boundResearch());
+        self::assertTrue($neighbor->isActive());
+        self::assertSame(20, $this->colony->getPopulation());
+        self::assertStringContainsString('Es gab keine Opfer', $message);
+    }
+
+    public function testLegacyFailureChoosesAndRecordsOnlyOneResearchBuilding(): void
+    {
+        $this->prepareAccidentSite(20);
+        $other = $this->addAccidentBuilding(16, 20, true);
+        $research = $this->newResearch(AwayMissionResearchEnum::SENSORS, SpecialResearchStatusEnum::RUNNING);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->once()->with(5, 15)->andReturn(5);
+        $this->accident($random)->apply($research);
+        self::assertSame($this->field->getId(), $research->getFieldId());
+        self::assertSame(850, $this->field->getIntegrity());
+        self::assertSame(1000, $other->getIntegrity());
+        self::assertTrue($other->isActive());
+    }
+
+    public function testAccidentUsesSettingsStoredAtResearchStart(): void
+    {
+        $this->prepareAccidentSite(20);
+        $definition = $this->definition(AwayMissionResearchEnum::SENSORS);
+        $definition->setFailureDamagePercent(30)->setFailureWorkerMinPercent(50)->setFailureWorkerMaxPercent(50);
+        $research = $this->boundResearch();
+        $definition->setFailureDamagePercent(1)->setFailureWorkerMinPercent(0)->setFailureWorkerMaxPercent(0);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->once()->with(10, 10)->andReturn(10);
+        $this->accident($random)->apply($research);
+        self::assertSame(700, $this->field->getIntegrity());
+        self::assertSame(10, $this->colony->getPopulation());
+    }
+
+    /** @return iterable<array{bool}> */
+    public static function removalModes(): iterable
+    {
+        yield [false];
+        yield [true];
+    }
+
+    #[DataProvider('removalModes')]
+    public function testDemolitionAndDestructionFailOnlyResearchAtThatField(bool $destroyed): void
+    {
+        $this->prepareAccidentSite(20);
+        $research = $this->boundResearch()->setFinishTime(2000000000);
+        $otherField = $this->addAccidentBuilding(16, 0, true);
+        $other = $this->newResearch(AwayMissionResearchEnum::EPS, SpecialResearchStatusEnum::RUNNING)->setField($otherField);
+        $this->em->persist($research);
+        $this->em->persist($other);
+        $this->em->flush();
+        $messages = $this->mock(PrivateMessageSenderInterface::class);
+        $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::on(static fn (string $text): bool => str_contains($text, 'entfernt, zerstört') && !str_contains($text, 'assimiliert')), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
+        $completion = new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $this->getContainer()->get(StuTime::class));
+        $removal = $this->getContainer()->make(\Stu\Component\Building\BuildingRemovalHandler::class, ['researchCompletion' => $completion]);
+        if ($destroyed) {
+            $this->field->setIntegrity(0);
+        }
+        $removal->remove($this->field);
+        $this->em->flush();
+        self::assertSame(SpecialResearchStatusEnum::FAILED, $research->getStatus());
+        self::assertSame(SpecialResearchStatusEnum::RUNNING, $other->getStatus());
+        self::assertNull($this->field->getBuilding());
+        self::assertSame(20, $this->colony->getPopulation());
+    }
+
+    public function testTickFailsMissingFieldBeforeDeadlineWithoutDamagingReplacement(): void
+    {
+        $this->prepareAccidentSite(20);
+        $research = $this->boundResearch()->setFinishTime(2000);
+        $this->em->persist($research);
+        $this->em->flush();
+        $replacement = $this->addAccidentBuilding(15, 0, true);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldNotReceive('rand');
+        $time = $this->mock(StuTime::class);
+        $time->shouldReceive('time')->once()->andReturn(1000);
+        $messages = $this->mock(PrivateMessageSenderInterface::class);
+        $messages->shouldReceive('send')->once()->with(1, 101, \Mockery::type('string'), PrivateMessageFolderTypeEnum::SPECIAL_COLONY);
+        $process = new FinishSpecialResearchJobs($this->repository, $random, $time,
+            new \Stu\Component\Research\SpecialResearchCompletion($this->repository, $messages, $time),
+            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class), $this->accident($random));
+        $this->em->wrapInTransaction(fn () => $process->work());
+        self::assertSame(SpecialResearchStatusEnum::FAILED, $research->getStatus());
+        self::assertSame(1000, $research->getFinishTime());
+        self::assertSame(1000, $replacement->getIntegrity());
+        self::assertTrue($replacement->isActive());
+    }
+
+    private function prepareAccidentSite(int $workers, int $index = 15, int $free = 0): void
+    {
+        foreach ($this->colony->getPlanetFields() as $field) {
+            $field->setBuilding(null)->setActive(0);
+        }
+        $this->colony->setSurfaceWidth(10);
+        $this->colony->getChangeable()->setWorkers(0)->setWorkless($free);
+        $this->field = $this->addAccidentBuilding($index, $workers, true);
+    }
+
+    private function addAccidentBuilding(int $index, int $workers, bool $research = false): PlanetField
+    {
+        $building = new \Stu\Orm\Entity\Building()->setName('Testgebäude ' . $index)->setWorkers($workers)->setIntegrity(1000)->setIsActivateable(true);
+        $this->em->persist($building);
+        $this->em->flush();
+        if ($research) {
+            $function = new BuildingFunction()->setBuildingId($building->getId())->setFunction(BuildingFunctionEnum::SPECIAL_RESEARCH);
+            $this->em->getClassMetadata(BuildingFunction::class)->setFieldValue($function, 'building', $building);
+            $this->em->persist($function);
+            $building->getFunctions()->set(BuildingFunctionEnum::SPECIAL_RESEARCH->value, $function);
+        }
+        $field = $this->colony->getPlanetFields()->get($index);
+        if ($field === null) {
+            $field = new PlanetField()->setColony($this->colony)->setFieldId($index);
+            $this->colony->getPlanetFields()->set($index, $field);
+            $this->em->persist($field);
+        }
+        $field->setBuilding($building)->setActive(1)->setIntegrity(1000);
+        $this->colony->getChangeable()->setWorkers($this->colony->getWorkers() + $workers);
+        $this->em->flush();
+        return $field;
+    }
+
+    private function boundResearch(): SpecialResearch
+    {
+        return $this->newResearch(AwayMissionResearchEnum::SENSORS, SpecialResearchStatusEnum::RUNNING)
+            ->setField($this->field)->setFailureSettings($this->definition(AwayMissionResearchEnum::SENSORS)->getFailureSettings());
+    }
+
+    private function accident(StuRandom $random): \Stu\Component\Research\SpecialResearchFailure
+    {
+        return new \Stu\Component\Research\SpecialResearchFailure(
+            $this->getContainer()->get(\Stu\Component\Research\SpecialResearchFacility::class),
+            $this->getContainer()->get(SpecialResearchCatalog::class),
+            $this->getContainer()->get(\Stu\Component\Building\BuildingActivationHandler::class),
+            $this->getContainer()->get(\Stu\Orm\Repository\PlanetFieldRepositoryInterface::class), $random
+        );
     }
 
     private function renderPanel(): string
@@ -444,6 +677,6 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
 
     private function start(AwayMissionResearchEnum $type): bool
     {
-        return $this->em->wrapInTransaction(fn (): bool => $this->service->start($this->colony, $type, new InformationWrapper()));
+        return $this->em->wrapInTransaction(fn (): bool => $this->service->start($this->colony, $this->field, $type, new InformationWrapper()));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Stu\Component\Research\SpecialResearchCompletion;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\Colony;
@@ -22,7 +23,8 @@ final class BuildingRemovalHandler
         private readonly ColonySandboxRepositoryInterface $colonySandboxRepository,
         private readonly BuildingFunctionActionMapperInterface $buildingFunctionActionMapper,
         private readonly ColonyBuildingEffects $colonyBuildingEffects,
-        private readonly BuildingActivationHandler $buildingActivationHandler
+        private readonly BuildingActivationHandler $buildingActivationHandler,
+        private readonly SpecialResearchCompletion $researchCompletion
     ) {}
 
     public function remove(PlanetField $field, bool $isDueToUpgrade = false): void
@@ -36,6 +38,7 @@ final class BuildingRemovalHandler
             return;
         }
 
+        $this->researchCompletion->buildingRemoved($field);
         $host = $field->getHost();
         if (!$field->isUnderConstruction()) {
             $this->handleRemovalWhenNotUnderConstruction($field, $building, $host, $isDueToUpgrade);

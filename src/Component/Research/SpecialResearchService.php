@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Component\Research;
 
-use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\SpecialResearch;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\SpecialResearchRepositoryInterface;
@@ -23,18 +22,18 @@ final class SpecialResearchService
         private SpecialResearchCatalog $catalog,
         private CommodityRepositoryInterface $commodities,
         private StorageManagerInterface $storageManager,
-        private ColonyFunctionManagerInterface $functions,
+        private SpecialResearchFacility $facility,
         private StuTime $time
     ) {}
 
-    public function start(Colony $colony, AwayMissionResearchEnum $type, InformationInterface $information): bool
+    public function start(Colony $colony, PlanetField $field, AwayMissionResearchEnum $type, InformationInterface $information): bool
     {
         $user = $colony->getUser();
-        $this->repository->lockStorage($colony);
+        $this->repository->lockStorage($colony, $field);
         if ($colony->getUser()->getId() !== $user->getId()) {
             throw new AccessViolationException('Der Besitzer der Kolonie hat sich geändert');
         }
-        if (!$this->functions->hasActiveFunction($colony, BuildingFunctionEnum::SPECIAL_RESEARCH, false)) {
+        if (!$this->facility->isAvailable($colony, $field)) {
             $information->addInformation('Für die Sonderforschung wird ein aktives Forschungszentrum oder Technologiecenter benötigt');
             return false;
         }
@@ -62,7 +61,8 @@ final class SpecialResearchService
         $now = $this->time->time();
         $research->setColony($colony)->setStatus(SpecialResearchStatusEnum::RUNNING)
             ->setStartTime($now)->setFinishTime($now + $definition->getDuration())
-            ->setFailureChance($definition->getFailureChance());
+            ->setFailureChance($definition->getFailureChance())->setField($field)
+            ->setFailureSettings($definition->getFailureSettings());
         $this->repository->save($research);
         $information->addInformation(sprintf('Die Grundlagenforschung für %s wurde gestartet', $type->getDescription()));
         return true;

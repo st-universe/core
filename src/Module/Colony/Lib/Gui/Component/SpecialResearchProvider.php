@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
-use Stu\Component\Building\BuildingFunctionEnum;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use request;
 use Stu\Component\Research\SpecialResearchCatalog;
+use Stu\Component\Research\SpecialResearchFacility;
 use Stu\Component\Research\SpecialResearchStatusEnum;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
@@ -23,7 +23,7 @@ final class SpecialResearchProvider implements PlanetFieldHostComponentInterface
         private SpecialResearchRepositoryInterface $repository,
         private SpecialResearchCatalog $catalog,
         private CommodityRepositoryInterface $commodities,
-        private ColonyFunctionManagerInterface $functions
+        private SpecialResearchFacility $facility
     ) {}
 
     #[\Override]
@@ -34,7 +34,9 @@ final class SpecialResearchProvider implements PlanetFieldHostComponentInterface
         }
         $researches = $this->repository->getByUser($user);
         $running = array_find($researches, static fn (SpecialResearch $r): bool => $r->getStatus() === SpecialResearchStatusEnum::RUNNING);
-        $active = $this->functions->hasActiveFunction($entity, BuildingFunctionEnum::SPECIAL_RESEARCH, false);
+        $field = $this->facility->find($entity, request::indInt('fid'));
+        $active = $this->facility->isAvailable($entity, $field);
+        $template->setTemplateVar('SPECIAL_RESEARCH_FIELD', $field);
         $rows = [];
         foreach ($this->catalog->getDefinitions($user->getFactionId()) as $definition) {
             $type = $definition->getResearchType();

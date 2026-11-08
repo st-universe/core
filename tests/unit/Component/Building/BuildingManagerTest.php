@@ -46,13 +46,21 @@ class BuildingManagerTest extends StuTestCase
             $this->colonySandboxRepository,
             $this->buildingPostAction
         );
+        $researchRepository = $this->mock(\Stu\Orm\Repository\SpecialResearchRepositoryInterface::class);
+        $researchRepository->shouldReceive('getRunningByField')->zeroOrMoreTimes()->andReturn([]);
+        $researchCompletion = new \Stu\Component\Research\SpecialResearchCompletion(
+            $researchRepository,
+            $this->mock(\Stu\Module\Message\Lib\PrivateMessageSenderInterface::class),
+            $this->mock(\Stu\Module\Control\StuTime::class)
+        );
         $buildingRemovalHandler = new BuildingRemovalHandler(
             $this->planetFieldRepository,
             $this->colonyRepository,
             $this->colonySandboxRepository,
             $this->buildingFunctionActionMapper,
             $colonyBuildingEffects,
-            $buildingActivationHandler
+            $buildingActivationHandler,
+            $researchCompletion
         );
         $buildingFinishHandler = new BuildingFinishHandler(
             $this->planetFieldRepository,

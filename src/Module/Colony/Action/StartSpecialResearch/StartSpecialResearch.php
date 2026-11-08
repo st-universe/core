@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\StartSpecialResearch;
 use request;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
+use Stu\Component\Research\SpecialResearchFacility;
 use Stu\Component\Research\SpecialResearchService;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -18,7 +19,7 @@ final class StartSpecialResearch implements ActionControllerInterface
 {
     public const string ACTION_IDENTIFIER = 'B_START_SPECIAL_RESEARCH';
 
-    public function __construct(private ColonyLoaderInterface $colonyLoader, private SpecialResearchService $research) {}
+    public function __construct(private ColonyLoaderInterface $colonyLoader, private SpecialResearchService $research, private SpecialResearchFacility $facility) {}
 
     #[\Override]
     public function handle(ActionControllerContext $context): void
@@ -31,7 +32,13 @@ final class StartSpecialResearch implements ActionControllerInterface
             $context->getInfo()->addInformation('Diese Sonderforschung existiert nicht');
             return;
         }
-        $this->research->start($colony, $type, $context->getInfo());
+        $fieldId = request::postIntFatal('fid');
+        $field = $fieldId > 0 ? $this->facility->find($colony, $fieldId) : null;
+        if ($field === null) {
+            $context->getInfo()->addInformation('Das ausgewählte Forschungsgebäude ist nicht vorhanden');
+            return;
+        }
+        $this->research->start($colony, $field, $type, $context->getInfo());
     }
 
     #[\Override]

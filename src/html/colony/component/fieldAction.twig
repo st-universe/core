@@ -180,7 +180,7 @@
                     {% endif %}
                     {% if BUILDING_FUNCTION.isSpecialResearch %}
                     <div class="fabutton">
-                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(20);"
+                        <a href="javascript:void(0);" onclick="clearAjaxCallbacks(); switchColonySubmenu(20, null, null, {{ FIELD.getId }});"
                             class="fabutton">Sonderforschung</a>
                     </div>
                     {% endif %}

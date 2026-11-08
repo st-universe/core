@@ -12,6 +12,7 @@ use Stu\Component\Research\SpecialResearchStatusEnum;
 #[ORM\Table(name: 'stu_special_research')]
 #[ORM\UniqueConstraint(name: 'special_research_user_type_idx', columns: ['user_id', 'research_type'])]
 #[ORM\Index(name: 'special_research_due_idx', columns: ['status', 'finish_time'])]
+#[ORM\Index(name: 'special_research_field_idx', columns: ['field_id', 'status'])]
 class SpecialResearch
 {
     #[ORM\Id]
@@ -41,6 +42,46 @@ class SpecialResearch
 
     #[ORM\Column(name: 'failure_chance', type: 'smallint', options: ['default' => 10])]
     private int $failureChance;
+
+    #[ORM\Column(name: 'field_id', type: 'integer', nullable: true)]
+    private ?int $fieldId = null;
+
+    #[ORM\Column(name: 'building_id', type: 'integer', nullable: true)]
+    private ?int $buildingId = null;
+
+    /** @var array{damage_percent: int, worker_min_percent: int, worker_max_percent: int, population_min: int, population_max: int}|null */
+    #[ORM\Column(name: 'failure_settings', type: 'json', nullable: true)]
+    private ?array $failureSettings = null;
+
+    public function getFieldId(): ?int
+    {
+        return $this->fieldId;
+    }
+
+    public function getBuildingId(): ?int
+    {
+        return $this->buildingId;
+    }
+
+    public function setField(PlanetField $field): self
+    {
+        $this->fieldId = $field->getId();
+        $this->buildingId = $field->getBuilding()?->getId();
+        return $this;
+    }
+
+    /** @return array{damage_percent: int, worker_min_percent: int, worker_max_percent: int, population_min: int, population_max: int}|null */
+    public function getFailureSettings(): ?array
+    {
+        return $this->failureSettings;
+    }
+
+    /** @param array{damage_percent: int, worker_min_percent: int, worker_max_percent: int, population_min: int, population_max: int} $settings */
+    public function setFailureSettings(array $settings): self
+    {
+        $this->failureSettings = $settings;
+        return $this;
+    }
 
     public function getFailureChance(): int
     {
