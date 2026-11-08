@@ -187,11 +187,16 @@ use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\WormholeEntry;
 use Stu\Orm\Entity\WormholeRestriction;
 
+use function DI\autowire;
+
 return [
-    SpecialResearchDefinitionRepositoryInterface::class => \DI\autowire(SpecialResearchDefinitionRepository::class),
-    SpecialResearchRepositoryInterface::class => \DI\autowire(SpecialResearchRepository::class),
-    AwayMissionRepositoryInterface::class => \DI\autowire(AwayMissionRepository::class),
-    ColonyProtectionRepositoryInterface::class => \DI\autowire(ColonyProtectionRepository::class),
+    BorgSphereRepositoryInterface::class => autowire(BorgSphereRepository::class),
+    TechnologyRepositoryInterface::class => autowire(TechnologyRepository::class),
+    UserModuleOptimizationRepositoryInterface::class => autowire(UserModuleOptimizationRepository::class),
+    SpecialResearchDefinitionRepositoryInterface::class => autowire(SpecialResearchDefinitionRepository::class),
+    SpecialResearchRepositoryInterface::class => autowire(SpecialResearchRepository::class),
+    AwayMissionRepositoryInterface::class => autowire(AwayMissionRepository::class),
+    ColonyProtectionRepositoryInterface::class => autowire(ColonyProtectionRepository::class),
     AllianceRepositoryInterface::class =>
         fn (ContainerInterface $c): EntityRepository => $c->get(EntityManagerInterface::class)->getRepository(Alliance::class),
     AllianceApplicationRepositoryInterface::class =>

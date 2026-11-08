@@ -47,6 +47,7 @@ use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\SetGameState;
+use Stu\Module\Admin\Action\SpawnBorgSphere;
 use Stu\Module\Admin\Action\SpawnPirateFleet;
 use Stu\Module\Admin\Action\StartImpersonation;
 use Stu\Module\Admin\Action\StopImpersonation;
@@ -101,6 +102,7 @@ return [
     EditBorderRequestInterface::class => autowire(EditBorderRequest::class),
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
+        SpawnBorgSphere::ACTION_IDENTIFIER => autowire(SpawnBorgSphere::class),
         StartImpersonation::ACTION_IDENTIFIER => autowire(StartImpersonation::class),
         StopImpersonation::ACTION_IDENTIFIER => autowire(StopImpersonation::class),
         EditEffects::ACTION_IDENTIFIER => autowire(EditEffects::class),

@@ -7,26 +7,18 @@
   </tr>
   <tr>
     <td>
-      {% for commodity in SPACECRAFT.getStorage %}
-      {% if commodity.getAmount %}
-      {% if not loop.index is odd %}
-      <div style="float: right; width: 50%;">
-        <img src="/assets/commodities/{{ commodity.getCommodity.getId }}.png"
-          title="{{ commodity.getCommodity.getName }}" />
-        {{ commodity.getAmount }}
+      <div class="spacecraft-storage-items" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 0; align-items: start;">
+        {% for commodity in SPACECRAFT.getStorage %}
+        {% if commodity.getAmount %}
+        {% include 'html/storage/storageItem.twig' with {
+          'storageItem': commodity,
+          'commodity': commodity.getCommodity,
+          'showName': false,
+          'locations': false
+        } only %}
+        {% endif %}
+        {% endfor %}
       </div>
-      {% if loop.last %}
-      <div style="float: left; width: 50%;"></div>
-      {% endif %}
-      {% else %}
-      <div style="float: left; width: 50%;">
-        <img src="/assets/commodities/{{ commodity.getCommodity.getId }}.png"
-          title="{{ commodity.getCommodity.getName }}" />
-        {{ commodity.getAmount }}
-      </div>
-      {% endif %}
-      {% endif %}
-      {% endfor %}
     </td>
   </tr>
 </table>

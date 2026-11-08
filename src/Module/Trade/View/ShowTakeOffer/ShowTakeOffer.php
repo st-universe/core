@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTakeOffer;
 
+use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
@@ -17,7 +18,7 @@ final class ShowTakeOffer implements ViewControllerInterface
 
     public function __construct(private ShowTakeOfferRequestInterface $showTakeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeOfferRepositoryInterface $tradeOfferRepository) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
@@ -48,6 +49,7 @@ final class ShowTakeOffer implements ViewControllerInterface
             $isStorageExistent = array_key_exists($selectedOffer->getWantedCommodityId(), $tradeAccount->getStorage());
 
             $game->setTemplateVar('TRADE_ACCOUNT', $tradeAccount);
+            $game->setTemplateVar('STORED_STORAGE', $tradeAccount->getStorage()[$selectedOffer->getWantedCommodityId()] ?? null);
             $game->setTemplateVar('STORED', $isStorageExistent ? $tradeAccount->getStorage()[$selectedOffer->getWantedCommodityId()]->getAmount() : null);
         }
     }

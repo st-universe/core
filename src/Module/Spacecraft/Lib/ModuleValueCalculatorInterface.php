@@ -12,10 +12,11 @@ interface ModuleValueCalculatorInterface
     public function calculateModuleValue(
         SpacecraftRump $rump,
         Module $module,
-        int $value
+        int $value,
+        int $improvementSteps = 0
     ): int;
 
-    public function calculateDamageImpact(SpacecraftRump $rump, Module $module): string;
+    public function calculateDamageImpact(SpacecraftRump $rump, Module $module, int $improvementSteps = 0): string;
 
-    public function calculateEvadeChance(SpacecraftRump $rump, Module $module): int;
+    public function calculateEvadeChance(SpacecraftRump $rump, Module $module, int $improvementSteps = 0): int;
 }

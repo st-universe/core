@@ -39,6 +39,7 @@ use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -60,7 +61,8 @@ class TwigHelper
         private readonly AccessCheckInterface $accessCheck,
         private readonly StuTime $stuTime,
         private readonly StuRandom $stuRandom,
-        private readonly AllianceJobManagerInterface $allianceJobManager
+        private readonly AllianceJobManagerInterface $allianceJobManager,
+        private readonly ?BorgSphereRepositoryInterface $borgSphereRepository = null
     ) {}
 
     public function registerGlobalVariables(): void
@@ -82,6 +84,7 @@ class TwigHelper
     {
         $this->registerFilters();
         $this->registerFunctions();
+        $this->registerBorgFunctions();
     }
 
     private function registerFilters(): void
@@ -158,6 +161,11 @@ class TwigHelper
 
         $numberWithThousandSeperatorFilter = new TwigFilter('numberWithThousandSeperator', fn (int $value): string => $this->templateHelper->getNumberWithThousandSeperator($value));
         $this->environment->addFilter($numberWithThousandSeperatorFilter);
+    }
+
+    private function registerBorgFunctions(): void
+    {
+        $this->environment->addFunction(new TwigFunction('isBorgSphere', fn (Spacecraft|SpacecraftNfsItem $target): bool => $this->borgSphereRepository?->getByShipId($target->getId())?->isFinished() === false));
     }
 
     private function registerFunctions(): void

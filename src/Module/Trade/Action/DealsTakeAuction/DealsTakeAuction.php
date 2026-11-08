@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeAuction;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Trade\TradeEnum;
@@ -17,6 +18,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Trade\Lib\CommodityEscrow;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\Lib\TradePostStorageManagerInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
@@ -38,7 +40,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 
     public function __construct(private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest, private TradeLibFactoryInterface $tradeLibFactory, private DealsRepositoryInterface $dealsRepository, private TradePostRepositoryInterface $tradepostRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private BuildplanModuleRepositoryInterface $buildplanModuleRepository, private SpacecraftBuildplanRepositoryInterface $spacecraftBuildplanRepository, private ShipCreatorInterface $shipCreator, private CreatePrestigeLogInterface $createPrestigeLog, private StuTime $stuTime, private StorageManagerInterface $storageManager, private PrivateMessageSenderInterface $privateMessageSender) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $userId = $context->getUser()->getId();
@@ -58,7 +60,6 @@ final class DealsTakeAuction implements ActionControllerInterface
             return;
         }
 
-        // sanity checks
         if ($auction->getTakenTime() !== null) {
             return;
         }
@@ -121,6 +122,7 @@ final class DealsTakeAuction implements ActionControllerInterface
                     $user,
                     $wantedCommodity,
                     $refundAmount,
+                    $highestBid->getModuleQualityAmounts(),
                     $freeStorage,
                     $storageManagerUser
                 );
@@ -170,23 +172,24 @@ final class DealsTakeAuction implements ActionControllerInterface
         return $result;
     }
 
+    /** @param array<int, int> $qualities */
     private function refundCommodityOverbid(
         ActionControllerContext $context,
         TradePost $tradePost,
         User $user,
         Commodity $wantedCommodity,
         int $refundAmount,
+        array $qualities,
         int $freeStorage,
         TradePostStorageManagerInterface $storageManagerUser
     ): void {
         $amountForUserStorage = min($refundAmount, $freeStorage);
         $amountForTradePostStorage = $refundAmount - $amountForUserStorage;
+        [$refund] = CommodityEscrow::split($qualities, $refundAmount);
+        [$forUser, $forPost] = CommodityEscrow::split($refund, $amountForUserStorage);
 
         if ($amountForUserStorage > 0) {
-            $storageManagerUser->upperStorage(
-                $wantedCommodity->getId(),
-                $amountForUserStorage
-            );
+            $storageManagerUser->addStorage($wantedCommodity->getId(), $forUser);
 
             $context->getInfo()->addInformation(sprintf(
                 _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
@@ -199,10 +202,10 @@ final class DealsTakeAuction implements ActionControllerInterface
             return;
         }
 
-        $this->storageManager->upperStorage(
+        $this->storageManager->addStorage(
             $tradePost->getStation(),
             $wantedCommodity,
-            $amountForTradePostStorage
+            $forPost
         );
 
         $context->getInfo()->addInformation(sprintf(
@@ -241,7 +244,7 @@ final class DealsTakeAuction implements ActionControllerInterface
             ->finishConfiguration();
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;
@@ -266,6 +269,7 @@ final class DealsTakeAuction implements ActionControllerInterface
             $mod->setModuleType($buildplanModule->getModule()->getType());
             $mod->setBuildplan($newPlan);
             $mod->setModule($buildplanModule->getModule());
+            $mod->setImprovementSteps($buildplanModule->getImprovementSteps());
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($buildplanModule->getModule()->getSpecials()));
             $this->buildplanModuleRepository->save($mod);
         }

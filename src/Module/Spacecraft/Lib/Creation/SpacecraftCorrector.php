@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
+use Override;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 use Stu\Module\Logging\StuLogger;
@@ -21,7 +22,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         private SpacecraftWrapperFactoryInterface $spacecraftWrapperFactory
     ) {}
 
-    #[\Override]
+    #[Override]
     public function correctAllSpacecrafts(): void
     {
         $count = 0;
@@ -74,6 +75,7 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         $rump = $buildplan->getRump();
         $wrapper = $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
         $toStringBefore = $wrapper->__toString();
+        $qualityChanges = $this->correctModuleQualities($spacecraft, $buildplan);
 
         foreach ($buildplan->getModules() as $buildplanModule) {
             $moduleType = $buildplanModule->getModuleType();
@@ -83,6 +85,9 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
 
         $toStringAfter = $wrapper->__toString();
         $diff = $differ->diff($toStringBefore, $toStringAfter);
+        if ($qualityChanges !== []) {
+            $diff .= implode("\n", $qualityChanges) . "\n";
+        }
 
         if (strlen($diff) > strlen(self::HEADER)) {
             StuLogger::logf(
@@ -95,5 +100,27 @@ class SpacecraftCorrector implements SpacecraftCorrectorInterface
         }
 
         return false;
+    }
+    /** @return list<string> */
+    private function correctModuleQualities(Spacecraft $spacecraft, SpacecraftBuildplan $buildplan): array
+    {
+        $modules = [];
+        foreach ($buildplan->getModules() as $entry) {
+            $modules[$entry->getModule()->getId()] = $entry;
+        }
+        $changes = [];
+        foreach ($spacecraft->getSystems() as $system) {
+            $module = $system->getModule();
+            if ($module === null) {
+                continue;
+            }
+            $entry = $modules[$module->getId()] ?? null;
+            if ($entry === null || $system->getImprovementSteps() === $entry->getImprovementSteps()) {
+                continue;
+            }
+            $changes[] = sprintf('Modulqualität %s: %s -> %s', $module->getName(), $system->getQualityLabel(), $entry->getQualityLabel());
+            $system->setImprovementSteps($entry->getImprovementSteps());
+        }
+        return $changes;
     }
 }

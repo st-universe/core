@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Damage;
 
+use Override;
+use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Lib\Damage\DamageWrapper;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\SpacecraftSystem;
 
@@ -15,10 +18,11 @@ use Stu\Orm\Entity\SpacecraftSystem;
 final class SystemDamage implements SystemDamageInterface
 {
     public function __construct(
-        private SpacecraftSystemManagerInterface $spacecraftSystemManager
+        private SpacecraftSystemManagerInterface $spacecraftSystemManager,
+        private ?BorgSphereCombat $borgSphereCombat = null
     ) {}
 
-    #[\Override]
+    #[Override]
     public function checkForDamagedShipSystems(
         SpacecraftWrapperInterface $wrapper,
         DamageWrapper $damageWrapper,
@@ -43,7 +47,7 @@ final class SystemDamage implements SystemDamageInterface
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public function destroyRandomShipSystem(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): ?string
     {
         $healthySystems = $this->getHealthySystems($wrapper, $damageWrapper);
@@ -53,6 +57,10 @@ final class SystemDamage implements SystemDamageInterface
             return null;
         }
         $system = $healthySystems[0];
+        if ($this->borgSphereCombat?->limitSystemStatus($wrapper->get(), $system, 0) !== null) {
+            $this->damageShipSystem($wrapper, $system, 100, new InformationWrapper());
+            return null;
+        }
         $system->setStatus(0);
         $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
         $this->spacecraftSystemManager->handleDestroyedSystem($wrapper, $healthySystems[0]->getSystemType());
@@ -60,7 +68,7 @@ final class SystemDamage implements SystemDamageInterface
         return $healthySystems[0]->getSystemType()->getDescription();
     }
 
-    #[\Override]
+    #[Override]
     public function damageRandomShipSystem(
         SpacecraftWrapperInterface $wrapper,
         DamageWrapper $damageWrapper,
@@ -80,14 +88,18 @@ final class SystemDamage implements SystemDamageInterface
     /** @return array<SpacecraftSystem>  */
     private function getHealthySystems(SpacecraftWrapperInterface $wrapper, DamageWrapper $damageWrapper): array
     {
+        $targetType = $this->borgSphereCombat?->targetSystems($wrapper->get());
+        if ($targetType !== null) {
+            $damageWrapper->setTargetSystemTypes([$targetType]);
+        }
         return $wrapper->get()->getSystems()
             ->filter(fn (SpacecraftSystem $system): bool => $damageWrapper->canDamageSystem($system->getSystemType()))
-            ->filter(fn (SpacecraftSystem $system): bool => $system->getStatus() > 0)
+            ->filter(fn (SpacecraftSystem $system): bool => $this->borgSphereCombat?->canDamageSystem($wrapper->get(), $system) ?? $system->getStatus() > 0)
             ->filter(fn (SpacecraftSystem $system): bool => $system->getSystemType()->canBeDamaged())
             ->toArray();
     }
 
-    #[\Override]
+    #[Override]
     public function damageShipSystem(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftSystem $system,
@@ -96,6 +108,14 @@ final class SystemDamage implements SystemDamageInterface
     ): bool {
         $status = $system->getStatus();
         $systemName = $system->getSystemType()->getDescription();
+
+        $limitedStatus = $this->borgSphereCombat?->limitSystemStatus($wrapper->get(), $system, $status - $dmg);
+        if ($limitedStatus !== null) {
+            $system->setStatus($limitedStatus);
+            $this->spacecraftSystemManager->handleDamagedSystem($wrapper, $system->getSystemType());
+            $informations->addInformation('- Folgendes System wurde beschädigt: ' . $systemName);
+            return false;
+        }
 
         if ($status > $dmg) {
             $system->setStatus($status - $dmg);

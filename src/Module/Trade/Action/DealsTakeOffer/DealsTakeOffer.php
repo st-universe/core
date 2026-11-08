@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Trade\TradeEnum;
@@ -41,7 +42,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         private CreatePrestigeLogInterface $createPrestigeLog
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $userId = $context->getUser()->getId();
@@ -222,7 +223,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             ->finishConfiguration();
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;
@@ -247,6 +248,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             $mod->setModuleType($buildplanModule->getModule()->getType());
             $mod->setBuildplan($newPlan);
             $mod->setModule($buildplanModule->getModule());
+            $mod->setImprovementSteps($buildplanModule->getImprovementSteps());
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($buildplanModule->getModule()->getSpecials()));
             $this->buildplanModuleRepository->save($mod);
         }

@@ -6,7 +6,6 @@ namespace Stu\Module\Station;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
-use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
 use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Station\Action\AddToAlliance\AddToAlliance;
 use Stu\Module\Station\Action\BuildShipyardShip\BuildShipyardShip;
@@ -61,7 +60,6 @@ return [
     ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     'STATION_ACTIONS' => [
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
-        AttackSpacecraft::ACTION_IDENTIFIER => autowire(AttackSpacecraft::class),
         AddToAlliance::ACTION_IDENTIFIER => autowire(AddToAlliance::class),
         BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
         BuildShipyardShip::ACTION_IDENTIFIER => autowire(BuildShipyardShip::class),

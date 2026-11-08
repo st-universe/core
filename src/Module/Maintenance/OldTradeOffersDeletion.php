@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Maintenance;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\Information\InformationWrapper;
@@ -18,7 +19,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
     public function __construct(private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLibFactoryInterface $tradeLibFactory, private PrivateMessageSenderInterface $privateMessageSender, private StorageRepositoryInterface $storageRepository) {}
 
-    #[\Override]
+    #[Override]
     public function handle(): void
     {
         $offersToDelete = $this->tradeOfferRepository->getOldOffers(OldTradeOffersDeletion::OFFER_MAX_AGE);
@@ -68,9 +69,9 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             ));
 
             // update post storage
-            $storageManager->upperStorage(
+            $storageManager->addStorage(
                 $offer->getOfferedCommodityId(),
-                $offer->getOfferedCommodityCount() * $offer->getOfferCount()
+                $offer->getStorage()->getModuleQualityAmounts()
             );
 
             $this->storageRepository->delete($offer->getStorage());

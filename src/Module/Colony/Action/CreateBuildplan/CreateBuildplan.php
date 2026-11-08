@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CreateBuildplan;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
@@ -13,6 +14,7 @@ use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Lib\CleanTextUtils;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
@@ -45,7 +47,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $context->setView(ShowModuleScreen::VIEW_IDENTIFIER);
     }
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $user = $context->getUser();
@@ -143,7 +145,7 @@ final class CreateBuildplan implements ActionControllerInterface
             $this->exitOnError($context);
             return;
         }
-        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
+        [$qualities, $signature] = ModuleQualitySelection::signature($this->buildplanSignatureCreation, $modules, $crewUsage, null);
 
         $plannameFromRequest = request::indString('buildplanname');
         if (
@@ -205,7 +207,7 @@ final class CreateBuildplan implements ActionControllerInterface
             $buildplanModule = $this->buildplanModuleRepository->prototype();
             $buildplanModule->setModuleType($module->getType());
             $buildplanModule->setBuildplan($plan);
-            $buildplanModule->setModule($module);
+            $buildplanModule->setModule($module)->setImprovementSteps($qualities[$module->getId()]);
             $buildplanModule->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($module->getSpecials()));
 
             $this->buildplanModuleRepository->save($buildplanModule);
@@ -217,7 +219,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $context->setViewContext(ViewContextMetadataTypeEnum::BUILDPLAN, $plan->getId());
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

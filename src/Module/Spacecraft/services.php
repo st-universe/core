@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft;
 
+use Stu\Component\Borg\BorgSphereAttackContext;
+use Stu\Component\Borg\BorgSphereAttackGuard;
+use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Extension\ExtensionHooks;
@@ -17,10 +20,12 @@ use Stu\Module\Spacecraft\Action\AddWormholeRestriction\AddWormholeRestriction;
 use Stu\Module\Spacecraft\Action\AssignCrewSlot\AssignCrewSlot;
 use Stu\Module\Spacecraft\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
+use Stu\Module\Spacecraft\Action\AwayMission\AwayMission;
 use Stu\Module\Spacecraft\Action\BoardShip\BoardShip;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeName;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequestInterface;
+use Stu\Module\Spacecraft\Action\CollectBorgNanites\CollectBorgNanites;
 use Stu\Module\Spacecraft\Action\DeactivateSystem\DeactivateSystem;
 use Stu\Module\Spacecraft\Action\DeactivateTractorBeam\DeactivateTractorBeam;
 use Stu\Module\Spacecraft\Action\DeleteSpacecraftLog\DeleteSpacecraftLog;
@@ -151,6 +156,7 @@ use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CrewEvacuation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\EnhanceDestroyingCrew;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\FinishBorgSphereEvent;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\HistoryEntryCreation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\LeaveIntactModules;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\PrestigeGain;
@@ -241,6 +247,8 @@ use Stu\Module\Spacecraft\Lib\SpacecraftRemover;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChanger;
 use Stu\Module\Spacecraft\Lib\SpacecraftStateChangerInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftUiFactory;
+use Stu\Module\Spacecraft\Lib\SpacecraftUiFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactory;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ClearTorpedo;
@@ -254,6 +262,8 @@ use Stu\Module\Spacecraft\Lib\Ui\StateIconAndTitle;
 use Stu\Module\Spacecraft\View\Noop\Noop;
 use Stu\Module\Spacecraft\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
+use Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission;
+use Stu\Module\Spacecraft\View\ShowBorgSphere\ShowBorgSphere;
 use Stu\Module\Spacecraft\View\ShowBroadcastResponse\ShowBroadcastResponse;
 use Stu\Module\Spacecraft\View\ShowColonyMessage\ShowColonyMessage;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
@@ -297,9 +307,11 @@ return [
     ShipMoverInterface::class => autowire(ShipMover::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),
-    Lib\SpacecraftUiFactoryInterface::class => autowire(Lib\SpacecraftUiFactory::class),
-    ApplyDamageInterface::class => autowire(ApplyDamage::class),
-    SystemDamageInterface::class => autowire(SystemDamage::class),
+    SpacecraftUiFactoryInterface::class => autowire(SpacecraftUiFactory::class),
+    ApplyDamageInterface::class => autowire(ApplyDamage::class)
+        ->constructorParameter('borgSphereCombat', get(BorgSphereCombat::class)),
+    SystemDamageInterface::class => autowire(SystemDamage::class)
+        ->constructorParameter('borgSphereCombat', get(BorgSphereCombat::class)),
     ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     FightLibInterface::class => autowire(FightLib::class),
@@ -308,7 +320,8 @@ return [
     SpacecraftAttackCoreInterface::class => autowire(SpacecraftAttackCore::class),
     SpacecraftAttackPreparationInterface::class => autowire(SpacecraftAttackPreparation::class),
     SpacecraftAttackCycleInterface::class => autowire(SpacecraftAttackCycle::class),
-    BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class),
+    BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class)
+        ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
     SkipDetectionInterface::class => autowire(SkipDetection::class),
     AlertedShipsDetectionInterface::class => autowire(AlertedShipsDetection::class),
     AlertedShipInformationInterface::class => autowire(AlertedShipInformation::class),
@@ -411,6 +424,7 @@ return [
         ->constructorParameter(
             'destructionHandlers',
             [
+                autowire(FinishBorgSphereEvent::class),
                 autowire(ClearTractoredBeam::class),
                 autowire(CrewEvacuation::class),
                 autowire(HistoryEntryCreation::class),
@@ -436,6 +450,7 @@ return [
         SpacecraftSystemTypeEnum::WARPCORE_CHARGE_TRANSFER->value => autowire(WarpcoreChargeTransferSystemSettings::class)
     ],
     'SPACECRAFT_ACTIONS' => [
+        CollectBorgNanites::ACTION_IDENTIFIER => autowire(CollectBorgNanites::class),
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
         DeleteSpacecraftLog::ACTION_IDENTIFIER => autowire(DeleteSpacecraftLog::class),
         EditSpacecraftLog::ACTION_IDENTIFIER => autowire(EditSpacecraftLog::class),
@@ -481,8 +496,9 @@ return [
         EpsTransfer::ACTION_IDENTIFIER => autowire(EpsTransfer::class),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
-        \Stu\Module\Spacecraft\Action\AwayMission\AwayMission::ACTION_IDENTIFIER => autowire(\Stu\Module\Spacecraft\Action\AwayMission\AwayMission::class),
-        AttackSpacecraft::ACTION_IDENTIFIER => autowire(AttackSpacecraft::class),
+        AwayMission::ACTION_IDENTIFIER => autowire(AwayMission::class),
+        AttackSpacecraft::ACTION_IDENTIFIER => autowire(AttackSpacecraft::class)
+            ->constructorParameter('borgSphereAttackGuard', get(BorgSphereAttackGuard::class)),
         TakeBuoy::ACTION_IDENTIFIER => autowire(TakeBuoy::class),
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
         DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
@@ -520,7 +536,8 @@ return [
         ShowBroadcastResponse::VIEW_IDENTIFIER => autowire(ShowBroadcastResponse::class),
         ShowColonyMessage::VIEW_IDENTIFIER => autowire(ShowColonyMessage::class),
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
-        \Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission::VIEW_IDENTIFIER => autowire(\Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission::class),
+        ShowAwayMission::VIEW_IDENTIFIER => autowire(ShowAwayMission::class),
+        ShowBorgSphere::VIEW_IDENTIFIER => autowire(ShowBorgSphere::class),
         ShowCrewAssignmentManagement::VIEW_IDENTIFIER => autowire(ShowCrewAssignmentManagement::class),
         ShowCrewmanDetails::VIEW_IDENTIFIER => autowire(ShowCrewmanDetails::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),

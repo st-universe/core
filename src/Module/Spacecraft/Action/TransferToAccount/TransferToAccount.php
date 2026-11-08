@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\TransferToAccount;
 
+use Override;
 use request;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -30,7 +32,7 @@ final class TransferToAccount implements ActionControllerInterface
         private InteractionCheckerInterface $interactionChecker
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -93,11 +95,11 @@ final class TransferToAccount implements ActionControllerInterface
             if ($storage === null) {
                 continue;
             }
-            $count = $gcount[$key];
 
             $commodity = $storage->getCommodity();
 
-            $count = $count == "max" ? $storage->getAmount() : (int) $count;
+            $quality = ModuleQualitySelection::readCommodity($commodityId);
+            $count = ModuleQualitySelection::getSelectedAmount($storage, $gcount[$key], $quality);
             if ($count < 1 || $storageManager->getFreeStorage() <= 0) {
                 continue;
             }
@@ -110,12 +112,12 @@ final class TransferToAccount implements ActionControllerInterface
                 $count = $tradepost->getStorage() - $storageManager->getStorageSum();
             }
             $context->getInfo()->addInformationf(_('%d %s'), $count, $commodity->getName());
-            $this->storageManager->lowerStorage($spacecraft, $commodity, $count);
-            $storageManager->upperStorage((int) $value, $count);
+            $packet = $this->storageManager->removeStorage($spacecraft, $commodity, $count, $quality);
+            $storageManager->addStorage((int) $value, $packet);
         }
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

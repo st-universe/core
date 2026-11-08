@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Retrofit;
 
+use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class CancelRetrofit implements CancelRetrofitInterface
@@ -23,7 +26,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
     ) {}
 
 
-    #[\Override]
+    #[Override]
     public function cancelRetrofit(Ship $ship): bool
     {
         $state = $ship->getState();
@@ -50,16 +53,15 @@ final class CancelRetrofit implements CancelRetrofitInterface
 
             if ($oldBuildplan != null && $newBuildplan != null) {
                 foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
-                    $oldModules = $oldBuildplan->getModulesByType($moduleType)->toArray();
                     $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
 
                     /** @var array<Module> */
-                    $addingModules = array_udiff($newModules, $oldModules, fn (Module $a, Module $b): int => $a->getId() - $b->getId());
+                    $addingModules = $this->getNewModules($newModules, $oldBuildplan, $newBuildplan);
 
                     if ($withinFirstQuarter) {
                         foreach ($addingModules as $module) {
                             if ($module->getType() != SpacecraftModuleTypeEnum::HULL) {
-                                $returnedmodules[] = $module;
+                                $returnedmodules[] = ['module' => $module, 'steps' => $newBuildplan->getModuleImprovementSteps($module)];
                             }
                         }
                     }
@@ -71,9 +73,9 @@ final class CancelRetrofit implements CancelRetrofitInterface
             if ($returnedmodules !== []) {
                 $msg = "\n\nDie folgenden Module wurden beim Abbruch der Umrüstung zurückgewonnen: \n";
 
-                foreach ($returnedmodules as $module) {
-                    $this->storageManager->upperStorage($colony, $module->getCommodity(), 1);
-                    $msg .= "- " . $module->getName() . "\n";
+                foreach ($returnedmodules as $entry) {
+                    $this->storageManager->addStorage($colony, $entry['module']->getCommodity(), [$entry['steps'] => 1]);
+                    $msg .= "- " . $entry['module']->getName() . "\n";
                 }
 
                 $txt .= $msg;
@@ -95,5 +97,13 @@ final class CancelRetrofit implements CancelRetrofitInterface
         }
 
         return false;
+    }
+    /**
+     * @param array<Module> $modules
+     * @return array<Module>
+     */
+    private function getNewModules(array $modules, SpacecraftBuildplan $oldPlan, SpacecraftBuildplan $newPlan): array
+    {
+        return array_filter($modules, fn (Module $module): bool => !ModuleQualitySelection::matchesPlan($module, $oldPlan, $newPlan->getModuleImprovementSteps($module)));
     }
 }

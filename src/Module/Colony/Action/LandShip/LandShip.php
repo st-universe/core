@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\LandShip;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -27,7 +28,7 @@ final class LandShip implements ActionControllerInterface
 
     public function __construct(private ColonyLoaderInterface $colonyLoader, private StorageManagerInterface $storageManager, private ColonyRepositoryInterface $colonyRepository, private SpacecraftRemoverInterface $spacecraftRemover, private ShipLoaderInterface $shipLoader, private ClearTorpedoInterface $clearTorpedo, private ColonyLibFactoryInterface $colonyLibFactory, private TroopTransferUtilityInterface $troopTransferUtility) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $colony = $this->colonyLoader->loadWithOwnerValidation(
@@ -75,7 +76,7 @@ final class LandShip implements ActionControllerInterface
         foreach ($ship->getStorage() as $stor) {
             $count = min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
             if ($count > 0) {
-                $this->storageManager->upperStorage($colony, $stor->getCommodity(), $count);
+                $this->storageManager->transferStorage($ship, $colony, $stor->getCommodity(), $count);
             }
         }
 
@@ -135,7 +136,7 @@ final class LandShip implements ActionControllerInterface
         $this->clearTorpedo->clearTorpedoStorage($wrapper);
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

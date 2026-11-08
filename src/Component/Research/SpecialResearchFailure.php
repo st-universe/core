@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Research;
 
+use LogicException;
 use Stu\Component\Building\BuildingActivationHandler;
 use Stu\Module\Control\StuRandom;
 use Stu\Orm\Entity\Colony;
@@ -34,7 +35,13 @@ final class SpecialResearchFailure
             return '';
         }
         $research->setField($field)->setFailureSettings($settings);
-        $building = $field->getBuilding() ?? throw new \LogicException('Research building missing');
+        return $this->applyAt($colony, $field, $settings);
+    }
+
+    /** @param array<string, int> $settings */
+    public function applyAt(Colony $colony, PlanetField $field, array $settings): string
+    {
+        $building = $field->getBuilding() ?? throw new LogicException('Research building missing');
         $workers = $building->getWorkers();
         $damage = (int) ceil($building->getIntegrity() * $settings['damage_percent'] / 100);
         $field->setIntegrity(max(1, $field->getIntegrity() - $damage));
@@ -59,7 +66,7 @@ final class SpecialResearchFailure
         if ($neighbor === null) {
             return 'Es gab keine Opfer';
         }
-        $building = $neighbor->getBuilding() ?? throw new \LogicException('Neighbor building missing');
+        $building = $neighbor->getBuilding() ?? throw new LogicException('Neighbor building missing');
         $this->activation->deactivate($neighbor);
         $count = $this->killWorkers($colony, $building->getWorkers(), $settings);
         return sprintf('Naniten konnten in das benachbarte Gebäude %s auf Feld %d entweichen, das daraufhin deaktiviert wurde. %s', $building->getName(), $neighbor->getFieldId(), $this->casualtyMessage($count, 'Arbeiter'));

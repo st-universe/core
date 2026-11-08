@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -14,7 +15,7 @@ use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[\Override]
+    #[Override]
     public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -25,11 +26,12 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         return new ModuleValueCalculator()->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rumpBaseValues->getBaseReactor()
+            $this->rumpBaseValues->getBaseReactor(),
+            $this->getImprovementSteps($module)
         );
     }
 
-    #[\Override]
+    #[Override]
     public function getSecondValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -45,13 +47,13 @@ final class ModuleRumpWrapperReactor extends ModuleRumpWrapperBase implements Mo
         return $this->getValue($module) * ReactorWrapperInterface::WARPCORE_CAPACITY_MULTIPLIER;
     }
 
-    #[\Override]
+    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::REACTOR;
     }
 
-    #[\Override]
+    #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $reactorWrapper = $wrapper->getReactorWrapper();

@@ -27,7 +27,8 @@ interface ModuleQueueRepositoryInterface extends ObjectRepository
     public function getByColonyAndModuleAndBuilding(
         int $colonyId,
         int $moduleId,
-        int $buildingFunction
+        int $buildingFunction,
+        ?int $improvementSteps = null
     ): ?ModuleQueue;
 
     /**

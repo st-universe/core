@@ -16,6 +16,12 @@ interface TradePostStorageManagerInterface
 
     public function upperStorage(int $commodityId, int $amount): void;
 
+    /** @param array<int, int> $qualities */
+    public function addStorage(int $commodityId, array $qualities): void;
+
+    /** @return array<int, int> */
+    public function removeStorage(int $commodityId, int $amount, ?int $quality = null): array;
+
     public function lowerStorage(int $commodityId, int $amount): void;
 
     /** @return Collection<int, Storage> Indexed by commodityId, ordered by commodityId */

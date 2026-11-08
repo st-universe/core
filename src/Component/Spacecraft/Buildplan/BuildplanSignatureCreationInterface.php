@@ -10,8 +10,9 @@ interface BuildplanSignatureCreationInterface
 {
     /**
      * @param array<Module> $modules
+     * @param array<int, int> $qualities
      */
-    public function createSignature(array $modules, int $crewUsage): string;
+    public function createSignature(array $modules, int $crewUsage, array $qualities = []): string;
 
     /**
      * @param array<int> $moduleIds

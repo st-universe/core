@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\RemoveWaste;
 
+use Override;
 use request;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -28,7 +30,7 @@ final class RemoveWaste implements ActionControllerInterface
         private NPCLogRepositoryInterface $npcLogRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -56,10 +58,12 @@ final class RemoveWaste implements ActionControllerInterface
 
         $wasted = [];
         foreach ($commodities as $commodityId => $count) {
-            if (!$storage->containsKey((int)$commodityId)) {
+            $stor = $storage->get((int) $commodityId);
+            if ($stor === null) {
                 continue;
             }
-            $count = (int)$count;
+            $quality = ModuleQualitySelection::readCommodity((int) $commodityId);
+            $count = ModuleQualitySelection::getSelectedAmount($stor, $count, $quality);
 
             if ($count < 1) {
                 continue;
@@ -71,13 +75,11 @@ final class RemoveWaste implements ActionControllerInterface
                 continue;
             }
 
-            $stor = $storage->get((int)$commodityId);
-
-            if ($stor && $count > $stor->getAmount()) {
+            if ($count > $stor->getAmount()) {
                 $count = $stor->getAmount();
             }
 
-            $this->storageManager->lowerStorage($spacecraft, $commodity, $count);
+            $this->storageManager->removeStorage($spacecraft, $commodity, $count, $quality);
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
         $context->getInfo()->addInformation(_('Die folgenden Waren wurden entsorgt:'));
@@ -114,7 +116,7 @@ final class RemoveWaste implements ActionControllerInterface
         $this->npcLogRepository->save($entry);
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

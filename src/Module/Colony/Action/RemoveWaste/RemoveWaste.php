@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RemoveWaste;
 
+use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -27,7 +29,7 @@ final class RemoveWaste implements ActionControllerInterface
         private CommodityRepositoryInterface $commodityRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowColony::VIEW_IDENTIFIER);
@@ -58,7 +60,8 @@ final class RemoveWaste implements ActionControllerInterface
             if ($storage === null) {
                 continue;
             }
-            $count = (int)$count;
+            $quality = ModuleQualitySelection::readCommodity((int) $commodityId);
+            $count = ModuleQualitySelection::getSelectedAmount($storage, $count, $quality);
 
             if ($count < 1) {
                 continue;
@@ -74,7 +77,7 @@ final class RemoveWaste implements ActionControllerInterface
                 $count = $storage->getAmount();
             }
 
-            $this->storageManager->lowerStorage($colony, $commodity, $count);
+            $this->storageManager->removeStorage($colony, $commodity, $count, $quality);
             $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
         $this->colonyRepository->save($colony);
@@ -84,7 +87,7 @@ final class RemoveWaste implements ActionControllerInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

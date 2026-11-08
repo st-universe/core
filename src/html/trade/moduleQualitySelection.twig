@@ -1,0 +1,13 @@
+{% if STOR.hasImprovedModules %}
+<tr>
+    <td>Modulqualität</td>
+    <td>
+        <select name="quality[{{ STOR.getCommodityId }}]">
+            <option value="all">Alle Qualitäten ({{ STOR.getAmount }})</option>
+            {% for variant in STOR.getModuleQualityVariants %}
+            <option value="{{ variant.steps }}">{{ variant.label }} ({{ variant.amount }})</option>
+            {% endfor %}
+        </select>
+    </td>
+</tr>
+{% endif %}

@@ -1,0 +1,24 @@
+{% macro line(storageItem, commodity, showName, locations, improved) %}
+<span style="display: flex; align-items: center;{{ showName ? '' : ' gap: 4px;' }}">
+    <span style="{{ showName ? 'flex: 0 0 55px;' : 'display: inline-flex;' }}">
+        {% if locations %}<a href="javascript:void(0);" onclick="getCommodityLocations(this, {{ commodity.getId }});">{% endif %}
+        <img src="/assets/commodities/{{ commodity.getId }}.png"
+            title="{{ commodity.getName }}{% if improved %}: {{ storageItem.getModuleQualityDescription }}{% endif %}" />
+        {% if locations %}</a>{% endif %}
+    </span>
+    <span style="{{ showName ? 'flex: 0 0 40px;' : '' }}{{ improved ? ' text-decoration: underline;' : '' }}">{{ storageItem ? storageItem.getAmount : 0 }}</span>
+    {% if showName %}<span>{{ commodity.getName }}</span>{% endif %}
+</span>
+{% endmacro %}
+{% import _self as item %}
+{% set improved = storageItem and storageItem.hasImprovedModules %}
+{% if improved %}
+<details class="storage-quality-details">
+    <summary style="display: block; list-style: none; cursor: pointer;" aria-label="Lagerbestand {{ commodity.getName }}: {{ storageItem.getAmount }}">
+        {{ item.line(storageItem, commodity, showName, locations, true) }}
+    </summary>
+    <div class="storage-quality-breakdown" style="margin-top: 2px;{{ showName ? ' margin-left: 55px;' : '' }} font-size: 90%; white-space: normal; overflow-wrap: anywhere;">{{ storageItem.getModuleQualityDescription }}</div>
+</details>
+{% else %}
+{{ item.line(storageItem, commodity, showName, locations, false) }}
+{% endif %}

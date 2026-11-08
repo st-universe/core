@@ -8,20 +8,28 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Events;
+use Override;
+use Stu\Component\Borg\BorgSphereDeletionListener;
 
 class EntityManagerFactory implements EntityManagerFactoryInterface
 {
     public function __construct(
         private ConnectionFactoryInterface $connectionFactory,
-        private Configuration $configuration
+        private Configuration $configuration,
+        private ?BorgSphereDeletionListener $borgSphereDeletionListener = null
     ) {}
 
-    #[\Override]
+    #[Override]
     public function createEntityManager(?Connection $connection = null): EntityManagerInterface
     {
-        return new EntityManager(
+        $em = new EntityManager(
             $connection ?? $this->connectionFactory->createConnection(),
             $this->configuration
         );
+        if ($this->borgSphereDeletionListener !== null) {
+            $em->getEventManager()->addEventListener([Events::preRemove], $this->borgSphereDeletionListener);
+        }
+        return $em;
     }
 }

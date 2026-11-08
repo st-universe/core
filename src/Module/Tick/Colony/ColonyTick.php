@@ -4,6 +4,7 @@ namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
+use Override;
 use RuntimeException;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -46,7 +47,7 @@ final class ColonyTick implements ColonyTickInterface
         private readonly array $components
     ) {}
 
-    #[\Override]
+    #[Override]
     public function work(Colony $colony): void
     {
         $this->information = $this->informationFactory->createInformationWrapper();
@@ -286,10 +287,10 @@ final class ColonyTick implements ColonyTickInterface
             $buildingFunction = $queue->getBuildingFunction();
 
             if ($this->colonyFunctionManager->hasActiveFunction($colony, $buildingFunction, false, $deactivatedFields)) {
-                $this->storageManager->upperStorage(
+                $this->storageManager->addStorage(
                     $colony,
                     $queue->getModule()->getCommodity(),
-                    $queue->getAmount()
+                    [$queue->getImprovementSteps() => $queue->getAmount()]
                 );
 
                 $this->information->addInformationf(

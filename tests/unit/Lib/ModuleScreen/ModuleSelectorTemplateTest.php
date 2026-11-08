@@ -17,6 +17,7 @@ class ModuleSelectorTemplateTest extends StuTestCase
     {
         $selector = $this->mock(ModuleSelectorInterface::class);
         $entry = $this->mock(ModuleSelectorEntryInterface::class);
+        $entry->shouldReceive('getQualityVariants')->andReturn([]);
         $module = $this->mock(Module::class);
         $rump = $this->mock(SpacecraftRump::class);
 

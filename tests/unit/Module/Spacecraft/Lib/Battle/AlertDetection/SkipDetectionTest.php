@@ -6,21 +6,25 @@ namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\PirateWrath;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 use Stu\StuTestCase;
 
 class SkipDetectionTest extends StuTestCase
 {
     private MockInterface&PlayerRelationDeterminatorInterface $playerRelationDeterminator;
     private MockInterface&StuTime $stuTime;
+    private MockInterface&BorgSphereRepositoryInterface $borgSphereRepository;
 
     private MockInterface&Ship $incomingShip;
     private MockInterface&SpacecraftWrapperInterface $alertedWrapper;
@@ -28,11 +32,13 @@ class SkipDetectionTest extends StuTestCase
 
     private SkipDetectionInterface $subject;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         $this->playerRelationDeterminator = $this->mock(PlayerRelationDeterminatorInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
+        $this->borgSphereRepository = $this->mock(BorgSphereRepositoryInterface::class);
+        $this->borgSphereRepository->shouldReceive('getByShip')->andReturnNull()->byDefault();
 
         $this->incomingShip = $this->mock(Ship::class);
         $this->alertedWrapper = $this->mock(SpacecraftWrapperInterface::class);
@@ -45,8 +51,18 @@ class SkipDetectionTest extends StuTestCase
 
         $this->subject = new SkipDetection(
             $this->playerRelationDeterminator,
-            $this->stuTime
+            $this->stuTime,
+            $this->borgSphereRepository
         );
+    }
+
+    public function testEventSphereDoesNotAutomaticallyAttackIncomingEnemies(): void
+    {
+        $this->borgSphereRepository->shouldReceive('getByShip')->with($this->alertedShip)->once()->andReturn(new BorgSphereEvent());
+        $this->alertedWrapper->shouldNotReceive('getAlertState');
+        $this->playerRelationDeterminator->shouldNotReceive('isEnemy');
+        $this->playerRelationDeterminator->shouldNotReceive('isFriend');
+        self::assertTrue($this->subject->isSkipped($this->incomingShip, $this->alertedWrapper, null, new ArrayCollection()));
     }
 
     public function testIsSkippedExpectTrueWhenAlertYellowAndNotEnemy(): void

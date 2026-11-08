@@ -1,0 +1,77 @@
+{% for job in TECHNOLOGY_RESEARCH_JOBS %}
+<div class="divhead">{{ job.getRecipe.getName }}{% if job.getModule %}: {{ job.getModule.getName }}{% endif %}</div>
+<div class="divbody">Abschluss ab {{ job.getFinishTime|stuDateTime }} Uhr · Erfolgswahrscheinlichkeit {{ job.getSuccessChance / 100 }} %</div>
+{% endfor %}
+{% for job in TECHNOLOGY_PRODUCTION_JOBS %}
+<div class="divhead">{{ job.getRecipe.getName }}</div>
+<div class="divbody">
+    {% if job.getProductionTick %}Fertigstellung zum nächsten Tick{% else %}Fertigstellung ab {{ job.getFinishTime|stuDateTime }} Uhr{% endif %}
+</div>
+{% endfor %}
+{% for row in TECHNOLOGY_RECIPES %}
+<div class="divhead">{{ row.recipe.getName }}</div>
+<div class="divbody">
+    <table class="tcal">
+        <tr><th>Material</th><th>Benötigt</th><th>Im Lager</th></tr>
+        {% for cost in row.costs %}
+        <tr><td><img src="/assets/commodities/{{ cost.commodity.getId }}.png" title="{{ cost.commodity.getName }}" /> {{ cost.commodity.getName }}</td><td>{{ cost.amount }}</td><td>{{ cost.stored }}</td></tr>
+        {% endfor %}
+        <tr><td><img src="/assets/buttons/e_trans2.png" title="Energie" /> Energie</td><td>{{ row.recipe.getEnergyCost }}</td><td>{{ HOST.getChangeable.getEps }}</td></tr>
+    </table>
+    <table class="tcal">
+        <tr><th>Dauer</th><th>{% if row.recipe.getKind.isResearch %}Fehlschlagswahrscheinlichkeit{% else %}Ausgabe{% endif %}</th></tr>
+        <tr>
+            <td>{% if row.recipe.getDuration == 0 %}1 Tick{% elseif row.recipe.getDuration is divisible by(86400) %}{{ row.recipe.getDuration / 86400 }} Tage{% else %}{{ row.recipe.getDuration|formatSeconds }}{% endif %}</td>
+            <td>{% if row.recipe.getKind.isResearch %}{{ row.recipe.getFailureChance }} %{% else %}<img src="/assets/commodities/{{ row.recipe.getOutputCommodity.getId }}.png" title="{{ row.recipe.getOutputCommodity.getName }}" /> {{ row.recipe.getOutputAmount }} {{ row.recipe.getOutputCommodity.getName }}{% endif %}</td>
+        </tr>
+    </table>
+    {% if row.fieldReady and row.canPay and (not row.recipe.getKind.isResearch or (not TECHNOLOGY_RESEARCH_BUSY and not SPECIAL_RESEARCH_RUNNING)) %}
+    <form action="colony.php" method="post">
+        <input type="hidden" name="id" value="{{ HOST.getId }}" />
+        <input type="hidden" name="fid" value="{{ SPECIAL_RESEARCH_FIELD.getId }}" />
+        <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+        <input type="hidden" name="recipe_id" value="{{ row.recipe.getId }}" />
+        <input type="submit" name="B_START_TECHNOLOGY" value="{% if row.recipe.getKind.isResearch %}Forschung starten{% else %}Herstellung starten{% endif %}" />
+    </form>
+    {% endif %}
+    {% if not row.recipe.getKind.isResearch and not TECHNOLOGY_IS_CENTER %}<p>Für die Herstellung wird ein aktives Technologiecenter benötigt</p>{% endif %}
+</div>
+<br />
+{% endfor %}
+{% if OPTIMIZATION_RECIPE %}
+<div class="divhead">Moduloptimierung</div>
+<div class="divbody">
+    {% for row in OPTIMIZATION_MODULES %}
+    <details style="margin: 5px 0;">
+        <summary>{{ row.module.getName }} · Fertigungsbonus +{{ row.percent }} %</summary>
+        {% if row.canImprove %}
+        <form action="colony.php" method="post" data-technology-base="{{ row.baseChance }}" data-technology-extra="{{ OPTIMIZATION_RECIPE.getSettings.extra_success }}">
+            <input type="hidden" name="id" value="{{ HOST.getId }}" />
+            <input type="hidden" name="fid" value="{{ SPECIAL_RESEARCH_FIELD.getId }}" />
+            <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+            <input type="hidden" name="recipe_id" value="{{ OPTIMIZATION_RECIPE.getId }}" />
+            <input type="hidden" name="module_id" value="{{ row.module.getId }}" />
+            <table class="tcal">
+                <tr><th>Versuchsmaterial</th><th>Einsatz</th><th>Im Lager</th></tr>
+                <tr><td><img src="/assets/commodities/{{ row.module.getCommodityId }}.png" title="{{ row.module.getName }}" /> {{ row.module.getName }}</td><td><input type="number" name="module_count" min="{{ OPTIMIZATION_RECIPE.getSettings.min_modules }}" max="{{ OPTIMIZATION_RECIPE.getSettings.max_modules }}" value="{{ OPTIMIZATION_RECIPE.getSettings.min_modules }}" oninput="updateTechnologyChance(this.form)" /></td><td>{{ row.stored }}</td></tr>
+                <tr><td><img src="/assets/commodities/{{ OPTIMIZATION_RECIPE.getNaniteCommodity.getId }}.png" title="{{ OPTIMIZATION_RECIPE.getNaniteCommodity.getName }}" /> {{ OPTIMIZATION_RECIPE.getNaniteCommodity.getName }}</td><td><input type="number" name="nanite_count" min="{{ OPTIMIZATION_RECIPE.getSettings.min_nanites }}" max="{{ OPTIMIZATION_RECIPE.getSettings.max_nanites }}" value="{{ OPTIMIZATION_RECIPE.getSettings.min_nanites }}" oninput="updateTechnologyChance(this.form)" /></td><td>{{ HOST.getStorage.get(OPTIMIZATION_RECIPE.getNaniteCommodity.getId).getAmount|default(0) }}</td></tr>
+                <tr><td><img src="/assets/commodities/{{ row.data.getId }}.png" title="{{ row.data.getName }}" /> {{ row.data.getName }}</td><td>{{ OPTIMIZATION_RECIPE.getSettings.data_amount }}</td><td>{{ HOST.getStorage.get(row.data.getId).getAmount|default(0) }}</td></tr>
+                <tr><td><img src="/assets/buttons/e_trans2.png" title="Energie" /> Energie</td><td>{{ OPTIMIZATION_RECIPE.getEnergyCost }}</td><td>{{ HOST.getChangeable.getEps }}</td></tr>
+                <tr><td>Forschungsdauer</td><td colspan="2">{{ OPTIMIZATION_RECIPE.getDuration|formatSeconds }}</td></tr>
+                <tr><td>Erfolgswahrscheinlichkeit</td><td colspan="2"><span data-technology-chance>{{ row.baseChance }}</span> %</td></tr>
+            </table>
+            {% if not row.canOptimize %}
+            <p>Die normale Modulforschung ist noch nicht abgeschlossen</p>
+            {% elseif not row.canPayMinimum %}
+            <p>Für einen Optimierungsversuch fehlen Materialien oder Energie</p>
+            {% elseif TECHNOLOGY_FIELD_ACTIVE and not TECHNOLOGY_RESEARCH_BUSY and not SPECIAL_RESEARCH_RUNNING %}
+            <input type="submit" name="B_START_TECHNOLOGY" value="Optimierungsversuch starten" />
+            {% endif %}
+        </form>
+        {% else %}Maximale Verbesserung erreicht{% endif %}
+    </details>
+    {% else %}
+    <p>Für die Moduloptimierung muss die Grundlagenforschung der jeweiligen Systemgruppe abgeschlossen sein</p>
+    {% endfor %}
+</div>
+{% endif %}

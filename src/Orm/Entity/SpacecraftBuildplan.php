@@ -214,6 +214,17 @@ class SpacecraftBuildplan
             ->map(fn (BuildplanModule $buildplanModule): Module => $buildplanModule->getModule());
     }
 
+    public function getModuleImprovementSteps(Module $module): int
+    {
+        foreach ($this->getModules() as $entry) {
+            if ($entry->getModule()->getId() === $module->getId()) {
+                return $entry->getImprovementSteps();
+            }
+        }
+
+        return 0;
+    }
+
     /**
      * @return Collection<int, BuildplanModule>
      */

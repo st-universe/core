@@ -52,7 +52,12 @@
             {% endif %}
             <img src="assets/commodities/{{ commodityId }}.png" />
         </td>
-        <td style="width: 300px;">{{ module.getName }}</td>
+        <td style="width: 300px;">{{ module.getName }}{% if moduleSelectorEntry.getQualityVariants|length > 1 %}
+            <select name="module_quality[{{ moduleId }}]" title="Verbesserung dieses Moduls">
+                {% for variant in moduleSelectorEntry.getQualityVariants %}
+                <option value="{{ variant.steps }}"{% if variant.steps == moduleSelectorEntry.getSelectedQuality %} selected="selected"{% endif %}>{{ variant.label }} ({{ variant.amount }} lagernd)</option>
+                {% endfor %}
+            </select>{% endif %}</td>
         <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
         <td style="width: 30px; text-align: center;">
             {{ moduleSelectorEntry.getStoredAmount }}
@@ -87,7 +92,12 @@
             {% endif %}
             <img src="assets/commodities/{{ commodityId }}.png" />
         </td>
-        <td style="width: 300px;">{{ module.getName }}</td>
+        <td style="width: 300px;">{{ module.getName }}{% if moduleSelectorEntry.getQualityVariants|length > 1 %}
+            <select name="module_quality[{{ moduleId }}]" title="Verbesserung dieses Moduls">
+                {% for variant in moduleSelectorEntry.getQualityVariants %}
+                <option value="{{ variant.steps }}"{% if variant.steps == moduleSelectorEntry.getSelectedQuality %} selected="selected"{% endif %}>{{ variant.label }} ({{ variant.amount }} lagernd)</option>
+                {% endfor %}
+            </select>{% endif %}</td>
         <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
         <td style="width: 30px; text-align: center;">
             {{ moduleSelectorEntry.getStoredAmount }}

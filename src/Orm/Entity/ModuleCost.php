@@ -85,6 +85,13 @@ class ModuleCost
         return $this;
     }
 
+    public function setCommodity(Commodity $commodity): self
+    {
+        $this->commodity = $commodity;
+        $this->commodity_id = $commodity->getId();
+        return $this;
+    }
+
     public function getCommodity(): Commodity
     {
         return $this->commodity;

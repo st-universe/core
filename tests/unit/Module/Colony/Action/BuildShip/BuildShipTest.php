@@ -79,7 +79,9 @@ class BuildShipTest extends StuTestCase
         $buildingFunctionMapping = $this->mock(ShipRumpBuildingFunction::class);
         $moduleLevels = $this->mock(ShipRumpModuleLevel::class);
         $module = $this->mock(Module::class);
+        $module->shouldReceive('getId')->andReturn($moduleId);
         $plan = $this->mock(SpacecraftBuildplan::class);
+        $plan->shouldReceive('getModuleImprovementSteps')->with($module)->andReturn(0);
         $informationWrapper = new InformationWrapper();
 
         $context->shouldReceive('getUser')

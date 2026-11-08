@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TransferCommodities;
 
+use Override;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
@@ -22,7 +24,7 @@ final class TransferCommodities implements ActionControllerInterface
 
     public function __construct(private TransferCommoditiesRequestInterface $transferCommoditiesRequest, private TradeTransferRepositoryInterface $tradeTransferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageRepositoryInterface $storageRepository) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -50,9 +52,8 @@ final class TransferCommodities implements ActionControllerInterface
         }
         $tradePostId = $tradepost->getId();
 
-        if ($selectedStorage->getAmount() < $amount) {
-            $amount = $selectedStorage->getAmount();
-        }
+        $quality = ModuleQualitySelection::readCommodity($selectedStorage->getCommodityId());
+        $amount = ModuleQualitySelection::getSelectedAmount($selectedStorage, $amount, $quality);
         if ($amount < 1) {
             return;
         }
@@ -89,8 +90,8 @@ final class TransferCommodities implements ActionControllerInterface
         }
         $amount = min(min($freeStorage, $amount), $freeTransferCapacity);
 
-        $storageManagerTarget->upperStorage($selectedStorage->getCommodityId(), $amount);
-        $storageManager->lowerStorage($selectedStorage->getCommodityId(), $amount);
+        $packet = $storageManager->removeStorage($selectedStorage->getCommodityId(), $amount, $quality);
+        $storageManagerTarget->addStorage($selectedStorage->getCommodityId(), $packet);
 
         $transfer = $this->tradeTransferRepository->prototype();
         $transfer->setTradePost($tradepost);
@@ -110,7 +111,7 @@ final class TransferCommodities implements ActionControllerInterface
         );
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

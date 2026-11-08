@@ -63,6 +63,10 @@ function showSelfdestructWindow(element, target) {
 function showScanWindow(element, spacecraftid, target) {
   updatePopupAtElement(element, "?id=" + spacecraftid + "&SHOW_SCAN=1&target=" + target);
 }
+
+function showBorgSphereWindow(element, source, target) {
+  updatePopupAtElement(element, '?SHOW_BORG_SPHERE=1&id=' + source + '&target=' + target);
+}
 function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
   var pos = findObject(obj);
   if (x && y) {

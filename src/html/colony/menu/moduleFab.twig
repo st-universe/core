@@ -77,31 +77,7 @@
                                 style="display: none;">(Benötigt: {{ requiredAmount }})</span>
                             {% endfor %}
                         </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
-                            <div style="display: flex; align-items: center;">
-                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
-                                <span style="margin-left: 4px;">{{ data.getEnergyCost }}</span>
-                            </div>
-                            {% for cost in data.getConstructionCosts %}
-                            <div style="display: flex; align-items: center;">
-                                <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
-                                    title="{{ cost.getCommodity.getName }}" />
-                                <span style="margin-left: 4px;">{{ cost.getAmount }}</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% set constructionCosts = data.getConstructionCosts %}
-                        {% if constructionCosts %}
-                        <div style="display: none;">
-                            {% for cost in constructionCosts %}
-                            <span class="module-production-preview-cost" data-module-id="{{ moduleId }}"
-                                data-commodity-id="{{ cost.getCommodity.getId }}"
-                                data-commodity-name="{{ cost.getCommodity.getName }}"
-                                data-cost="{{ cost.getAmount }}"
-                                data-stock="{{ data.getAmountInStockByCommodityId(cost.getCommodity.getId) }}"></span>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
+                        {% include 'html/colony/menu/moduleProductionChoices.twig' %}
                     </td>
                     <td id="module_{{ moduleId }}_action" class="responsive-hide"
                         style="vertical-align: middle; text-align: center;">

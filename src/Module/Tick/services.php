@@ -31,11 +31,14 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 use Stu\Module\Tick\Pirate\PirateTick;
 use Stu\Module\Tick\Pirate\PirateTickInterface;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
+use Stu\Module\Tick\Process\BorgSphereTick;
 use Stu\Module\Tick\Process\EndPirateRound;
 use Stu\Module\Tick\Process\FinishBuildJobs;
 use Stu\Module\Tick\Process\FinishPassiveShipRepairJobs;
 use Stu\Module\Tick\Process\FinishShipBuildJobs;
 use Stu\Module\Tick\Process\FinishShipRetrofitJobs;
+use Stu\Module\Tick\Process\FinishSpecialResearchJobs;
+use Stu\Module\Tick\Process\FinishTechnologyJobs;
 use Stu\Module\Tick\Process\FinishTerraformingJobs;
 use Stu\Module\Tick\Process\FinishTholianWebs;
 use Stu\Module\Tick\Process\NewDealsInformation;
@@ -60,6 +63,7 @@ use Stu\Module\Tick\Spacecraft\ManagerComponent\CrewLimitations;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\EscapePodHandling;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\LowerHull;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\NpcShipHandling;
+use Stu\Module\Tick\Spacecraft\ManagerComponent\ProduceTechnologyCommodities;
 use Stu\Module\Tick\Spacecraft\SpacecraftTick;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManager;
@@ -112,6 +116,7 @@ return [
                 autowire(EscapePodHandling::class),
                 get(SpacecraftTickInterface::class),
                 autowire(NpcShipHandling::class),
+                autowire(ProduceTechnologyCommodities::class),
                 autowire(LowerHull::class),
                 autowire(AnomalyCreationCheck::class),
             ]
@@ -119,7 +124,9 @@ return [
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
     ProcessTickHandlerInterface::class => [
-        autowire(\Stu\Module\Tick\Process\FinishSpecialResearchJobs::class),
+        autowire(BorgSphereTick::class),
+        autowire(FinishTechnologyJobs::class),
+        autowire(FinishSpecialResearchJobs::class),
         autowire(FinishBuildJobs::class),
         autowire(FinishShipBuildJobs::class),
         autowire(FinishPassiveShipRepairJobs::class),

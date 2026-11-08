@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\RenewTradeLicense;
 
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
@@ -35,7 +36,7 @@ final class RenewTradeLicense implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowAccounts::VIEW_IDENTIFIER);
@@ -119,11 +120,11 @@ final class RenewTradeLicense implements ActionControllerInterface
             throw new CommodityMissingException('storage insufficient');
         }
 
-        $storageManagerRemote->upperStorage($commodityId, $costs);
-        $storageManager->lowerStorage($commodityId, $costs);
+        $qualities = $storageManager->removeStorage($commodityId, $costs);
+        $storageManagerRemote->addStorage($commodityId, $qualities);
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

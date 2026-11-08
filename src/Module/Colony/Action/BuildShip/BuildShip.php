@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -11,6 +12,7 @@ use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\ModuleSpecialAbilityEnum;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -52,7 +54,7 @@ final class BuildShip implements ActionControllerInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $user = $context->getUser();
@@ -179,7 +181,7 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
-        $signature = $this->buildplanSignatureCreation->createSignature($modules, $crewUsage);
+        [$qualities, $signature] = ModuleQualitySelection::signature($this->buildplanSignatureCreation, $modules, $crewUsage, $submittedPlan);
 
         if (
             $submittedPlan !== null
@@ -200,7 +202,7 @@ final class BuildShip implements ActionControllerInterface
 
         $storage = $colony->getStorage();
         foreach ($modules as $module) {
-            if (!$storage->containsKey($module->getCommodityId())) {
+            if ((($storage->get($module->getCommodityId())?->getModuleQualityAmounts()[$qualities[$module->getId()]] ?? 0) < 1)) {
                 $context->getInfo()->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
@@ -215,7 +217,7 @@ final class BuildShip implements ActionControllerInterface
             }
         }
         foreach ($modules as $module) {
-            $this->storageManager->lowerStorage($colony, $module->getCommodity(), 1);
+            $this->storageManager->removeStorage($colony, $module->getCommodity(), 1, $qualities[$module->getId()]);
         }
         $context->setView(ShowColony::VIEW_IDENTIFIER);
         if ($plan === null) {
@@ -249,7 +251,7 @@ final class BuildShip implements ActionControllerInterface
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType($obj->getType());
                 $mod->setBuildplan($plan);
-                $mod->setModule($obj);
+                $mod->setModule($obj)->setImprovementSteps($qualities[$obj->getId()]);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 
                 $this->buildplanModuleRepository->save($mod);
@@ -285,7 +287,7 @@ final class BuildShip implements ActionControllerInterface
         );
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

@@ -1,0 +1,32 @@
+{% set productionVariants = data.getProductionVariants %}
+{% if productionVariants|length > 1 %}
+<div style="margin: 4px 0;">
+    <label for="module_{{ moduleId }}_quality">Ausführung:</label>
+    <select id="module_{{ moduleId }}_quality" name="optimizations[{{ moduleId }}]" class="module-production-quality"
+        data-module-id="{{ moduleId }}" onchange="setModuleProductionQuality(this);">
+        {% for variant in productionVariants %}
+        <option value="{{ variant.optimized ? 1 : 0 }}">{{ variant.label }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+    <div style="display: flex; align-items: center;">
+        <img src="/assets/buttons/e_trans2.png" title="Energie" />
+        <span style="margin-left: 4px;">{{ data.getEnergyCost }}</span>
+    </div>
+    {% for variant in productionVariants %}
+    <div class="module-production-costs" data-module-id="{{ moduleId }}" data-optimized="{{ variant.optimized ? 1 : 0 }}"
+        style="display: {{ variant.optimized ? 'none' : 'flex' }}; flex-wrap: wrap; gap: 8px;">
+        {% for cost in variant.costs %}
+        <div class="module-production-preview-cost" data-module-id="{{ moduleId }}"
+            data-commodity-id="{{ cost.getCommodity.getId }}" data-commodity-name="{{ cost.getCommodity.getName }}"
+            data-cost="{{ cost.getAmount }}" data-stock="{{ data.getAmountInStockByCommodityId(cost.getCommodity.getId) }}"
+            style="display: flex; align-items: center;">
+            <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png" title="{{ cost.getCommodity.getName }}" />
+            <span style="margin-left: 4px;">{{ cost.getAmount }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

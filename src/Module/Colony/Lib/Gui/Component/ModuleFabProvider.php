@@ -2,8 +2,10 @@
 
 namespace Stu\Module\Colony\Lib\Gui\Component;
 
+use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Research\ModuleProductionQuality;
 use Stu\Module\Colony\View\ShowModuleFab\ModuleFabricationListItem;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
@@ -14,10 +16,10 @@ use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabProvider implements PlanetFieldHostComponentInterface
 {
-    public function __construct(private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository) {}
+    public function __construct(private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository, private BuildingFunctionRepositoryInterface $buildingFunctionRepository, private ModuleQueueRepositoryInterface $moduleQueueRepository, private ModuleProductionQuality $productionQuality) {}
 
     /** @param Colony $entity */
-    #[\Override]
+    #[Override]
     public function setTemplateVariables(
         $entity,
         TemplateInterface $template,
@@ -39,7 +41,8 @@ final class ModuleFabProvider implements PlanetFieldHostComponentInterface
             $list[] = new ModuleFabricationListItem(
                 $this->moduleQueueRepository,
                 $module->getModule(),
-                $entity
+                $entity,
+                productionQuality: $this->productionQuality
             );
         }
 

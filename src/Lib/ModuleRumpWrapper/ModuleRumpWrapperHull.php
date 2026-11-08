@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\ModuleValueCalculator;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -11,7 +12,7 @@ use Stu\Orm\Entity\Module;
 
 final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    #[\Override]
+    #[Override]
     public function getValue(?Module $module = null): int
     {
         $module ??= current($this->getModule());
@@ -22,17 +23,18 @@ final class ModuleRumpWrapperHull extends ModuleRumpWrapperBase implements Modul
         return new ModuleValueCalculator()->calculateModuleValue(
             $this->rump,
             $module,
-            $this->rumpBaseValues->getBaseHull()
+            $this->rumpBaseValues->getBaseHull(),
+            $this->getImprovementSteps($module)
         );
     }
 
-    #[\Override]
+    #[Override]
     public function getModuleType(): SpacecraftModuleTypeEnum
     {
         return SpacecraftModuleTypeEnum::HULL;
     }
 
-    #[\Override]
+    #[Override]
     public function apply(SpacecraftWrapperInterface $wrapper): void
     {
         $spacecraft = $wrapper->get();

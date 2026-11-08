@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\TransferFromAccount;
 
+use Override;
 use request;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
@@ -31,7 +33,7 @@ final class TransferFromAccount implements ActionControllerInterface
         private InteractionCheckerInterface $interactionChecker
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -87,8 +89,8 @@ final class TransferFromAccount implements ActionControllerInterface
             if (!array_key_exists($value, $curCommodities)) {
                 continue;
             }
-            $count = $gcount[$key];
-            $count = $count == "max" ? $curCommodities[$value]->getAmount() : (int) $count;
+            $quality = ModuleQualitySelection::readCommodity((int) $value);
+            $count = ModuleQualitySelection::getSelectedAmount($curCommodities[$value], $gcount[$key], $quality);
             if ($count < 1 || $spacecraft->getStorageSum() >= $spacecraft->getMaxStorage()) {
                 continue;
             }
@@ -106,14 +108,14 @@ final class TransferFromAccount implements ActionControllerInterface
                 $count = $spacecraft->getMaxStorage() - $spacecraft->getStorageSum();
             }
 
-            $storageManager->lowerStorage((int) $value, $count);
-            $this->storageManager->upperStorage($spacecraft, $commodity, $count);
+            $packet = $storageManager->removeStorage((int) $value, $count, $quality);
+            $this->storageManager->addStorage($spacecraft, $commodity, $packet);
 
             $context->getInfo()->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
         }
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

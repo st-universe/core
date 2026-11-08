@@ -13,22 +13,14 @@
     {% for stor in STORAGE %}
     <tr class="row">
         <td style="vertical-align: middle;">
-            <div style="display: table-cell; width: 55px;">
-                <a href="javascript:void(0);" onclick="getCommodityLocations(this, {{ stor.commodity.getId }});">
-                    <img src="/assets/commodities/{{ stor.commodity.getId }}.png"
-                        title="{{ stor.commodity.getName }}" />
-                </a>
-            </div>
-            <div style="display: table-cell; width: 40px; vertical-align:middle;">
-                {% if stor.storage %}
-                {{ stor.storage.getAmount }}
-                {% else %}
-                0
-                {% endif %}
-            </div>
-            <div style="display: table-cell; vertical-align: middle">{{ stor.commodity.getName }}</div>
+            {% include 'html/storage/storageItem.twig' with {
+                'storageItem': stor.storage,
+                'commodity': stor.commodity,
+                'showName': true,
+                'locations': true
+            } only %}
         </td>
-        <td style="vertical-align: middle;">
+        <td style="vertical-align: {{ stor.storage and stor.storage.hasImprovedModules ? 'top' : 'middle' }};">
             {% if stor.production %}
             <span class="{{ stor.production.getCssClass }}">{{ stor.production.getProductionDisplay }}</span>
             {% else %}

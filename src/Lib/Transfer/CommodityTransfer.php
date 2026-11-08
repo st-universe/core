@@ -6,8 +6,10 @@ namespace Stu\Lib\Transfer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use RuntimeException;
 use Stu\Lib\Information\InformationInterface;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
@@ -22,7 +24,7 @@ final class CommodityTransfer implements CommodityTransferInterface
         private ColonyRepositoryInterface $colonyRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function transferCommodity(
         int $commodityId,
         string|int $wantedAmount,
@@ -37,6 +39,11 @@ final class CommodityTransfer implements CommodityTransferInterface
             return false;
         }
 
+        $quality = ModuleQualitySelection::readCommodity($commodityId);
+        $availableAmount = $sourceStorage->getAmountForQuality($quality);
+        if ($availableAmount < 1) {
+            return false;
+        }
         $commodity = $sourceStorage->getCommodity();
         if (!$commodity->isBeamable($source->getUser(), $target->getUser())) {
             $information->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
@@ -50,13 +57,7 @@ final class CommodityTransfer implements CommodityTransferInterface
             return false;
         }
 
-        if ($wantedAmount === "max") {
-            $amount = $sourceStorage->getAmount();
-        } elseif (!is_numeric($wantedAmount)) {
-            return false;
-        } else {
-            $amount =  (int)$wantedAmount;
-        }
+        $amount = ModuleQualitySelection::getSelectedAmount($sourceStorage, $wantedAmount, $quality);
 
         if ($amount < 1) {
             return false;
@@ -66,7 +67,7 @@ final class CommodityTransfer implements CommodityTransferInterface
             return false;
         }
 
-        $amount = min($amount, $sourceStorage->getAmount());
+        $amount = min($amount, $availableAmount);
         $transferAmount = $commodity->getTransferCount() * $this->getBeamFactor($subject);
 
         if (!$isDockTransfer && ceil($amount / $transferAmount) > $availableEps) {
@@ -86,14 +87,13 @@ final class CommodityTransfer implements CommodityTransferInterface
             $epsUsage
         );
 
-        $this->storageManager->lowerStorage($source, $commodity, $amount);
-        $this->storageManager->upperStorage($target, $commodity, $amount);
+        $this->storageManager->transferStorage($source, $target, $commodity, $amount, $quality);
         $this->consumeEps($epsUsage, $subject);
 
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public function isDockTransfer(
         EntityWithStorageInterface $source,
         EntityWithStorageInterface $target

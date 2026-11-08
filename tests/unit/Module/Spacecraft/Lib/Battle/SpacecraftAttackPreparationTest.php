@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
@@ -13,6 +14,7 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\StuTestCase;
 
 class SpacecraftAttackPreparationTest extends StuTestCase
@@ -22,7 +24,7 @@ class SpacecraftAttackPreparationTest extends StuTestCase
 
     private SpacecraftAttackPreparationInterface $subject;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         $this->fightLib = $this->mock(FightLibInterface::class);
@@ -42,6 +44,23 @@ class SpacecraftAttackPreparationTest extends StuTestCase
         ];
     }
 
+    public function testDisabledDefenderCannotReactivateItsSystemsDuringConfirmedAttack(): void
+    {
+        $attackers = $this->mock(BattlePartyInterface::class);
+        $defenders = $this->mock(BattlePartyInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = new Ship();
+        $ship->setCondition(new SpacecraftCondition($ship)->setDisabled(true));
+        $wrapper->shouldReceive('get')->andReturn($ship);
+        $attackers->shouldReceive('getActiveMembers')->andReturn(new ArrayCollection());
+        $defenders->shouldReceive('getActiveMembers')->andReturn(new ArrayCollection([$wrapper]));
+        $defenders->shouldReceive('isActive')->andReturn(false);
+        $this->fightLib->shouldNotReceive('ready');
+        $this->messageFactory->shouldNotReceive('createMessage');
+        $this->subject->getReady($attackers, $defenders, false, $messages);
+    }
+
     #[DataProvider('provideGetReadyData')]
     public function testGetReady(bool $isOneWay): void
     {
@@ -58,6 +77,8 @@ class SpacecraftAttackPreparationTest extends StuTestCase
         $ship2 = $this->mock(Ship::class);
         $ship3 = $this->mock(Ship::class);
         $ship4 = $this->mock(Ship::class);
+        $ship3->shouldReceive('getCondition->isDisabled')->andReturn(false);
+        $ship4->shouldReceive('getCondition->isDisabled')->andReturn(false);
 
         $message1 = $this->mock(MessageInterface::class);
         $message2 = $this->mock(MessageInterface::class);

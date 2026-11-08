@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -31,7 +33,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[\Override]
+    #[Override]
     public function updateBy(Ship $ship, SpacecraftBuildplan $newBuildplan, Colony $colony): void
     {
         $oldBuildplan = $ship->getBuildplan();
@@ -49,10 +51,10 @@ final class ShipRetrofit implements ShipRetrofitInterface
             $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
 
             /** @var array<Module> */
-            $addingModules = array_udiff($newModules, $oldModules, fn (Module $a, Module $b): int => $a->getId() - $b->getId());
+            $addingModules = $this->getChangedModules($newModules, $oldBuildplan, $newBuildplan);
 
             /** @var array<Module> */
-            $deletingModules = array_udiff($oldModules, $newModules, fn (Module $a, Module $b): int => $a->getId() - $b->getId());
+            $deletingModules = $this->getChangedModules($oldModules, $newBuildplan, $oldBuildplan);
 
             foreach ($deletingModules as $oldModule) {
                 $this->removeModule($ship, $oldModule, $returnedmodules);
@@ -62,21 +64,20 @@ final class ShipRetrofit implements ShipRetrofitInterface
                 $systems = [];
                 $this->addModuleSystems($addingModules, $systems);
                 foreach ($systems as $systemType => $module) {
-                    $this->createShipSystem($systemType, $ship, $module);
-                    $moduleRumpWrapper = $moduleType->getModuleRumpWrapperCallable()($ship->getRump(), $newBuildplan);
-                    $moduleRumpWrapper->apply($wrapper);
+                    $this->createShipSystem($systemType, $ship, $module, $newBuildplan);
                 }
+                $moduleRumpWrapper = $moduleType->getModuleRumpWrapperCallable()($ship->getRump(), $newBuildplan);
+                $moduleRumpWrapper->apply($wrapper);
             }
         }
 
         if ($returnedmodules !== []) {
             $msg = "
             Die folgenden Module wurden durch den Umbau zurückgewonnen: ";
-            foreach ($returnedmodules as $module) {
-                if ($module != null) {
-                    $this->storageManager->upperStorage($colony, $module->getCommodity(), 1);
-                    $msg .= $module->getName() . ", ";
-                }
+            foreach ($returnedmodules as $entry) {
+                $module = $entry['module'];
+                $this->storageManager->addStorage($colony, $module->getCommodity(), [$entry['steps'] => 1]);
+                $msg .= $module->getName() . ", ";
             }
             $msg = rtrim($msg, ", ");
         } else {
@@ -99,14 +100,23 @@ final class ShipRetrofit implements ShipRetrofitInterface
         $ship->setBuildplan($newBuildplan);
     }
 
-    /** @param array<Module> $returnedmodules */
+    /**
+     * @param array<Module> $modules
+     * @return array<Module>
+     */
+    private function getChangedModules(array $modules, SpacecraftBuildplan $otherPlan, SpacecraftBuildplan $sourcePlan): array
+    {
+        return array_filter($modules, fn (Module $module): bool => !ModuleQualitySelection::matchesPlan($module, $otherPlan, $sourcePlan->getModuleImprovementSteps($module)));
+    }
+
+    /** @param list<array{module: Module, steps: int}> $returnedmodules */
     private function removeModule(Ship $ship, Module $oldModule, array &$returnedmodules): void
     {
         if ($oldModule->getType() != SpacecraftModuleTypeEnum::HULL) {
 
             $system = $this->getSystemByModule($oldModule, $ship);
             if ($system->getStatus() >= 100 && $this->stuRandom->rand(1, 100) <= 25) {
-                $returnedmodules[] = $oldModule;
+                $returnedmodules[] = ['module' => $oldModule, 'steps' => $system->getImprovementSteps()];
             }
             $this->shipSystemRepository->delete($system);
             $ship->getSystems()->removeElement($system);
@@ -165,7 +175,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
         }
     }
 
-    private function createShipSystem(int $systemType, Ship $ship, ?Module $module): void
+    private function createShipSystem(int $systemType, Ship $ship, ?Module $module, SpacecraftBuildplan $plan): void
     {
         $shipSystem = $this->shipSystemRepository
             ->prototype()
@@ -176,6 +186,7 @@ final class ShipRetrofit implements ShipRetrofitInterface
 
         if ($module !== null) {
             $shipSystem->setModule($module);
+            $shipSystem->setImprovementSteps($plan->getModuleImprovementSteps($module));
         }
 
         $this->shipSystemRepository->save($shipSystem);

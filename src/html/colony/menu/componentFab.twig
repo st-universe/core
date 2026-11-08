@@ -26,17 +26,7 @@
                             <div style="margin-bottom: 5px;">
                                 <img src="/assets/commodities/{{ data.getCommodityId }}.png" /> {{ data.getName }}
                             </div>
-                            <div style="display: table-cell;">
-                                <img src="/assets/buttons/e_trans2.png" title="Energie" />
-                                {{ data.getEnergyCost }}
-                            </div>
-                            {% for cost in data.getConstructionCosts %}
-                            <div style="display: table-cell; padding-left: 4px;">
-                                <img src="/assets/commodities/{{ cost.getCommodity.getId }}.png"
-                                    title="{{ cost.getCommodity.getName }}" />
-                            </div>
-                            <div style="display: table-cell; vertical-align: middle;">{{ cost.getAmount }}</div>
-                            {% endfor %}
+                            {% include 'html/colony/menu/moduleProductionChoices.twig' %}
                         </td>
                         <td id="module_{{ moduleId }}_action" class="responsive-hide"
                             style="vertical-align: middle; text-align: center;">
@@ -63,7 +53,7 @@
                             {{ data.getAmountInStock }}
                         </td>
                         <td class="responsive-hide" style="vertical-align: middle; text-align: center;">
-                            <input type="text" size="2" data-module-id="{{ moduleId }}"
+                            <input type="text" size="2" data-module-id="{{ moduleId }}" data-energy-cost="{{ data.getEnergyCost }}"
                                 onkeydown="event.key == 'Enter' && $('producebutton').click()"
                                 oninput="setModuleInput(this)" />
                         </td>
@@ -104,7 +94,7 @@
                                         {{ data.getAmountInStock }}
                                     </td>
                                     <td style="vertical-align: middle; text-align: center;">
-                                        <input type="text" size="2" data-module-id="{{ moduleId }}"
+                                        <input type="text" size="2" data-module-id="{{ moduleId }}" data-energy-cost="{{ data.getEnergyCost }}"
                                             onkeydown="event.key == 'Enter' && $('producebutton').click()"
                                             oninput="setModuleInput(this);" />
                                     </td>

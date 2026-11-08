@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleRumpWrapper;
 
 use BadMethodCallException;
+use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Module;
@@ -26,9 +27,14 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
         $this->rumpBaseValues = $rump->getBaseValues();
     }
 
+    protected function getImprovementSteps(Module $module): int
+    {
+        return $this->buildplan?->getModuleImprovementSteps($module) ?? 0;
+    }
+
     abstract public function getModuleType(): SpacecraftModuleTypeEnum;
 
-    #[\Override]
+    #[Override]
     public function getModule(): iterable
     {
         if ($this->modules === null) {
@@ -41,13 +47,13 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
         return $this->modules;
     }
 
-    #[\Override]
+    #[Override]
     public function getSecondValue(?Module $module = null): int
     {
         throw new BadMethodCallException(sprintf('not implemented for moduleType: %s', $this->getModuleType()->name));
     }
 
-    #[\Override]
+    #[Override]
     public function initialize(SpacecraftWrapperInterface $wrapper): ModuleRumpWrapperInterface
     {
         //override if neccessary

@@ -89,4 +89,9 @@ interface ModuleRepositoryInterface extends ObjectRepository
      * @return list<Module>
      */
     public function getNonFactionNonSpecialByLevels(array $levels): array;
+    /**
+     * @param list<int> $levels
+     * @return list<Module>
+     */
+    public function getStandardAndFactionByLevels(int $factionId, array $levels): array;
 }

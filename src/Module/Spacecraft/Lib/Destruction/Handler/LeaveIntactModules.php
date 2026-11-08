@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Spacecraft\Lib\Destruction\Handler;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
@@ -18,7 +19,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         private readonly StuRandom $stuRandom
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handleSpacecraftDestruction(
         ?SpacecraftDestroyerInterface $destroyer,
         SpacecraftWrapperInterface $destroyedSpacecraftWrapper,
@@ -42,7 +43,7 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
                 $module = $system->getModule();
 
                 if (!array_key_exists($module->getId(), $intactModules)) {
-                    $intactModules[$module->getId()] = $module;
+                    $intactModules[$module->getId()] = $system;
                 }
             }
         }
@@ -56,13 +57,17 @@ class LeaveIntactModules implements SpacecraftDestructionHandlerInterface
         }
 
         for ($i = 1; $i <= $leaveCount; $i++) {
-            $module = $intactModules[$this->stuRandom->array_rand($intactModules)];
+            $system = $intactModules[$this->stuRandom->array_rand($intactModules)];
+            $module = $system->getModule();
+            if ($module === null) {
+                continue;
+            }
             unset($intactModules[$module->getId()]);
 
-            $this->storageManager->upperStorage(
+            $this->storageManager->addStorage(
                 $spacecraft,
                 $module->getCommodity(),
-                1
+                [$system->getImprovementSteps() => 1]
             );
         }
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
+use Override;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradePost;
@@ -31,7 +32,7 @@ class TradePostStorageManagerTest extends StuTestCase
     private Storage&MockInterface $storage;
     private User&MockInterface $user;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
@@ -207,13 +208,11 @@ class TradePostStorageManagerTest extends StuTestCase
             ->with($this->storage)
             ->once();
 
-        $this->storage->shouldReceive('setAmount')
-            ->with(12)
-            ->once();
+        $this->storage->shouldReceive('removeAmount')->with(88, null)->once()->andReturn([0 => 88]);
         $this->storage->shouldReceive('getAmount')
             ->withNoArgs()
             ->twice()
-            ->andReturn(100);
+            ->andReturn(100, 12);
         $this->user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -230,10 +229,11 @@ class TradePostStorageManagerTest extends StuTestCase
             ->with($this->storage)
             ->once();
 
+        $this->storage->shouldReceive('removeAmount')->with(100, null)->once()->andReturn([0 => 100]);
         $this->storage->shouldReceive('getAmount')
             ->withNoArgs()
-            ->once()
-            ->andReturn(100);
+            ->twice()
+            ->andReturn(100, 0);
 
         $this->user->shouldReceive('getId')
             ->withNoArgs()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
+use Override;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
@@ -34,7 +35,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     public function __construct(private ShipLoaderInterface $shipLoader, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository, private TradeLibFactoryInterface $tradeLibFactory, private TradePostRepositoryInterface $tradePostRepository, private StorageManagerInterface $storageManager, private ShipRepositoryInterface $shipRepository, private PrivateMessageSenderInterface $privateMessageSender, private InteractionCheckerInterface $interactionChecker) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowTradeMenu::VIEW_IDENTIFIER);
@@ -133,12 +134,12 @@ final class BuyTradeLicense implements ActionControllerInterface
         if ($storage === null || $storage->getAmount() < $costs) {
             throw new SanityCheckException('target ship does not have license cost stored');
         }
-        $storageManagerRemote->upperStorage($commodity->getId(), $costs);
-        $this->storageManager->lowerStorage(
+        $qualities = $this->storageManager->removeStorage(
             $targetShip,
             $commodity,
             $costs
         );
+        $storageManagerRemote->addStorage($commodity->getId(), $qualities);
     }
 
     private function payLicenseViaAccount(
@@ -170,8 +171,8 @@ final class BuyTradeLicense implements ActionControllerInterface
             throw new SanityCheckException('wrong trade network');
         }
 
-        $storageManagerRemote->upperStorage($commodityId, $costs);
-        $storageManager->lowerStorage($commodityId, $costs);
+        $qualities = $storageManager->removeStorage($commodityId, $costs);
+        $storageManagerRemote->addStorage($commodityId, $qualities);
     }
 
     private function createLicense(
@@ -188,7 +189,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->tradeLicenseRepository->save($license);
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\AlertDetection;
 
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
@@ -13,16 +14,18 @@ use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 
 //TODO convert conditions to implementations of SkipConditionInterface
 class SkipDetection implements SkipDetectionInterface
 {
     public function __construct(
         private PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        private StuTime $stuTime
+        private StuTime $stuTime,
+        private BorgSphereRepositoryInterface $borgSphereRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function isSkipped(
         Spacecraft $incomingSpacecraft,
         SpacecraftWrapperInterface $alertedWrapper,
@@ -31,14 +34,14 @@ class SkipDetection implements SkipDetectionInterface
     ): bool {
 
         $alertedSpacecraft = $alertedWrapper->get();
+        if ($this->borgSphereRepository->getByShip($alertedSpacecraft)?->isFinished() === false) {
+            return true;
+        }
         $alertUser = $alertedSpacecraft->getUser();
         $incomingShipUser = $incomingSpacecraft->getUser();
 
         //alert yellow only attacks if incoming is foe
-        if (
-            $alertedWrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW
-            && !$this->playerRelationDeterminator->isEnemy($alertUser, $incomingShipUser)
-        ) {
+        if ($this->isNonHostileYellow($alertedWrapper, $alertUser, $incomingShipUser)) {
             return true;
         }
 
@@ -73,6 +76,12 @@ class SkipDetection implements SkipDetectionInterface
             $incomingShipUser,
             $alertedSpacecraft
         );
+    }
+
+    private function isNonHostileYellow(SpacecraftWrapperInterface $wrapper, User $alertUser, User $incomingUser): bool
+    {
+        return $wrapper->getAlertState() === SpacecraftAlertStateEnum::ALERT_YELLOW
+            && !$this->playerRelationDeterminator->isEnemy($alertUser, $incomingUser);
     }
 
     private function skipDueToPirateProtection(

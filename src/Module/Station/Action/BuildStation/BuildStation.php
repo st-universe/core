@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\BuildStation;
 
+use Override;
 use request;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
@@ -38,7 +39,7 @@ final class BuildStation implements ActionControllerInterface
         private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -218,7 +219,7 @@ final class BuildStation implements ActionControllerInterface
 
             $stor = $station->getStorage()[$commodity->getId()];
 
-            if ($stor === null || $stor->getAmount() < $buildplanModule->getModuleCount()) {
+            if ($stor === null || ($stor->getModuleQualityAmounts()[$buildplanModule->getImprovementSteps()] ?? 0) < $buildplanModule->getModuleCount()) {
                 return false;
             }
         }
@@ -234,7 +235,7 @@ final class BuildStation implements ActionControllerInterface
         foreach ($plan->getModules() as $buildplanModule) {
             $commodity = $buildplanModule->getModule()->getCommodity();
 
-            $this->storageManager->lowerStorage($station, $commodity, $buildplanModule->getModuleCount());
+            $this->storageManager->removeStorage($station, $commodity, $buildplanModule->getModuleCount(), $buildplanModule->getImprovementSteps());
         }
         foreach ($wantedSpecialModules as $mod) {
             $this->storageManager->lowerStorage($station, $mod->getCommodity(), 1);
@@ -243,7 +244,7 @@ final class BuildStation implements ActionControllerInterface
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return false;

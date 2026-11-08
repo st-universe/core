@@ -7,6 +7,9 @@ namespace Stu\Module\Trade\Lib;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
+use Override;
+use RuntimeException;
+use Stu\Lib\Transfer\Storage\ModuleQualityPacket;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\User;
@@ -29,13 +32,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         private User $user
     ) {}
 
-    #[\Override]
+    #[Override]
     public function getTradePost(): TradePost
     {
         return $this->tradePost;
     }
 
-    #[\Override]
+    #[Override]
     public function getStorageSum(): int
     {
         $this->storageSum ??= $this->getStorage()->reduce(
@@ -45,13 +48,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return $this->storageSum;
     }
 
-    #[\Override]
+    #[Override]
     public function getFreeStorage(): int
     {
         return max(0, $this->tradePost->getStorage() - $this->getStorageSum());
     }
 
-    #[\Override]
+    #[Override]
     public function getStorage(): Collection
     {
         if ($this->storage === null) {
@@ -65,7 +68,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return $this->storage;
     }
 
-    #[\Override]
+    #[Override]
     public function upperStorage(int $commodityId, int $amount): void
     {
         $storage = $this->getStorage();
@@ -82,30 +85,53 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
             $stor->setCommodity($commodity);
             $stor->setTradePost($this->tradePost);
         }
+        $this->storageSum = null;
         $stor->setAmount($stor->getAmount() + $amount);
         $storage->set($commodityId, $stor);
 
         $this->storageRepository->save($stor);
     }
 
-    #[\Override]
+    #[Override]
+    public function addStorage(int $commodityId, array $qualities): void
+    {
+        $count = ModuleQualityPacket::validate($qualities);
+        if ($count < 1) {
+            return;
+        }
+        $this->upperStorage($commodityId, $count);
+        $storage = $this->getStorage()->get($commodityId);
+        if ($storage === null) {
+            throw new RuntimeException('Storage missing after addition');
+        }
+        $storage->addModuleQualityAmounts($qualities);
+    }
+
+    #[Override]
+    public function removeStorage(int $commodityId, int $amount, ?int $quality = null): array
+    {
+        $storage = $this->getStorage()->get($commodityId);
+        if ($storage === null) {
+            throw new InvalidArgumentException('Commodity missing');
+        }
+        $qualities = $storage->removeAmount($amount, $quality);
+        if ($storage->getAmount() === 0) {
+            $this->getStorage()->remove($commodityId);
+            $this->storageRepository->delete($storage);
+        } else {
+            $this->storageRepository->save($storage);
+        }
+        $this->storageSum = null;
+        return $qualities;
+    }
+
+    #[Override]
     public function lowerStorage(int $commodityId, int $amount): void
     {
-        $storage = $this->getStorage();
-
-        /** @var ?Storage */
-        $stor = $storage->get($commodityId);
-        if ($stor === null) {
+        $storage = $this->getStorage()->get($commodityId);
+        if ($storage === null) {
             return;
         }
-
-        if ($stor->getAmount() <= $amount) {
-            $storage->remove($commodityId);
-            $this->storageRepository->delete($stor);
-            return;
-        }
-        $stor->setAmount($stor->getAmount() - $amount);
-
-        $this->storageRepository->save($stor);
+        $this->removeStorage($commodityId, min($amount, $storage->getAmount()));
     }
 }

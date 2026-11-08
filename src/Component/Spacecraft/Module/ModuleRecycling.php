@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft\Module;
 
+use Override;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -18,7 +19,7 @@ class ModuleRecycling implements ModuleRecyclingInterface
         private StuRandom $stuRandom
     ) {}
 
-    #[\Override]
+    #[Override]
     public function retrieveSomeModules(
         Spacecraft $spacecraft,
         EntityWithStorageInterface $entity,
@@ -26,7 +27,7 @@ class ModuleRecycling implements ModuleRecyclingInterface
         int $recyclingChance = 50
     ): void {
 
-        /** @var array<int, array{0: Module, 1: int, 2: int}> */
+        /** @var array<int, array{0: Module, 1: int, 2: int, 3: int}> */
         $recycledModuleChances = [];
 
         $buildplan = $spacecraft->getBuildplan();
@@ -47,7 +48,7 @@ class ModuleRecycling implements ModuleRecyclingInterface
                 $buildplanModule = $buildplanModules->get($module->getId());
                 $amount = $buildplanModule === null ? 1 : $buildplanModule->getModuleCount();
                 $chance = (int)ceil($recyclingChance * $system->getStatus() / 100);
-                $recycledModuleChances[$module->getId()] = [$module, $amount, $chance];
+                $recycledModuleChances[$module->getId()] = [$module, $amount, $chance, $system->getImprovementSteps()];
             }
         }
 
@@ -61,14 +62,14 @@ class ModuleRecycling implements ModuleRecyclingInterface
                 $recycledModuleChances[$module->getId()] = [
                     $module,
                     $this->stuRandom->rand(1, $moduleCount, true, (int)ceil($moduleCount / 2)),
-                    intdiv($recyclingChance, 2)
+                    intdiv($recyclingChance, 2), $buildplanModule->getImprovementSteps()
                 ];
             }
         }
 
         $maxStorage = $entity->getMaxStorage();
         $recycledModules = [];
-        foreach ($recycledModuleChances as [$module, $amount, $recyclingChance]) {
+        foreach ($recycledModuleChances as [$module, $amount, $recyclingChance, $quality]) {
 
             if ($entity->getStorageSum() >= $maxStorage) {
                 $information->addInformation('Kein Lagerraum frei um Module zu recyclen!');
@@ -79,10 +80,10 @@ class ModuleRecycling implements ModuleRecyclingInterface
                 continue;
             }
 
-            $this->storageManager->upperStorage(
+            $this->storageManager->addStorage(
                 $entity,
                 $module->getCommodity(),
-                $amount
+                [$quality => $amount]
             );
 
             $recycledModules[] = ['module' => $module, 'amount' => $amount];

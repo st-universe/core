@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TakeOffer;
 
+use Override;
 use Stu\Component\Game\ModuleEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\ModuleScreen\ModuleQualitySelection;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\ViewContextMetadataTypeEnum;
@@ -26,7 +28,7 @@ final class TakeOffer implements ActionControllerInterface
 
     public function __construct(private TakeOfferRequestInterface $takeOfferRequest, private TradeLibFactoryInterface $tradeLibFactory, private TradeOfferRepositoryInterface $tradeOfferRepository, private TradeLicenseRepositoryInterface $tradeLicenseRepository, private PrivateMessageSenderInterface $privateMessageSender, private TradeTransactionRepositoryInterface $tradeTransactionRepository, private StorageRepositoryInterface $storageRepository, private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $userId = $context->getUser()->getId();
@@ -67,7 +69,9 @@ final class TakeOffer implements ActionControllerInterface
             $selectedOffer->getWantedCommodityId()
         );
 
-        if ($storage === null || $storage->getAmount() < $selectedOffer->getWantedCommodityCount()) {
+        $quality = ModuleQualitySelection::readCommodity($selectedOffer->getWantedCommodityId());
+        $storedAmount = $storage?->getAmountForQuality($quality) ?? 0;
+        if ($storage === null || $storedAmount < $selectedOffer->getWantedCommodityCount()) {
             $context->getInfo()->addInformation(sprintf(
                 _('Nicht genügend %s auf diesem Handelsposten vorhanden'),
                 $selectedOffer->getWantedCommodity()->getName()
@@ -92,8 +96,8 @@ final class TakeOffer implements ActionControllerInterface
             $context->getInfo()->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
             return;
         }
-        if ($amount * $selectedOffer->getWantedCommodityCount() > $storage->getAmount()) {
-            $amount = (int) floor($storage->getAmount() / $selectedOffer->getWantedCommodityCount());
+        if ($amount * $selectedOffer->getWantedCommodityCount() > $storedAmount) {
+            $amount = (int) floor($storedAmount / $selectedOffer->getWantedCommodityCount());
         }
         if ($amount * $selectedOffer->getOfferedCommodityCount() - $amount * $selectedOffer->getWantedCommodityCount() > $freeStorage) {
             $amount = (int) floor($freeStorage / ($selectedOffer->getOfferedCommodityCount() - $selectedOffer->getWantedCommodityCount()));
@@ -103,6 +107,7 @@ final class TakeOffer implements ActionControllerInterface
             }
         }
 
+        $offeredQualities = $selectedOffer->getStorage()->removeAmount($selectedOffer->getOfferedCommodityCount() * min($amount, $selectedOffer->getOfferCount()));
         if ($selectedOffer->getOfferCount() <= $amount) {
             $amount = $selectedOffer->getOfferCount();
 
@@ -119,20 +124,9 @@ final class TakeOffer implements ActionControllerInterface
             $this->storageRepository->save($storage);
         }
 
-        $storageManagerRemote->upperStorage(
-            $selectedOffer->getWantedCommodityId(),
-            $selectedOffer->getWantedCommodityCount() * $amount
-        );
-
-        $storageManagerUser->upperStorage(
-            $selectedOffer->getOfferedCommodityId(),
-            $selectedOffer->getOfferedCommodityCount() * $amount
-        );
-
-        $storageManagerUser->lowerStorage(
-            $selectedOffer->getWantedCommodityId(),
-            $selectedOffer->getWantedCommodityCount() * $amount
-        );
+        $payment = $storageManagerUser->removeStorage($selectedOffer->getWantedCommodityId(), $selectedOffer->getWantedCommodityCount() * $amount, $quality);
+        $storageManagerRemote->addStorage($selectedOffer->getWantedCommodityId(), $payment);
+        $storageManagerUser->addStorage($selectedOffer->getOfferedCommodityId(), $offeredQualities);
 
         $transaction = $this->tradeTransactionRepository->prototype();
         $transaction->setDate(time());
@@ -167,7 +161,7 @@ final class TakeOffer implements ActionControllerInterface
         $this->npcLogTradeMessageLogger->logIfNpcInvolved($userId, $recipientId, $text);
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

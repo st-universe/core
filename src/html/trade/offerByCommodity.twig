@@ -9,7 +9,7 @@
         {% for data in OFFER %}
         <tr>
             <td>
-                <img src="assets/commodities/{{ data.getOfferedCommodityId }}.png" />
+                <img src="assets/commodities/{{ data.getOfferedCommodityId }}.png" title="{{ data.getOfferedCommodity.getName }}{% if data.getStorage.hasImprovedModules %} · {{ data.getStorage.getModuleQualityDescription }}{% endif %}" />
                 {{ data.getOfferedCommodityCount }}
             </td>
             <td>

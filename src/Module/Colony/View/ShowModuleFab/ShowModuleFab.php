@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use InvalidArgumentException;
+use Override;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\JavascriptExecutionTypeEnum;
+use Stu\Component\Research\ModuleProductionQuality;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\Component\View\ViewControllerContext;
@@ -45,10 +47,11 @@ final class ShowModuleFab implements ViewControllerInterface
         private ModuleRepositoryInterface $moduleRepository,
         private BuildplanHangarRepositoryInterface $buildplanHangarRepository,
         private ShipRumpCostRepositoryInterface $shipRumpCostRepository,
-        private StorageRepositoryInterface $storageRepository
+        private StorageRepositoryInterface $storageRepository,
+        private ModuleProductionQuality $productionQuality
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ViewControllerContext $game): void
     {
         $userId = $game->getUser()->getId();
@@ -234,7 +237,8 @@ final class ShowModuleFab implements ViewControllerInterface
                 $this->moduleQueueRepository,
                 $module,
                 $colony,
-                $accumulatedStorage[$module->getCommodityId()] ?? 0
+                $accumulatedStorage[$module->getCommodityId()] ?? 0,
+                $this->productionQuality
             );
 
             $sortedModules[$moduleType][$moduleLevel][] = $moduleFabricationListItem;

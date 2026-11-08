@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Tick;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Stu\ActionTestCase;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManagerInterface;
@@ -22,8 +23,9 @@ class SpacecraftTickTest extends ActionTestCase
             ->andReturn([]);
         $dic->setAdditionalService(ColonyShipRepairRepositoryInterface::class, $colonyshipRepairRepoMock);
 
-        $dic->get(SpacecraftTickManagerInterface::class)
-            ->work(false);
+        $dic->get(EntityManagerInterface::class)->wrapInTransaction(
+            fn () => $dic->get(SpacecraftTickManagerInterface::class)->work(false)
+        );
 
         $this->assertEntity(42, Spacecraft::class, ['crewCount' => 0]);
     }

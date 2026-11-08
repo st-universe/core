@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\AttackSpacecraft;
 
+use Override;
 use request;
+use Stu\Component\Borg\BorgSphereAttackGuard;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
@@ -19,6 +21,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 
 //TODO unit tests and request class
 final class AttackSpacecraft implements ActionControllerInterface
@@ -31,10 +34,11 @@ final class AttackSpacecraft implements ActionControllerInterface
         private FightLibInterface $fightLib,
         private SpacecraftAttackCoreInterface $spacecraftAttackCore,
         private PirateReactionInterface $pirateReaction,
-        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory
+        private InteractionCheckerBuilderFactoryInterface $interactionCheckerBuilderFactory,
+        private ?BorgSphereAttackGuard $borgSphereAttackGuard = null
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $info = $context->getInfo();
@@ -81,9 +85,7 @@ final class AttackSpacecraft implements ActionControllerInterface
             throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
         }
 
-        $epsSystemData = $wrapper->getEpsSystemData();
-        if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
-            $info->addInformation(_('Keine Energie vorhanden'));
+        if (!$this->canStartAttack($wrapper, $target, $context)) {
             return;
         }
 
@@ -94,7 +96,7 @@ final class AttackSpacecraft implements ActionControllerInterface
         $isFleetFight = false;
         $fightInfos = new InformationWrapper();
 
-        $stillAlive = $this->spacecraftAttackCore->attack($wrapper, $targetWrapper, false, $isFleetFight, $fightInfos);
+        $stillAlive = $this->attack($wrapper, $targetWrapper, $isFleetFight, $fightInfos);
 
         if (!$stillAlive) {
             $info->addInformationWrapper($fightInfos);
@@ -121,7 +123,26 @@ final class AttackSpacecraft implements ActionControllerInterface
         }
     }
 
-    #[\Override]
+    private function canStartAttack(SpacecraftWrapperInterface $wrapper, Spacecraft $target, ActionControllerContext $context): bool
+    {
+        $eps = $wrapper->getEpsSystemData();
+        if ($eps === null || $eps->getEps() === 0) {
+            $context->getInfo()->addInformation(_('Keine Energie vorhanden'));
+            return false;
+        }
+        return $this->borgSphereAttackGuard === null || $this->borgSphereAttackGuard->prepare($wrapper->get(), $target, $context);
+    }
+
+    private function attack(SpacecraftWrapperInterface $source, SpacecraftWrapperInterface $target, bool &$isFleetFight, InformationWrapper $information): bool
+    {
+        try {
+            return $this->spacecraftAttackCore->attack($source, $target, false, $isFleetFight, $information);
+        } finally {
+            $this->borgSphereAttackGuard?->finish();
+        }
+    }
+
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

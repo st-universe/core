@@ -3,6 +3,7 @@
 namespace Stu\Module\Spacecraft\Lib\Creation;
 
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
@@ -19,7 +20,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         private SpacecraftSystemRepositoryInterface $shipSystemRepository
     ) {}
 
-    #[\Override]
+    #[Override]
     public function createShipSystemsByModuleList(
         Spacecraft $spacecraft,
         Collection $buildplanModules,
@@ -34,7 +35,16 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         }
 
         foreach ($systems as $systemType => $module) {
-            $this->createShipSystem($systemType, $spacecraft, $module);
+            $steps = 0;
+            if ($module !== null) {
+                foreach ($buildplanModules as $entry) {
+                    if ($entry->getModule()->getId() === $module->getId()) {
+                        $steps = $entry->getImprovementSteps();
+                        break;
+                    }
+                }
+            }
+            $this->createShipSystem($systemType, $spacecraft, $module, $steps);
         }
     }
 
@@ -66,7 +76,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         return $systems;
     }
 
-    private function createShipSystem(int $systemType, Spacecraft $spacecraft, ?Module $module): void
+    private function createShipSystem(int $systemType, Spacecraft $spacecraft, ?Module $module, int $steps): void
     {
         $spacecraftSystem = $this->shipSystemRepository->prototype();
         $spacecraftSystem->setSpacecraft($spacecraft);
@@ -74,6 +84,7 @@ class SpacecraftSystemCreation implements SpacecraftSystemCreationInterface
         $spacecraftSystem->setSystemType(SpacecraftSystemTypeEnum::from($systemType));
         if ($module !== null) {
             $spacecraftSystem->setModule($module);
+            $spacecraftSystem->setImprovementSteps($steps);
         }
         $spacecraftSystem->setStatus(100);
         $spacecraftSystem->setMode(SpacecraftSystemModeEnum::MODE_OFF);
