@@ -6,7 +6,9 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Lib\Map\FieldTypeEffectEnum;
 use Stu\Module\Colony\Lib\Damage\ApplyBuildingDamageInterface;
@@ -49,12 +51,14 @@ class EnergyWeaponPhaseTest extends StuTestCase
     private MockInterface&StuRandom $stuRandom;
     private MockInterface&MessageFactoryInterface $messageFactory;
     private MockInterface&EventDispatcherInterface $eventDispatcher;
+    private BorgSphereAttackContext $borgSphereAttackContext;
 
     private EnergyWeaponPhaseInterface $subject;
 
     #[\Override]
     public function setUp(): void
     {
+        parent::setUp();
         $this->userRepository = $this->mock(UserRepositoryInterface::class);
         $this->weaponRepository = $this->mock(WeaponRepositoryInterface::class);
         $this->entryCreator = $this->mock(EntryCreatorInterface::class);
@@ -65,6 +69,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
         $this->spacecraftDestruction = $this->mock(SpacecraftDestructionInterface::class);
         $this->eventDispatcher = $this->mock(EventDispatcherInterface::class);
+        $this->borgSphereAttackContext = new BorgSphereAttackContext();
 
         $this->subject = new EnergyWeaponPhase(
             $this->userRepository,
@@ -76,11 +81,20 @@ class EnergyWeaponPhaseTest extends StuTestCase
             $this->messageFactory,
             $this->spacecraftDestruction,
             $this->initLoggerUtil(),
-            $this->eventDispatcher
+            $this->eventDispatcher,
+            $this->borgSphereAttackContext
         );
     }
 
-    public function testFireExpectNoSecondShotIfTargetDestroyedOnFirst(): void
+    /** @return iterable<string, array{bool}> */
+    public static function stoppingHits(): iterable
+    {
+        yield 'target destroyed' => [false];
+        yield 'sphere newly disabled' => [true];
+    }
+
+    #[DataProvider('stoppingHits')]
+    public function testFireStopsAfterTheFirstDestroyingOrDisablingHit(bool $disabled): void
     {
         $attacker = $this->mock(EnergyAttackerInterface::class);
         $target = $this->mock(Ship::class);
@@ -102,7 +116,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->andReturn($targetWrapper);
         $targetPool->shouldReceive('isDefeated')
             ->withNoArgs()
-            ->twice()
+            ->times($disabled ? 1 : 2)
             ->andReturn(false, true);
 
         $attacker->shouldReceive('getPhaserVolleys')
@@ -182,7 +196,7 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->andReturn($targetUser);
         $target->shouldReceive('getCondition->isDestroyed')
             ->withNoArgs()
-            ->andReturn(true);
+            ->andReturn(!$disabled);
         $target->shouldReceive('isStation')
             ->withNoArgs()
             ->andReturn(false);
@@ -234,16 +248,26 @@ class EnergyWeaponPhaseTest extends StuTestCase
             ->andReturn(0);
 
         $this->applyDamage->shouldReceive('damage')
-            ->with(Mockery::any(), $targetWrapper, $message);
+            ->with(Mockery::any(), $targetWrapper, $message)
+            ->once()
+            ->andReturnUsing(function () use ($disabled, $target): void {
+                if ($disabled) {
+                    $this->borgSphereAttackContext->stopBattleAfterDisabling($target);
+                }
+            });
 
-        $this->spacecraftDestruction->shouldReceive('destroy')
-            ->with(
-                $attacker,
-                $targetWrapper,
-                SpacecraftDestructionCauseEnum::SHIP_FIGHT,
-                $message
-            )
-            ->once();
+        if ($disabled) {
+            $this->spacecraftDestruction->shouldNotReceive('destroy');
+        } else {
+            $this->spacecraftDestruction->shouldReceive('destroy')
+                ->with(
+                    $attacker,
+                    $targetWrapper,
+                    SpacecraftDestructionCauseEnum::SHIP_FIGHT,
+                    $message
+                )
+                ->once();
+        }
 
         $messages->shouldReceive('add')
             ->with($message)

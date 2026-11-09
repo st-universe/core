@@ -53,8 +53,8 @@ final class ModuleFabricationListItemTest extends StuTestCase
         self::assertCount(1, $variants[1]['costs']);
         $html = $this->render($item);
         self::assertStringContainsString('name="optimizations[42]"', $html);
-        self::assertStringContainsString('Standard (+0 %)', $html);
-        self::assertStringContainsString('Fertigungsbonus (+0,' . $steps . ' %)', $html);
+        self::assertStringContainsString('Standard (+0%)', $html);
+        self::assertStringContainsString('Fertigungsbonus (+0,' . $steps . '%)', $html);
         self::assertStringNotContainsString('Borg-Naniten', $html);
         self::assertStringNotContainsString('/assets/commodities/76.png', $html);
     }

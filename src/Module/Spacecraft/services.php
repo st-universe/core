@@ -264,6 +264,7 @@ use Stu\Module\Spacecraft\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Spacecraft\View\ShowAnalyseBuoy\ShowAnalyseBuoy;
 use Stu\Module\Spacecraft\View\ShowAwayMission\ShowAwayMission;
 use Stu\Module\Spacecraft\View\ShowBorgSphere\ShowBorgSphere;
+use Stu\Module\Spacecraft\View\ShowBorgSphereAttackConfirmation\ShowBorgSphereAttackConfirmation;
 use Stu\Module\Spacecraft\View\ShowBroadcastResponse\ShowBroadcastResponse;
 use Stu\Module\Spacecraft\View\ShowColonyMessage\ShowColonyMessage;
 use Stu\Module\Spacecraft\View\ShowColonyScan\ShowColonyScan;
@@ -313,13 +314,16 @@ return [
     SystemDamageInterface::class => autowire(SystemDamage::class)
         ->constructorParameter('borgSphereCombat', get(BorgSphereCombat::class)),
     ApplyFieldDamageInterface::class => autowire(ApplyFieldDamage::class),
-    EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
+    EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class)
+        ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
     FightLibInterface::class => autowire(FightLib::class),
-    ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
+    ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class)
+        ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
     TholianWebWeaponPhaseInterface::class => autowire(TholianWebWeaponPhase::class),
     SpacecraftAttackCoreInterface::class => autowire(SpacecraftAttackCore::class),
     SpacecraftAttackPreparationInterface::class => autowire(SpacecraftAttackPreparation::class),
-    SpacecraftAttackCycleInterface::class => autowire(SpacecraftAttackCycle::class),
+    SpacecraftAttackCycleInterface::class => autowire(SpacecraftAttackCycle::class)
+        ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
     BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class)
         ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
     SkipDetectionInterface::class => autowire(SkipDetection::class),
@@ -538,6 +542,7 @@ return [
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowAwayMission::VIEW_IDENTIFIER => autowire(ShowAwayMission::class),
         ShowBorgSphere::VIEW_IDENTIFIER => autowire(ShowBorgSphere::class),
+        ShowBorgSphereAttackConfirmation::VIEW_IDENTIFIER => autowire(ShowBorgSphereAttackConfirmation::class),
         ShowCrewAssignmentManagement::VIEW_IDENTIFIER => autowire(ShowCrewAssignmentManagement::class),
         ShowCrewmanDetails::VIEW_IDENTIFIER => autowire(ShowCrewmanDetails::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),

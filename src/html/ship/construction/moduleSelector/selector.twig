@@ -33,39 +33,7 @@
     </tr>
     {% endif %}
     {% for moduleSelectorEntry in normalModules %}
-    {% set module = moduleSelectorEntry.getModule %}
-    {% set moduleId = module.getId %}
-    {% set commodityId = module.getCommodityId %}
-    {% set checked = moduleSelectorEntry.isChosen ? 'checked="true"' : '' %}
-    <tr>
-        {% if not allowMultiple %}
-        <td style="width: 3px;" class="{{ moduleSelectorEntry.getModuleLevelClass }}"></td>
-        {% endif %}
-        <td style="width: 50px;">
-            {% if allowMultiple %}
-            <input class="specialModuleRadio" type="checkbox" {{ checked }} name="mod_{{ type }}[]"
-                value="{{ moduleId }}"
-                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
-            {% else %}
-            <input type="radio" {{ checked }} name="mod_{{ type }}[]" value="{{ moduleId }}"
-                onchange="replaceTabImage({{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
-            {% endif %}
-            <img src="assets/commodities/{{ commodityId }}.png" />
-        </td>
-        <td style="width: 300px;">{{ module.getName }}{% if moduleSelectorEntry.getQualityVariants|length > 1 %}
-            <select name="module_quality[{{ moduleId }}]" title="Verbesserung dieses Moduls">
-                {% for variant in moduleSelectorEntry.getQualityVariants %}
-                <option value="{{ variant.steps }}"{% if variant.steps == moduleSelectorEntry.getSelectedQuality %} selected="selected"{% endif %}>{{ variant.label }} ({{ variant.amount }} lagernd)</option>
-                {% endfor %}
-            </select>{% endif %}</td>
-        <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
-        <td style="width: 30px; text-align: center;">
-            {{ moduleSelectorEntry.getStoredAmount }}
-        </td>
-        <td id="{{ moduleId }}_content">
-            {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' %}
-        </td>
-    </tr>
+    {% include 'html/ship/construction/moduleSelector/selectorEntry.twig' %}
     {% endfor %}
     {% if npcModules|length > 0 %}
     <tr>
@@ -73,39 +41,7 @@
         <th colspan="{{ colspan }}" style="text-align: center;">NPC Module</th>
     </tr>
     {% for moduleSelectorEntry in npcModules %}
-    {% set module = moduleSelectorEntry.getModule %}
-    {% set moduleId = module.getId %}
-    {% set commodityId = module.getCommodityId %}
-    {% set checked = moduleSelectorEntry.isChosen ? 'checked="true"' : '' %}
-    <tr>
-        {% if not allowMultiple %}
-        <td style="width: 3px;" class="{{ moduleSelectorEntry.getModuleLevelClass }}"></td>
-        {% endif %}
-        <td style="width: 50px;">
-            {% if allowMultiple %}
-            <input class="specialModuleRadio" type="checkbox" {{ checked }} name="mod_{{ type }}[]"
-                value="{{ moduleId }}"
-                onchange="toggleSpecialModuleDisplay({{ type }}, {{ moduleId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
-            {% else %}
-            <input type="radio" {{ checked }} name="mod_{{ type }}[]" value="{{ moduleId }}"
-                onchange="replaceTabImage({{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }}, {{ moduleSelectorEntry.getStoredAmount }});" />
-            {% endif %}
-            <img src="assets/commodities/{{ commodityId }}.png" />
-        </td>
-        <td style="width: 300px;">{{ module.getName }}{% if moduleSelectorEntry.getQualityVariants|length > 1 %}
-            <select name="module_quality[{{ moduleId }}]" title="Verbesserung dieses Moduls">
-                {% for variant in moduleSelectorEntry.getQualityVariants %}
-                <option value="{{ variant.steps }}"{% if variant.steps == moduleSelectorEntry.getSelectedQuality %} selected="selected"{% endif %}>{{ variant.label }} ({{ variant.amount }} lagernd)</option>
-                {% endfor %}
-            </select>{% endif %}</td>
-        <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
-        <td style="width: 30px; text-align: center;">
-            {{ moduleSelectorEntry.getStoredAmount }}
-        </td>
-        <td id="{{ moduleId }}_content">
-            {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' %}
-        </td>
-    </tr>
+    {% include 'html/ship/construction/moduleSelector/selectorEntry.twig' %}
     {% endfor %}
     {% endif %}
     {% else %}

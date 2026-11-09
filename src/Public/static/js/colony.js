@@ -322,6 +322,32 @@ function toggleTorpedoInfo(module_crew) {
 	}
 }
 
+function updateSelectedModuleQuality(select, type, moduleId, commodityId, moduleCrew) {
+	const row = select.closest('tr');
+	const preview = row.querySelector(`template[data-module-quality="${select.value}"]`);
+	if (!preview) {
+		return;
+	}
+	const amount = parseInt(preview.getAttribute('data-stored-amount'), 10) || 0;
+	$(moduleId + '_content').innerHTML = preview.innerHTML;
+	$('module_' + moduleId + '_stock').textContent = amount;
+	const choice = $('module_' + moduleId + '_selection');
+	choice.setAttribute('data-module-stock', amount);
+	if (!choice.checked) {
+		return;
+	}
+	if (choice.type === 'checkbox') {
+		toggleSpecialModuleDisplay(type, moduleId, moduleCrew, amount);
+	} else {
+		replaceTabImage(type, moduleId, commodityId, moduleCrew, amount);
+	}
+}
+
+function getSelectedModuleStock(moduleId, fallback) {
+	const choice = $('module_' + moduleId + '_selection');
+	return choice ? parseInt(choice.getAttribute('data-module-stock'), 10) || 0 : fallback;
+}
+
 function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 
 	tabElement = $('module_tab_' + type);
@@ -334,7 +360,7 @@ function replaceTabImage(type, moduleId, commodityId, module_crew, amount) {
 		Element.addClassName(tabElement, 'module_selector_skipped');
 		updateCrewCount(type, 0);
 	} else {
-		if (amount < 1) {
+		if (getSelectedModuleStock(moduleId, amount) < 1) {
 			Element.addClassName(tabElement, 'module_selector_unselected');
 		}
 		$('tab_image_mod_' + type).src = assetUrl('assets/commodities/' + commodityId + '.png');
@@ -349,11 +375,14 @@ var disabledSlots = new Set();
 function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 	let innerHTML = '';
 	let checkedCount = 0;
+	let missingStock = false;
+	Element.removeClassName($('module_tab_' + type), 'module_selector_unselected');
 
 	//count and set tab images
 	Element.select($('selector_' + type), '.specialModuleRadio').each(function (elem) {
 		if (elem.checked) {
 			innerHTML = innerHTML.concat($(elem.value + '_content').innerHTML);
+			missingStock = missingStock || getSelectedModuleStock(elem.value, amount) < 1;
 			if (elem.value == module_id) {
 				updateCrewCount(elem.value, module_crew);
 			}
@@ -365,6 +394,9 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 		}
 	});
 	$('module_tab_info_' + type).innerHTML = `${checkedCount} / ${specialSlots}`;
+	if (missingStock) {
+		Element.addClassName($('module_tab_' + type), 'module_selector_unselected');
+	}
 
 	//enable/disable default image
 	if (checkedCount != 0) {
@@ -374,7 +406,7 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 	}
 
 	//check for maximum amount
-	if (checkedCount == specialSlots) {
+	if (checkedCount >= specialSlots) {
 		Element.select($('selector_' + type), '.specialModuleRadio').each(function (elem) {
 			if (!elem.checked && !elem.disabled) {
 				elem.disabled = true;
@@ -386,6 +418,7 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 		disabledSlots.forEach(function (elem) {
 			elem.disabled = false;
 		});
+		disabledSlots.clear();
 	}
 	$('module_type_' + type).innerHTML = innerHTML;
 	$('module_type_' + type).show();
@@ -423,7 +456,9 @@ function checkCrewCount() {
 		elem.hide();
 	});
 	if (crewSum > maxCrew) {
-		Form.Element.disable('buildbutton');
+		if ($('buildbutton')) {
+			Form.Element.disable('buildbutton');
+		}
 		$('crewerr').show();
 		return false;
 	} else {
@@ -434,8 +469,11 @@ function checkCrewCount() {
 	}
 }
 function enableShipBuildButton() {
-
-	if (isShipBuildPossible()) {
+	const possible = isShipBuildPossible();
+	if (!$('buildbutton')) {
+		return;
+	}
+	if (possible) {
 		Form.Element.enable('buildbutton');
 		$('buildbutton').classList.add('highlight');
 		setTimeout(() => $('buildbutton').classList.remove('highlight'), 1000);

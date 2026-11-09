@@ -82,7 +82,7 @@ final class BorgSphereCombat
             }
         }
         $this->disable($event, $ship);
-        $information->addInformation('-- Die Sphäre ist nun deaktiviert. Weitere Angriffe können sie zerstören und die Gewinnung von Naniten verhindern');
+        $information->addInformation('-- Die Sphäre wurde deaktiviert. Der Beschuss wurde eingestellt');
     }
 
     public function canDamageSystem(Spacecraft $ship, SpacecraftSystem $system): bool
@@ -119,6 +119,7 @@ final class BorgSphereCombat
             }
         }
         $this->repository->save($event);
+        $this->context->stopBattleAfterDisabling($ship);
     }
 
     public function limitSystemStatus(Spacecraft $ship, SpacecraftSystem $system, int $status): ?int

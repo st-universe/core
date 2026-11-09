@@ -75,12 +75,12 @@ final class ModuleFabricationListItem
     /** @return list<array{optimized: bool, label: string, costs: array<int, ModuleCost>}> */
     public function getProductionVariants(): array
     {
-        $variants = [['optimized' => false, 'label' => 'Standard (+0 %)', 'costs' => $this->getConstructionCosts()]];
+        $variants = [['optimized' => false, 'label' => 'Standard (+0%)', 'costs' => $this->getConstructionCosts()]];
         $steps = $this->productionQuality?->getImprovementSteps($this->colony->getUser(), $this->module) ?? 0;
         if ($steps > 0) {
             $variants[] = [
                 'optimized' => true,
-                'label' => sprintf('Fertigungsbonus (+%s %%)', number_format($steps / 10, 1, ',', '')),
+                'label' => sprintf('Fertigungsbonus (+%s%%)', number_format($steps / 10, 1, ',', '')),
                 'costs' => $this->productionQuality->getCosts($this->module, $steps)
             ];
         }

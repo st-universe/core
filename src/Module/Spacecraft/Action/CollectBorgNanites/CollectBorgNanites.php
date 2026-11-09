@@ -10,7 +10,7 @@ use Stu\Component\Borg\BorgSphereRaidService;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Spacecraft\View\ShowBorgSphere\ShowBorgSphere;
+use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 
 final class CollectBorgNanites implements ActionControllerInterface
 {
@@ -21,7 +21,7 @@ final class CollectBorgNanites implements ActionControllerInterface
     #[Override]
     public function handle(ActionControllerContext $context): void
     {
-        $context->setView(ShowBorgSphere::VIEW_IDENTIFIER);
+        $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $wrappers = $this->ships->getWrappersBySourceAndUserAndTarget(request::indInt('id'), $context->getUser()->getId(), request::indInt('target'));
         $target = $wrappers->getTarget()?->get();
         if ($target !== null) {

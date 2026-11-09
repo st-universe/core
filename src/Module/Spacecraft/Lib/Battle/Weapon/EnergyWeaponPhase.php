@@ -34,7 +34,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
         $phaserVolleys = $attacker->getPhaserVolleys();
         for ($i = 1; $i <= $phaserVolleys; $i++) {
-            if ($targetPool->isDefeated()) {
+            if ($this->isFiringStopped($targetPool)) {
                 break;
             }
             if (!$attacker->getPhaserState() || !$attacker->hasSufficientEnergy($this->getEnergyWeaponEnergyCosts())) {

@@ -40,7 +40,7 @@ final class BorgSphereRaidService
     public function getCooldownUntil(User $user, BorgSphereEvent $event): int
     {
         $raid = $this->events->getRaid($user);
-        return $raid === null ? 0 : $raid->getLastAttemptAt() + $event->getConfiguration()->getSetting('raid_cooldown_seconds');
+        return $raid === null || $raid->getLastAttemptAt() === 0 ? 0 : $raid->getLastAttemptAt() + $event->getConfiguration()->getSetting('raid_cooldown_seconds');
     }
 
     public function getTeamSize(Spacecraft $ship, BorgSphereEvent $event): int
@@ -53,28 +53,32 @@ final class BorgSphereRaidService
         return sprintf('Für die Außenmission werden zusätzliche Crewmitglieder oberhalb der Mindestbesatzung des Bauplans (%d) benötigt. Besetzte Offiziersposten bleiben an Bord', $ship->getNeededCrewCount());
     }
 
-    public function collect(SpacecraftWrapperInterface $wrapper, Spacecraft $target, InformationInterface $information): void
+    public function collect(SpacecraftWrapperInterface $wrapper, Spacecraft $target, InformationInterface $information): bool
     {
         $ship = $wrapper->get();
         $event = $this->availableEvent($target, $information);
         if ($event === null || !$this->checkInteraction($ship, $target, $information)) {
-            return;
+            return false;
         }
         $configuration = $event->getConfiguration();
         $raid = $this->availableRaid($ship->getUser(), $configuration, $information);
         if ($raid === null) {
-            return;
+            return false;
         }
         $team = $this->team->select($ship, $configuration->getSetting('raid_team_size'));
         $commodity = $this->availableCommodity($ship, $configuration, $team, $information);
         if ($commodity === null) {
-            return;
+            return false;
         }
-        $raid->setLastAttemptAt($this->time->time())->setAttempts($raid->getAttempts() + 1);
+        $raid->setAttempts($raid->getAttempts() + 1);
+        [$success, $report] = $this->complete($wrapper, $event, $commodity, $team);
+        if ($success) {
+            $raid->setLastAttemptAt($this->time->time());
+        }
         $this->events->saveRaid($raid);
-        $report = $this->complete($wrapper, $event, $commodity, $team);
         $information->addInformation($report);
         $this->messages->send(UserConstants::USER_NOONE, $ship->getUser()->getId(), $report, PrivateMessageFolderTypeEnum::SPECIAL_SHIP, $ship);
+        return true;
     }
 
     private function availableEvent(Spacecraft $target, InformationInterface $information): ?BorgSphereEvent
@@ -93,7 +97,7 @@ final class BorgSphereRaidService
     private function availableRaid(User $user, BorgSphereConfiguration $configuration, InformationInterface $information): ?BorgSphereRaid
     {
         $raid = $this->events->getRaid($user, true);
-        if ($raid !== null && $raid->getLastAttemptAt() + $configuration->getSetting('raid_cooldown_seconds') > $this->time->time()) {
+        if ($raid !== null && $raid->getLastAttemptAt() > 0 && $raid->getLastAttemptAt() + $configuration->getSetting('raid_cooldown_seconds') > $this->time->time()) {
             $information->addInformation(sprintf('Ein weiteres Außenteam kann ab %s Uhr entsendet werden', $this->time->transformToStuDateTime($raid->getLastAttemptAt() + $configuration->getSetting('raid_cooldown_seconds'))));
             return null;
         }
@@ -115,13 +119,16 @@ final class BorgSphereRaidService
         return $commodity;
     }
 
-    /** @param list<CrewAssignment> $team */
-    private function complete(SpacecraftWrapperInterface $wrapper, BorgSphereEvent $event, Commodity $commodity, array $team): string
+    /** @param list<CrewAssignment> $team
+     * @return array{bool, string}
+     */
+    private function complete(SpacecraftWrapperInterface $wrapper, BorgSphereEvent $event, Commodity $commodity, array $team): array
     {
         $configuration = $event->getConfiguration();
         $ship = $wrapper->get();
-        $success = $configuration->getSetting($event->getPhase() === BorgSpherePhaseEnum::REGENERATING ? 'raid_success_disabled' : 'raid_success_active');
-        if ($this->random->rand(1, 100) <= $success) {
+        $chance = $configuration->getSetting($event->getPhase() === BorgSpherePhaseEnum::REGENERATING ? 'raid_success_disabled' : 'raid_success_active');
+        $success = $this->random->rand(1, 100) <= $chance;
+        if ($success) {
             $amount = $this->random->rand($configuration->getSetting('raid_reward_min'), $configuration->getSetting('raid_reward_max'));
             $this->storage->upperStorage($ship, $commodity, $amount);
             $report = sprintf('Das Außenteam ist von der Borg-Sphäre zurückgekehrt. %d %s wurden dem Lagerraum der %s hinzugefügt', $amount, $commodity->getName(), $ship->getName());
@@ -129,7 +136,7 @@ final class BorgSphereRaidService
             $lost = $this->team->assimilate($team, $this->random->rand($configuration->getSetting('raid_loss_min'), $configuration->getSetting('raid_loss_max')), $wrapper);
             $report = sprintf('Die Außenmission auf der Borg-Sphäre ist gescheitert. %d Crewmitglieder der %s wurden assimiliert und konnten nicht zurückgebeamt werden: %s', count($lost), $ship->getName(), implode(', ', $lost));
         }
-        return $report;
+        return [$success, $report];
     }
 
     private function checkInteraction(Spacecraft $ship, Spacecraft $target, InformationInterface $information): bool

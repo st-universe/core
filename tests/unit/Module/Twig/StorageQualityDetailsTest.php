@@ -29,7 +29,7 @@ final class StorageQualityDetailsTest extends StuTestCase
         self::assertSame('Lagerbestand Sensoren: 10', $xpath->query('//summary')->item(0)->getAttribute('aria-label'));
         self::assertSame(1, $xpath->query('//summary//a[contains(@onclick, "getCommodityLocations(this, 10601)")]')->length);
         self::assertSame(1, $xpath->query('//summary//span[contains(@style, "text-decoration: underline") and normalize-space(.)="10"]')->length);
-        self::assertSame('2 × Standard, 3 × +0,4 %, 5 × +1,7 %', $xpath->query('//details/div')->item(0)->textContent);
+        self::assertSame('2 × Standard, 3 × +0,4%, 5 × +1,7%', $xpath->query('//details/div')->item(0)->textContent);
         self::assertSame(1, $xpath->query('//tr[@class="row"]/td[2][contains(@style,"vertical-align: top")]')->length);
         self::assertSame(0, $xpath->query('//select')->length);
     }
@@ -37,8 +37,8 @@ final class StorageQualityDetailsTest extends StuTestCase
     /** @return iterable<string, array{array<int, int>, string}> */
     public static function singlePositiveQuality(): iterable
     {
-        yield 'one improved tier without standard stock' => [[4 => 2], '2 × +0,4 %'];
-        yield 'one improved item mixed with standard' => [[17 => 1], '1 × Standard, 1 × +1,7 %'];
+        yield 'one improved tier without standard stock' => [[4 => 2], '2 × +0,4%'];
+        yield 'one improved item mixed with standard' => [[17 => 1], '1 × Standard, 1 × +1,7%'];
     }
 
     #[DataProvider('singlePositiveQuality')]

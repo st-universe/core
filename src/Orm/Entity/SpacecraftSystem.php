@@ -79,7 +79,7 @@ class SpacecraftSystem
 
     public function getQualityLabel(): string
     {
-        return $this->improvementSteps === 0 ? 'Standard' : '+' . number_format($this->improvementSteps / 10, 1, ',', '') . ' %';
+        return $this->improvementSteps === 0 ? 'Standard' : '+' . number_format($this->improvementSteps / 10, 1, ',', '') . '%';
     }
 
     public function getId(): int

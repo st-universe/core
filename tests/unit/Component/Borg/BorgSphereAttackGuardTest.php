@@ -6,6 +6,7 @@ namespace Stu\Component\Borg;
 
 use ReflectionProperty;
 use request;
+use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
@@ -27,7 +28,10 @@ final class BorgSphereAttackGuardTest extends StuTestCase
         $repository->shouldReceive('getByShip')->andReturn(new BorgSphereEvent()->setPhase(BorgSpherePhaseEnum::REGENERATING));
         $repository->shouldReceive('lockEvent');
         $time = $this->mock(StuTime::class);
-        $time->shouldReceive('time')->andReturn(1000);
+        $now = 1000;
+        $time->shouldReceive('time')->andReturnUsing(static function () use (&$now): int {
+            return $now;
+        });
         $attackContext = new BorgSphereAttackContext();
         $combat = new BorgSphereCombat($repository, $attackContext, $time);
         $session = $this->mock(SessionStorageInterface::class);
@@ -43,13 +47,20 @@ final class BorgSphereAttackGuardTest extends StuTestCase
         });
         $context = $this->mock(ActionControllerContext::class);
         $context->shouldReceive('setView');
-        $context->shouldReceive('addExecuteJS');
+        $scripts = [];
+        $context->shouldReceive('addExecuteJS')->andReturnUsing(static function (string $script, JavascriptExecutionTypeEnum $when) use (&$scripts): void {
+            self::assertSame(JavascriptExecutionTypeEnum::AFTER_RENDER, $when);
+            $scripts[] = $script;
+        });
         $context->shouldReceive('getSessionString')->andReturn('session');
         $guard = new BorgSphereAttackGuard($combat, $attackContext, $session, $time);
 
         request::setMockVars([]);
         self::assertFalse($guard->prepare($source, $target, $context));
         $nonce = $data['borg_sphere_attack_101_102']['nonce'];
+        self::assertStringContainsString('updatePopup("?SHOW_BORG_SPHERE_ATTACK_CONFIRMATION=1&id=101&target=102&', $scripts[0]);
+        self::assertStringContainsString('borg_confirmation=' . $nonce, $scripts[0]);
+        self::assertStringNotContainsString('confirm(', $scripts[0]);
         request::setMockVars(['borg_confirmation' => $nonce]);
         self::assertFalse($guard->prepare($source, $other, $context));
         self::assertTrue($guard->prepare($source, $target, $context));
@@ -57,6 +68,10 @@ final class BorgSphereAttackGuardTest extends StuTestCase
         self::assertFalse($attackContext->allowsDestruction($other));
         $guard->finish();
         self::assertFalse($attackContext->allowsDestruction($target));
+        self::assertFalse($guard->prepare($source, $target, $context));
+        $expiredNonce = $data['borg_sphere_attack_101_102']['nonce'];
+        $now = 1301;
+        request::setMockVars(['borg_confirmation' => $expiredNonce]);
         self::assertFalse($guard->prepare($source, $target, $context));
     }
 

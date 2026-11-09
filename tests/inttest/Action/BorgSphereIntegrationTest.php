@@ -10,31 +10,49 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
+use Stu\Component\Borg\BorgSphereAttackContext;
+use Stu\Component\Borg\BorgSphereBattle;
+use Stu\Component\Borg\BorgSphereBehavior;
+use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSphereFlight;
 use Stu\Component\Borg\BorgSphereNavigation;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgSphereRaidService;
 use Stu\Component\Borg\BorgSphereRaidTeam;
+use Stu\Component\Borg\BorgSphereRegeneration;
 use Stu\Component\Borg\BorgSphereSpawner;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Game\ModuleEnum;
+use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
-use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\Component\ControllerDiscoveryInterface;
+use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\SkipDetectionInterface;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
 use Stu\Module\Spacecraft\Action\CollectBorgNanites\CollectBorgNanites;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\SkipDetectionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycle;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackPreparationInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\EnergyWeaponPhase;
+use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhase;
+use Stu\Module\Spacecraft\Lib\Damage\ApplyDamage;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamage;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\View\ShowBorgSphere\ShowBorgSphere;
 use Stu\Module\Tick\Process\BorgSphereTick;
 use Stu\Module\Twig\TwigHelper;
@@ -44,12 +62,17 @@ use Stu\Orm\Entity\BorgSphereRaid;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\MapFieldType;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\NPCQuest;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\SpacecraftBuildplan;
+use Stu\Orm\Entity\SpacecraftSystem;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BorgSphereRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Twig\Environment;
 
 final class BorgSphereIntegrationTest extends ActionTestCase
@@ -69,6 +92,265 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         $this->em->flush();
         $wrapper = $this->getContainer()->get(SpacecraftWrapperFactoryInterface::class)->wrapShip($this->sphere);
         self::assertTrue($this->getContainer()->get(SkipDetectionInterface::class)->isSkipped($this->source, $wrapper, null, new ArrayCollection()));
+    }
+
+    /** @return iterable<string, array{bool}> */
+    public static function automaticBattleOutcomes(): iterable
+    {
+        yield 'all local enemy ships are attacked' => [false];
+        yield 'counterfire disables sphere after first target' => [true];
+    }
+
+    #[DataProvider('automaticBattleOutcomes')]
+    public function testAutomaticAttackIsTheOnlyActionAndStopsIfSphereIsDisabled(bool $disabled): void
+    {
+        $container = $this->getContainer();
+        $this->event->setPhase(BorgSpherePhaseEnum::ROAMING);
+        $this->sphere->getCondition()->setDisabled(false);
+        $this->sphere->getBuildplan()->setCrew($this->sphere->getCrewCount());
+        $this->combatWrapper($this->sphere, 100);
+        $this->combatWrapper($this->source, 100);
+        $other = $this->em->find(Ship::class, 78)->setUser($this->source->getUser())->setLocation($this->sphere->getLocation());
+        $this->combatWrapper($other, 100);
+        $other->getCondition()->setDisabled(false)->setIsDestroyed(false);
+        $location = $this->sphere->getLocation();
+        $location->getSpacecrafts()->clear();
+        foreach ([$this->sphere, $this->source, $other] as $ship) {
+            $location->getSpacecrafts()->set($ship->getId(), $ship);
+        }
+        $this->em->flush();
+        $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
+        $relations->shouldReceive('isFriend')->andReturn(false);
+        $attacked = [];
+        $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
+        $attacks->shouldReceive('attack')->times($disabled ? 1 : 2)->andReturnUsing(
+            function (SpacecraftWrapperInterface $source, SpacecraftWrapperInterface $target) use (&$attacked, $disabled, $location): bool {
+                self::assertSame($this->sphere, $source->get());
+                self::assertSame($location, $source->get()->getLocation());
+                self::assertSame($location, $target->get()->getLocation());
+                $attacked[] = $target->get()->getId();
+                if ($disabled) {
+                    $this->sphere->getCondition()->setDisabled(true);
+                    $this->event->setPhase(BorgSpherePhaseEnum::REGENERATING);
+                }
+                return true;
+            }
+        );
+        $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks, 'relations' => $relations]);
+        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle]);
+
+        $this->em->wrapInTransaction(fn () => $behavior->work($this->event, $this->sphere));
+
+        self::assertSame($disabled ? [$this->source->getId()] : [$this->source->getId(), $other->getId()], $attacked);
+        self::assertFalse($container->get(BorgSphereAttackContext::class)->isBattleStopped());
+        self::assertSame($location, $this->sphere->getLocation());
+    }
+
+    public function testTheFirstRegisteredAttackEndsTheApproachBeforeDamageIsApplied(): void
+    {
+        $this->event->setPhase(BorgSpherePhaseEnum::APPROACH);
+        $this->sphere->getCondition()->setDisabled(false);
+        $hull = $this->sphere->getCondition()->getHull();
+        $this->em->flush();
+        $combat = $this->getContainer()->make(BorgSphereCombat::class, ['context' => new BorgSphereAttackContext()]);
+
+        self::assertTrue($this->em->wrapInTransaction(fn () => $combat->registerHit($this->sphere)));
+
+        self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
+        self::assertSame($hull, $this->sphere->getCondition()->getHull());
+    }
+
+    public function testAutomaticActionsWaitUntilTheHourlyDeadlineAndDoNotRepeatWithinTheSameHour(): void
+    {
+        $container = $this->getContainer();
+        $now = $this->now;
+        $deadline = $now + 3600;
+        $this->event->setPhase(BorgSpherePhaseEnum::ROAMING)->setFirstDisabledAt(null)->setNextTickAt($deadline);
+        $this->sphere->getCondition()->setDisabled(false);
+        $this->sphere->getBuildplan()->setCrew($this->sphere->getCrewCount());
+        $this->combatWrapper($this->sphere, 100);
+        $this->combatWrapper($this->source, 100);
+        $location = $this->sphere->getLocation();
+        $location->getSpacecrafts()->clear();
+        foreach ([$this->sphere, $this->source] as $ship) {
+            $location->getSpacecrafts()->set($ship->getId(), $ship);
+        }
+        $this->em->flush();
+        $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
+        $attempts = 0;
+        $attacks->shouldReceive('attack')->once()->andReturnUsing(static function () use (&$attempts): bool {
+            $attempts++;
+            return true;
+        });
+        $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
+        $relations->shouldReceive('isFriend')->andReturn(false);
+        $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks, 'relations' => $relations]);
+        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle]);
+        $time = $this->mock(StuTime::class);
+        $time->shouldReceive('time')->andReturnUsing(static function () use (&$now): int {
+            return $now;
+        });
+        $tick = $container->make(BorgSphereTick::class, ['behavior' => $behavior, 'time' => $time]);
+
+        $this->em->wrapInTransaction(fn () => $tick->work());
+        self::assertSame(0, $attempts);
+        self::assertSame($location, $this->sphere->getLocation());
+        $now = $deadline;
+        $this->em->wrapInTransaction(fn () => $tick->work());
+        self::assertSame(1, $attempts);
+        self::assertSame($deadline + 3600, $this->event->getNextTickAt());
+        $this->em->wrapInTransaction(fn () => $tick->work());
+        self::assertSame(1, $attempts);
+    }
+
+    public function testFirstHourlyRegenerationUsesIndependentRandomValuesAndReactivatesSphere(): void
+    {
+        $container = $this->getContainer();
+        if (!$this->sphere->hasSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)) {
+            $system = new SpacecraftSystem()->setSpacecraft($this->sphere)->setSystemType(SpacecraftSystemTypeEnum::SHIELDS)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+            $this->sphere->getSystems()->set(SpacecraftSystemTypeEnum::SHIELDS->value, $system);
+            $this->em->persist($system);
+        }
+        $maxHull = $this->sphere->getMaxHull();
+        $maxShield = $this->sphere->getMaxShield(true);
+        $hull = (int) ceil($maxHull / 10);
+        $shield = (int) ceil($maxShield / 10);
+        $this->sphere->getCondition()->setHull($hull)->setShield($shield);
+        $rolls = [2, 3];
+        $expectedStatuses = [];
+        foreach ($this->sphere->getSystems() as $system) {
+            $system->setStatus(10);
+            if ($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL) {
+                $expectedStatuses[$system->getSystemType()->value] = 11;
+                continue;
+            }
+            $roll = 2 + count($rolls) % 9;
+            $rolls[] = $roll;
+            $expectedStatuses[$system->getSystemType()->value] = 10 + $roll;
+        }
+        $this->event->setNextTickAt($this->now);
+        $this->em->flush();
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->with(2, 10)->times(count($rolls))->andReturn(...$rolls);
+        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random]);
+        $tick = $container->make(BorgSphereTick::class, ['regeneration' => $regeneration]);
+
+        $this->em->wrapInTransaction(fn () => $tick->work());
+
+        self::assertFalse($this->sphere->getCondition()->isDisabled());
+        self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
+        self::assertSame($hull + (int) ceil($maxHull * 2 / 100), $this->sphere->getCondition()->getHull());
+        self::assertSame($shield + (int) ceil($maxShield * 3 / 100), $this->sphere->getCondition()->getShield());
+        foreach ($expectedStatuses as $type => $expected) {
+            self::assertSame($expected, $this->sphere->getSpacecraftSystem(SpacecraftSystemTypeEnum::from($type))->getStatus());
+        }
+        self::assertSame(1100, $this->event->getTranswarpProgress());
+        self::assertSame(1000, $this->event->getTranswarpFloor());
+        self::assertSame($this->now + 3600, $this->event->getNextTickAt());
+        self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $this->sphere->getSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER)->getMode());
+        self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $this->sphere->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getMode());
+        $this->source->setLocation($this->sphere->getLocation());
+        $this->sphere->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->setStatus(12);
+        $this->sphere->getCondition()->setShield((int) ceil($maxShield / 5));
+        $this->em->flush();
+        self::assertStringContainsString(sprintf('<tr><th>Schilde</th><td>%d / %d</td></tr>', $this->sphere->getCondition()->getShield(), $maxShield), $this->renderPopup());
+    }
+
+    /** @return iterable<string, array{bool}> */
+    public static function disablingWeaponPhases(): iterable
+    {
+        yield 'energy weapon disables sphere' => [false];
+        yield 'torpedo disables sphere' => [true];
+    }
+
+    #[DataProvider('disablingWeaponPhases')]
+    public function testDisablingHitStopsAllRemainingSalvosAndCounterfire(bool $torpedo): void
+    {
+        $container = $this->getContainer();
+        $context = new BorgSphereAttackContext();
+        $combat = $container->make(BorgSphereCombat::class, ['context' => $context]);
+        $source = $this->combatWrapper($this->source, 100);
+        $sphere = $this->combatWrapper($this->sphere, 10);
+        $escortShip = $this->em->find(Ship::class, 78)->setLocation($this->sphere->getLocation());
+        $escort = $this->combatWrapper($escortShip, 100);
+        $this->source->getRump()->setPhaserVolleys($torpedo ? 0 : 4)->setTorpedoVolleys(4);
+        $weapon = $this->source->getSpacecraftSystem(SpacecraftSystemTypeEnum::PHASER)->getModule()->getWeapon();
+        $weapon->setCriticalChance(0)->setVariance(0)->setFiringMode(EnergyWeaponPhase::FIRINGMODE_FOCUS);
+        $this->sphere->getSpacecraftSystem(SpacecraftSystemTypeEnum::EPS)->setStatus(11);
+        $this->sphere->getCondition()->setHull((int) ceil($this->sphere->getMaxHull() / 10) + 1)->setShield(0)->setDisabled(false);
+        $this->event->setPhase(BorgSpherePhaseEnum::ROAMING);
+        $type = $this->em->getRepository(TorpedoType::class)->findOneBy(['level' => $this->source->getRump()->getTorpedoLevel()]);
+        self::assertNotNull($type);
+        $container->get(ShipTorpedoManagerInterface::class)->changeTorpedo($source, 10, $type);
+        $beforeTorpedoes = $this->source->getTorpedoCount();
+        self::assertGreaterThan(0, $beforeTorpedoes);
+        self::assertTrue($sphere->canFire());
+        self::assertTrue($escort->canFire());
+        self::assertTrue($source->get()->getTorpedoState());
+        $this->em->flush();
+        $parties = $container->get(BattlePartyFactoryInterface::class);
+        $attacker = $parties->createSingletonBattleParty($source);
+        $defenders = $parties->createMixedBattleParty(new ArrayCollection([$this->sphere->getId() => $sphere, $escortShip->getId() => $escort]));
+        $cycle = $this->combatCycle($context, $combat);
+
+        $messages = $this->em->wrapInTransaction(fn () => $cycle->cycle($attacker, $defenders, SpacecraftAttackCauseEnum::SHIP_FIGHT));
+
+        self::assertTrue($this->sphere->getCondition()->isDisabled(), implode("\n", $messages->getInformationDump()->getInformations()));
+        self::assertSame(BorgSpherePhaseEnum::REGENERATING, $this->event->getPhase());
+        self::assertSame(99, $source->getEpsSystemData()->getEps());
+        self::assertSame($beforeTorpedoes - ($torpedo ? 1 : 0), $this->source->getTorpedoCount());
+        self::assertSame(100, $sphere->getEpsSystemData()->getEps());
+        self::assertSame(100, $escort->getEpsSystemData()->getEps());
+        self::assertFalse($defenders->isDefeated());
+        self::assertFalse($context->isBattleStopped());
+        $report = implode("\n", $messages->getInformationDump()->getInformations());
+        self::assertSame(1, substr_count($report, ' feuert '), $report);
+        self::assertStringContainsString('Die Sphäre wurde deaktiviert. Der Beschuss wurde eingestellt', $report);
+    }
+
+    private function combatWrapper(Ship $ship, int $status): SpacecraftWrapperInterface
+    {
+        $ship->setFleet(null)->setDockedTo(null);
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            if (!$ship->hasSpacecraftSystem($type)) {
+                $system = new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type);
+                if ($type === SpacecraftSystemTypeEnum::TORPEDO) {
+                    $module = $this->em->getRepository(Module::class)->findOneBy(['type' => SpacecraftModuleTypeEnum::TORPEDO]);
+                    self::assertNotNull($module);
+                    $system->setModule($module)->setData('{"shieldPenetration":0}');
+                }
+                $ship->getSystems()->set($type->value, $system);
+                $this->em->persist($system);
+            }
+        }
+        foreach ($ship->getSystems() as $system) {
+            $system->setStatus($status);
+            if (in_array($system->getSystemType(), [SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO], true)) {
+                $system->setMode(SpacecraftSystemModeEnum::MODE_ON);
+            } elseif (in_array($system->getSystemType(), [SpacecraftSystemTypeEnum::WARPDRIVE, SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::CLOAK], true)) {
+                $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+            }
+        }
+        $wrapper = $this->getContainer()->get(SpacecraftWrapperFactoryInterface::class)->wrapShip($ship);
+        $wrapper->getEpsSystemData()->setMaxEps(1000)->setEps(100)->update();
+        $wrapper->getComputerSystemDataMandatory()->setHitChance(100)->setEvadeChance(0)->update();
+        $wrapper->getEnergyWeaponSystemData()->setBaseDamage(50)->update();
+        return $wrapper;
+    }
+
+    private function combatCycle(BorgSphereAttackContext $context, BorgSphereCombat $combat): SpacecraftAttackCycle
+    {
+        $container = $this->getContainer();
+        $systemDamage = $container->make(SystemDamage::class, ['borgSphereCombat' => $combat]);
+        $damage = $container->make(ApplyDamage::class, ['borgSphereCombat' => $combat, 'systemDamage' => $systemDamage]);
+        $preparation = $this->mock(SpacecraftAttackPreparationInterface::class);
+        $preparation->shouldReceive('getReady')->once();
+        return $container->make(SpacecraftAttackCycle::class, [
+            'borgSphereAttackContext' => $context,
+            'energyWeaponPhase' => $container->make(EnergyWeaponPhase::class, ['applyDamage' => $damage, 'borgSphereAttackContext' => $context]),
+            'projectileWeaponPhase' => $container->make(ProjectileWeaponPhase::class, ['applyDamage' => $damage, 'borgSphereAttackContext' => $context]),
+            'spacecraftAttackPreparation' => $preparation
+        ]);
     }
 
     public function testBorgPopupsAndActionsUseSharedControllersForShipsAndStations(): void
@@ -136,7 +418,7 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertSame(1, $raid->getAttempts());
     }
 
-    public function testFailedRaidPermanentlyRemovesCrewAndAlsoStartsCooldown(): void
+    public function testFailedRaidPermanentlyRemovesCrewAndAllowsAnImmediateRetry(): void
     {
         $captain = $this->source->getCrewAssignments()->first();
         $captain->setSlot(CrewTypeEnum::CAPTAIN);
@@ -148,7 +430,48 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertTrue($this->source->getCrewAssignments()->contains($captain));
         self::assertStringContainsString('2 Crewmitglieder', $information->getInformations()[0]);
         self::assertStringContainsString('assimiliert', $information->getInformations()[0]);
-        self::assertSame($this->now, $this->events->getRaid($this->source->getUser())->getLastAttemptAt());
+        $raid = $this->events->getRaid($this->source->getUser());
+        self::assertSame(0, $raid->getLastAttemptAt());
+        self::assertSame(1, $raid->getAttempts());
+        self::assertSame(0, $this->raidService(success: true, attempts: 0)->getCooldownUntil($this->source->getUser(), $this->event));
+        $this->collect($this->raidService(success: true));
+        self::assertSame(2, $raid->getAttempts());
+        self::assertSame($this->now, $raid->getLastAttemptAt());
+    }
+
+    /** @return iterable<string, array{BorgSpherePhaseEnum, int, bool}> */
+    public static function raidSuccessBoundaries(): iterable
+    {
+        yield 'active sphere roll 90 succeeds' => [BorgSpherePhaseEnum::ROAMING, 90, true];
+        yield 'active sphere roll 91 fails' => [BorgSpherePhaseEnum::ROAMING, 91, false];
+        yield 'regenerating sphere roll 90 succeeds' => [BorgSpherePhaseEnum::REGENERATING, 90, true];
+        yield 'regenerating sphere roll 91 fails' => [BorgSpherePhaseEnum::REGENERATING, 91, false];
+    }
+
+    #[DataProvider('raidSuccessBoundaries')]
+    public function testRaidSuccessChanceIsNinetyPercentForBothPhases(BorgSpherePhaseEnum $phase, int $roll, bool $success): void
+    {
+        $this->event->setPhase($phase);
+        $this->sphere->getCondition()->setDisabled($phase === BorgSpherePhaseEnum::REGENERATING);
+        $this->em->flush();
+        $information = $this->collect($this->raidService($success, roll: $roll));
+        $raid = $this->events->getRaid($this->source->getUser());
+        self::assertSame(1, $raid->getAttempts());
+        self::assertSame($success ? $this->now : 0, $raid->getLastAttemptAt());
+        self::assertStringContainsString($success ? 'wurden dem Lagerraum' : 'ist gescheitert', $information->getInformations()[0]);
+    }
+
+    public function testFailedRaidKeepsThePreviousExpiredSuccessTimestamp(): void
+    {
+        $previousSuccess = $this->now - 7201;
+        $raid = new BorgSphereRaid()->setUser($this->source->getUser())->setLastAttemptAt($previousSuccess)->setAttempts(3);
+        $this->events->saveRaid($raid);
+        $this->em->flush();
+        $service = $this->raidService(success: false);
+        $this->collect($service);
+        self::assertSame($previousSuccess, $raid->getLastAttemptAt());
+        self::assertSame(4, $raid->getAttempts());
+        self::assertSame($this->now - 1, $service->getCooldownUntil($this->source->getUser(), $this->event));
     }
 
     public function testFullStorageRejectsRaidWithoutCooldownOrCrewLoss(): void
@@ -232,6 +555,59 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertInstanceOf(StarSystemMap::class, $this->source->getLocation());
         self::assertTrue($navigation->isSafe($this->source->getLocation()));
         self::assertFalse($this->source->getWarpDriveState());
+    }
+
+    /** @return iterable<string, array{int}> */
+    public static function movementBudgets(): iterable
+    {
+        yield 'one field' => [1];
+        yield 'seven fields' => [7];
+    }
+
+    #[DataProvider('movementBudgets')]
+    public function testTheNormalFlightPipelineCanUseTheWholeRandomMovementBudget(int $budget): void
+    {
+        $container = $this->getContainer();
+        $ship = $this->source;
+        $systemMaps = $container->get(StarSystemMapRepositoryInterface::class);
+        $fieldType = $this->em->find(MapFieldType::class, 3112);
+        $fields = [];
+        for ($x = 2; $x <= 9; $x++) {
+            $field = $systemMaps->getByCoordinates($this->configuration->getColony()->getSystem()->getId(), $x, 2);
+            self::assertNotNull($field);
+            $field->setFieldType($fieldType);
+            $field->getSpacecrafts()->clear();
+            $fields[$x] = $field;
+        }
+        $ship->setLocation($fields[2]);
+        $ship->getCondition()->setDisabled(false);
+        $ship->getBuildplan()->setCrew($ship->getCrewCount());
+        $ship->getFleet()?->getShips()->toArray();
+        $wrapper = $this->combatWrapper($ship, 100);
+        $wrapper->getEpsSystemData()->setEps(1000)->update();
+        $wrapper->getComputerSystemDataMandatory()->setAlertState(SpacecraftAlertStateEnum::ALERT_YELLOW)->update();
+        $this->em->flush();
+        self::assertNull($ship->getFleet());
+        self::assertSame($ship, $wrapper->get());
+        self::assertSame($fields[2], $ship->getLocation());
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->with(1, 7)->once()->andReturn($budget);
+        $random->shouldReceive('array_rand')->times($budget)->andReturnUsing(static fn (array $candidates): int => array_key_first($candidates));
+        $movedTo = [];
+        $report = [];
+        $messages = $this->mock(DistributedMessageSenderInterface::class);
+        $messages->shouldReceive('distributeMessageCollection')->times($budget)->andReturnUsing(static function (MessageCollectionInterface $messages) use (&$movedTo, &$report, $ship): void {
+            $movedTo[] = $ship->getLocation()->getId();
+            $report = [...$report, ...$messages->getInformationDump()->getInformations()];
+        });
+        $flight = $container->make(BorgSphereFlight::class, ['messages' => $messages]);
+        $navigation = $container->make(BorgSphereNavigation::class, ['flight' => $flight, 'random' => $random]);
+
+        $this->em->wrapInTransaction(fn () => $navigation->roam($ship, $this->configuration));
+
+        self::assertSame($fields[2 + $budget], $ship->getLocation(), implode("\n", $report));
+        self::assertCount($budget, array_unique($movedTo));
+        self::assertFalse($ship->getWarpDriveState());
     }
 
     public function testSpawnSkipsEvenTheFarthestSectorWhenRedAlertShipsArePresent(): void
@@ -361,13 +737,13 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         return $twig->render('html/ajaxwindow.twig', $variables);
     }
 
-    private function raidService(bool $success, int $attempts = 1): BorgSphereRaidService
+    private function raidService(bool $success, int $attempts = 1, ?int $roll = null): BorgSphereRaidService
     {
         $random = $this->mock(StuRandom::class);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
         $messages->shouldReceive('send')->times($attempts);
         if ($attempts !== 0) {
-            $random->shouldReceive('rand')->with(1, 100)->times($attempts)->andReturn($success ? 1 : 100);
+            $random->shouldReceive('rand')->with(1, 100)->times($attempts)->andReturn($roll ?? ($success ? 1 : 100));
             $random->shouldReceive('rand')->with($success ? 3 : 1, $success ? 5 : 3)->times($attempts)->andReturn($success ? 5 : 2);
             if (!$success) {
                 $random->shouldReceive('array_rand')->twice()->andReturnUsing(static fn (array $crew): int => array_key_first($crew));
@@ -388,6 +764,6 @@ final class BorgSphereIntegrationTest extends ActionTestCase
     /** @return array<string, int> */
     private function settings(): array
     {
-        return ['tick_seconds' => 3600, 'normal_regen_percent' => 2, 'transwarp_regen_bp' => 100, 'transwarp_escape_bp' => 8000, 'transwarp_initial_bp' => 1000, 'transwarp_floor_step_bp' => 1000, 'wake_percent' => 80, 'raid_cooldown_seconds' => 7200, 'raid_reward_min' => 3, 'raid_reward_max' => 5, 'raid_success_disabled' => 75, 'raid_success_active' => 25, 'raid_team_size' => 5, 'raid_loss_min' => 1, 'raid_loss_max' => 3, 'nanite_commodity_id' => 2, 'roam_radius' => 3];
+        return ['tick_seconds' => 3600, 'idle_chance_percent' => 20, 'movement_min_fields' => 1, 'movement_max_fields' => 7, 'normal_regen_min_percent' => 2, 'normal_regen_max_percent' => 10, 'transwarp_regen_bp' => 100, 'transwarp_escape_bp' => 8000, 'transwarp_initial_bp' => 1000, 'transwarp_floor_step_bp' => 1000, 'wake_percent' => 10, 'raid_cooldown_seconds' => 7200, 'raid_reward_min' => 3, 'raid_reward_max' => 5, 'raid_success_disabled' => 90, 'raid_success_active' => 90, 'raid_team_size' => 5, 'raid_loss_min' => 1, 'raid_loss_max' => 3, 'nanite_commodity_id' => 2, 'roam_radius' => 3];
     }
 }

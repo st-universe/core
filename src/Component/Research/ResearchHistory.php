@@ -39,7 +39,7 @@ final class ResearchHistory
             'finishedAt' => $job->getFinishTime(),
             'research' => $optimization ? 'Moduloptimierung' : 'Nanitenfertigung',
             'subject' => $optimization ? ($job->getModule()?->getName() ?? $job->getResearchType()?->getDescription() ?? 'Unbekanntes Modul') : 'Borg-Naniten',
-            'bonus' => $optimization ? '+' . number_format(min($job->getStartImprovementSteps() + 1, $job->getMaxImprovementSteps()) / 10, 1, ',', '') . ' %' : null
+            'bonus' => $optimization ? '+' . number_format(min($job->getStartImprovementSteps() + 1, $job->getMaxImprovementSteps()) / 10, 1, ',', '') . '%' : null
         ];
     }
 }

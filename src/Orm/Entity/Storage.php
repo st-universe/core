@@ -117,7 +117,7 @@ class Storage
     {
         $variants = [];
         foreach ($this->getModuleQualityAmounts() as $steps => $amount) {
-            $variants[] = ['steps' => $steps, 'amount' => $amount, 'label' => $steps === 0 ? 'Standard' : '+' . number_format($steps / 10, 1, ',', '') . ' %'];
+            $variants[] = ['steps' => $steps, 'amount' => $amount, 'label' => $steps === 0 ? 'Standard' : '+' . number_format($steps / 10, 1, ',', '') . '%'];
         }
         return $variants;
     }

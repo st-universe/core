@@ -36,7 +36,8 @@ class AttackedBattleParty extends AbstractBattleParty
         return parent::getActiveMembers(
             $canFire,
             $filterDisabled && ($canFire || !$isOrphanedTradepost)
-        );
+        )->filter(fn (SpacecraftWrapperInterface $wrapper): bool =>
+            $this->borgSphereAttackContext?->allowsAutomaticAttackTarget($wrapper->get()) !== false);
     }
 
     #[Override]

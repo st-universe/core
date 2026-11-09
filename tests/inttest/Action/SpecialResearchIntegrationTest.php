@@ -364,7 +364,7 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
         $this->supply(AwayMissionResearchEnum::SENSORS);
         $html = $this->renderPanel();
         self::assertStringContainsString('2 Tage', $html);
-        self::assertStringContainsString('37 %', $html);
+        self::assertStringContainsString('37%', $html);
         $before = $this->colony->getStorageSum();
         self::assertTrue($this->start(AwayMissionResearchEnum::SENSORS));
         self::assertSame($before - 14, $this->colony->getStorageSum());

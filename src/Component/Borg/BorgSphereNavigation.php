@@ -27,7 +27,8 @@ final class BorgSphereNavigation
 
     public function isSafe(Location $location): bool
     {
-        if (!$location->getFieldType()->getPassable()) {
+        $fieldType = $location->getFieldType();
+        if (!$fieldType->getPassable() || $fieldType->getSpecialDamage() > 0) {
             return false;
         }
         foreach ($location->getSpacecrafts() as $ship) {
@@ -54,28 +55,70 @@ final class BorgSphereNavigation
     public function approach(Ship $ship, BorgSphereConfiguration $configuration): void
     {
         $target = $configuration->getColony()->getStarsystemMap();
-        $location = $ship->getLocation();
-        if (!$location instanceof StarSystemMap || $location->getSystem() !== $target->getSystem()) {
-            return;
+        $this->travel($ship, $configuration, fn (Location $location, array $visited): ?StarSystemMap => $this->approachDestination($location, $target, $visited));
+    }
+
+    /** @param list<Location> $visited */
+    private function approachDestination(Location $location, StarSystemMap $target, array $visited): ?StarSystemMap
+    {
+        if ($location === $target || !$location instanceof StarSystemMap || $location->getSystem() !== $target->getSystem()) {
+            return null;
         }
         $candidates = $this->systemNeighbors($location);
         usort($candidates, static fn (StarSystemMap $a, StarSystemMap $b): int => (abs($a->getX() - $target->getX()) + abs($a->getY() - $target->getY())) <=> (abs($b->getX() - $target->getX()) + abs($b->getY() - $target->getY())));
-        foreach ($candidates as $candidate) {
-            if ($this->isSafe($candidate)) {
-                $this->flight->move($ship, $candidate);
-                return;
-            }
-        }
+        return $this->safeLocations($candidates, $visited)[0] ?? null;
     }
 
     public function roam(Ship $ship, BorgSphereConfiguration $configuration): void
     {
-        $location = $ship->getLocation();
+        $this->travel($ship, $configuration, fn (Map|StarSystemMap $location, array $visited): Map|StarSystemMap|null => $this->roamingDestination($location, $configuration, $visited));
+    }
+
+    /** @param list<Location> $visited */
+    private function roamingDestination(Map|StarSystemMap $location, BorgSphereConfiguration $configuration, array $visited): Map|StarSystemMap|null
+    {
         $candidates = $location instanceof StarSystemMap ? $this->systemRoamingLocations($location) : $this->mapRoamingLocations($location, $configuration);
-        $candidates = array_values(array_filter($candidates, fn (Location $field): bool => $this->isSafe($field)));
-        if ($candidates !== []) {
-            $this->flight->move($ship, $candidates[$this->random->array_rand($candidates)]);
+        $candidates = $this->safeLocations($candidates, $visited);
+        return $candidates === [] ? null : $candidates[$this->random->array_rand($candidates)];
+    }
+
+    /** @param callable(Map|StarSystemMap, list<Location>): (Map|StarSystemMap|null) $destination */
+    private function travel(Ship $ship, BorgSphereConfiguration $configuration, callable $destination): void
+    {
+        $visited = [$ship->getLocation()];
+        for ($remaining = $this->movementBudget($configuration); $remaining > 0; $remaining--) {
+            if ($ship->getCondition()->isDisabled() || $ship->getCondition()->isDestroyed()) {
+                return;
+            }
+            $location = $ship->getLocation();
+            $next = $destination($location, $visited);
+            if ($next === null) {
+                return;
+            }
+            $this->flight->move($ship, $next);
+            if ($ship->getLocation() === $location) {
+                return;
+            }
+            $visited[] = $ship->getLocation();
         }
+    }
+
+    private function movementBudget(BorgSphereConfiguration $configuration): int
+    {
+        $maximum = max(1, $configuration->getSetting('movement_max_fields'));
+        $minimum = max(1, min($maximum, $configuration->getSetting('movement_min_fields')));
+        return $this->random->rand($minimum, $maximum);
+    }
+
+    /**
+     * @template T of Location
+     * @param list<T> $candidates
+     * @param list<Location> $visited
+     * @return list<T>
+     */
+    private function safeLocations(array $candidates, array $visited): array
+    {
+        return array_values(array_filter($candidates, fn (Location $field): bool => !in_array($field, $visited, true) && $this->isSafe($field)));
     }
 
     /** @return list<StarSystemMap> */
@@ -131,7 +174,8 @@ final class BorgSphereNavigation
 
     private function isEdge(StarSystemMap $field): bool
     {
-        return $field->getX() === 1 || $field->getY() === 1 || $field->getX() === $field->getSystem()->getMaxX() || $field->getY() === $field->getSystem()->getMaxY();
+        return in_array($field->getX(), [1, $field->getSystem()->getMaxX()], true)
+            || in_array($field->getY(), [1, $field->getSystem()->getMaxY()], true);
     }
 
     private function systemEntry(Map $location): ?StarSystemMap

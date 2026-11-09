@@ -383,7 +383,7 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
         $this->getContainer()->make(TwigHelper::class, ['environment' => $twig])->registerFiltersAndFunctions();
         $html = $twig->render('html/colony/menu/specialResearch.twig', $variables);
         self::assertStringContainsString('2 Tage', $html);
-        self::assertStringContainsString('35 %', $html);
+        self::assertStringContainsString('35%', $html);
         self::assertStringNotContainsString('Nanitenfertigung: erfolgreich erforscht', $html);
         self::assertStringContainsString('name="B_START_TECHNOLOGY"', $html);
         self::assertStringContainsString('<td><img src="/assets/commodities/76.png"', $html);
@@ -397,7 +397,7 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
         self::assertStringNotContainsString('Produktionstick', $html);
         self::assertStringContainsString('name="module_count" min="5" max="50"', $html);
         self::assertStringContainsString('name="nanite_count" min="10" max="100"', $html);
-        self::assertStringContainsString('Fertigungsbonus +0,0 %', $html);
+        self::assertStringContainsString('Fertigungsbonus +0,0%', $html);
         self::assertStringContainsString('<td><img src="/assets/commodities/10601.png"', $html);
         self::assertStringContainsString('<td><img src="/assets/commodities/91.png"', $html);
         self::assertStringContainsString('<td><img src="/assets/commodities/76.png"', $html);

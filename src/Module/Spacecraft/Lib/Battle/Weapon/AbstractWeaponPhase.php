@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Weapon;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
+use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Crew\Skill\Event\CrewExperienceEvent;
 use Stu\Component\Crew\Skill\SkillEnhancementEnum;
@@ -17,6 +18,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\AttackerInterface;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamageInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
@@ -43,9 +45,15 @@ abstract class AbstractWeaponPhase
         protected MessageFactoryInterface $messageFactory,
         private SpacecraftDestructionInterface $spacecraftDestruction,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        protected ?BorgSphereAttackContext $borgSphereAttackContext = null
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+    }
+
+    protected function isFiringStopped(BattlePartyInterface $targetPool): bool
+    {
+        return $this->borgSphereAttackContext?->isBattleStopped() || $targetPool->isDefeated();
     }
 
     protected function checkForSpacecraftDestruction(
