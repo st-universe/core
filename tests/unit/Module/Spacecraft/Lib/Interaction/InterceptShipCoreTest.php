@@ -7,7 +7,12 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
+use Override;
+use ReflectionProperty;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\System\Exception\AlreadyOffException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
@@ -17,6 +22,11 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftCondition;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class InterceptShipCoreTest extends StuTestCase
@@ -34,9 +44,10 @@ class InterceptShipCoreTest extends StuTestCase
 
     private InterceptShipCoreInterface $subject;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
+        parent::setUp();
         //injected
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->alertReactionFacade = $this->mock(AlertReactionFacadeInterface::class);
@@ -165,6 +176,56 @@ class InterceptShipCoreTest extends StuTestCase
             ->once();
 
         $this->subject->intercept($this->wrapper, $this->targetWrapper, $this->informations);
+    }
+
+    public function testLocalInterceptionDoesNotPullRemoteFleetMembersOutOfWarp(): void
+    {
+        $location = new StarSystemMap();
+        $condition = new SpacecraftCondition($this->ship);
+        $this->ship->shouldReceive('getUser->getId')->andReturn(123);
+        $this->ship->shouldReceive('getName')->andReturn('SHIP');
+        $this->ship->shouldReceive('isWarped', 'isCloaked')->andReturn(false);
+        $this->ship->shouldReceive('getLocation')->andReturn($location);
+        $this->ship->shouldReceive('getCondition')->andReturn($condition);
+        $this->wrapper->shouldReceive('getFleetWrapper')->andReturnNull();
+        $user = new User();
+        new ReflectionProperty(User::class, 'id')->setValue($user, 456);
+        $wrappers = [];
+        $ships = [];
+        foreach ([true, true, false] as $local) {
+            $ship = new Ship();
+            $ship->setUser($user)->setLocation($local ? $location : new StarSystemMap())->setCondition(new SpacecraftCondition($ship))
+                ->setRump(new SpacecraftRump()->setCategoryId(SpacecraftRumpCategoryEnum::WARSHIP));
+            $ship->getSystems()->set(SpacecraftSystemTypeEnum::WARPDRIVE->value, new SpacecraftSystem()->setSystemType(SpacecraftSystemTypeEnum::WARPDRIVE)->setStatus(100)->setMode(SpacecraftSystemModeEnum::MODE_ON));
+            $wrapper = $this->mock(ShipWrapperInterface::class);
+            $wrapper->shouldReceive('get')->andReturn($ship);
+            $wrapper->shouldReceive('getTractoredShipWrapper')->andReturnNull();
+            if ($local) {
+                $this->spacecraftSystemManager->shouldReceive('deactivate')->once()->with($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)
+                    ->andReturnUsing(static function () use ($ship): void {
+                        $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+                    });
+            }
+            $wrappers[] = $wrapper;
+            $ships[] = $ship;
+        }
+        $fleet = $this->mock(Fleet::class);
+        $fleet->shouldReceive('getName')->twice()->andReturn('FLEET');
+        $fleetWrapper = $this->mock(FleetWrapperInterface::class);
+        $fleetWrapper->shouldReceive('get')->twice()->andReturn($fleet);
+        $fleetWrapper->shouldReceive('getShipWrappers')->once()->andReturn(new ArrayCollection($wrappers));
+        $wrappers[0]->shouldReceive('getFleetWrapper')->once()->andReturn($fleetWrapper);
+        $this->spacecraftSystemManager->shouldReceive('deactivate')->once()->with($this->wrapper, SpacecraftSystemTypeEnum::WARPDRIVE)->andThrow(new AlreadyOffException());
+        $this->informations->shouldReceive('addInformationf')->once()->with('Die Flotte %s wurde abgefangen', 'FLEET');
+        $this->privateMessageSender->shouldReceive('send')->once()->with(123, 456, 'Die Flotte FLEET wurde von der SHIP abgefangen', PrivateMessageFolderTypeEnum::SPECIAL_SHIP, $ships[0]);
+        $this->entityManager->shouldReceive('flush')->once();
+        $this->alertReactionFacade->shouldReceive('doItAll')->once()->with($wrappers[0], $this->informations);
+
+        $this->subject->intercept($this->wrapper, $wrappers[0], $this->informations, false, true);
+
+        self::assertFalse($ships[0]->isWarped());
+        self::assertFalse($ships[1]->isWarped());
+        self::assertTrue($ships[2]->isWarped());
     }
 
     public function testInterceptExpectAlertReactionForSourceShipIfWarped(): void

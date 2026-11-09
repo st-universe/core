@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Borg;
 
-use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\BorgSphereConfiguration;
@@ -27,15 +26,20 @@ final class BorgSphereNavigation
 
     public function isSafe(Location $location): bool
     {
-        $fieldType = $location->getFieldType();
-        if (!$fieldType->getPassable() || $fieldType->getSpecialDamage() > 0) {
+        return !BorgSphereAnomalyEscape::hasAnomaly($location) && BorgSphereAnomalyEscape::isTraversable($location, $this->wrappers);
+    }
+
+    public function evadeAnomaly(Ship $ship, BorgSphereConfiguration $configuration): bool
+    {
+        if (!BorgSphereAnomalyEscape::hasAnomaly($ship->getLocation())) {
             return false;
         }
-        foreach ($location->getSpacecrafts() as $ship) {
-            if ($ship->hasComputer() && $this->wrappers->wrapSpacecraft($ship)->getAlertState() === SpacecraftAlertStateEnum::ALERT_RED) {
-                return false;
-            }
-        }
+        $budget = $this->movementBudget($configuration);
+        $traversable = fn (Location $location): bool => BorgSphereAnomalyEscape::isTraversable($location, $this->wrappers) && BorgSphereAnomalyEscape::isWithinRadius($location, $configuration);
+        $path = BorgSphereAnomalyEscape::findPath($ship->getLocation(), $budget, fn (Map|StarSystemMap $location): array => $this->roamingLocations($location, $configuration, true), $traversable);
+        $this->travel($ship, $budget, static function () use (&$path, $traversable): Map|StarSystemMap|null {
+            return BorgSphereAnomalyEscape::nextStep($path, $traversable);
+        });
         return true;
     }
 
@@ -55,7 +59,7 @@ final class BorgSphereNavigation
     public function approach(Ship $ship, BorgSphereConfiguration $configuration): void
     {
         $target = $configuration->getColony()->getStarsystemMap();
-        $this->travel($ship, $configuration, fn (Location $location, array $visited): ?StarSystemMap => $this->approachDestination($location, $target, $visited));
+        $this->travel($ship, $this->movementBudget($configuration), fn (Location $location, array $visited): ?StarSystemMap => $this->approachDestination($location, $target, $visited));
     }
 
     /** @param list<Location> $visited */
@@ -71,22 +75,22 @@ final class BorgSphereNavigation
 
     public function roam(Ship $ship, BorgSphereConfiguration $configuration): void
     {
-        $this->travel($ship, $configuration, fn (Map|StarSystemMap $location, array $visited): Map|StarSystemMap|null => $this->roamingDestination($location, $configuration, $visited));
+        $this->travel($ship, $this->movementBudget($configuration), fn (Map|StarSystemMap $location, array $visited): Map|StarSystemMap|null => $this->roamingDestination($location, $configuration, $visited));
     }
 
     /** @param list<Location> $visited */
     private function roamingDestination(Map|StarSystemMap $location, BorgSphereConfiguration $configuration, array $visited): Map|StarSystemMap|null
     {
-        $candidates = $location instanceof StarSystemMap ? $this->systemRoamingLocations($location) : $this->mapRoamingLocations($location, $configuration);
+        $candidates = $this->roamingLocations($location, $configuration);
         $candidates = $this->safeLocations($candidates, $visited);
         return $candidates === [] ? null : $candidates[$this->random->array_rand($candidates)];
     }
 
     /** @param callable(Map|StarSystemMap, list<Location>): (Map|StarSystemMap|null) $destination */
-    private function travel(Ship $ship, BorgSphereConfiguration $configuration, callable $destination): void
+    private function travel(Ship $ship, int $budget, callable $destination): void
     {
         $visited = [$ship->getLocation()];
-        for ($remaining = $this->movementBudget($configuration); $remaining > 0; $remaining--) {
+        for ($remaining = $budget; $remaining > 0; $remaining--) {
             if ($ship->getCondition()->isDisabled() || $ship->getCondition()->isDestroyed()) {
                 return;
             }
@@ -146,7 +150,13 @@ final class BorgSphereNavigation
     }
 
     /** @return list<Map|StarSystemMap> */
-    private function mapRoamingLocations(Map $location, BorgSphereConfiguration $configuration): array
+    private function roamingLocations(Map|StarSystemMap $location, BorgSphereConfiguration $configuration, bool $escape = false): array
+    {
+        return $location instanceof StarSystemMap ? $this->systemRoamingLocations($location) : $this->mapRoamingLocations($location, $configuration, $escape);
+    }
+
+    /** @return list<Map|StarSystemMap> */
+    private function mapRoamingLocations(Map $location, BorgSphereConfiguration $configuration, bool $escape): array
     {
         $anchor = $configuration->getColony()->getSystem()->getMap();
         if ($anchor === null) {
@@ -165,7 +175,7 @@ final class BorgSphereNavigation
                 $neighbors[] = $field;
             }
         }
-        $entry = $this->systemEntry($location);
+        $entry = $this->systemEntry($location, $escape);
         if ($entry !== null) {
             $neighbors[] = $entry;
         }
@@ -178,14 +188,14 @@ final class BorgSphereNavigation
             || in_array($field->getY(), [1, $field->getSystem()->getMaxY()], true);
     }
 
-    private function systemEntry(Map $location): ?StarSystemMap
+    private function systemEntry(Map $location, bool $escape): ?StarSystemMap
     {
         $system = $location->getSystem();
         if ($system === null) {
             return null;
         }
         foreach ($this->systemMaps->getBySystemOrdered($system->getId()) as $field) {
-            if ($field->getColony() === null && $this->isEdge($field) && $this->isSafe($field)) {
+            if ($field->getColony() === null && $this->isEdge($field) && ($escape ? BorgSphereAnomalyEscape::isTraversable($field, $this->wrappers) : $this->isSafe($field))) {
                 return $field;
             }
         }
