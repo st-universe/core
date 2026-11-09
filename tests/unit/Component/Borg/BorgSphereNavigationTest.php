@@ -7,6 +7,7 @@ namespace Stu\Component\Borg;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Control\StuRandom;
@@ -18,6 +19,8 @@ use Stu\Module\Spacecraft\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Spacecraft\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\BorgSphereConfiguration;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Layer;
@@ -158,7 +161,7 @@ final class BorgSphereNavigationTest extends StuTestCase
     /** @return iterable<string, array{string, bool}> */
     public static function obstacles(): iterable
     {
-        foreach (['sun', 'red alert', 'impassable'] as $obstacle) {
+        foreach (['sun', 'red alert', 'impassable', 'anomaly'] as $obstacle) {
             yield $obstacle . ' during approach' => [$obstacle, true];
             yield $obstacle . ' during roaming' => [$obstacle, false];
         }
@@ -172,6 +175,8 @@ final class BorgSphereNavigationTest extends StuTestCase
             $fields[2]->setFieldType(new MapFieldType()->setPassable(true)->setSpecialDamage(7500));
         } elseif ($obstacle === 'impassable') {
             $fields[2]->setFieldType(new MapFieldType()->setPassable(false));
+        } elseif ($obstacle === 'anomaly') {
+            $this->anomaly($fields[2], AnomalyTypeEnum::ION_STORM);
         } else {
             $hostile = $this->mock(Ship::class);
             $hostile->shouldReceive('hasComputer')->andReturn(true);
@@ -259,6 +264,220 @@ final class BorgSphereNavigationTest extends StuTestCase
         self::assertCount($budget, array_unique(array_map(spl_object_id(...), $flights->toArray())));
     }
 
+    /** @return iterable<string, array{AnomalyTypeEnum}> */
+    public static function anomalyKinds(): iterable
+    {
+        yield 'subspace ellipse' => [AnomalyTypeEnum::SUBSPACE_ELLIPSE];
+        yield 'ion storm' => [AnomalyTypeEnum::ION_STORM];
+    }
+
+    #[DataProvider('anomalyKinds')]
+    public function testNormalDestinationsAvoidActiveAnomaliesOnBothMaps(AnomalyTypeEnum $type): void
+    {
+        $navigation = $this->navigation();
+        foreach ([new Map(), new StarSystemMap()] as $location) {
+            $location->setFieldType(new MapFieldType()->setPassable(true));
+            $this->anomaly($location, $type);
+            self::assertFalse($navigation->isSafe($location));
+            $anomaly = $location->getAnomaly($type);
+            self::assertNotNull($anomaly);
+            $anomaly->setRemainingTicks(0);
+            self::assertTrue($navigation->isSafe($location));
+        }
+    }
+
+    public function testSpawnRejectsAnActiveAnomalyEvenWhenItIsFarthestAway(): void
+    {
+        $fields = $this->systemRow(4);
+        $this->anomaly($fields[3], AnomalyTypeEnum::ION_STORM);
+        $configuration = new BorgSphereConfiguration()->setColony(new Colony()->setStarsystemMap($fields[0]));
+        $maps = $this->mock(StarSystemMapRepositoryInterface::class);
+        $maps->shouldReceive('getBySystemOrdered')->once()->with(0)->andReturn($fields);
+
+        self::assertSame($fields[2], $this->navigation($maps)->spawnLocation($configuration));
+    }
+
+    public function testNoActiveAnomalyDoesNotConsumeABudgetOrAttemptFlight(): void
+    {
+        $location = new StarSystemMap();
+        $this->anomaly($location, AnomalyTypeEnum::ION_STORM, 0);
+        $ship = new Ship();
+        $ship->setLocation($location);
+
+        self::assertFalse($this->navigation()->evadeAnomaly($ship, new BorgSphereConfiguration()));
+        self::assertSame($location, $ship->getLocation());
+    }
+
+    #[DataProvider('anomalyKinds')]
+    public function testEscapeUsesTheNearestClearFieldAndStopsThere(AnomalyTypeEnum $type): void
+    {
+        $fields = $this->systemRow(4);
+        $this->anomaly($fields[1], $type);
+        $this->anomaly($fields[2], $type);
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[1], $fields[3], $fields, [], 7);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertSame([$fields[0]], $flights->toArray());
+        self::assertSame($fields[0], $ship->getLocation());
+    }
+
+    #[DataProvider('anomalyKinds')]
+    public function testEscapeCrossesAnAnomalyClusterWithOrdinaryNeighborFlights(AnomalyTypeEnum $type): void
+    {
+        $fields = $this->systemRow(5);
+        foreach (array_slice($fields, 0, 3) as $field) {
+            $this->anomaly($field, $type);
+        }
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[0], $fields[4], $fields, [], 7);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertSame(array_slice($fields, 1, 3), $flights->toArray());
+        self::assertSame($fields[3], $ship->getLocation());
+    }
+
+    public function testEscapeDoesNotSearchOrFlyBeyondTheRolledBudget(): void
+    {
+        $fields = $this->systemRow(4);
+        foreach (array_slice($fields, 0, 3) as $field) {
+            $this->anomaly($field, AnomalyTypeEnum::ION_STORM);
+        }
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[0], $fields[3], $fields, [], 2);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertCount(0, $flights);
+        self::assertSame($fields[0], $ship->getLocation());
+    }
+
+    /** @return iterable<string, array{string}> */
+    public static function unsafeEscapeFields(): iterable
+    {
+        yield 'sun' => ['sun'];
+        yield 'red alert' => ['red alert'];
+        yield 'impassable' => ['impassable'];
+    }
+
+    #[DataProvider('unsafeEscapeFields')]
+    public function testEscapeCannotUseOtherwiseUnsafeIntermediateFields(string $obstacle): void
+    {
+        $fields = $this->systemRow(3);
+        $this->anomaly($fields[0], AnomalyTypeEnum::ION_STORM);
+        $this->anomaly($fields[1], AnomalyTypeEnum::ION_STORM);
+        if ($obstacle === 'sun') {
+            $fields[1]->setFieldType(new MapFieldType()->setPassable(true)->setSpecialDamage(7500));
+        } elseif ($obstacle === 'impassable') {
+            $fields[1]->setFieldType(new MapFieldType()->setPassable(false));
+        } else {
+            $hostile = $this->mock(Ship::class);
+            $hostile->shouldReceive('hasComputer')->andReturn(true);
+            $fields[1]->getSpacecrafts()->add($hostile);
+        }
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[0], $fields[2], $fields, [], 7);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertCount(0, $flights);
+        self::assertSame($fields[0], $ship->getLocation());
+    }
+
+    public function testEscapeRemainsWithinTheOuterRadiusEvenWhenTheOutsideNeighborIsClear(): void
+    {
+        $anchor = $this->mapField(0);
+        $fields = $this->systemRow(1, $anchor);
+        $maps = [$this->mapField(18), $this->mapField(19), $this->mapField(20), $this->mapField(21)];
+        $this->anomaly($maps[1], AnomalyTypeEnum::ION_STORM);
+        $this->anomaly($maps[2], AnomalyTypeEnum::ION_STORM);
+        [$navigation, $ship, $configuration, $flights] = $this->movement($maps[2], $fields[0], $fields, $maps, 7);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertSame([$maps[1], $maps[0]], $flights->toArray());
+        self::assertSame($maps[0], $ship->getLocation());
+    }
+
+    public function testEscapeCannotLeaveASystemOntoAnOuterFieldBeyondTheRadius(): void
+    {
+        $anchor = $this->mapField(0);
+        $outside = $this->mapField(21);
+        $target = $this->systemRow(1, $anchor)[0];
+        $source = $this->systemRow(1, $outside)[0];
+        $this->anomaly($source, AnomalyTypeEnum::ION_STORM);
+        [$navigation, $ship, $configuration, $flights] = $this->movement($source, $target, [$source], [$anchor, $outside], 7);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertCount(0, $flights);
+        self::assertSame($source, $ship->getLocation());
+    }
+
+    /** @return iterable<string, array{bool}> */
+    public static function escapeTransitions(): iterable
+    {
+        yield 'system exit' => [true];
+        yield 'system entry' => [false];
+    }
+
+    #[DataProvider('escapeTransitions')]
+    public function testEscapeCanCrossAnomalousSystemTransitionsWithoutTeleporting(bool $exit): void
+    {
+        $anchor = $this->mapField(0);
+        $fields = $this->systemRow($exit ? 1 : 2, $anchor);
+        $anchor->setSystem($fields[0]->getSystem());
+        $clear = $this->mapField(1);
+        $maps = $exit ? [$anchor, $clear] : [$anchor];
+        $this->anomaly($anchor, AnomalyTypeEnum::ION_STORM);
+        $this->anomaly($fields[0], AnomalyTypeEnum::ION_STORM);
+        $source = $exit ? $fields[0] : $anchor;
+        [$navigation, $ship, $configuration, $flights] = $this->movement($source, $fields[0], $fields, $maps, 7);
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertSame($exit ? [$anchor, $clear] : [$fields[0], $fields[1]], $flights->toArray());
+    }
+
+    /** @return iterable<string, array{string}> */
+    public static function interruptedEscapes(): iterable
+    {
+        yield 'disabled' => ['disabled'];
+        yield 'destroyed' => ['destroyed'];
+        yield 'blocked' => ['blocked'];
+        yield 'next field becomes unsafe' => ['unsafe'];
+    }
+
+    #[DataProvider('interruptedEscapes')]
+    public function testEscapeStopsWhenAFlightFailsOrTheSphereCannotContinue(string $outcome): void
+    {
+        $fields = $this->systemRow(3);
+        $this->anomaly($fields[0], AnomalyTypeEnum::ION_STORM);
+        $this->anomaly($fields[1], AnomalyTypeEnum::ION_STORM);
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[0], $fields[2], $fields, [], 7, static function (Ship $ship, Location $destination) use ($outcome, $fields): void {
+            if ($outcome !== 'blocked') {
+                $ship->setLocation($destination);
+            }
+            if ($outcome === 'disabled') {
+                $ship->getCondition()->setDisabled(true);
+            } elseif ($outcome === 'destroyed') {
+                $ship->getCondition()->setIsDestroyed(true);
+            } elseif ($outcome === 'unsafe') {
+                $fields[2]->setFieldType(new MapFieldType()->setPassable(true)->setSpecialDamage(7500));
+            }
+        });
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertCount(1, $flights);
+        self::assertSame($fields[$outcome === 'blocked' ? 0 : 1], $ship->getLocation());
+    }
+
+    private function anomaly(Location $location, AnomalyTypeEnum $type, int $remainingTicks = 1): void
+    {
+        $anomalyType = $this->mock(AnomalyType::class);
+        $anomalyType->shouldReceive('getId')->andReturn($type->value);
+        new Anomaly()->setAnomalyType($anomalyType)->setRemainingTicks($remainingTicks)->setLocation($location);
+    }
+
     /** @return list<StarSystemMap> */
     private function systemRow(int $count, ?Map $anchor = null): array
     {
@@ -282,6 +501,7 @@ final class BorgSphereNavigationTest extends StuTestCase
         $field->shouldReceive('getY')->andReturn(0);
         $field->shouldReceive('getLayer')->andReturn(new Layer());
         $field->shouldReceive('getSpacecrafts')->andReturn(new ArrayCollection());
+        $field->shouldReceive('getAnomalies')->andReturn(new ArrayCollection());
         $field->setFieldType(new MapFieldType()->setPassable(true)->setDamage(6));
         return $field;
     }

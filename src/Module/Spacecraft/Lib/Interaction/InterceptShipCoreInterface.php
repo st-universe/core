@@ -13,6 +13,7 @@ interface InterceptShipCoreInterface
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
         InformationInterface $informations,
-        bool $sourceCloakWasDeactivated = false
+        bool $sourceCloakWasDeactivated = false,
+        bool $onlySameLocation = false
     ): void;
 }

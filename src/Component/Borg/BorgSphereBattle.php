@@ -9,6 +9,7 @@ use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\Ship;
 
@@ -39,18 +40,37 @@ final class BorgSphereBattle
             }
             $isFleetFight = false;
             $targetFleetId = $target->getFleetId();
-            $this->context->beginAutomaticAttack($ship);
-            try {
-                $this->attacks->attack($source, $this->wrappers->wrapShip($target), false, $isFleetFight, new InformationWrapper());
-                $attacked = true;
-            } finally {
-                $this->context->clear();
-            }
+            $this->performAttack($source, $target, $isFleetFight);
+            $attacked = true;
             if ($isFleetFight && $targetFleetId !== null) {
                 $attackedFleets[$targetFleetId] = true;
             }
         }
         return $attacked;
+    }
+
+    public function attackTarget(BorgSphereEvent $event, Ship $ship, Ship $target): bool
+    {
+        if (!$this->canAttack($event, $ship) || !$this->isTarget($ship, $target)) {
+            return false;
+        }
+        $source = $this->wrappers->wrapShip($ship);
+        if (!$source->canFire()) {
+            return false;
+        }
+        $isFleetFight = false;
+        $this->performAttack($source, $target, $isFleetFight);
+        return true;
+    }
+
+    private function performAttack(SpacecraftWrapperInterface $source, Ship $target, bool &$isFleetFight): void
+    {
+        $this->context->beginAutomaticAttack($source->get());
+        try {
+            $this->attacks->attack($source, $this->wrappers->wrapShip($target), false, $isFleetFight, new InformationWrapper());
+        } finally {
+            $this->context->clear();
+        }
     }
 
     /** @param array<int, true> $attackedFleets */
@@ -71,9 +91,15 @@ final class BorgSphereBattle
     {
         return $target->getLocation() === $source->getLocation()
             && $target->getUser()->getId() !== $source->getUser()->getId()
-            && !$target->getCondition()->isDestroyed() && !$target->getCondition()->isDisabled()
-            && !$target->isCloaked() && !$target->isWarped() && !$target->getRump()->isEscapePods() && !$target->isRpgModuleInvisible()
+            && $this->isAvailableTarget($target)
             && !$this->relations->isFriend($source->getUser(), $target->getUser())
             && $this->fight->canAttackTarget($source, $target, true);
+    }
+
+    private function isAvailableTarget(Ship $target): bool
+    {
+        return !$target->getCondition()->isDestroyed() && !$target->getCondition()->isDisabled()
+            && !$target->isCloaked() && !$target->isWarped() && !$target->getRump()->isEscapePods()
+            && !$target->isRpgModuleInvisible() && !$target->getUser()->isVacationRequestOldEnough();
     }
 }

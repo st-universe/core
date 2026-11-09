@@ -10,11 +10,13 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Borg\BorgSphereBattle;
 use Stu\Component\Borg\BorgSphereBehavior;
 use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSphereFlight;
+use Stu\Component\Borg\BorgSphereInterception;
 use Stu\Component\Borg\BorgSphereNavigation;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgSphereRaidService;
@@ -40,29 +42,38 @@ use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
 use Stu\Module\Spacecraft\Action\CollectBorgNanites\CollectBorgNanites;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertDetectionInterface;
+use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacade;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\SkipDetectionInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
+use Stu\Module\Spacecraft\Lib\Battle\Party\IncomingBattleParty;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCauseEnum;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycle;
+use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCycleInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackPreparationInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\EnergyWeaponPhase;
 use Stu\Module\Spacecraft\Lib\Battle\Weapon\ProjectileWeaponPhase;
 use Stu\Module\Spacecraft\Lib\Damage\ApplyDamage;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamage;
+use Stu\Module\Spacecraft\Lib\Interaction\InterceptShipCore;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
+use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Spacecraft\View\ShowBorgSphere\ShowBorgSphere;
 use Stu\Module\Tick\Process\BorgSphereTick;
 use Stu\Module\Twig\TwigHelper;
+use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\BorgSphereConfiguration;
 use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\BorgSphereRaid;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\NPCQuest;
@@ -809,6 +820,166 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertFalse($ship->getWarpDriveState());
     }
 
+    /** @return iterable<string, array{AnomalyTypeEnum, BorgSpherePhaseEnum}> */
+    public static function anomalyEscapeStates(): iterable
+    {
+        foreach ([AnomalyTypeEnum::SUBSPACE_ELLIPSE, AnomalyTypeEnum::ION_STORM] as $type) {
+            foreach ([BorgSpherePhaseEnum::APPROACH, BorgSpherePhaseEnum::ROAMING] as $phase) {
+                yield $type->name . ' ' . $phase->name => [$type, $phase];
+            }
+        }
+    }
+
+    #[DataProvider('anomalyEscapeStates')]
+    public function testTickEscapesAnAnomalyBeforeAttackingOrChoosingToStay(AnomalyTypeEnum $type, BorgSpherePhaseEnum $phase): void
+    {
+        $container = $this->getContainer();
+        $systemMaps = $container->get(StarSystemMapRepositoryInterface::class);
+        $systemId = $this->configuration->getColony()->getSystem()->getId();
+        $start = $systemMaps->getByCoordinates($systemId, 2, 2);
+        $destination = $systemMaps->getByCoordinates($systemId, 3, 2);
+        self::assertNotNull($start);
+        self::assertNotNull($destination);
+        foreach ([$start, $destination] as $field) {
+            $field->setFieldType($this->em->find(MapFieldType::class, 3112));
+            $field->getSpacecrafts()->clear();
+        }
+        $this->sphere->getFleet()?->getShips()->toArray();
+        $wrapper = $this->combatWrapper($this->sphere, 100);
+        foreach ([SpacecraftSystemTypeEnum::IMPULSEDRIVE, SpacecraftSystemTypeEnum::DEFLECTOR] as $typeToAdd) {
+            if (!$this->sphere->hasSpacecraftSystem($typeToAdd)) {
+                $system = new SpacecraftSystem()->setSpacecraft($this->sphere)->setSystemType($typeToAdd)
+                    ->setStatus(100)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+                $this->sphere->getSystems()->set($typeToAdd->value, $system);
+                $this->em->persist($system);
+            }
+        }
+        $this->sphere->setLocation($start);
+        $this->source->setLocation($start);
+        $this->sphere->getBuildplan()->setCrew($this->sphere->getCrewCount());
+        $this->sphere->getCondition()->setDisabled(false);
+        $start->getSpacecrafts()->set($this->sphere->getId(), $this->sphere);
+        $start->getSpacecrafts()->set($this->source->getId(), $this->source);
+        $wrapper->setAlertState(SpacecraftAlertStateEnum::ALERT_YELLOW);
+        $anomaly = new Anomaly()->setAnomalyType($this->em->find(AnomalyType::class, $type->value))->setRemainingTicks(2)->setLocation($start);
+        $this->em->persist($anomaly);
+        $this->event->setPhase($phase)->setFirstDisabledAt(null)->setNextTickAt($this->now);
+        $this->em->flush();
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->once()->with(1, 7)->andReturn(1);
+        $navigation = $container->make(BorgSphereNavigation::class, ['random' => $random]);
+        $idle = $this->mock(StuRandom::class);
+        $idle->shouldNotReceive('rand');
+        $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
+        $attacks->shouldNotReceive('attack');
+        $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks]);
+        $behavior = $container->make(BorgSphereBehavior::class, ['navigation' => $navigation, 'battle' => $battle, 'random' => $idle]);
+        $tick = $container->make(BorgSphereTick::class, ['behavior' => $behavior]);
+
+        $this->em->wrapInTransaction(fn () => $tick->work());
+
+        self::assertSame($destination, $this->sphere->getLocation());
+        self::assertTrue($destination->getAnomalies()->isEmpty());
+        self::assertFalse($this->sphere->getWarpDriveState());
+        self::assertSame($phase, $this->event->getPhase());
+    }
+
+    /** @return iterable<string, array{bool, bool}> */
+    public static function interceptionGroups(): iterable
+    {
+        yield 'one single ship' => [false, true];
+        yield 'one fleet with a remote warped member' => [true, true];
+        yield 'one fleet with a remote unwarped member' => [true, false];
+    }
+
+    #[DataProvider('interceptionGroups')]
+    public function testIdleTickInterceptsAndAttacksOnlyOneLocalGroup(bool $fleetTarget, bool $remoteWarped): void
+    {
+        $container = $this->getContainer();
+        $location = $this->configuration->getColony()->getSystem()->getMap();
+        self::assertNotNull($location);
+        foreach ($location->getAnomalies() as $anomaly) {
+            $anomaly->setRemainingTicks(0);
+        }
+        $location->getSpacecrafts()->clear();
+        $this->sphere->getFleet()?->getShips()->toArray();
+        $source = $this->combatWrapper($this->sphere, 100);
+        $this->sphere->getCondition()->setDisabled(false);
+        $this->sphere->setLocation($location)->setTractoredShip(null);
+        $this->sphere->setTractoringSpacecraft(null);
+        $this->sphere->getBuildplan()->setCrew($this->sphere->getCrewCount());
+        $location->getSpacecrafts()->set($this->sphere->getId(), $this->sphere);
+        $targets = [$this->source, $this->em->find(Ship::class, 78), $this->em->find(Ship::class, 79)];
+        foreach ($targets as $target) {
+            $target->getFleet()?->getShips()->toArray();
+            $this->combatWrapper($target, 100);
+            $target->setUser($this->source->getUser())->setLocation($location);
+            $target->getCondition()->setDisabled(false)->setIsDestroyed(false);
+            $target->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_ON);
+            $location->getSpacecrafts()->set($target->getId(), $target);
+        }
+        if ($fleetTarget) {
+            $fleet = $this->em->find(Fleet::class, 42);
+            $fleet->getShips()->clear();
+            $fleet->setName('Abfangflotte');
+            foreach ($targets as $target) {
+                $target->setFleet($fleet);
+            }
+            $targets[2]->setLocation($this->configuration->getColony()->getStarsystemMap());
+            $targets[2]->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode($remoteWarped ? SpacecraftSystemModeEnum::MODE_ON : SpacecraftSystemModeEnum::MODE_OFF);
+            $location->getSpacecrafts()->removeElement($targets[2]);
+        }
+        $this->event->setPhase(BorgSpherePhaseEnum::ROAMING)->setFirstDisabledAt(null)->setNextTickAt($this->now);
+        $this->em->flush();
+        self::assertTrue($this->sphere->canIntercept());
+        $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
+        $attacks->shouldReceive('attack')->once()->andReturnUsing(function (SpacecraftWrapperInterface $attacker, SpacecraftWrapperInterface $target) use ($targets): bool {
+            self::assertSame($this->sphere, $attacker->get());
+            self::assertSame($targets[0], $target->get());
+            self::assertFalse($target->get()->isWarped());
+            return true;
+        });
+        $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
+        $relations->shouldReceive('isFriend')->andReturn(false);
+        $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks, 'relations' => $relations]);
+        $parties = $container->get(BattlePartyFactoryInterface::class);
+        $alerted = $parties->createAlertStateBattleParty($source);
+        $detection = $this->mock(AlertDetectionInterface::class);
+        $detection->shouldReceive('detectAlertedBattleParties')->once()->andReturn([$alerted]);
+        $alertCycle = $this->mock(SpacecraftAttackCycleInterface::class);
+        $alertCycle->shouldReceive('cycle')->once()->andReturnUsing(function ($attackers, IncomingBattleParty $incoming) use ($location, $fleetTarget, $container): MessageCollectionInterface {
+            $members = $incoming->getActiveMembers();
+            self::assertCount($fleetTarget ? 2 : 1, $members);
+            foreach ($members as $member) {
+                self::assertSame($location, $member->get()->getLocation());
+            }
+            return $container->get(MessageFactoryInterface::class)->createMessageCollection();
+        });
+        $alerts = $container->make(AlertReactionFacade::class, ['alertDetection' => $detection, 'spacecraftAttackCycle' => $alertCycle]);
+        $core = $container->make(InterceptShipCore::class, ['alertReactionFacade' => $alerts]);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->once()->with(1, 100)->andReturn(40);
+        $random->shouldReceive('array_rand')->once()->andReturnUsing(static fn (array $groups): string => array_key_first($groups));
+        $interception = $container->make(BorgSphereInterception::class, ['interception' => $core, 'battle' => $battle, 'relations' => $relations, 'random' => $random]);
+        $idle = $this->mock(StuRandom::class);
+        $idle->shouldReceive('rand')->once()->with(1, 100)->andReturn(1);
+        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle, 'interception' => $interception, 'random' => $idle]);
+        $tick = $container->make(BorgSphereTick::class, ['behavior' => $behavior]);
+
+        $this->em->wrapInTransaction(fn () => $tick->work());
+
+        self::assertSame($location, $this->sphere->getLocation());
+        self::assertFalse($targets[0]->getWarpDriveState());
+        self::assertSame(!$fleetTarget, $targets[1]->getWarpDriveState());
+        self::assertSame($remoteWarped, $targets[2]->getWarpDriveState());
+        foreach ($targets as $target) {
+            $system = $target->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE);
+            $expected = $system->getMode();
+            $this->em->refresh($system);
+            self::assertSame($expected, $system->getMode());
+        }
+    }
+
     public function testSpawnSkipsEvenTheFarthestSectorWhenRedAlertShipsArePresent(): void
     {
         $navigation = $this->getContainer()->get(BorgSphereNavigation::class);
@@ -963,6 +1134,6 @@ final class BorgSphereIntegrationTest extends ActionTestCase
     /** @return array<string, int> */
     private function settings(): array
     {
-        return ['tick_seconds' => 3600, 'idle_chance_percent' => 20, 'movement_min_fields' => 1, 'movement_max_fields' => 7, 'normal_regen_min_percent' => 2, 'normal_regen_max_percent' => 10, 'transwarp_regen_bp' => 100, 'transwarp_escape_bp' => 8000, 'transwarp_initial_bp' => 1000, 'transwarp_floor_step_bp' => 1000, 'wake_percent' => 10, 'raid_cooldown_seconds' => 7200, 'raid_reward_min' => 3, 'raid_reward_max' => 5, 'raid_success_disabled' => 90, 'raid_success_active' => 90, 'raid_team_size' => 5, 'raid_loss_min' => 1, 'raid_loss_max' => 3, 'nanite_commodity_id' => 2, 'roam_radius' => 3];
+        return ['tick_seconds' => 3600, 'idle_chance_percent' => 20, 'intercept_chance_percent' => 40, 'movement_min_fields' => 1, 'movement_max_fields' => 7, 'normal_regen_min_percent' => 2, 'normal_regen_max_percent' => 10, 'transwarp_regen_bp' => 100, 'transwarp_escape_bp' => 8000, 'transwarp_initial_bp' => 1000, 'transwarp_floor_step_bp' => 1000, 'wake_percent' => 10, 'raid_cooldown_seconds' => 7200, 'raid_reward_min' => 3, 'raid_reward_max' => 5, 'raid_success_disabled' => 90, 'raid_success_active' => 90, 'raid_team_size' => 5, 'raid_loss_min' => 1, 'raid_loss_max' => 3, 'nanite_commodity_id' => 2, 'roam_radius' => 3];
     }
 }

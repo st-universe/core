@@ -7,6 +7,7 @@ namespace Stu\Module\Spacecraft\Lib\Interaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Stu\Component\Spacecraft\System\Exception\AlreadyOffException;
 use Stu\Component\Spacecraft\System\Exception\SpacecraftSystemException;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
@@ -14,6 +15,8 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\AlertDetection\AlertReactionFacadeInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Spacecraft;
@@ -27,12 +30,13 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[\Override]
+    #[Override]
     public function intercept(
         SpacecraftWrapperInterface $wrapper,
         SpacecraftWrapperInterface $targetWrapper,
         InformationInterface $informations,
-        bool $sourceCloakWasDeactivated = false
+        bool $sourceCloakWasDeactivated = false,
+        bool $onlySameLocation = false
     ): void {
 
         $ship = $wrapper->get();
@@ -53,7 +57,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
 
         $targetFleetWrapper = $targetWrapper->getFleetWrapper();
         if ($targetFleetWrapper !== null) {
-            foreach ($targetFleetWrapper->getShipWrappers() as $fleetWrapper) {
+            foreach ($this->fleetMembers($targetFleetWrapper, $ship, $onlySameLocation) as $fleetWrapper) {
                 $this->deactivateWarpdrive($fleetWrapper, $wrappersToToggleAlertReaction);
             }
 
@@ -76,7 +80,7 @@ final class InterceptShipCore implements InterceptShipCoreInterface
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($fleetWrapper !== null) {
-            foreach ($fleetWrapper->getShipWrappers() as $fleetWrapper) {
+            foreach ($this->fleetMembers($fleetWrapper, $ship, $onlySameLocation) as $fleetWrapper) {
                 $this->deactivateWarpdrive($fleetWrapper, $wrappersToToggleAlertReaction);
             }
         } else {
@@ -84,14 +88,37 @@ final class InterceptShipCore implements InterceptShipCoreInterface
         }
         $this->entityManager->flush();
 
-        /** @var SpacecraftWrapperInterface[] */
-        $wrappersToToggleAlertArray = $wrappersToToggleAlertReaction->toArray();
-        shuffle($wrappersToToggleAlertArray);
+        $this->triggerAlertReactions($wrappersToToggleAlertReaction, $ship, $informations, $onlySameLocation);
+    }
 
-        // alert reaction check
-        foreach ($wrappersToToggleAlertArray as $wrapper) {
-            $this->alertReactionFacade->doItAll($wrapper, $informations);
+    /** @param Collection<int, SpacecraftWrapperInterface> $wrappers */
+    private function triggerAlertReactions(Collection $wrappers, Spacecraft $source, InformationInterface $information, bool $onlySameLocation): void
+    {
+        $members = $wrappers->toArray();
+        shuffle($members);
+        foreach ($members as $wrapper) {
+            if ($onlySameLocation && ($source->getCondition()->isDisabled() || $source->getCondition()->isDestroyed())) {
+                break;
+            }
+            $this->alertReactionFacade->doItAll($wrapper, $information);
         }
+    }
+
+    /** @return Collection<int, ShipWrapperInterface> */
+    private function fleetMembers(FleetWrapperInterface $fleet, Spacecraft $source, bool $onlySameLocation): Collection
+    {
+        $members = $fleet->getShipWrappers();
+        return $onlySameLocation
+            ? $members->filter(fn (ShipWrapperInterface $wrapper): bool => $this->isLocalMember($wrapper->get(), $source))
+            : $members;
+    }
+
+    private function isLocalMember(Spacecraft $member, Spacecraft $source): bool
+    {
+        return $member->getLocation() === $source->getLocation() && !$member->isCloaked()
+            && !$member->getCondition()->isDisabled() && !$member->getCondition()->isDestroyed()
+            && !$member->getRump()->isEscapePods() && !$member->isRpgModuleInvisible()
+            && !$member->getUser()->isVacationRequestOldEnough();
     }
 
     /** @param ArrayCollection<int, SpacecraftWrapperInterface> $wrappersToToggleAlertReaction */

@@ -6,10 +6,22 @@ namespace Stu\Module\Spacecraft\Lib\Battle\Party;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Override;
+use ReflectionProperty;
+use Stu\Component\Borg\BorgSphereAttackContext;
+use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftCondition;
+use Stu\Orm\Entity\SpacecraftRump;
+use Stu\Orm\Entity\SpacecraftSystem;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
@@ -17,9 +29,10 @@ class IncomingBattlePartyTest extends StuTestCase
 {
     private MockInterface&StuRandom $stuRandom;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
+        parent::setUp();
         //injected
         $this->stuRandom = $this->mock(StuRandom::class);
     }
@@ -233,5 +246,40 @@ class IncomingBattlePartyTest extends StuTestCase
         $this->assertEquals([
             12 => $wrapper
         ], $members->toArray());
+    }
+
+    public function testAutomaticInterceptionReactionExcludesRemoteAndInvisibleFleetMembersUntilScopeIsCleared(): void
+    {
+        $location = new StarSystemMap();
+        $source = new Ship()->setLocation($location);
+        $context = new BorgSphereAttackContext();
+        $context->beginAutomaticAttack($source);
+        $ships = [];
+        $wrappers = [];
+        for ($id = 1; $id <= 6; $id++) {
+            $ship = new Ship();
+            new ReflectionProperty(Spacecraft::class, 'id')->setValue($ship, $id);
+            $ship->setUser(new User())->setLocation($location)->setCondition(new SpacecraftCondition($ship))
+                ->setRump(new SpacecraftRump()->setCategoryId(SpacecraftRumpCategoryEnum::WARSHIP));
+            $wrapper = $this->mock(ShipWrapperInterface::class);
+            $wrapper->shouldReceive('get')->andReturn($ship);
+            $wrapper->shouldReceive('canFire')->andReturn(true);
+            $ships[$id] = $ship;
+            $wrappers[$id] = $wrapper;
+        }
+        $ships[3]->setLocation(new StarSystemMap());
+        $ships[4]->getSystems()->set(SpacecraftSystemTypeEnum::RPG_MODULE->value, new SpacecraftSystem()->setSystemType(SpacecraftSystemTypeEnum::RPG_MODULE)->setData('{"invisible":true}'));
+        $ships[5]->getSystems()->set(SpacecraftSystemTypeEnum::WARPDRIVE->value, new SpacecraftSystem()->setSystemType(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_ON));
+        $ships[6]->getRump()->setCategoryId(SpacecraftRumpCategoryEnum::ESCAPE_PODS);
+        $fleet = $this->mock(FleetWrapperInterface::class);
+        $fleet->shouldReceive('getShipWrappers')->once()->andReturn(new ArrayCollection($wrappers));
+        $wrappers[1]->shouldReceive('getFleetWrapper')->once()->andReturn($fleet);
+        $factory = new BattlePartyFactory($this->mock(SpacecraftWrapperFactoryInterface::class), $this->stuRandom, $context);
+        $party = $factory->createIncomingBattleParty($wrappers[1]);
+
+        self::assertSame([1, 2], $party->getActiveMembers()->getKeys());
+        self::assertSame([1, 2], $party->getActiveMembers(true)->getKeys());
+        $context->clear();
+        self::assertSame([1, 2, 3, 4, 6], $party->getActiveMembers()->getKeys());
     }
 }

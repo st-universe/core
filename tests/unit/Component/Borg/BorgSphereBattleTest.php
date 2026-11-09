@@ -166,6 +166,40 @@ final class BorgSphereBattleTest extends StuTestCase
         self::assertFalse($this->subject->attackTargets($this->event, $this->sphere));
     }
 
+    public function testExplicitTargetStartsOnlyOneBattleAndLeavesOtherShipsAlone(): void
+    {
+        $selected = $this->ship(2, 261);
+        $other = $this->ship(3, 262);
+        $source = $this->wrapper($this->sphere);
+        $target = $this->wrapper($selected);
+        $this->relations->shouldReceive('isFriend')->once()->with($this->sphere->getUser(), $selected->getUser())->andReturn(false);
+        $this->fight->shouldReceive('canAttackTarget')->once()->with($this->sphere, $selected, true)->andReturn(true);
+        $this->attacks->shouldReceive('attack')->once()->with($source, $target, false, false, InformationWrapper::class)->andReturn(true);
+
+        self::assertTrue($this->subject->attackTarget($this->event, $this->sphere, $selected));
+        self::assertSame($this->location, $other->getLocation());
+    }
+
+    public function testExplicitWarpTargetCannotBeAttackedBeforeInterceptionCompletes(): void
+    {
+        $target = $this->ship(2, 261);
+        $this->activate($target, SpacecraftSystemTypeEnum::WARPDRIVE);
+        $this->wrappers->shouldNotReceive('wrapShip');
+        $this->attacks->shouldNotReceive('attack');
+
+        self::assertFalse($this->subject->attackTarget($this->event, $this->sphere, $target));
+    }
+
+    public function testExplicitAttackAfterDisablingTheSphereIsRejected(): void
+    {
+        $target = $this->ship(2, 261);
+        $this->sphere->getCondition()->setDisabled(true);
+        $this->wrappers->shouldNotReceive('wrapShip');
+        $this->attacks->shouldNotReceive('attack');
+
+        self::assertFalse($this->subject->attackTarget($this->event, $this->sphere, $target));
+    }
+
     private function ship(int $id, int $userId): Ship
     {
         $user = new User();

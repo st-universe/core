@@ -33,7 +33,7 @@ class BattlePartyFactory implements BattlePartyFactoryInterface
     public function createIncomingBattleParty(
         SpacecraftWrapperInterface $leaderWrapper
     ): IncomingBattleParty {
-        return new IncomingBattleParty($leaderWrapper, $this->stuRandom);
+        return new IncomingBattleParty($leaderWrapper, $this->stuRandom, $this->borgSphereAttackContext);
     }
 
     #[Override]
