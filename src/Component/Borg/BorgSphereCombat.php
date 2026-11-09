@@ -24,6 +24,24 @@ final class BorgSphereCombat
         private StuTime $time
     ) {}
 
+    /** @param callable(): void $callback */
+    public function withLockedEvent(Spacecraft $ship, BorgSphereEvent $event, callable $callback): void
+    {
+        $id = $ship->getId();
+        $wasCached = array_key_exists($id, $this->events);
+        $previous = $this->events[$id] ?? null;
+        $this->events[$id] = $event;
+        try {
+            $callback();
+        } finally {
+            if ($wasCached) {
+                $this->events[$id] = $previous;
+            } else {
+                unset($this->events[$id]);
+            }
+        }
+    }
+
     public function getEvent(Spacecraft $ship): ?BorgSphereEvent
     {
         $id = $ship->getId();

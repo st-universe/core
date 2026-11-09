@@ -203,6 +203,70 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertSame(1, $attempts);
     }
 
+    public function testCounterfireCannotResetHourlyRegenerationOrTranswarpProgress(): void
+    {
+        $container = $this->getContainer();
+        $deadline = $this->now + 3600;
+        $now = $deadline;
+        foreach ([SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::TRANSWARP_COIL] as $type) {
+            if (!$this->sphere->hasSpacecraftSystem($type)) {
+                $system = new SpacecraftSystem()->setSpacecraft($this->sphere)->setSystemType($type);
+                $this->sphere->getSystems()->set($type->value, $system);
+                $this->em->persist($system);
+            }
+        }
+        $this->combatWrapper($this->sphere, 10);
+        $this->combatWrapper($this->source, 100);
+        $this->sphere->getBuildplan()->setCrew($this->sphere->getCrewCount());
+        $maxHull = $this->sphere->getMaxHull();
+        $maxShield = $this->sphere->getMaxShield(true);
+        $hull = (int) ceil($maxHull / 10);
+        $shield = (int) ceil($maxShield / 10);
+        $this->sphere->getCondition()->setHull($hull)->setShield($shield);
+        $this->event->setNextTickAt($deadline);
+        $location = $this->sphere->getLocation();
+        $location->getSpacecrafts()->clear();
+        foreach ([$this->sphere, $this->source] as $ship) {
+            $location->getSpacecrafts()->set($ship->getId(), $ship);
+        }
+        $this->em->flush();
+        $combat = $container->make(BorgSphereCombat::class);
+        $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
+        $attacks->shouldReceive('attack')->twice()->andReturnUsing(static function (SpacecraftWrapperInterface $attacker) use ($combat): bool {
+            $combat->blocksDamage($attacker->get());
+            return true;
+        });
+        $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
+        $relations->shouldReceive('isFriend')->andReturn(false);
+        $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks, 'relations' => $relations]);
+        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle]);
+        $random = $this->mock(StuRandom::class);
+        $random->shouldReceive('rand')->with(2, 10)->times(2 * (count($this->sphere->getSystems()) + 1))->andReturn(2);
+        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random]);
+        $time = $this->mock(StuTime::class);
+        $time->shouldReceive('time')->andReturnUsing(static function () use (&$now): int {
+            return $now;
+        });
+        $tick = $container->make(BorgSphereTick::class, ['behavior' => $behavior, 'regeneration' => $regeneration, 'time' => $time, 'combat' => $combat]);
+
+        foreach ([1, 2] as $hour) {
+            $now = $deadline + ($hour - 1) * 3600;
+            $this->em->wrapInTransaction(fn () => $tick->work());
+            $this->em->refresh($this->event);
+            self::assertSame($now + 3600, $this->event->getNextTickAt());
+            self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
+            self::assertSame(1000 + $hour * 100, $this->event->getTranswarpProgress());
+            self::assertSame($hull + $hour * (int) ceil($maxHull * 2 / 100), $this->sphere->getCondition()->getHull());
+            self::assertSame($shield + $hour * (int) ceil($maxShield * 2 / 100), $this->sphere->getCondition()->getShield());
+            foreach ($this->sphere->getSystems() as $system) {
+                self::assertSame(10 + $hour * ($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 1 : 2), $system->getStatus());
+            }
+            $now += 900;
+            $this->em->wrapInTransaction(fn () => $tick->work());
+            self::assertSame($hull + $hour * (int) ceil($maxHull * 2 / 100), $this->sphere->getCondition()->getHull());
+        }
+    }
+
     public function testFirstHourlyRegenerationUsesIndependentRandomValuesAndReactivatesSphere(): void
     {
         $container = $this->getContainer();

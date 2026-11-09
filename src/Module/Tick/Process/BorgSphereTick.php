@@ -6,6 +6,7 @@ namespace Stu\Module\Tick\Process;
 
 use Override;
 use Stu\Component\Borg\BorgSphereBehavior;
+use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSphereEnergy;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgSphereRegeneration;
@@ -18,7 +19,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BorgSphereTick implements ProcessTickHandlerInterface
 {
-    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time) {}
+    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat) {}
 
     #[Override]
     public function work(): void
@@ -36,6 +37,11 @@ final class BorgSphereTick implements ProcessTickHandlerInterface
             $event->setPhase(BorgSpherePhaseEnum::DESTROYED)->setShipId(null);
             return;
         }
+        $this->combat->withLockedEvent($ship, $event, fn () => $this->advanceEvent($event, $ship, $now));
+    }
+
+    private function advanceEvent(BorgSphereEvent $event, Ship $ship, int $now): void
+    {
         $configuration = $event->getConfiguration();
         if (!$configuration->isActive($now)) {
             $this->escape($event, $ship);
