@@ -53,7 +53,14 @@ final class BorgSphereCombat
             $this->events[$id] = $event;
         }
         $event = $this->events[$id];
-        return $event === null || $event->isFinished() ? null : $event;
+        if ($event === null || $event->isFinished()) {
+            return null;
+        }
+        if ($event->getPhase() === BorgSpherePhaseEnum::REGENERATING && !$ship->getCondition()->isDisabled()) {
+            $event->setPhase(BorgSpherePhaseEnum::ROAMING);
+            $this->repository->save($event);
+        }
+        return $event;
     }
 
     public function registerHit(Spacecraft $ship): bool
@@ -72,6 +79,16 @@ final class BorgSphereCombat
     {
         return $this->getEvent($ship)?->getPhase() === BorgSpherePhaseEnum::REGENERATING
             && !$this->context->allowsDestruction($ship);
+    }
+
+    public function blockDamage(Spacecraft $ship, InformationInterface $information): bool
+    {
+        if (!$this->blocksDamage($ship)) {
+            return false;
+        }
+        $information->addInformation('-- Die Sphäre befindet sich im Regenerationsmodus. Der Beschuss wurde eingestellt');
+        $this->context->stopBattleAfterDisabling($ship);
+        return true;
     }
 
     public function limitHullDamage(Spacecraft $ship, int $damage): int
