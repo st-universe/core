@@ -11,6 +11,7 @@ use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftAlertStateEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
@@ -218,6 +219,70 @@ final class BorgSphereNavigationTest extends StuTestCase
 
         self::assertCount(1, $flights);
         self::assertSame($fields[$outcome === 'blocked' ? 0 : 1], $ship->getLocation());
+    }
+
+    /** @return iterable<string, array{string, bool}> */
+    public static function quietMovements(): iterable
+    {
+        foreach (['approach', 'roam', 'escape'] as $movement) {
+            yield $movement . ' during rest' => [$movement, true];
+            yield $movement . ' after rest' => [$movement, false];
+        }
+    }
+
+    #[DataProvider('quietMovements')]
+    public function testRestPeriodAvoidsOccupiedFieldsDuringAllFlightModes(string $movement, bool $resting): void
+    {
+        $fields = $this->systemRow(4);
+        $this->addVisibleShip($fields[2]);
+        if ($movement === 'escape') {
+            $this->anomaly($fields[0], AnomalyTypeEnum::ION_STORM);
+            $this->anomaly($fields[1], AnomalyTypeEnum::ION_STORM);
+        }
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[0], $fields[2], $fields, [], 7, time: $resting ? '00:10:00' : '10:00:00');
+
+        if ($movement === 'escape') {
+            $navigation->evadeAnomaly($ship, $configuration);
+        } elseif ($movement === 'approach') {
+            $navigation->approach($ship, $configuration);
+        } else {
+            $navigation->roam($ship, $configuration);
+        }
+
+        $expected = $resting ? ($movement === 'escape' ? 0 : 1) : ($movement === 'roam' ? 3 : 2);
+        self::assertCount($expected, $flights);
+        self::assertSame($fields[$expected], $ship->getLocation());
+    }
+
+    public function testAnomalyEscapeRechecksNightlyOccupancyBeforeEachStep(): void
+    {
+        $fields = $this->systemRow(3);
+        $this->anomaly($fields[0], AnomalyTypeEnum::ION_STORM);
+        $this->anomaly($fields[1], AnomalyTypeEnum::ION_STORM);
+        [$navigation, $ship, $configuration, $flights] = $this->movement($fields[0], $fields[2], $fields, [], 7, function (Ship $ship, Location $destination) use ($fields): void {
+            $ship->setLocation($destination);
+            $this->addVisibleShip($fields[2]);
+        }, '05:00:00');
+
+        self::assertTrue($navigation->evadeAnomaly($ship, $configuration));
+
+        self::assertSame([$fields[1]], $flights->toArray());
+        self::assertSame($fields[1], $ship->getLocation());
+    }
+
+    public function testNightlySystemEntrySelectsAnUnoccupiedEntryInsteadOfTheFirstEntry(): void
+    {
+        $anchor = $this->mapField(0);
+        $fields = $this->systemRow(2, $anchor);
+        $fields[1]->setSx(1)->setSy(3);
+        $anchor->setSystem($fields[0]->getSystem());
+        $this->addVisibleShip($fields[0]);
+        [$navigation, $ship, $configuration, $flights] = $this->movement($anchor, $fields[0], $fields, [$anchor], 1, time: '05:00:00');
+
+        $navigation->roam($ship, $configuration);
+
+        self::assertSame([$fields[1]], $flights->toArray());
+        self::assertSame($fields[1], $ship->getLocation());
     }
 
     public function testRoamingKeepsEveryStepWithinTheConfiguredOuterRadius(): void
@@ -512,7 +577,7 @@ final class BorgSphereNavigationTest extends StuTestCase
      * @param null|callable(Ship, Location): void $onMove
      * @return array{BorgSphereNavigation, Ship, BorgSphereConfiguration, ArrayCollection<int, Location>}
      */
-    private function movement(Map|StarSystemMap $source, StarSystemMap $target, array $systemFields, array $mapFields, int $budget, ?callable $onMove = null): array
+    private function movement(Map|StarSystemMap $source, StarSystemMap $target, array $systemFields, array $mapFields, int $budget, ?callable $onMove = null, string $time = '12:00:00'): array
     {
         $ship = new Ship();
         $user = $this->mock(User::class);
@@ -534,7 +599,7 @@ final class BorgSphereNavigationTest extends StuTestCase
         $wrappers->shouldReceive('wrapSpacecraft')->andReturn($alertWrapper);
         $flights = new ArrayCollection();
         $flight = $this->movingFlight($ship, [...$systemFields, ...$mapFields], $wrappers, $flights, $onMove);
-        return [new BorgSphereNavigation($maps, $systemMaps, $wrappers, $flight, $random), $ship, $configuration, $flights];
+        return [new BorgSphereNavigation($maps, $systemMaps, $wrappers, $flight, $random, $this->activity($time)), $ship, $configuration, $flights];
     }
 
     /**
@@ -589,8 +654,23 @@ final class BorgSphereNavigationTest extends StuTestCase
             $systemMaps ?? $this->mock(StarSystemMapRepositoryInterface::class),
             $wrappers,
             $flight,
-            $this->mock(StuRandom::class)
+            $this->mock(StuRandom::class),
+            $this->activity('12:00:00')
         );
+    }
+
+    private function activity(string $time): BorgSphereActivityPolicy
+    {
+        $clock = $this->mock(StuTime::class);
+        $clock->shouldReceive('time')->andReturn(strtotime('2026-11-09 ' . $time));
+        return new BorgSphereActivityPolicy($clock);
+    }
+
+    private function addVisibleShip(Location $location): void
+    {
+        $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isCloaked', 'isRpgModuleInvisible', 'hasComputer')->andReturn(false);
+        $location->getSpacecrafts()->add($ship);
     }
 
 }

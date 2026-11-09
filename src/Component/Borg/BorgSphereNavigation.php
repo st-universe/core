@@ -21,12 +21,13 @@ final class BorgSphereNavigation
         private StarSystemMapRepositoryInterface $systemMaps,
         private SpacecraftWrapperFactoryInterface $wrappers,
         private BorgSphereFlight $flight,
-        private StuRandom $random
+        private StuRandom $random,
+        private BorgSphereActivityPolicy $activity
     ) {}
 
     public function isSafe(Location $location): bool
     {
-        return !BorgSphereAnomalyEscape::hasAnomaly($location) && BorgSphereAnomalyEscape::isTraversable($location, $this->wrappers);
+        return !BorgSphereAnomalyEscape::hasAnomaly($location) && BorgSphereAnomalyEscape::isTraversable($location, $this->wrappers, $this->activity);
     }
 
     public function evadeAnomaly(Ship $ship, BorgSphereConfiguration $configuration): bool
@@ -35,7 +36,7 @@ final class BorgSphereNavigation
             return false;
         }
         $budget = $this->movementBudget($configuration);
-        $traversable = fn (Location $location): bool => BorgSphereAnomalyEscape::isTraversable($location, $this->wrappers) && BorgSphereAnomalyEscape::isWithinRadius($location, $configuration);
+        $traversable = fn (Location $location): bool => BorgSphereAnomalyEscape::isTraversable($location, $this->wrappers, $this->activity) && BorgSphereAnomalyEscape::isWithinRadius($location, $configuration);
         $path = BorgSphereAnomalyEscape::findPath($ship->getLocation(), $budget, fn (Map|StarSystemMap $location): array => $this->roamingLocations($location, $configuration, true), $traversable);
         $this->travel($ship, $budget, static function () use (&$path, $traversable): Map|StarSystemMap|null {
             return BorgSphereAnomalyEscape::nextStep($path, $traversable);
@@ -195,7 +196,7 @@ final class BorgSphereNavigation
             return null;
         }
         foreach ($this->systemMaps->getBySystemOrdered($system->getId()) as $field) {
-            if ($field->getColony() === null && $this->isEdge($field) && ($escape ? BorgSphereAnomalyEscape::isTraversable($field, $this->wrappers) : $this->isSafe($field))) {
+            if ($field->getColony() === null && $this->isEdge($field) && ($escape ? BorgSphereAnomalyEscape::isTraversable($field, $this->wrappers, $this->activity) : $this->isSafe($field))) {
                 return $field;
             }
         }

@@ -20,12 +20,13 @@ final class BorgSphereInterception
         private PlayerRelationDeterminatorInterface $relations,
         private BorgSphereBattle $battle,
         private BorgSphereAttackContext $context,
-        private StuRandom $random
+        private StuRandom $random,
+        private BorgSphereActivityPolicy $activity
     ) {}
 
     public function interceptAndAttack(BorgSphereEvent $event, Ship $ship): bool
     {
-        if (!$this->isAvailable($event, $ship)) {
+        if (!$this->activity->canHunt() || !$this->isAvailable($event, $ship)) {
             return false;
         }
         $source = $this->wrappers->wrapShip($ship);

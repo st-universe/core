@@ -15,6 +15,7 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\Battle\SpacecraftAttackCoreInterface;
@@ -58,8 +59,7 @@ final class BorgSphereInterceptionTest extends StuTestCase
         $this->fight = $this->mock(FightLibInterface::class);
         $this->random = $this->mock(StuRandom::class);
         $this->context = new BorgSphereAttackContext();
-        $battle = new BorgSphereBattle($this->attacks, $this->wrappers, $this->relations, $this->fight, $this->context);
-        $this->subject = new BorgSphereInterception($this->interception, $this->wrappers, $this->relations, $battle, $this->context, $this->random);
+        $this->subject = $this->subjectAt('12:00:00');
         $this->location = new StarSystemMap();
         $this->sphere = $this->ship(1, 19, false);
         $this->event = new BorgSphereEvent()->setPhase(BorgSpherePhaseEnum::ROAMING)->setConfiguration(new BorgSphereConfiguration()->setSettings(['intercept_chance_percent' => 40]));
@@ -115,6 +115,41 @@ final class BorgSphereInterceptionTest extends StuTestCase
         $this->attacks->shouldNotReceive('attack');
 
         self::assertFalse($this->subject->interceptAndAttack($this->event, $this->sphere));
+    }
+
+    /** @return iterable<string, array{string, bool}> */
+    public static function restBoundaries(): iterable
+    {
+        yield 'before rest' => ['00:09:59', true];
+        yield 'rest begins' => ['00:10:00', false];
+        yield 'before rest ends' => ['09:59:59', false];
+        yield 'rest ends' => ['10:00:00', true];
+    }
+
+    #[DataProvider('restBoundaries')]
+    public function testRestTimePreventsWrappersRandomSelectionAndInterception(string $time, bool $allowed): void
+    {
+        $first = $this->ship(2, 261);
+        $this->ship(3, 262);
+        if ($allowed) {
+            $source = $this->wrapper($this->sphere);
+            $target = $this->wrapper($first);
+            $this->random->shouldReceive('rand')->once()->with(1, 100)->andReturn(40);
+            $this->random->shouldReceive('array_rand')->once()->andReturn('ship:2');
+            $this->interception->shouldReceive('intercept')->once()->with($source, $target, Mockery::type(InformationWrapper::class), false, true)
+                ->andReturnUsing(static function () use ($first): void {
+                    $first->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->setMode(SpacecraftSystemModeEnum::MODE_OFF);
+                });
+            $this->fight->shouldReceive('canAttackTarget')->once()->with($this->sphere, $first, true)->andReturn(true);
+            $this->attacks->shouldReceive('attack')->once()->with($source, $target, false, false, Mockery::type(InformationWrapper::class))->andReturn(true);
+        } else {
+            $this->wrappers->shouldNotReceive('wrapShip');
+            $this->random->shouldNotReceive('rand', 'array_rand');
+            $this->interception->shouldNotReceive('intercept');
+            $this->attacks->shouldNotReceive('attack');
+        }
+
+        self::assertSame($allowed, $this->subjectAt($time)->interceptAndAttack($this->event, $this->sphere));
     }
 
     public function testIneligibleShipsDoNotCountTowardTheTwoWarpShipMinimum(): void
@@ -219,5 +254,13 @@ final class BorgSphereInterceptionTest extends StuTestCase
         $wrapper->shouldReceive('canFire')->andReturn($canFire);
         $this->wrappers->shouldReceive('wrapShip')->with($ship)->andReturn($wrapper);
         return $wrapper;
+    }
+
+    private function subjectAt(string $hour): BorgSphereInterception
+    {
+        $time = $this->mock(StuTime::class);
+        $time->shouldReceive('time')->andReturn(strtotime('2026-11-09 ' . $hour));
+        $battle = new BorgSphereBattle($this->attacks, $this->wrappers, $this->relations, $this->fight, $this->context);
+        return new BorgSphereInterception($this->interception, $this->wrappers, $this->relations, $battle, $this->context, $this->random, new BorgSphereActivityPolicy($time));
     }
 }

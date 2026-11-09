@@ -19,10 +19,10 @@ final class BorgSphereAnomalyEscape
         return $location->getAnomalies()->exists(static fn (int $key, Anomaly $anomaly): bool => $anomaly->isActive());
     }
 
-    public static function isTraversable(Location $location, SpacecraftWrapperFactoryInterface $wrappers): bool
+    public static function isTraversable(Location $location, SpacecraftWrapperFactoryInterface $wrappers, BorgSphereActivityPolicy $activity): bool
     {
         $fieldType = $location->getFieldType();
-        if (!$fieldType->getPassable() || $fieldType->getSpecialDamage() > 0) {
+        if (!$fieldType->getPassable() || $fieldType->getSpecialDamage() > 0 || !$activity->canEnter($location)) {
             return false;
         }
         foreach ($location->getSpacecrafts() as $ship) {
