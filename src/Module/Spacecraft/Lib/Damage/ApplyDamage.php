@@ -35,7 +35,7 @@ final class ApplyDamage implements ApplyDamageInterface
 
         $spacecraft = $wrapper->get();
 
-        if ($this->borgSphereCombat?->blocksDamage($spacecraft)) {
+        if ($this->borgSphereCombat?->blockDamage($spacecraft, $informations)) {
             return;
         }
         $this->borgSphereCombat?->registerHit($spacecraft);

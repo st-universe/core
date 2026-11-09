@@ -10,6 +10,7 @@ use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSphereEnergy;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgSphereRegeneration;
+use Stu\Component\Borg\BorgSphereTorpedoSupply;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftRemoverInterface;
 use Stu\Orm\Entity\BorgSphereEvent;
@@ -19,7 +20,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BorgSphereTick implements ProcessTickHandlerInterface
 {
-    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat) {}
+    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat, private BorgSphereTorpedoSupply $torpedoes) {}
 
     #[Override]
     public function work(): void
@@ -56,6 +57,7 @@ final class BorgSphereTick implements ProcessTickHandlerInterface
             return;
         }
         $this->energy->recharge($ship);
+        $this->torpedoes->refill($ship);
         $this->behavior->work($event, $ship);
         $this->events->save($event);
     }

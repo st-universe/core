@@ -120,6 +120,73 @@ final class BorgSphereCombatTest extends StuTestCase
         self::assertNull($this->combat->targetSystems($this->ship));
     }
 
+    public function testActiveSphereWithStaleRegeneratingPhaseBecomesDamageableWithoutChangingProgress(): void
+    {
+        $this->event->setPhase(BorgSpherePhaseEnum::REGENERATING)->setNextTickAt(4600)->setTranswarpProgress(4700)->setTranswarpFloor(4000);
+        $information = new InformationWrapper();
+
+        self::assertFalse($this->combat->blockDamage($this->ship, $information));
+
+        self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
+        self::assertSame(4600, $this->event->getNextTickAt());
+        self::assertSame(4700, $this->event->getTranswarpProgress());
+        self::assertSame(4000, $this->event->getTranswarpFloor());
+        self::assertFalse($this->ship->getCondition()->isDisabled());
+        self::assertFalse($this->context->isBattleStopped());
+        self::assertTrue($information->isEmpty());
+        $this->repository->shouldHaveReceived('save')->with($this->event)->once();
+    }
+
+    public function testProtectedSphereReportsBlockedDamageAndStopsFurtherSalvos(): void
+    {
+        $this->event->setPhase(BorgSpherePhaseEnum::REGENERATING);
+        $this->ship->getCondition()->setDisabled(true);
+        $information = new InformationWrapper();
+
+        self::assertTrue($this->combat->blockDamage($this->ship, $information));
+
+        self::assertSame(['-- Die Sphäre befindet sich im Regenerationsmodus. Der Beschuss wurde eingestellt'], $information->getInformations());
+        self::assertTrue($this->context->isBattleStopped());
+        self::assertSame(BorgSpherePhaseEnum::REGENERATING, $this->event->getPhase());
+        $this->repository->shouldNotHaveReceived('save');
+    }
+
+    public function testConfirmedDestructionOfDisabledSphereIsNotBlockedOrStopped(): void
+    {
+        $this->event->setPhase(BorgSpherePhaseEnum::REGENERATING);
+        $this->ship->getCondition()->setDisabled(true);
+        $this->context->begin($this->ship, true, false);
+        $information = new InformationWrapper();
+
+        self::assertFalse($this->combat->blockDamage($this->ship, $information));
+
+        self::assertTrue($information->isEmpty());
+        self::assertFalse($this->context->isBattleStopped());
+        self::assertSame(500, $this->combat->limitHullDamage($this->ship, 500));
+        $this->repository->shouldNotHaveReceived('save');
+    }
+
+    public function testFinishedEventIsNotReactivatedByAnEnabledShip(): void
+    {
+        $this->event->setPhase(BorgSpherePhaseEnum::ESCAPED);
+
+        self::assertNull($this->combat->getEvent($this->ship));
+        self::assertSame(BorgSpherePhaseEnum::ESCAPED, $this->event->getPhase());
+        $this->repository->shouldNotHaveReceived('save');
+    }
+
+    public function testOrdinaryActiveSphereDoesNotRequireAStateRepair(): void
+    {
+        $this->event->setPhase(BorgSpherePhaseEnum::ROAMING);
+        $information = new InformationWrapper();
+
+        self::assertFalse($this->combat->blockDamage($this->ship, $information));
+        self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
+        self::assertFalse($this->context->isBattleStopped());
+        self::assertTrue($information->isEmpty());
+        $this->repository->shouldNotHaveReceived('save');
+    }
+
     public function testAlreadyLockedEventKeepsUnflushedTickChangesWithoutReloading(): void
     {
         $lockedEvent = new BorgSphereEvent()->setShipId($this->ship->getId())->setPhase(BorgSpherePhaseEnum::ROAMING)
