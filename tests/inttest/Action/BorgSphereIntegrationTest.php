@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Action;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
@@ -11,6 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\ActionTestCase;
 use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
+use Stu\Component\Borg\BorgSphereActivityPolicy;
 use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Borg\BorgSphereBattle;
 use Stu\Component\Borg\BorgSphereBehavior;
@@ -106,15 +108,17 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertTrue($this->getContainer()->get(SkipDetectionInterface::class)->isSkipped($this->source, $wrapper, null, new ArrayCollection()));
     }
 
-    /** @return iterable<string, array{bool}> */
+    /** @return iterable<string, array{bool, string}> */
     public static function automaticBattleOutcomes(): iterable
     {
-        yield 'all local enemy ships are attacked' => [false];
-        yield 'counterfire disables sphere after first target' => [true];
+        yield 'all local enemy ships are attacked' => [false, '10:00:00'];
+        yield 'counterfire disables sphere after first target' => [true, '10:00:00'];
+        yield 'local enemy ships are attacked when quiet hours begin' => [false, '00:10:00'];
+        yield 'local counterfire disables the sphere during quiet hours' => [true, '09:59:59'];
     }
 
     #[DataProvider('automaticBattleOutcomes')]
-    public function testAutomaticAttackIsTheOnlyActionAndStopsIfSphereIsDisabled(bool $disabled): void
+    public function testAutomaticAttackIsTheOnlyActionAndStopsIfSphereIsDisabled(bool $disabled, string $policyTime): void
     {
         $container = $this->getContainer();
         $this->event->setPhase(BorgSpherePhaseEnum::ROAMING);
@@ -149,7 +153,10 @@ final class BorgSphereIntegrationTest extends ActionTestCase
             }
         );
         $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks, 'relations' => $relations]);
-        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle]);
+        $activity = $this->activityAt($policyTime);
+        $navigation = $container->make(BorgSphereNavigation::class, ['activity' => $activity]);
+        $interception = $container->make(BorgSphereInterception::class, ['activity' => $activity]);
+        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle, 'navigation' => $navigation, 'interception' => $interception]);
 
         $this->em->wrapInTransaction(fn () => $behavior->work($this->event, $this->sphere));
 
@@ -884,16 +891,20 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertSame($phase, $this->event->getPhase());
     }
 
-    /** @return iterable<string, array{bool, bool}> */
+    /** @return iterable<string, array{bool, bool, string, bool}> */
     public static function interceptionGroups(): iterable
     {
-        yield 'one single ship' => [false, true];
-        yield 'one fleet with a remote warped member' => [true, true];
-        yield 'one fleet with a remote unwarped member' => [true, false];
+        yield 'one single ship before quiet hours' => [false, true, '00:09:59', true];
+        yield 'one single ship when quiet hours begin' => [false, true, '00:10:00', false];
+        yield 'one single ship before quiet hours end' => [false, true, '09:59:59', false];
+        yield 'one single ship when quiet hours end' => [false, true, '10:00:00', true];
+        yield 'one fleet with a remote warped member' => [true, true, '10:00:00', true];
+        yield 'one fleet with a remote unwarped member' => [true, false, '10:00:00', true];
+        yield 'one fleet during quiet hours' => [true, false, '05:00:00', false];
     }
 
     #[DataProvider('interceptionGroups')]
-    public function testIdleTickInterceptsAndAttacksOnlyOneLocalGroup(bool $fleetTarget, bool $remoteWarped): void
+    public function testIdleTickInterceptsAndAttacksOnlyOneLocalGroup(bool $fleetTarget, bool $remoteWarped, string $policyTime, bool $mayIntercept): void
     {
         $container = $this->getContainer();
         $location = $this->configuration->getColony()->getSystem()->getMap();
@@ -933,44 +944,59 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         $this->em->flush();
         self::assertTrue($this->sphere->canIntercept());
         $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
-        $attacks->shouldReceive('attack')->once()->andReturnUsing(function (SpacecraftWrapperInterface $attacker, SpacecraftWrapperInterface $target) use ($targets): bool {
-            self::assertSame($this->sphere, $attacker->get());
-            self::assertSame($targets[0], $target->get());
-            self::assertFalse($target->get()->isWarped());
-            return true;
-        });
+        if ($mayIntercept) {
+            $attacks->shouldReceive('attack')->once()->andReturnUsing(function (SpacecraftWrapperInterface $attacker, SpacecraftWrapperInterface $target) use ($targets): bool {
+                self::assertSame($this->sphere, $attacker->get());
+                self::assertSame($targets[0], $target->get());
+                self::assertFalse($target->get()->isWarped());
+                return true;
+            });
+        } else {
+            $attacks->shouldNotReceive('attack');
+        }
         $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
         $relations->shouldReceive('isFriend')->andReturn(false);
         $battle = $container->make(BorgSphereBattle::class, ['attacks' => $attacks, 'relations' => $relations]);
         $parties = $container->get(BattlePartyFactoryInterface::class);
         $alerted = $parties->createAlertStateBattleParty($source);
         $detection = $this->mock(AlertDetectionInterface::class);
-        $detection->shouldReceive('detectAlertedBattleParties')->once()->andReturn([$alerted]);
         $alertCycle = $this->mock(SpacecraftAttackCycleInterface::class);
-        $alertCycle->shouldReceive('cycle')->once()->andReturnUsing(function ($attackers, IncomingBattleParty $incoming) use ($location, $fleetTarget, $container): MessageCollectionInterface {
-            $members = $incoming->getActiveMembers();
-            self::assertCount($fleetTarget ? 2 : 1, $members);
-            foreach ($members as $member) {
-                self::assertSame($location, $member->get()->getLocation());
-            }
-            return $container->get(MessageFactoryInterface::class)->createMessageCollection();
-        });
+        if ($mayIntercept) {
+            $detection->shouldReceive('detectAlertedBattleParties')->once()->andReturn([$alerted]);
+            $alertCycle->shouldReceive('cycle')->once()->andReturnUsing(function ($attackers, IncomingBattleParty $incoming) use ($location, $fleetTarget, $container): MessageCollectionInterface {
+                $members = $incoming->getActiveMembers();
+                self::assertCount($fleetTarget ? 2 : 1, $members);
+                foreach ($members as $member) {
+                    self::assertSame($location, $member->get()->getLocation());
+                }
+                return $container->get(MessageFactoryInterface::class)->createMessageCollection();
+            });
+        } else {
+            $detection->shouldNotReceive('detectAlertedBattleParties');
+            $alertCycle->shouldNotReceive('cycle');
+        }
         $alerts = $container->make(AlertReactionFacade::class, ['alertDetection' => $detection, 'spacecraftAttackCycle' => $alertCycle]);
         $core = $container->make(InterceptShipCore::class, ['alertReactionFacade' => $alerts]);
         $random = $this->mock(StuRandom::class);
-        $random->shouldReceive('rand')->once()->with(1, 100)->andReturn(40);
-        $random->shouldReceive('array_rand')->once()->andReturnUsing(static fn (array $groups): string => array_key_first($groups));
-        $interception = $container->make(BorgSphereInterception::class, ['interception' => $core, 'battle' => $battle, 'relations' => $relations, 'random' => $random]);
+        if ($mayIntercept) {
+            $random->shouldReceive('rand')->once()->with(1, 100)->andReturn(40);
+            $random->shouldReceive('array_rand')->once()->andReturnUsing(static fn (array $groups): string => array_key_first($groups));
+        } else {
+            $random->shouldNotReceive('rand', 'array_rand');
+        }
+        $activity = $this->activityAt($policyTime);
+        $interception = $container->make(BorgSphereInterception::class, ['interception' => $core, 'battle' => $battle, 'relations' => $relations, 'random' => $random, 'activity' => $activity]);
+        $navigation = $container->make(BorgSphereNavigation::class, ['activity' => $activity]);
         $idle = $this->mock(StuRandom::class);
         $idle->shouldReceive('rand')->once()->with(1, 100)->andReturn(1);
-        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle, 'interception' => $interception, 'random' => $idle]);
+        $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle, 'interception' => $interception, 'navigation' => $navigation, 'random' => $idle]);
         $tick = $container->make(BorgSphereTick::class, ['behavior' => $behavior]);
 
         $this->em->wrapInTransaction(fn () => $tick->work());
 
         self::assertSame($location, $this->sphere->getLocation());
-        self::assertFalse($targets[0]->getWarpDriveState());
-        self::assertSame(!$fleetTarget, $targets[1]->getWarpDriveState());
+        self::assertSame(!$mayIntercept, $targets[0]->getWarpDriveState());
+        self::assertSame(!$mayIntercept || !$fleetTarget, $targets[1]->getWarpDriveState());
         self::assertSame($remoteWarped, $targets[2]->getWarpDriveState());
         foreach ($targets as $target) {
             $system = $target->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE);
@@ -978,6 +1004,13 @@ final class BorgSphereIntegrationTest extends ActionTestCase
             $this->em->refresh($system);
             self::assertSame($expected, $system->getMode());
         }
+    }
+
+    private function activityAt(string $time): BorgSphereActivityPolicy
+    {
+        $clock = $this->mock(StuTime::class);
+        $clock->shouldReceive('time')->andReturn(new DateTimeImmutable('2026-11-09 ' . $time)->getTimestamp());
+        return $this->getContainer()->make(BorgSphereActivityPolicy::class, ['time' => $clock]);
     }
 
     public function testSpawnSkipsEvenTheFarthestSectorWhenRedAlertShipsArePresent(): void

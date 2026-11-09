@@ -12,6 +12,7 @@ use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\DistributedMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
@@ -78,7 +79,7 @@ final class BorgSphereBehaviorTest extends StuTestCase
         } else {
             $navigationRandom->shouldNotReceive('rand');
         }
-        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $systemMaps, $wrappers, $flight, $navigationRandom);
+        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $systemMaps, $wrappers, $flight, $navigationRandom, $this->dayActivity());
         $location = $this->mock(StarSystemMap::class);
         $location->shouldReceive('getSpacecraftsWithoutVacation')->once()->andReturnUsing(static function () use ($checkedTargets): ArrayCollection {
             $checkedTargets->add(true);
@@ -233,7 +234,7 @@ final class BorgSphereBehaviorTest extends StuTestCase
         $systemMaps->shouldReceive('getByCoordinates')->times(4)->andReturnUsing(static fn (int $systemId, int $x, int $y): ?StarSystemMap => $escapeRoute && $x === 3 && $y === 2 ? $destination : null);
         $navigationRandom = $this->mock(StuRandom::class);
         $navigationRandom->shouldReceive('rand')->once()->with(1, 7)->andReturn(7);
-        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $systemMaps, $wrappers, $flight, $navigationRandom);
+        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $systemMaps, $wrappers, $flight, $navigationRandom, $this->dayActivity());
         $attacks = $this->mock(SpacecraftAttackCoreInterface::class);
         $attacks->shouldNotReceive('attack');
         $battle = new BorgSphereBattle($attacks, $wrappers, $this->mock(PlayerRelationDeterminatorInterface::class), $this->mock(FightLibInterface::class), new BorgSphereAttackContext());
@@ -306,13 +307,13 @@ final class BorgSphereBehaviorTest extends StuTestCase
         } else {
             $interceptionRandom->shouldNotReceive('array_rand');
         }
-        $interception = new BorgSphereInterception($intercept, $wrappers, $relations, $battle, $context, $interceptionRandom);
+        $interception = new BorgSphereInterception($intercept, $wrappers, $relations, $battle, $context, $interceptionRandom, $this->dayActivity());
         $mover = $this->mock(ShipMoverInterface::class);
         $mover->shouldNotReceive('checkAndMove');
         $navigationRandom = $this->mock(StuRandom::class);
         $navigationRandom->shouldNotReceive('rand');
         $flight = new BorgSphereFlight($mover, $this->mock(FlightRouteFactoryInterface::class), $wrappers, $this->mock(SpacecraftSystemManagerInterface::class), $this->mock(DistributedMessageSenderInterface::class));
-        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $this->mock(StarSystemMapRepositoryInterface::class), $wrappers, $flight, $navigationRandom);
+        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $this->mock(StarSystemMapRepositoryInterface::class), $wrappers, $flight, $navigationRandom, $this->dayActivity());
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->once()->with(1, 100)->andReturn(20);
         $event = new BorgSphereEvent()->setPhase(BorgSpherePhaseEnum::ROAMING)->setConfiguration(new BorgSphereConfiguration()->setSettings(['idle_chance_percent' => 20, 'intercept_chance_percent' => 40]));
@@ -344,7 +345,7 @@ final class BorgSphereBehaviorTest extends StuTestCase
     private function behavior(BorgSphereBattle $battle, SpacecraftWrapperFactoryInterface $wrappers): BorgSphereBehavior
     {
         $flight = new BorgSphereFlight($this->mock(ShipMoverInterface::class), $this->mock(FlightRouteFactoryInterface::class), $wrappers, $this->mock(SpacecraftSystemManagerInterface::class), $this->mock(DistributedMessageSenderInterface::class));
-        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $this->mock(StarSystemMapRepositoryInterface::class), $wrappers, $flight, $this->mock(StuRandom::class));
+        $navigation = new BorgSphereNavigation($this->mock(MapRepositoryInterface::class), $this->mock(StarSystemMapRepositoryInterface::class), $wrappers, $flight, $this->mock(StuRandom::class), $this->dayActivity());
         $random = $this->mock(StuRandom::class);
         $random->shouldNotReceive('rand');
         return new BorgSphereBehavior($navigation, $battle, $random, $this->interception($battle, $wrappers));
@@ -358,7 +359,15 @@ final class BorgSphereBehaviorTest extends StuTestCase
             $this->mock(PlayerRelationDeterminatorInterface::class),
             $battle,
             new BorgSphereAttackContext(),
-            $this->mock(StuRandom::class)
+            $this->mock(StuRandom::class),
+            $this->dayActivity()
         );
+    }
+
+    private function dayActivity(): BorgSphereActivityPolicy
+    {
+        $time = $this->mock(StuTime::class);
+        $time->shouldReceive('time')->andReturn(strtotime('2026-11-09 12:00:00'));
+        return new BorgSphereActivityPolicy($time);
     }
 }
