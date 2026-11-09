@@ -40,7 +40,7 @@ final class ResearchHistoryTest extends StuTestCase
         self::assertSame([50, 80, 100, 200], array_column($rows, 'finishedAt'));
         self::assertSame(['Nanitenfertigung', 'Moduloptimierung', 'Grundlagenforschung', 'Moduloptimierung'], array_column($rows, 'research'));
         self::assertSame(['Borg-Naniten', 'Schilde Klasse 1', 'Sensoren', 'Sensoren Klasse 2'], array_column($rows, 'subject'));
-        self::assertSame([null, '+0,1 %', null, '+1,7 %'], array_column($rows, 'bonus'));
+        self::assertSame([null, '+0,1%', null, '+1,7%'], array_column($rows, 'bonus'));
         self::assertSame(100, $foundation->getFinishTime());
     }
 
@@ -55,7 +55,7 @@ final class ResearchHistoryTest extends StuTestCase
             $this->job(60, TechnologyRecipeKindEnum::MODULE_OPTIMIZATION)->setModule(new Module()->setName('Warpantrieb'))->setStartImprovementSteps(70)->setMaxImprovementSteps(70)
         ]);
         $rows = new ResearchHistory($foundations, $technology)->getRows($user);
-        self::assertSame(['+7,0 %', '+7,0 %'], array_column($rows, 'bonus'));
+        self::assertSame(['+7,0%', '+7,0%'], array_column($rows, 'bonus'));
     }
 
     private function job(int $finishedAt, TechnologyRecipeKindEnum $kind): TechnologyResearch

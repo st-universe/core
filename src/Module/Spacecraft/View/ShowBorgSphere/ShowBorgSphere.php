@@ -42,6 +42,7 @@ final class ShowBorgSphere implements ViewControllerInterface
         $game->setPageTitle($target->getName());
         $game->setTemplateVar('SHIP', $source);
         $game->setTemplateVar('BORG_SPHERE', $target);
+        $game->setTemplateVar('BORG_MAX_SHIELD', $target->getMaxShield(true));
         $game->setTemplateVar('BORG_EVENT', $event);
         $game->setTemplateVar('BORG_DISABLED', $disabled);
         $game->setTemplateVar('BORG_TEAM_SIZE', $this->raids->getTeamSize($source, $event));

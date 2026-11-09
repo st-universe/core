@@ -1,0 +1,50 @@
+{% set module = moduleSelectorEntry.getModule %}
+{% set moduleId = module.getId %}
+{% set commodityId = module.getCommodityId %}
+{% set checked = moduleSelectorEntry.isChosen ? 'checked="true"' : '' %}
+{% set variants = moduleSelectorEntry.getQualityVariants %}
+{% set selectedQuality = variants ? moduleSelectorEntry.getSelectedQuality : 0 %}
+{% set storedAmount = moduleSelectorEntry.getStoredAmount %}
+{% for variant in variants %}
+{% if variant.steps == selectedQuality %}{% set storedAmount = variant.amount %}{% endif %}
+{% endfor %}
+<tr>
+    {% if not allowMultiple %}
+    <td style="width: 3px;" class="{{ moduleSelectorEntry.getModuleLevelClass }}"></td>
+    {% endif %}
+    <td style="width: 50px;">
+        <input id="module_{{ moduleId }}_selection" type="{{ allowMultiple ? 'checkbox' : 'radio' }}"
+            {% if allowMultiple %}class="specialModuleRadio"{% endif %} {{ checked }} name="mod_{{ type }}[]" value="{{ moduleId }}"
+            data-module-stock="{{ storedAmount }}"
+            onchange="{{ allowMultiple ? 'toggleSpecialModuleDisplay' : 'replaceTabImage' }}({{ type }}, {{ moduleId }}, {% if not allowMultiple %}{{ commodityId }}, {% endif %}{{ moduleSelectorEntry.getNeededCrew }}, {{ storedAmount }});" />
+        <img src="assets/commodities/{{ commodityId }}.png" />
+    </td>
+    <td style="width: 300px;">{{ module.getName }}
+        {% if variants|length > 1 %}
+        <select id="module_quality_{{ moduleId }}" name="module_quality[{{ moduleId }}]" title="Verbesserung dieses Moduls"
+            onchange="updateSelectedModuleQuality(this, {{ type }}, {{ moduleId }}, {{ commodityId }}, {{ moduleSelectorEntry.getNeededCrew }});">
+            {% for variant in variants %}
+            <option value="{{ variant.steps }}"{% if variant.steps == selectedQuality %} selected="selected"{% endif %}>{{ variant.label }} ({{ variant.amount }} lagernd)</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+    </td>
+    <td style="width: 30px; text-align: center;">{{ moduleSelectorEntry.getNeededCrew }}</td>
+    <td id="module_{{ moduleId }}_stock" style="width: 30px; text-align: center;">{{ storedAmount }}</td>
+    <td>
+        <div id="{{ moduleId }}_content">
+            {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' with {
+                'moduleSelectorEntry': variants ? moduleSelectorEntry.forQuality(selectedQuality) : moduleSelectorEntry
+            } %}
+        </div>
+        {% if variants|length > 1 %}
+        {% for variant in variants %}
+        <template data-module-id="{{ moduleId }}" data-module-quality="{{ variant.steps }}" data-stored-amount="{{ variant.amount }}">
+            {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' with {
+                'moduleSelectorEntry': moduleSelectorEntry.forQuality(variant.steps)
+            } %}
+        </template>
+        {% endfor %}
+        {% endif %}
+    </td>
+</tr>

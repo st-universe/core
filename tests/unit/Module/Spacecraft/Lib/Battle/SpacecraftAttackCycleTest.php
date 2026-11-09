@@ -7,7 +7,9 @@ namespace Stu\Module\Spacecraft\Lib\Battle;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
+use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
@@ -30,6 +32,7 @@ class SpacecraftAttackCycleTest extends StuTestCase
     private MockInterface&BattlePartyFactoryInterface $battlePartyFactory;
     private MockInterface&SpacecraftAttackPreparationInterface $spacecraftAttackPreparation;
     private MockInterface&MessageFactoryInterface $messageFactory;
+    private BorgSphereAttackContext $borgSphereAttackContext;
 
     private SpacecraftAttackCycleInterface $subject;
 
@@ -45,6 +48,7 @@ class SpacecraftAttackCycleTest extends StuTestCase
         $this->battlePartyFactory = $this->mock(BattlePartyFactoryInterface::class);
         $this->spacecraftAttackPreparation = $this->mock(SpacecraftAttackPreparationInterface::class);
         $this->messageFactory = $this->mock(MessageFactoryInterface::class);
+        $this->borgSphereAttackContext = new BorgSphereAttackContext();
 
         $this->subject = new SpacecraftAttackCycle(
             $this->energyWeaponPhase,
@@ -53,7 +57,8 @@ class SpacecraftAttackCycleTest extends StuTestCase
             $this->attackMatchup,
             $this->battlePartyFactory,
             $this->spacecraftAttackPreparation,
-            $this->messageFactory
+            $this->messageFactory,
+            $this->borgSphereAttackContext
         );
     }
 
@@ -231,8 +236,93 @@ class SpacecraftAttackCycleTest extends StuTestCase
             ->andReturn($messages);
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Attack cycle exceeded matchup limit of 1 for cause BOARD_SHIP, attackersUser=101 attackersLeader=1001 defendersUser=102 defendersLeader=1002');
+        $this->expectExceptionMessageMatches('/^Attack cycle exceeded matchup limit of 1 for cause BOARD_SHIP, attackersUser=101 attackersLeader=1001 defendersUser=102 defendersLeader=1002$/');
 
         $this->subject->cycle($attackers, $defenders, SpacecraftAttackCauseEnum::BOARD_SHIP);
+    }
+
+    /** @return iterable<string, array{bool, bool}> */
+    public static function disablingShots(): iterable
+    {
+        yield 'energy shot stops torpedoes and counterfire' => [false, false];
+        yield 'projectile shot stops counterfire' => [false, true];
+        yield 'confirmed destruction continues the battle' => [true, false];
+    }
+
+    #[DataProvider('disablingShots')]
+    public function testNewDeactivationStopsTheRemainingBattleOnly(bool $confirmed, bool $projectile): void
+    {
+        [$attackers, $defenders, $attacker, $messages, $roundAttackers, $roundDefenders] = $this->singleMatchup();
+        $target = $this->mock(Ship::class);
+        $target->shouldReceive('getId')->andReturn(42);
+        $this->borgSphereAttackContext->begin($target, $confirmed, false);
+        $this->energyWeaponPhase->shouldReceive('fire')->once()->with($attacker, $defenders, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages)
+            ->andReturnUsing(function () use ($projectile, $target): void {
+                if (!$projectile) {
+                    $this->borgSphereAttackContext->stopBattleAfterDisabling($target);
+                }
+            });
+        if ($confirmed || $projectile) {
+            $this->projectileWeaponPhase->shouldReceive('fire')->once()->with($attacker, $defenders, SpacecraftAttackCauseEnum::SHIP_FIGHT, $messages)
+                ->andReturnUsing(function () use ($projectile, $target): void {
+                    if ($projectile) {
+                        $this->borgSphereAttackContext->stopBattleAfterDisabling($target);
+                    }
+                });
+        } else {
+            $this->projectileWeaponPhase->shouldNotReceive('fire');
+        }
+        if ($confirmed) {
+            $this->attackMatchup->shouldReceive('getMatchup')->once()->with($roundAttackers, $roundDefenders, false, false)->andReturnNull();
+        }
+
+        self::assertSame($messages, $this->subject->cycle($attackers, $defenders, SpacecraftAttackCauseEnum::SHIP_FIGHT));
+        self::assertFalse($this->borgSphereAttackContext->isBattleStopped());
+        self::assertSame($confirmed, $this->borgSphereAttackContext->allowsDestruction($target));
+    }
+
+    public function testBattleStopIsClearedEvenWhenTheWeaponPhaseThrows(): void
+    {
+        [$attackers, $defenders] = $this->singleMatchup();
+        $target = $this->mock(Ship::class);
+        $target->shouldReceive('getId')->andReturn(42);
+        $this->energyWeaponPhase->shouldReceive('fire')->once()->andReturnUsing(function () use ($target): void {
+            $this->borgSphereAttackContext->stopBattleAfterDisabling($target);
+            throw new RuntimeException('weapon failure');
+        });
+        $this->projectileWeaponPhase->shouldNotReceive('fire');
+
+        try {
+            $this->subject->cycle($attackers, $defenders, SpacecraftAttackCauseEnum::SHIP_FIGHT);
+            self::fail('The failed weapon phase must propagate its exception');
+        } catch (RuntimeException $exception) {
+            self::assertSame('weapon failure', $exception->getMessage());
+        }
+        self::assertFalse($this->borgSphereAttackContext->isBattleStopped());
+    }
+
+    /** @return array{BattlePartyInterface, BattlePartyInterface, SpacecraftAttacker, MessageCollectionInterface, RoundBasedBattleParty, RoundBasedBattleParty} */
+    private function singleMatchup(): array
+    {
+        $attackers = $this->mock(BattlePartyInterface::class);
+        $defenders = $this->mock(BattlePartyInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $attacker = $this->mock(SpacecraftAttacker::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
+        $roundAttackers = $this->mock(RoundBasedBattleParty::class);
+        $roundDefenders = $this->mock(RoundBasedBattleParty::class);
+        $matchup = $this->mock(Matchup::class);
+        $this->messageFactory->shouldReceive('createMessageCollection')->once()->andReturn($messages);
+        $this->spacecraftAttackPreparation->shouldReceive('getReady')->once()->with($attackers, $defenders, false, $messages);
+        $this->battlePartyFactory->shouldReceive('createRoundBasedBattleParty')->once()->with($attackers)->andReturn($roundAttackers);
+        $this->battlePartyFactory->shouldReceive('createRoundBasedBattleParty')->once()->with($defenders)->andReturn($roundDefenders);
+        $attackers->shouldReceive('getActiveMembers')->once()->with(true)->andReturn(new ArrayCollection([$wrapper]));
+        $defenders->shouldReceive('getActiveMembers')->once()->with(true)->andReturn(new ArrayCollection([$wrapper]));
+        $this->attackMatchup->shouldReceive('getMatchup')->once()->with($roundAttackers, $roundDefenders, true, false)->andReturn($matchup);
+        $matchup->shouldReceive('getDefenders')->once()->andReturn($defenders);
+        $matchup->shouldReceive('getAttacker')->once()->andReturn($wrapper);
+        $matchup->shouldReceive('isAttackingShieldsOnly')->once()->andReturn(false);
+        $this->attackerProviderFactory->shouldReceive('createSpacecraftAttacker')->once()->with($wrapper, false)->andReturn($attacker);
+        return [$attackers, $defenders, $attacker, $messages, $roundAttackers, $roundDefenders];
     }
 }

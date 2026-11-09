@@ -12,6 +12,8 @@ interface ModuleSelectorEntryInterface
 
     public function isDisabled(): bool;
 
+    public function forQuality(int $steps): ModuleSelectorEntryInterface;
+
     public function getSelectedQuality(): int;
 
     /** @return list<array{steps: int, amount: int, label: string}> */

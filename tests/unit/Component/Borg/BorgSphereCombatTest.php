@@ -29,6 +29,7 @@ final class BorgSphereCombatTest extends StuTestCase
     #[Override]
     public function setUp(): void
     {
+        parent::setUp();
         $this->ship = new Ship();
         new ReflectionProperty(Spacecraft::class, 'id')->setValue($this->ship, 101);
         $this->ship->setMaxHull(1000)->setMaxShield(2000);
@@ -57,6 +58,7 @@ final class BorgSphereCombatTest extends StuTestCase
         $this->ship->getCondition()->setHull(100);
         $this->combat->finishHit($this->ship, $information);
         self::assertFalse($this->ship->getCondition()->isDisabled());
+        self::assertFalse($this->context->isBattleStopped());
         self::assertNull($this->event->getFirstDisabledAt());
         self::assertSame(10, $this->combat->limitSystemStatus($this->ship, $this->ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::EPS), -50));
     }
@@ -66,6 +68,8 @@ final class BorgSphereCombatTest extends StuTestCase
         $information = new InformationWrapper();
         $this->combat->finishHit($this->ship, $information);
         self::assertTrue($this->ship->getCondition()->isDisabled());
+        self::assertTrue($this->context->isBattleStopped());
+        self::assertSame(['-- Die Sphäre wurde deaktiviert. Der Beschuss wurde eingestellt'], $information->getInformations());
         self::assertSame(BorgSpherePhaseEnum::REGENERATING, $this->event->getPhase());
         self::assertSame(1000, $this->event->getFirstDisabledAt());
         self::assertSame(4600, $this->event->getNextTickAt());
@@ -80,6 +84,9 @@ final class BorgSphereCombatTest extends StuTestCase
     {
         $this->combat->finishHit($this->ship, new InformationWrapper());
         $this->context->begin($this->ship, true, false);
+        $this->context->beginBattle();
+        $this->combat->finishHit($this->ship, new InformationWrapper());
+        self::assertFalse($this->context->isBattleStopped());
         self::assertFalse($this->combat->blocksDamage($this->ship));
         self::assertSame(500, $this->combat->limitHullDamage($this->ship, 500));
         $this->context->clear();

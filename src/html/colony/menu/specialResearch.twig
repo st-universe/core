@@ -28,7 +28,7 @@
                 <tr><th>Forschungsdauer</th><th>Fehlschlagswahrscheinlichkeit</th></tr>
                 <tr>
                     <td>{% if row.duration is divisible by(86400) %}{{ row.duration / 86400 }} {{ row.duration == 86400 ? 'Tag' : 'Tage' }}{% else %}{{ row.duration|formatSeconds }}{% endif %}</td>
-                    <td>{{ row.failureChance }} %</td>
+                    <td>{{ row.failureChance }}%</td>
                 </tr>
             </table>
             {% if row.canStart %}

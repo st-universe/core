@@ -73,8 +73,16 @@ final class BorgSphereFlightTest extends StuTestCase
         $this->subject->move($ship, $destination);
     }
 
+    public function testRouteAcrossADamagingFieldIsNotFlownAndLeavesWarp(): void
+    {
+        [$ship, $destination] = $this->flight(dangerous: true);
+        $this->mover->shouldNotReceive('checkAndMove');
+        $this->messages->shouldNotReceive('distributeMessageCollection');
+        $this->subject->move($ship, $destination);
+    }
+
     /** @return array{Ship&MockInterface, Map&MockInterface, ShipWrapperInterface&MockInterface, FlightRouteInterface&MockInterface} */
-    private function flight(): array
+    private function flight(bool $dangerous = false): array
     {
         $ship = $this->mock(Ship::class);
         $condition = $this->mock(SpacecraftCondition::class);
@@ -90,6 +98,7 @@ final class BorgSphereFlightTest extends StuTestCase
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $this->wrappers->shouldReceive('wrapShip')->once()->with($ship)->andReturn($wrapper);
         $route = $this->mock(FlightRouteInterface::class);
+        $route->shouldReceive('hasSpecialDamageOnField')->once()->andReturn($dangerous);
         $this->routes->shouldReceive('getRouteForCoordinateDestination')->once()->with($ship, 2, 3)->andReturn($route);
         $this->systems->shouldReceive('deactivate')->once()->with($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE, true);
         return [$ship, $destination, $wrapper, $route];

@@ -28,7 +28,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     ): void {
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
-            if ($targetPool->isDefeated()) {
+            if ($this->isFiringStopped($targetPool)) {
                 break;
             }
 

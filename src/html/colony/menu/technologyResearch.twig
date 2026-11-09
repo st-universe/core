@@ -1,6 +1,6 @@
 {% for job in TECHNOLOGY_RESEARCH_JOBS %}
 <div class="divhead">{{ job.getRecipe.getName }}{% if job.getModule %}: {{ job.getModule.getName }}{% endif %}</div>
-<div class="divbody">Abschluss ab {{ job.getFinishTime|stuDateTime }} Uhr · Erfolgswahrscheinlichkeit {{ job.getSuccessChance / 100 }} %</div>
+<div class="divbody">Abschluss ab {{ job.getFinishTime|stuDateTime }} Uhr · Erfolgswahrscheinlichkeit {{ job.getSuccessChance / 100 }}%</div>
 {% endfor %}
 {% for job in TECHNOLOGY_PRODUCTION_JOBS %}
 <div class="divhead">{{ job.getRecipe.getName }}</div>
@@ -22,7 +22,7 @@
         <tr><th>Dauer</th><th>{% if row.recipe.getKind.isResearch %}Fehlschlagswahrscheinlichkeit{% else %}Ausgabe{% endif %}</th></tr>
         <tr>
             <td>{% if row.recipe.getDuration == 0 %}1 Tick{% elseif row.recipe.getDuration is divisible by(86400) %}{{ row.recipe.getDuration / 86400 }} Tage{% else %}{{ row.recipe.getDuration|formatSeconds }}{% endif %}</td>
-            <td>{% if row.recipe.getKind.isResearch %}{{ row.recipe.getFailureChance }} %{% else %}<img src="/assets/commodities/{{ row.recipe.getOutputCommodity.getId }}.png" title="{{ row.recipe.getOutputCommodity.getName }}" /> {{ row.recipe.getOutputAmount }} {{ row.recipe.getOutputCommodity.getName }}{% endif %}</td>
+            <td>{% if row.recipe.getKind.isResearch %}{{ row.recipe.getFailureChance }}%{% else %}<img src="/assets/commodities/{{ row.recipe.getOutputCommodity.getId }}.png" title="{{ row.recipe.getOutputCommodity.getName }}" /> {{ row.recipe.getOutputAmount }} {{ row.recipe.getOutputCommodity.getName }}{% endif %}</td>
         </tr>
     </table>
     {% if row.fieldReady and row.canPay and (not row.recipe.getKind.isResearch or (not TECHNOLOGY_RESEARCH_BUSY and not SPECIAL_RESEARCH_RUNNING)) %}
@@ -43,7 +43,7 @@
 <div class="divbody">
     {% for row in OPTIMIZATION_MODULES %}
     <details style="margin: 5px 0;">
-        <summary>{{ row.module.getName }} · Fertigungsbonus +{{ row.percent }} %</summary>
+        <summary>{{ row.module.getName }} · Fertigungsbonus +{{ row.percent }}%</summary>
         {% if row.canImprove %}
         <form action="colony.php" method="post" data-technology-base="{{ row.baseChance }}" data-technology-extra="{{ OPTIMIZATION_RECIPE.getSettings.extra_success }}">
             <input type="hidden" name="id" value="{{ HOST.getId }}" />
@@ -58,7 +58,7 @@
                 <tr><td><img src="/assets/commodities/{{ row.data.getId }}.png" title="{{ row.data.getName }}" /> {{ row.data.getName }}</td><td>{{ OPTIMIZATION_RECIPE.getSettings.data_amount }}</td><td>{{ HOST.getStorage.get(row.data.getId).getAmount|default(0) }}</td></tr>
                 <tr><td><img src="/assets/buttons/e_trans2.png" title="Energie" /> Energie</td><td>{{ OPTIMIZATION_RECIPE.getEnergyCost }}</td><td>{{ HOST.getChangeable.getEps }}</td></tr>
                 <tr><td>Forschungsdauer</td><td colspan="2">{{ OPTIMIZATION_RECIPE.getDuration|formatSeconds }}</td></tr>
-                <tr><td>Erfolgswahrscheinlichkeit</td><td colspan="2"><span data-technology-chance>{{ row.baseChance }}</span> %</td></tr>
+                <tr><td>Erfolgswahrscheinlichkeit</td><td colspan="2"><span data-technology-chance>{{ row.baseChance }}</span>%</td></tr>
             </table>
             {% if not row.canOptimize %}
             <p>Die normale Modulforschung ist noch nicht abgeschlossen</p>

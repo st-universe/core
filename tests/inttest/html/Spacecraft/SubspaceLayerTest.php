@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Html\Spacecraft;
 
 use Mockery;
+use Override;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerCreation;
 use Stu\Lib\Map\VisualPanel\Layer\PanelLayerEnum;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
@@ -15,6 +16,14 @@ use Stu\TwigTestCase;
 class SubspaceLayerTest extends TwigTestCase
 {
     use StubGameComponentsTrait;
+
+    #[Override]
+    public function setUp(): void
+    {
+        self::$isSchemaInitializationNeeded = true;
+        parent::setUp();
+        self::$isSchemaInitializationNeeded = true;
+    }
 
     public function testHandle(): void
     {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use InvalidArgumentException;
 use Override;
+use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
@@ -17,6 +19,7 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
 {
+    private ?SpacecraftBuildplan $previewBuildplan = null;
     public function __construct(
         private ModuleSelectorInterface $moduleSelector,
         private Module $module,
@@ -79,9 +82,24 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     }
 
     #[Override]
+    public function forQuality(int $steps): ModuleSelectorEntryInterface
+    {
+        if ($steps < 0 || $steps > 70) {
+            throw new InvalidArgumentException('Invalid module preview quality');
+        }
+        $preview = clone $this;
+        $plan = new SpacecraftBuildplan()->setRump($this->rump)->setUser($this->user);
+        $entry = new BuildplanModule()->setBuildplan($plan)->setModule($this->module)
+            ->setModuleType($this->module->getType())->setImprovementSteps($steps);
+        $plan->getModules()->set($this->module->getId(), $entry);
+        $preview->previewBuildplan = $plan;
+        return $preview;
+    }
+
+    #[Override]
     public function getSelectedQuality(): int
     {
-        return $this->buildplan?->getModuleImprovementSteps($this->module) ?? 0;
+        return ($this->previewBuildplan ?? $this->buildplan)?->getModuleImprovementSteps($this->module) ?? 0;
     }
 
     #[Override]
@@ -97,7 +115,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
             $variants[] = [
                 'steps' => $steps,
                 'amount' => $amount,
-                'label' => $steps === 0 ? 'Standard' : '+' . number_format($steps / 10, 1, ',', '') . ' %',
+                'label' => $steps === 0 ? 'Standard' : '+' . number_format($steps / 10, 1, ',', '') . '%',
             ];
         }
         return $variants;
@@ -120,7 +138,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     {
         return $this->module
             ->getType()
-            ->getModuleRumpWrapperCallable()($this->rump, $this->buildplan)
+            ->getModuleRumpWrapperCallable()($this->rump, $this->previewBuildplan ?? $this->buildplan)
             ->getValue($this->module);
     }
 
@@ -129,7 +147,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     {
         return $this->module
             ->getType()
-            ->getModuleRumpWrapperCallable()($this->rump, $this->buildplan)
+            ->getModuleRumpWrapperCallable()($this->rump, $this->previewBuildplan ?? $this->buildplan)
             ->getSecondValue($this->module);
     }
 

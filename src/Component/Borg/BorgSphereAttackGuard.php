@@ -9,6 +9,7 @@ use Stu\Component\Game\JavascriptExecutionTypeEnum;
 use Stu\Lib\Session\SessionStorageInterface;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Spacecraft\View\ShowBorgSphereAttackConfirmation\ShowBorgSphereAttackConfirmation;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
 use Stu\Orm\Entity\Spacecraft;
 
@@ -53,12 +54,10 @@ final class BorgSphereAttackGuard
             'sstr' => $context->getSessionString(), 'borg_confirmation' => $nonce,
             'borg_target_system' => request::getString('borg_target_system')
         ]);
-        $message = 'Die Sphäre ist nun deaktiviert. Möchtest du wirklich weiter darauf schießen? Sie kann dabei zerstört werden. Danach kann niemand mehr Naniten von ihr sammeln';
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
         $context->addExecuteJS(sprintf(
-            'if (confirm(%s)) { actionToInnerContent("B_ATTACK_SPACECRAFT", %s); }',
-            json_encode($message, JSON_THROW_ON_ERROR),
-            json_encode($parameters, JSON_THROW_ON_ERROR)
+            'updatePopup(%s, Math.min(420, window.innerWidth - 20), Math.max(10, (window.innerWidth - 420) / 2), Math.max(20, (window.innerHeight - 200) / 2));',
+            json_encode('?' . ShowBorgSphereAttackConfirmation::VIEW_IDENTIFIER . '=1&' . $parameters, JSON_THROW_ON_ERROR)
         ), JavascriptExecutionTypeEnum::AFTER_RENDER);
         return false;
     }

@@ -35,6 +35,9 @@ final class BorgSphereFlight
             ? $this->routes->getRouteForCoordinateDestination($ship, $destination->getX(), $destination->getY())
             : $this->routes->getRouteForMapDestination($destination);
         try {
+            if ($route->hasSpecialDamageOnField()) {
+                return;
+            }
             $messages = $this->mover->checkAndMove($wrapper, $route);
             $this->messages->distributeMessageCollection($messages, $ship->getUser()->getId(), PrivateMessageFolderTypeEnum::SPECIAL_SHIP);
         } finally {

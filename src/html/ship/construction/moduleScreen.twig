@@ -149,7 +149,9 @@
               {% for moduleSelectorEntry in moduleSelector.getSelectedModules %}
               {% set module = moduleSelectorEntry.getModule %}
               {% set crewIdentifier = moduleSelector.isSpecial ? module.getId : type %}
-              {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' %}
+              {% include 'html/ship/construction/moduleSelector/stats/stats_type_' ~ type ~ '.twig' with {
+                'moduleSelectorEntry': moduleSelectorEntry.forQuality(moduleSelectorEntry.getSelectedQuality)
+              } %}
               <script>
                   updateCrewCount({{ crewIdentifier }}, {{ moduleSelectorEntry.getNeededCrew }});
               </script>

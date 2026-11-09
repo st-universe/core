@@ -40,7 +40,7 @@ final class TechnologyResearchCompletion
         $module = $job->getModule();
         if ($job->getKind() === TechnologyRecipeKindEnum::MODULE_OPTIMIZATION && $module !== null) {
             $steps = $this->progress->improve($job->getUser(), $module, $job->getStartImprovementSteps(), $job->getMaxImprovementSteps());
-            return sprintf('Die Optimierung von %s ist erfolgreich abgeschlossen. Dein Fertigungsbonus beträgt jetzt +%s %%', $module->getName(), number_format($steps / 10, 1, ',', ''));
+            return sprintf('Die Optimierung von %s ist erfolgreich abgeschlossen. Dein Fertigungsbonus beträgt jetzt +%s%%', $module->getName(), number_format($steps / 10, 1, ',', ''));
         }
         return 'Die Nanitenfertigung wurde erfolgreich erforscht. Im Technologiecenter können jetzt eigene Borg-Naniten hergestellt werden';
     }

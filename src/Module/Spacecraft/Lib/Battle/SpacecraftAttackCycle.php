@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use RuntimeException;
+use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Provider\AttackerProviderFactoryInterface;
@@ -22,7 +23,8 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         private AttackMatchupInterface $attackMatchup,
         private BattlePartyFactoryInterface $battlePartyFactory,
         private SpacecraftAttackPreparationInterface $spacecraftAttackPreparation,
-        private MessageFactoryInterface $messageFactory
+        private MessageFactoryInterface $messageFactory,
+        private ?BorgSphereAttackContext $borgSphereAttackContext = null
     ) {}
 
     #[\Override]
@@ -31,7 +33,19 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         BattlePartyInterface $defenders,
         SpacecraftAttackCauseEnum $attackCause
     ): MessageCollectionInterface {
+        $this->borgSphereAttackContext?->beginBattle();
+        try {
+            return $this->executeCycle($attackers, $defenders, $attackCause);
+        } finally {
+            $this->borgSphereAttackContext?->endBattle();
+        }
+    }
 
+    private function executeCycle(
+        BattlePartyInterface $attackers,
+        BattlePartyInterface $defenders,
+        SpacecraftAttackCauseEnum $attackCause
+    ): MessageCollectionInterface {
         $messages = $this->messageFactory->createMessageCollection();
         $isOneWay = $attackCause->isOneWay();
 
@@ -45,7 +59,7 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         $maxMatchups = $this->getMaxMatchups($attackers, $defenders, $isOneWay);
         $matchupCount = 0;
 
-        while (true) {
+        while ($this->borgSphereAttackContext?->isBattleStopped() !== true) {
             $matchup = $this->attackMatchup->getMatchup(
                 $attackersRoundBasedBattleParty,
                 $defendersRoundBasedBattleParty,
@@ -56,17 +70,7 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
                 break;
             }
             $matchupCount++;
-            if ($matchupCount > $maxMatchups) {
-                throw new RuntimeException(sprintf(
-                    'Attack cycle exceeded matchup limit of %d for cause %s, attackersUser=%d attackersLeader=%d defendersUser=%d defendersLeader=%d',
-                    $maxMatchups,
-                    $attackCause->name,
-                    $attackers->getUser()->getId(),
-                    $attackers->getLeader()->get()->getId(),
-                    $defenders->getUser()->getId(),
-                    $defenders->getLeader()->get()->getId()
-                ));
-            }
+            $this->checkMatchupLimit($matchupCount, $maxMatchups, $attackCause, $attackers, $defenders);
 
             $targetBattleParty = $matchup->getDefenders();
             $firstStrike = false;
@@ -83,6 +87,10 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
                 $messages
             );
 
+            if ($this->borgSphereAttackContext?->isBattleStopped()) {
+                break;
+            }
+
             $this->projectileWeaponPhase->fire(
                 $spacecraftAttacker,
                 $targetBattleParty,
@@ -92,6 +100,21 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         }
 
         return $messages;
+    }
+
+    private function checkMatchupLimit(int $count, int $maximum, SpacecraftAttackCauseEnum $cause, BattlePartyInterface $attackers, BattlePartyInterface $defenders): void
+    {
+        if ($count > $maximum) {
+            throw new RuntimeException(sprintf(
+                'Attack cycle exceeded matchup limit of %d for cause %s, attackersUser=%d attackersLeader=%d defendersUser=%d defendersLeader=%d',
+                $maximum,
+                $cause->name,
+                $attackers->getUser()->getId(),
+                $attackers->getLeader()->get()->getId(),
+                $defenders->getUser()->getId(),
+                $defenders->getLeader()->get()->getId()
+            ));
+        }
     }
 
     private function getMaxMatchups(
