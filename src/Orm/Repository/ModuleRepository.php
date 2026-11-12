@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Override;
@@ -12,8 +11,6 @@ use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftRumpRoleEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
-use Stu\Orm\Entity\ModuleBuildingFunction;
-use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRumpModuleSpecial;
@@ -24,38 +21,6 @@ use Stu\Orm\Entity\Spacecraft;
  */
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
-    #[Override]
-    public function save(Module $module): void
-    {
-        $this->getEntityManager()->persist($module);
-    }
-
-    #[Override]
-    public function synchronizeProductionSequences(): void
-    {
-        $entityManager = $this->getEntityManager();
-        $connection = $entityManager->getConnection();
-        if (!$connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
-            return;
-        }
-        foreach ([Module::class, ModuleCost::class, ModuleBuildingFunction::class] as $entityClass) {
-            $metadata = $entityManager->getClassMetadata($entityClass);
-            $sequence = $connection->fetchOne('SELECT pg_get_serial_sequence(:tableName, :columnName)', [
-                'tableName' => $metadata->getTableName(),
-                'columnName' => $metadata->getSingleIdentifierColumnName()
-            ]);
-            if (!is_string($sequence)) {
-                continue;
-            }
-            $maximum = (int) $entityManager->createQueryBuilder()->select('MAX(entity.id)')->from($entityClass, 'entity')->getQuery()->getSingleScalarResult();
-            $sequenceIdentifier = implode('.', array_map($connection->quoteSingleIdentifier(...), explode('.', $sequence)));
-            $connection->executeQuery(
-                'SELECT setval(CAST(:sequence AS regclass), GREATEST((SELECT last_value FROM ' . $sequenceIdentifier . '), :maximum), true)',
-                ['sequence' => $sequence, 'maximum' => max(1, $maximum)]
-            );
-        }
-    }
-
     /**
      * @param list<int> $levels
      * @return list<Module>

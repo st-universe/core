@@ -7,7 +7,7 @@ namespace Stu\Migrations\Sqlite;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20261108213644 extends AbstractMigration
+final class Version20261112114702 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -545,7 +545,7 @@ final class Version20261108213644 extends AbstractMigration
         $this->addSql('CREATE TABLE stu_tachyon_scan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, scan_time INTEGER NOT NULL, location_id INTEGER NOT NULL, CONSTRAINT FK_1ED54F94A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_1ED54F9464D218E FOREIGN KEY (location_id) REFERENCES stu_location (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX tachyon_scan_user_idx ON stu_tachyon_scan (user_id)');
         $this->addSql('CREATE INDEX IDX_1ED54F9464D218E ON stu_tachyon_scan (location_id)');
-        $this->addSql('CREATE TABLE stu_technology_production (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, field_id INTEGER NOT NULL, building_id INTEGER NOT NULL, start_time INTEGER NOT NULL, finish_time INTEGER NOT NULL, status VARCHAR(255) NOT NULL, kind VARCHAR(255) NOT NULL, output_amount INTEGER NOT NULL, production_tick BOOLEAN NOT NULL, user_id INTEGER NOT NULL, colony_id INTEGER DEFAULT NULL, recipe_id INTEGER NOT NULL, output_commodity_id INTEGER NOT NULL, CONSTRAINT FK_2C502700A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2C50270096ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2C50270059D8A214 FOREIGN KEY (recipe_id) REFERENCES stu_technology_recipe (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2C50270030C8D4D7 FOREIGN KEY (output_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE stu_technology_production (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, field_id INTEGER NOT NULL, building_id INTEGER NOT NULL, start_time INTEGER NOT NULL, finish_time INTEGER NOT NULL, status VARCHAR(255) NOT NULL, kind VARCHAR(255) NOT NULL, output_amount INTEGER NOT NULL, user_id INTEGER NOT NULL, colony_id INTEGER DEFAULT NULL, recipe_id INTEGER NOT NULL, output_commodity_id INTEGER NOT NULL, CONSTRAINT FK_2C502700A76ED395 FOREIGN KEY (user_id) REFERENCES stu_user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2C50270096ADBADE FOREIGN KEY (colony_id) REFERENCES stu_colony (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2C50270059D8A214 FOREIGN KEY (recipe_id) REFERENCES stu_technology_recipe (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2C50270030C8D4D7 FOREIGN KEY (output_commodity_id) REFERENCES stu_commodity (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX technology_production_running_idx ON stu_technology_production (user_id, status)');
         $this->addSql('CREATE INDEX IDX_2C502700A76ED395 ON stu_technology_production (user_id)');
         $this->addSql('CREATE INDEX IDX_2C50270096ADBADE ON stu_technology_production (colony_id)');

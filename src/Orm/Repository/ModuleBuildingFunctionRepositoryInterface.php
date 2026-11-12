@@ -13,8 +13,6 @@ use Stu\Orm\Entity\ModuleBuildingFunction;
  */
 interface ModuleBuildingFunctionRepositoryInterface extends ObjectRepository
 {
-    public function save(ModuleBuildingFunction $function): void;
-
     /**
      * @return array<ModuleBuildingFunction>
      */

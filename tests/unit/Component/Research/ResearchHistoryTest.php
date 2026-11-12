@@ -32,7 +32,7 @@ final class ResearchHistoryTest extends StuTestCase
             $this->job(80, TechnologyRecipeKindEnum::MODULE_OPTIMIZATION)->setModule(new Module()->setName('Schilde Klasse 1'))->setMaxImprovementSteps(70),
             $this->job(30, TechnologyRecipeKindEnum::MODULE_OPTIMIZATION)->setStatus(SpecialResearchStatusEnum::FAILED),
             $this->job(40, TechnologyRecipeKindEnum::NANITE_RESEARCH)->setStatus(SpecialResearchStatusEnum::RUNNING),
-            $this->job(60, TechnologyRecipeKindEnum::NANITE_PRODUCTION),
+            $this->job(60, TechnologyRecipeKindEnum::DATASET_COPY),
             $this->job(70, TechnologyRecipeKindEnum::DATASET_COPY)
         ]);
         $technology->shouldNotReceive('getProductionByUser');

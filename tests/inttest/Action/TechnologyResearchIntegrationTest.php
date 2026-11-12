@@ -13,14 +13,12 @@ use Stu\ActionTestCase;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
 use Stu\Component\Research\ModuleOptimizationProgress;
-use Stu\Component\Research\NaniteProductionSetup;
 use Stu\Component\Research\SpecialResearchCompletion;
 use Stu\Component\Research\SpecialResearchStatusEnum;
 use Stu\Component\Research\TechnologyJobFactory;
-use Stu\Component\Research\TechnologyMaterials;
-use Stu\Component\Research\TechnologyProductionCompletion;
 use Stu\Component\Research\TechnologyRecipeKindEnum;
 use Stu\Component\Research\TechnologyService;
+use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Action\CancelModuleCreation\CancelModuleCreation;
@@ -41,6 +39,7 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleBuildingFunction;
+use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\Researched;
@@ -87,7 +86,7 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
         $this->repository = $container->get(TechnologyRepositoryInterface::class);
         $this->service = $container->get(TechnologyService::class);
         $this->em->flush();
-        $this->naniteModule = $this->em->wrapInTransaction(fn (): Module => $container->get(NaniteProductionSetup::class)->setup());
+        $this->naniteModule = $this->seedNaniteModule();
     }
 
     private function seed(): void
@@ -104,8 +103,6 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
             ->setResearchType(AwayMissionResearchEnum::SENSORS)->setStatus(SpecialResearchStatusEnum::COMPLETED)
             ->setStartTime(1)->setFinishTime(2)->setFailureChance(10));
         $this->recipe(1, TechnologyRecipeKindEnum::NANITE_RESEARCH, 172800, [76 => 10, 23 => 60, 33 => 20, 31 => 20, 3 => 50])->setFailureChance(35);
-        $this->recipe(2, TechnologyRecipeKindEnum::NANITE_PRODUCTION, 0, [23 => 40, 3 => 20, 31 => 5, 33 => 5])
-            ->setOutputCommodity($nanites)->setOutputAmount(5)->setEnergyCost(50)->setSettings(['max_concurrent_per_field' => 1]);
         $this->recipe(3, TechnologyRecipeKindEnum::DATASET_COPY, 43200, [31 => 2, 33 => 1])
             ->setResearchType(AwayMissionResearchEnum::SENSORS)->setOutputCommodity($chip)->setOutputAmount(1)->setEnergyCost(5)->setSettings(['max_concurrent_per_user' => 1]);
         $this->recipe(11, TechnologyRecipeKindEnum::MODULE_OPTIMIZATION, 57600, [])->setNaniteCommodity($nanites)->setSettings([
@@ -426,13 +423,6 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
         self::assertStringContainsString('<summary>Abgeschlossene Forschungen (2)</summary>', $html);
         self::assertGreaterThan(strpos($html, 'Moduloptimierung'), strpos($html, '<summary>Abgeschlossene Forschungen'));
         self::assertSame(['Grundlagenforschung', 'Nanitenfertigung'], array_column($variables['SPECIAL_RESEARCH_HISTORY'], 'research'));
-        $this->startLegacyNanites();
-        $this->getContainer()->get(SpecialResearchProvider::class)->setTemplateVariables($this->colony, $template, $this->colony->getUser());
-        $html = $twig->render('html/colony/menu/specialResearch.twig', $variables);
-        self::assertStringNotContainsString('nanite_production', $html);
-        self::assertStringNotContainsString('Fertigstellung zum nächsten Tick', $html);
-        self::assertStringNotContainsString('Die Ausgabe wartet', $html);
-        self::assertStringNotContainsString('Fertigstellung im nächsten Produktionstick', $html);
     }
 
     public function testNanitesCanBeStartedAndViewedInTechnologyCenterWithoutSpecialResearchFunction(): void
@@ -485,68 +475,49 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
         self::assertStringContainsString('cancelModuleQueueEntries(' . $moduleId . ')', $html);
     }
 
-    private function startLegacyNanites(): void
+    private function seedNaniteModule(): Module
     {
-        $recipe = $this->repository->getRecipe(2);
-        self::assertNotNull($recipe);
-        $materials = $this->getContainer()->get(TechnologyMaterials::class);
-        self::assertTrue($materials->consume($this->colony, $materials->getCosts($recipe), $recipe->getEnergyCost(), new InformationWrapper()));
-        $this->repository->save($this->getContainer()->get(TechnologyJobFactory::class)->production($this->colony, $this->field, $recipe));
+        $module = new Module()->setName('Testware 76')->setCommodity($this->commodity(76))
+            ->setType(SpacecraftModuleTypeEnum::SPECIAL)->setLevel(0)->setEcost(10)->setResearch(null);
+        $this->em->persist($module);
         $this->em->flush();
+        foreach ([23 => 8, 3 => 4, 31 => 1, 33 => 1] as $commodityId => $amount) {
+            $cost = new ModuleCost()->setModule($module)->setCommodity($this->commodity($commodityId))->setAmount($amount);
+            $module->getCost()->add($cost);
+            $this->em->persist($cost);
+        }
+        $this->em->persist(new ModuleBuildingFunction()->setModule($module)->setBuildingFunction(BuildingFunctionEnum::TECH_CENTER->value));
+        $this->em->flush();
+        return $module;
     }
 
-    public function testLegacyNaniteJobsMoveToTheNormalQueueWithoutPayingAgain(): void
+    public function testNaniteQueueCanBeExtendedAndCancelledWithMaterialRefunds(): void
     {
         $this->unlockProduction();
         $this->supply([23 => 160, 3 => 80, 31 => 20, 33 => 20]);
-        $this->startLegacyNanites();
         $moduleId = $this->naniteModule->getId();
         $queues = $this->getContainer()->get(ModuleQueueRepositoryInterface::class);
-        $setup = $this->getContainer()->get(NaniteProductionSetup::class);
         $material = $this->colony->getStorage()->get(23);
         self::assertNotNull($material);
-        $paidMaterial = $material->getAmount();
-        self::assertSame(5, $this->em->wrapInTransaction(fn (): int => $setup->transferPending($this->naniteModule)));
-        self::assertSame(0, $this->em->wrapInTransaction(fn (): int => $setup->transferPending($this->naniteModule)));
-        self::assertSame($paidMaterial, $material->getAmount());
-        self::assertCount(0, $this->repository->getProductionByUser($this->colony->getUser()));
-
+        $initialMaterial = $material->getAmount();
+        $this->moduleAction(false, ['func' => BuildingFunctionEnum::TECH_CENTER->value, 'moduleids' => [$moduleId], 'values' => [5]]);
         $this->moduleAction(false, ['func' => BuildingFunctionEnum::TECH_CENTER->value, 'moduleids' => [$moduleId], 'values' => [7]]);
         self::assertSame(12, $queues->getAmountByColonyAndModule($this->colony->getId(), $moduleId));
-        self::assertSame($paidMaterial - 56, $material->getAmount());
+        self::assertCount(1, $queues->getByColonyAndBuilding($this->colony->getId(), [BuildingFunctionEnum::TECH_CENTER->value]));
+        self::assertSame($initialMaterial - 96, $material->getAmount());
         $this->moduleAction(true, ['func' => BuildingFunctionEnum::TECH_CENTER->value, 'module' => $moduleId, 'count' => 3]);
         self::assertSame(9, $queues->getAmountByColonyAndModule($this->colony->getId(), $moduleId));
-        self::assertSame($paidMaterial - 32, $material->getAmount());
+        self::assertSame($initialMaterial - 72, $material->getAmount());
         $before = $this->colony->getStorage()->get(76)?->getAmount() ?? 0;
         $this->em->wrapInTransaction(fn () => $this->getContainer()->get(ColonyTickInterface::class)->work($this->colony));
         self::assertSame($before + 9, $this->colony->getStorage()->get(76)?->getAmount());
         self::assertSame(0, $queues->getAmountByColonyAndModule($this->colony->getId(), $moduleId));
     }
 
-    public function testTemporaryNaniteFinisherDoesNotChargeOrProduceTwice(): void
+    public function testNaniteProductionRequiresCompletedResearch(): void
     {
-        $this->unlockProduction();
         $this->supply([23 => 40, 3 => 20, 31 => 5, 33 => 5]);
-        $this->startLegacyNanites();
-        $material = $this->colony->getStorage()->get(23)?->getAmount() ?? 0;
-        $before = $this->colony->getStorage()->get(76)?->getAmount() ?? 0;
-        $completion = $this->getContainer()->get(TechnologyProductionCompletion::class);
-        $this->em->wrapInTransaction(fn () => $completion->work(true));
-        self::assertSame($before + 5, $this->colony->getStorage()->get(76)?->getAmount());
-        self::assertSame($material, $this->colony->getStorage()->get(23)?->getAmount() ?? 0);
-        $this->em->wrapInTransaction(fn () => $completion->work(true));
-        self::assertSame($before + 5, $this->colony->getStorage()->get(76)?->getAmount());
-    }
-
-    public function testNaniteSetupIsRepeatableAndProductionStillRequiresResearch(): void
-    {
-        $setup = $this->getContainer()->get(NaniteProductionSetup::class);
-        $module = $this->em->wrapInTransaction(fn (): Module => $setup->setup());
-        self::assertSame($this->naniteModule->getId(), $module->getId());
-        self::assertCount(4, $module->getCost());
-        self::assertSame(10, $module->getEcost());
-        self::assertFalse($this->start(2));
-        $this->supply([23 => 40, 3 => 20, 31 => 5, 33 => 5]);
+        $module = $this->naniteModule;
         $this->moduleAction(false, ['func' => BuildingFunctionEnum::TECH_CENTER->value, 'moduleids' => [$module->getId()], 'values' => [5]]);
         self::assertSame(0, $this->getContainer()->get(ModuleQueueRepositoryInterface::class)->getAmountByColonyAndModule($this->colony->getId(), $module->getId()));
     }

@@ -5,7 +5,7 @@
 {% for job in TECHNOLOGY_PRODUCTION_JOBS %}
 <div class="divhead">{{ job.getRecipe.getName }}</div>
 <div class="divbody">
-    {% if job.getProductionTick %}Fertigstellung zum nächsten Tick{% else %}Fertigstellung ab {{ job.getFinishTime|stuDateTime }} Uhr{% endif %}
+    Fertigstellung ab {{ job.getFinishTime|stuDateTime }} Uhr
 </div>
 {% endfor %}
 {% for row in TECHNOLOGY_RECIPES %}

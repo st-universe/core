@@ -62,9 +62,6 @@ class TechnologyProduction
     #[Column(name: 'output_amount', type: 'integer')]
     private int $outputAmount;
 
-    #[Column(name: 'production_tick', type: 'boolean')]
-    private bool $productionTick = false;
-
     public function getId(): int
     {
         return $this->id;
@@ -194,17 +191,6 @@ class TechnologyProduction
     public function setOutputAmount(int $outputAmount): self
     {
         $this->outputAmount = $outputAmount;
-        return $this;
-    }
-
-    public function getProductionTick(): bool
-    {
-        return $this->productionTick;
-    }
-
-    public function setProductionTick(bool $productionTick): self
-    {
-        $this->productionTick = $productionTick;
         return $this;
     }
 

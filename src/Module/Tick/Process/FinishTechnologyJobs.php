@@ -36,6 +36,6 @@ final class FinishTechnologyJobs implements ProcessTickHandlerInterface
                 $this->completion->finish($job, $this->random->rand(1, 10000) <= $job->getSuccessChance());
             }
         }
-        $this->production->work(false);
+        $this->production->work();
     }
 }

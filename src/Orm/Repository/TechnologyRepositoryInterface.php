@@ -36,14 +36,12 @@ interface TechnologyRepositoryInterface
     public function getProductionByUser(User $user): array;
 
     /** @return list<TechnologyProduction> */
-    public function getRunningProduction(bool $productionTick): array;
+    public function getRunningProduction(): array;
 
     /** @return list<TechnologyResearch|TechnologyProduction> */
     public function getRunningByField(PlanetField $field): array;
 
     public function save(TechnologyResearch|TechnologyProduction $job): void;
-
-    public function deleteProduction(TechnologyProduction $job): void;
 
     public function deleteByUser(User $user): void;
 

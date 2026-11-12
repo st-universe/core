@@ -23,9 +23,9 @@ final class TechnologyProductionCompletion
         private StuTime $time
     ) {}
 
-    public function work(bool $productionTick): void
+    public function work(): void
     {
-        foreach ($this->repository->getRunningProduction($productionTick) as $job) {
+        foreach ($this->repository->getRunningProduction() as $job) {
             $this->finish($job);
         }
     }
