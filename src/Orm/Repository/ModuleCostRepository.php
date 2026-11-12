@@ -14,18 +14,6 @@ use Stu\Orm\Entity\ModuleCost;
 final class ModuleCostRepository extends EntityRepository implements ModuleCostRepositoryInterface
 {
     #[Override]
-    public function save(ModuleCost $cost): void
-    {
-        $this->getEntityManager()->persist($cost);
-    }
-
-    #[Override]
-    public function delete(ModuleCost $cost): void
-    {
-        $this->getEntityManager()->remove($cost);
-    }
-
-    #[Override]
     public function getByModule(int $moduleId): array
     {
         return $this->findBy([

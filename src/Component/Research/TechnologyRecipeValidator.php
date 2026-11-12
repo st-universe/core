@@ -16,8 +16,7 @@ final class TechnologyRecipeValidator
         return match ($recipe->getKind()) {
             TechnologyRecipeKindEnum::NANITE_RESEARCH => $this->validResearch($recipe),
             TechnologyRecipeKindEnum::MODULE_OPTIMIZATION => $this->validOptimization($recipe),
-            TechnologyRecipeKindEnum::DATASET_COPY => $this->validCopy($recipe),
-            TechnologyRecipeKindEnum::NANITE_PRODUCTION => $this->validOutput($recipe)
+            TechnologyRecipeKindEnum::DATASET_COPY => $this->validCopy($recipe)
         };
     }
 

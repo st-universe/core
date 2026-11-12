@@ -34,7 +34,7 @@ final class TechnologyJobFactory
     {
         $job = new TechnologyProduction();
         $this->bind($job, $colony, $field, $recipe);
-        $job->setKind($recipe->getKind())->setProductionTick($recipe->getKind() === TechnologyRecipeKindEnum::NANITE_PRODUCTION)
+        $job->setKind($recipe->getKind())
             ->setOutputAmount($recipe->getOutputAmount())
             ->setOutputCommodity($recipe->getOutputCommodity() ?? throw new LogicException('Production commodity missing'));
         return $job;

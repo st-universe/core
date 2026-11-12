@@ -75,10 +75,10 @@ final class TechnologyRepository implements TechnologyRepositoryInterface
     }
 
     #[Override]
-    public function getRunningProduction(bool $productionTick): array
+    public function getRunningProduction(): array
     {
-        return $this->entityManager->createQuery('SELECT p FROM ' . TechnologyProduction::class . ' p WHERE p.status = :status AND p.productionTick = :tick')
-            ->setParameters(['status' => SpecialResearchStatusEnum::RUNNING, 'tick' => $productionTick])
+        return $this->entityManager->createQuery('SELECT p FROM ' . TechnologyProduction::class . ' p WHERE p.status = :status')
+            ->setParameter('status', SpecialResearchStatusEnum::RUNNING)
             ->setHint(Query::HINT_REFRESH, true)->setLockMode(LockMode::PESSIMISTIC_WRITE)->getResult();
     }
 
@@ -96,12 +96,6 @@ final class TechnologyRepository implements TechnologyRepositoryInterface
     public function save(TechnologyResearch|TechnologyProduction $job): void
     {
         $this->entityManager->persist($job);
-    }
-
-    #[Override]
-    public function deleteProduction(TechnologyProduction $job): void
-    {
-        $this->entityManager->remove($job);
     }
 
     #[Override]

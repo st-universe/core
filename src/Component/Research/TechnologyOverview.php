@@ -51,7 +51,7 @@ final class TechnologyOverview
         }
         $template->setTemplateVar('TECHNOLOGY_RECIPES', $recipes);
         $template->setTemplateVar('TECHNOLOGY_RESEARCH_JOBS', array_filter($this->repository->getResearchByUser($user), static fn ($job): bool => $job->getStatus() === SpecialResearchStatusEnum::RUNNING));
-        $template->setTemplateVar('TECHNOLOGY_PRODUCTION_JOBS', array_filter($this->repository->getProductionByUser($user), static fn ($job): bool => $job->getKind() !== TechnologyRecipeKindEnum::NANITE_PRODUCTION));
+        $template->setTemplateVar('TECHNOLOGY_PRODUCTION_JOBS', $this->repository->getProductionByUser($user));
         $template->setTemplateVar('NANITE_FABRICATION_COMPLETE', $this->repository->hasNaniteFabrication($user));
         $template->setTemplateVar('OPTIMIZATION_RECIPE', $optimization);
         $template->setTemplateVar('OPTIMIZATION_MODULES', $optimization === null ? [] : $this->moduleRows($colony, $optimization));
