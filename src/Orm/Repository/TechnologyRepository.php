@@ -99,6 +99,12 @@ final class TechnologyRepository implements TechnologyRepositoryInterface
     }
 
     #[Override]
+    public function deleteProduction(TechnologyProduction $job): void
+    {
+        $this->entityManager->remove($job);
+    }
+
+    #[Override]
     public function deleteByUser(User $user): void
     {
         foreach ([TechnologyResearch::class, TechnologyProduction::class] as $class) {

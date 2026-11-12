@@ -80,10 +80,10 @@ class Module
     private ?bool $is_npc = false;
 
     /**
-     * @var Research
+     * @var Research|null
      */
     #[ManyToOne(targetEntity: Research::class)]
-    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: false)]
+    #[JoinColumn(name: 'research_id', referencedColumnName: 'id', nullable: true)]
     private $research;
 
     #[ManyToOne(targetEntity: Commodity::class)]
@@ -255,6 +255,20 @@ class Module
     {
         $this->research_id = $researchId;
 
+        return $this;
+    }
+
+    public function setResearch(?Research $research): self
+    {
+        $this->research = $research;
+        $this->research_id = $research?->getId();
+        return $this;
+    }
+
+    public function setCommodity(Commodity $commodity): self
+    {
+        $this->commodity = $commodity;
+        $this->commodity_id = $commodity->getId();
         return $this;
     }
 

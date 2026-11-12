@@ -9,8 +9,8 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Module;
-use Stu\Orm\Entity\SpecialResearchDefinition;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\SpecialResearchDefinition;
 use Stu\Orm\Entity\TechnologyRecipe;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -51,7 +51,7 @@ final class TechnologyOverview
         }
         $template->setTemplateVar('TECHNOLOGY_RECIPES', $recipes);
         $template->setTemplateVar('TECHNOLOGY_RESEARCH_JOBS', array_filter($this->repository->getResearchByUser($user), static fn ($job): bool => $job->getStatus() === SpecialResearchStatusEnum::RUNNING));
-        $template->setTemplateVar('TECHNOLOGY_PRODUCTION_JOBS', $this->repository->getProductionByUser($user));
+        $template->setTemplateVar('TECHNOLOGY_PRODUCTION_JOBS', array_filter($this->repository->getProductionByUser($user), static fn ($job): bool => $job->getKind() !== TechnologyRecipeKindEnum::NANITE_PRODUCTION));
         $template->setTemplateVar('NANITE_FABRICATION_COMPLETE', $this->repository->hasNaniteFabrication($user));
         $template->setTemplateVar('OPTIMIZATION_RECIPE', $optimization);
         $template->setTemplateVar('OPTIMIZATION_MODULES', $optimization === null ? [] : $this->moduleRows($colony, $optimization));

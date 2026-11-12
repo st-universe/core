@@ -67,4 +67,11 @@ class ModuleBuildingFunction
     {
         return $this->module;
     }
+
+    public function setModule(Module $module): self
+    {
+        $this->module = $module;
+        $this->module_id = $module->getId();
+        return $this;
+    }
 }

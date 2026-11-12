@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Refactor;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Crew\CrewTypeEnum;
+use Stu\Component\Research\NaniteProductionSetup;
+use Stu\Component\Research\TechnologyProductionCompletion;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
@@ -16,7 +19,10 @@ final class RefactorRunner
     public function __construct(
         private SpacecraftRepositoryInterface $spacecraftRepository,
         private ShipRumpCategoryRoleCrewRepositoryInterface $positionRepository,
-        private CrewAssignmentRepositoryInterface $crewAssignmentRepository
+        private CrewAssignmentRepositoryInterface $crewAssignmentRepository,
+        private TechnologyProductionCompletion $technologyProductionCompletion,
+        private NaniteProductionSetup $naniteProductionSetup,
+        private EntityManagerInterface $entityManager
     ) {}
 
     public function refactor(): void
@@ -24,6 +30,11 @@ final class RefactorRunner
         foreach ($this->spacecraftRepository->findAll() as $spacecraft) {
             $this->refactorSpacecraft($spacecraft);
         }
+
+        $this->technologyProductionCompletion->work(true);
+        $this->entityManager->flush();
+        $module = $this->naniteProductionSetup->setup();
+        $this->naniteProductionSetup->transferPending($module);
     }
 
     private function refactorSpacecraft(Spacecraft $spacecraft): void

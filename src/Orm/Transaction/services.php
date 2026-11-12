@@ -13,6 +13,8 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Borg\BorgSphereDeletionHandler;
 use Stu\Component\Borg\BorgSphereDeletionListener;
+use Stu\Component\Crew\CrewDeletionHandler;
+use Stu\Component\Crew\CrewDeletionListener;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -44,7 +46,11 @@ return [
         fn (): BorgSphereDeletionHandler => $c->get(BorgSphereDeletionHandler::class)
     ),
     EntityManagerFactoryInterface::class => autowire(EntityManagerFactory::class)
-        ->constructorParameter('borgSphereDeletionListener', get(BorgSphereDeletionListener::class)),
+        ->constructorParameter('borgSphereDeletionListener', get(BorgSphereDeletionListener::class))
+        ->constructorParameter('crewDeletionListener', get(CrewDeletionListener::class)),
+    CrewDeletionListener::class => fn (ContainerInterface $c): CrewDeletionListener => new CrewDeletionListener(
+        fn (): CrewDeletionHandler => $c->get(CrewDeletionHandler::class)
+    ),
     EntityManagerInterface::class => fn (ContainerInterface $c): EntityManagerInterface => new ReopeningEntityManager(
         $c->get(EntityManagerFactoryInterface::class),
         $c->get(Configuration::class),

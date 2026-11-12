@@ -12,6 +12,10 @@ use Stu\Orm\Entity\ModuleCost;
  */
 interface ModuleCostRepositoryInterface extends ObjectRepository
 {
+    public function save(ModuleCost $cost): void;
+
+    public function delete(ModuleCost $cost): void;
+
     /**
      * @return list<ModuleCost>
      */

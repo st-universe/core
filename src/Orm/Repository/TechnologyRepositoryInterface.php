@@ -43,6 +43,8 @@ interface TechnologyRepositoryInterface
 
     public function save(TechnologyResearch|TechnologyProduction $job): void;
 
+    public function deleteProduction(TechnologyProduction $job): void;
+
     public function deleteByUser(User $user): void;
 
     public function detachColony(Colony $colony): void;
