@@ -19,6 +19,10 @@ use Stu\Orm\Entity\Spacecraft;
  */
 interface ModuleRepositoryInterface extends ObjectRepository
 {
+    public function save(Module $module): void;
+
+    public function synchronizeProductionSequences(): void;
+
     /**
      * @return array<Module>
      */

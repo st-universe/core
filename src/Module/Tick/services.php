@@ -63,7 +63,6 @@ use Stu\Module\Tick\Spacecraft\ManagerComponent\CrewLimitations;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\EscapePodHandling;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\LowerHull;
 use Stu\Module\Tick\Spacecraft\ManagerComponent\NpcShipHandling;
-use Stu\Module\Tick\Spacecraft\ManagerComponent\ProduceTechnologyCommodities;
 use Stu\Module\Tick\Spacecraft\SpacecraftTick;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManager;
@@ -116,7 +115,6 @@ return [
                 autowire(EscapePodHandling::class),
                 get(SpacecraftTickInterface::class),
                 autowire(NpcShipHandling::class),
-                autowire(ProduceTechnologyCommodities::class),
                 autowire(LowerHull::class),
                 autowire(AnomalyCreationCheck::class),
             ]

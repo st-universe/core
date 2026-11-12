@@ -11,13 +11,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Override;
 use Stu\Component\Borg\BorgSphereDeletionListener;
+use Stu\Component\Crew\CrewDeletionListener;
 
 class EntityManagerFactory implements EntityManagerFactoryInterface
 {
     public function __construct(
         private ConnectionFactoryInterface $connectionFactory,
         private Configuration $configuration,
-        private ?BorgSphereDeletionListener $borgSphereDeletionListener = null
+        private ?BorgSphereDeletionListener $borgSphereDeletionListener = null,
+        private ?CrewDeletionListener $crewDeletionListener = null
     ) {}
 
     #[Override]
@@ -29,6 +31,9 @@ class EntityManagerFactory implements EntityManagerFactoryInterface
         );
         if ($this->borgSphereDeletionListener !== null) {
             $em->getEventManager()->addEventListener([Events::preRemove], $this->borgSphereDeletionListener);
+        }
+        if ($this->crewDeletionListener !== null) {
+            $em->getEventManager()->addEventListener([Events::preRemove], $this->crewDeletionListener);
         }
         return $em;
     }

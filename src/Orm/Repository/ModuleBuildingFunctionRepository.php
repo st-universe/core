@@ -5,38 +5,46 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
+use Override;
 use Stu\Component\Building\BuildingFunctionEnum;
+use Stu\Component\Research\SpecialResearchStatusEnum;
+use Stu\Component\Research\TechnologyRecipeKindEnum;
 use Stu\Orm\Entity\ModuleBuildingFunction;
+use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\TechnologyRecipe;
+use Stu\Orm\Entity\TechnologyResearch;
 
 /**
  * @extends EntityRepository<ModuleBuildingFunction>
  */
 final class ModuleBuildingFunctionRepository extends EntityRepository implements ModuleBuildingFunctionRepositoryInterface
 {
-    #[\Override]
+    #[Override]
+    public function save(ModuleBuildingFunction $function): void
+    {
+        $this->getEntityManager()->persist($function);
+    }
+
+    #[Override]
     public function getByBuildingFunctionAndUser(BuildingFunctionEnum $buildingFunction, int $userId): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(ModuleBuildingFunction::class, 'mbf');
-        $rsm->addFieldResult('mbf', 'id', 'id');
-        $rsm->addFieldResult('mbf', 'buildingfunction', 'buildingfunction');
-        $rsm->addFieldResult('mbf', 'module_id', 'module_id');
+        $research = $this->getEntityManager()->createQueryBuilder()->select('r.id')->from(Researched::class, 'r')
+            ->where('r.research_id = m.research_id')->andWhere('r.aktiv = :activeState')->andWhere('r.user_id = :userId');
+        $naniteRecipe = $this->getEntityManager()->createQueryBuilder()->select('recipe.id')->from(TechnologyRecipe::class, 'recipe')
+            ->where('recipe.kind = :productionKind')->andWhere('recipe.outputCommodity = m.commodity');
+        $naniteResearch = $this->getEntityManager()->createQueryBuilder()->select('technology.id')->from(TechnologyResearch::class, 'technology')
+            ->where('technology.user = :userId')->andWhere('technology.kind = :researchKind')->andWhere('technology.status = :completed');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT mbf.id, mbf.module_id, mbf.buildingfunction FROM stu_modules_buildingfunction mbf
-            WHERE mbf.buildingfunction = :buildingFunction AND mbf.module_id IN (
-                SELECT m.id FROM stu_modules m WHERE m.research_id is null OR m.research_id IN (
-                    SELECT r.research_id FROM stu_researched r WHERE r.aktiv = :activeState AND r.user_id = :userId
-                )
-            ) ORDER BY mbf.module_id',
-            $rsm
-        )
-            ->setParameters([
-                'buildingFunction' => $buildingFunction->value,
-                'userId' => $userId,
-                'activeState' => 0
-            ])
-            ->getResult();
+        return $this->createQueryBuilder('mbf')->innerJoin('mbf.module', 'm')
+            ->where('mbf.buildingfunction = :buildingFunction')
+            ->andWhere('m.research_id IS NULL OR EXISTS (' . $research->getDQL() . ')')
+            ->andWhere('NOT EXISTS (' . $naniteRecipe->getDQL() . ') OR EXISTS (' . $naniteResearch->getDQL() . ')')
+            ->setParameter('buildingFunction', $buildingFunction->value)
+            ->setParameter('userId', $userId)
+            ->setParameter('activeState', 0)
+            ->setParameter('productionKind', TechnologyRecipeKindEnum::NANITE_PRODUCTION)
+            ->setParameter('researchKind', TechnologyRecipeKindEnum::NANITE_RESEARCH)
+            ->setParameter('completed', SpecialResearchStatusEnum::COMPLETED)
+            ->orderBy('mbf.module_id')->getQuery()->getResult();
     }
 }

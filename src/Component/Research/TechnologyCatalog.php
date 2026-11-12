@@ -89,7 +89,7 @@ final class TechnologyCatalog
         return match ($recipe->getKind()) {
             TechnologyRecipeKindEnum::NANITE_RESEARCH => $foundations !== [] && !$this->repository->hasNaniteFabrication($user),
             TechnologyRecipeKindEnum::DATASET_COPY => isset($foundations[$recipe->getResearchType()->value ?? '']),
-            TechnologyRecipeKindEnum::NANITE_PRODUCTION,
+            TechnologyRecipeKindEnum::NANITE_PRODUCTION => false,
             TechnologyRecipeKindEnum::MODULE_OPTIMIZATION => $this->repository->hasNaniteFabrication($user)
         };
     }
