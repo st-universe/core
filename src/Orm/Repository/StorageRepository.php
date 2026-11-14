@@ -42,6 +42,19 @@ final class StorageRepository extends EntityRepository implements StorageReposit
     }
 
     #[\Override]
+    public function getCommodityAmountInPlayerStorage(int $commodityId): int
+    {
+        return (int) $this->createQueryBuilder('storage')
+            ->select('COALESCE(SUM(storage.count), 0)')
+            ->where('storage.commodity_id = :commodityId')
+            ->andWhere('storage.user_id >= :firstPlayerId')
+            ->andWhere('storage.trumfield IS NULL')
+            ->setParameter('commodityId', $commodityId)
+            ->setParameter('firstPlayerId', UserConstants::USER_FIRST_ID)
+            ->getQuery()->getSingleScalarResult();
+    }
+
+    #[\Override]
     public function getByUserAccumulated(User $user): array
     {
         $rsm = new ResultSetMapping();

@@ -12,6 +12,8 @@ use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\BorgSphereEvent;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\BorgSphereRepositoryInterface;
 
 final class ShowBorgSphere implements ViewControllerInterface
@@ -38,18 +40,25 @@ final class ShowBorgSphere implements ViewControllerInterface
         }
         $configuration = $event->getConfiguration();
         $cooldown = $this->raids->getCooldownUntil($game->getUser(), $event);
-        $disabled = $event->getPhase() === BorgSpherePhaseEnum::REGENERATING;
+        $disabled = $this->isDisabled($event, $target);
         $game->setPageTitle($target->getName());
         $game->setTemplateVar('SHIP', $source);
         $game->setTemplateVar('BORG_SPHERE', $target);
         $game->setTemplateVar('BORG_MAX_SHIELD', $target->getMaxShield(true));
         $game->setTemplateVar('BORG_EVENT', $event);
+        $game->setTemplateVar('BORG_LABEL', $configuration->getDisplayName());
+        $game->setTemplateVar('BORG_CAPTURED_SHIP', $configuration->isAssimilationEnabled() ? $target->getTractoredShip() : null);
         $game->setTemplateVar('BORG_DISABLED', $disabled);
+        $game->setTemplateVar('BORG_CAN_SEND_TEAM', $this->raids->canSendAwayTeam($event, $target));
         $game->setTemplateVar('BORG_TEAM_SIZE', $this->raids->getTeamSize($source, $event));
-        $game->setTemplateVar('BORG_CREW_REQUIREMENT', $this->raids->getCrewRequirementMessage($source));
         $game->setTemplateVar('BORG_SUCCESS', $configuration->getSetting($disabled ? 'raid_success_disabled' : 'raid_success_active'));
         $game->setTemplateVar('BORG_COOLDOWN', $cooldown > $this->time->time() ? $this->time->transformToStuDateTime($cooldown) . ' Uhr' : null);
         $game->setTemplateVar('BORG_NEXT_REGEN', $this->time->transformToStuDateTime($event->getNextTickAt()) . ' Uhr');
         $game->setMacroInAjaxWindow('html/ship/borgSphere.twig');
+    }
+
+    private function isDisabled(BorgSphereEvent $event, Spacecraft $target): bool
+    {
+        return $event->getPhase() === BorgSpherePhaseEnum::REGENERATING && $target->getCondition()->isDisabled();
     }
 }

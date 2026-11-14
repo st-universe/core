@@ -107,10 +107,20 @@
     <div class="divbody">
         <select name="borg_configuration_id">
             {% for configuration in BORG_SPHERE_CONFIGURATIONS %}
-            <option value="{{ configuration.getId }}">{{ configuration.getQuest.getTitle|bbcode2txt }} – {{ configuration.getColony.getName|bbcode2txt }} ({{ configuration.getId }})</option>
+            <option value="{{ configuration.getId }}">{{ configuration.getDisplayName }} – {{ configuration.getQuest.getTitle|bbcode2txt }} – {{ configuration.getColony.getName|bbcode2txt }} ({{ configuration.getId }})</option>
             {% endfor %}
         </select>
-        <input type="submit" class="button" name="B_SPAWN_BORG_SPHERE" value="Borg-Sphäre spawnen" />
+        <br /><br />
+        <label for="borg_spawn_layer">Layer-ID:</label>
+        <input type="text" inputmode="numeric" size="5" name="borg_spawn_layer" id="borg_spawn_layer" />
+        <label for="borg_spawn_x">X:</label>
+        <input type="text" inputmode="numeric" size="5" name="borg_spawn_x" id="borg_spawn_x" />
+        <label for="borg_spawn_y">Y:</label>
+        <input type="text" inputmode="numeric" size="5" name="borg_spawn_y" id="borg_spawn_y" />
+        <br />
+        Optionaler Spawnort auf der Weltkarte. Ohne Koordinaten wird automatisch ein Feld im Zielsystem gewählt
+        <br /><br />
+        <input type="submit" class="button" name="B_SPAWN_BORG_SPHERE" value="Borg-Schiff spawnen" />
     </div>
     <br />
 {% endif %}

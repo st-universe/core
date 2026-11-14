@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\EpsTransfer;
 
+use Override;
 use request;
+use Stu\Component\Borg\BorgAssimilationActionGuard;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,6 +17,7 @@ use Stu\Module\NPC\Lib\NpcLogTradeMessageLoggerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Spacecraft;
 
 final class EpsTransfer implements ActionControllerInterface
 {
@@ -28,7 +31,7 @@ final class EpsTransfer implements ActionControllerInterface
         private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -51,7 +54,7 @@ final class EpsTransfer implements ActionControllerInterface
         }
 
         $ship = $wrapper->get();
-        $target = $targetWrapper->get();
+        $target = $this->getTransferTarget($targetWrapper);
 
         if (!$this->interactionCheckerBuilderFactory
             ->createInteractionChecker()
@@ -115,9 +118,16 @@ final class EpsTransfer implements ActionControllerInterface
         $context->getInfo()->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;
+    }
+
+    private function getTransferTarget(SpacecraftWrapperInterface $wrapper): Spacecraft
+    {
+        $target = $wrapper->get();
+        BorgAssimilationActionGuard::assertUsable($target);
+        return $target;
     }
 }

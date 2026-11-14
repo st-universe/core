@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Spacecraft;
 
+use Stu\Component\Borg\BorgAssimilationLifecycle;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreation;
 use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculator;
@@ -72,6 +73,7 @@ use Stu\Component\Spacecraft\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\StuTime;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     NbsUtilityInterface::class => autowire(NbsUtility::class),
@@ -92,7 +94,8 @@ return [
             SpacecraftSystemTypeEnum::TACHYON_SCANNER->value => autowire(TachyonScannerShipSystem::class),
             SpacecraftSystemTypeEnum::TORPEDO->value => autowire(ProjectileWeaponShipSystem::class),
             SpacecraftSystemTypeEnum::LSS->value => autowire(LongRangeScannerShipSystem::class),
-            SpacecraftSystemTypeEnum::TRACTOR_BEAM->value => autowire(TractorBeamShipSystem::class),
+            SpacecraftSystemTypeEnum::TRACTOR_BEAM->value => autowire(TractorBeamShipSystem::class)
+                ->constructorParameter('assimilation', get(BorgAssimilationLifecycle::class)),
             SpacecraftSystemTypeEnum::WARPCORE->value => autowire(WarpcoreShipSystem::class),
             SpacecraftSystemTypeEnum::EPS->value => autowire(EpsShipSystem::class),
             SpacecraftSystemTypeEnum::IMPULSEDRIVE->value => autowire(ImpulseDriveShipSystem::class),

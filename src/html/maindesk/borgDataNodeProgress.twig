@@ -1,0 +1,10 @@
+{% if BORG_DATA_NODE_PROGRESS_VISIBLE %}
+<br />
+<div id="borgdatanodeprogress" class="box">
+    <div class="box_title">Globaler Borg-Datenknoten-Fortschritt</div>
+    <div class="box_body" style="text-align: center;">
+        {{ BORG_DATA_NODE_PROGRESS_BAR|raw }}
+        <div>{{ BORG_DATA_NODE_PROGRESS_PERCENT }}%</div>
+    </div>
+</div>
+{% endif %}

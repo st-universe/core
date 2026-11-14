@@ -32,10 +32,24 @@
 {% set SPACECRAFT = WRAPPER.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
 {% set condition = SPACECRAFT.getCondition %}
+{% set assimilation = getBorgAssimilationState(SPACECRAFT) %}
+{% if assimilation.active %}
+<div class="box">
+    <div class="box_title">Assimilation läuft</div>
+    <div class="box_body borg-assimilation-status" data-assimilation-progress="{{ assimilation.progress }}"
+        data-assimilation-active="1" data-assimilation-start="{{ assimilation.started }}"
+        data-assimilation-initial="{{ assimilation.initial }}" data-assimilation-duration="{{ assimilation.duration }}"
+        data-assimilation-now="{{ assimilation.now }}">
+        <span data-assimilation-value>{{ assimilation.progress|number_format(1, ',', '') }}%</span> ·
+        Verbleibende Zeit: <span data-assimilation-remaining>{{ assimilation.remaining|formatSeconds }}</span>
+    </div>
+</div>
+{% endif %}
 <form action="{{ SPACECRAFT.getType.getModuleView.getPhpPage }}" method="post" name="shipform" id="shipform"
 	onkeydown="return event.key != 'Enter';">
 	<input type="hidden" name="id" value="{{ spacecraftId }}" />
 	<input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+{% if assimilation.active %}<fieldset disabled="disabled" style="border:0;margin:0;padding:0;min-width:0;">{% endif %}
 	<table class="tcal">
 		<tr>
 			<th style="text-align: center;">Typ</th>
@@ -306,6 +320,7 @@
 		{% endif %}
 	</table>
 	<br />
+{% if assimilation.active %}</fieldset>{% endif %}
 </form>
 {% if SPACECRAFT.hasNbs %}
 <table class="tcal">

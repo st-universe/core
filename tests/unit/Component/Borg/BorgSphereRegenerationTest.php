@@ -57,6 +57,28 @@ final class BorgSphereRegenerationTest extends StuTestCase
         self::assertFalse($ship->getCondition()->isDisabled());
     }
 
+    public function testCubeShieldsRegenerateMoreSlowlyWithoutSlowingHullOrSystems(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([
+            ...$event->getConfiguration()->getSettings(),
+            'assimilation_enabled' => 1,
+            'shield_regen_min_percent' => 1,
+            'shield_regen_max_percent' => 5
+        ]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(4)->andReturn(10);
+        $this->random->shouldReceive('rand')->with(1, 5)->once()->andReturn(1);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(200, $ship->getCondition()->getHull());
+        self::assertSame(220, $ship->getCondition()->getShield());
+        self::assertSame(20, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(20, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus());
+        self::assertSame(11, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
+    }
+
     public function testOverdueHoursRollEachValueAgainRatherThanMultiplyingOneRoll(): void
     {
         $ship = $this->ship();

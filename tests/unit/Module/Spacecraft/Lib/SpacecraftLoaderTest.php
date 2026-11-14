@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery\MockInterface;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
@@ -17,7 +18,9 @@ use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Lock\LockTypeEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftAssimilated;
 use Stu\Orm\Entity\Station;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\CrewAssignmentRepositoryInterface;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -39,7 +42,7 @@ class SpacecraftLoaderTest extends StuTestCase
 
     private SpacecraftLoader $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,6 +55,7 @@ class SpacecraftLoaderTest extends StuTestCase
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->lockManager = $this->mock(LockManagerInterface::class);
         $this->spacecraft = $this->mock(Spacecraft::class);
+        $this->spacecraft->shouldReceive('isBeingAssimilated')->byDefault()->andReturn(false);
         $this->wrapper = $this->mock(SpacecraftWrapperInterface::class);
 
         $this->subject = new SpacecraftLoader(
@@ -67,6 +71,21 @@ class SpacecraftLoaderTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
+    }
+
+    public function testCapturedShipRemainsReadableThroughTheShipPageLoader(): void
+    {
+        $user = $this->mock(User::class);
+        $user->shouldReceive('getId')->andReturn($this->userId);
+        $source = new Ship()->setUser($user);
+        new SpacecraftAssimilated()->setSpacecraft($source)->start($source, time(), 900);
+        self::assertTrue($source->isBeingAssimilated());
+        $this->spacecraftRepository->shouldReceive('find')->once()->with($this->spacecraftId)->andReturn($source);
+        $this->spacecraftWrapperFactory->shouldReceive('wrapSpacecraft')->once()->with($source)->andReturn($this->wrapper);
+        $this->wrapper->shouldReceive('get')->once()->andReturn($source);
+        $this->lockManager->shouldNotReceive('isLocked');
+
+        self::assertSame($source, $this->subject->getByIdAndUser($this->spacecraftId, $this->userId, true, false));
     }
 
     public function testgGtByIdAndUserExpectErrorWhenEntityLocked(): void

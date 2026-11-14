@@ -49,6 +49,11 @@ trait SpacecraftCrewTrait
 
     public function hasEnoughCrew(?ControllerContext $game = null): bool
     {
+        $ship = $this->getThis();
+        $assimilation = $ship->getAssimilation();
+        if ($assimilation?->isComplete() && $ship->getUser()->getId() === $assimilation->getBorgUserId()) {
+            return true;
+        }
         $buildplan = $this->getThis()->getBuildplan();
 
         if ($buildplan === null) {

@@ -7,6 +7,8 @@ namespace Stu\Module\Twig;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\Enum\AllianceJobPermissionEnum;
+use Stu\Component\Borg\BorgAssimilationCapture;
+use Stu\Component\Borg\BorgAssimilationPresentation;
 use Stu\Component\Building\NameAbbreviations;
 use Stu\Component\Colony\ColonyMenuEnum;
 use Stu\Component\Game\ModuleEnum;
@@ -35,11 +37,14 @@ use Stu\Module\Spacecraft\Lib\Battle\FightLibInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
 use Stu\Module\Template\TemplateHelperInterface;
 use Stu\Orm\Entity\Anomaly;
+use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BorgSphereRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -62,7 +67,10 @@ class TwigHelper
         private readonly StuTime $stuTime,
         private readonly StuRandom $stuRandom,
         private readonly AllianceJobManagerInterface $allianceJobManager,
-        private readonly ?BorgSphereRepositoryInterface $borgSphereRepository = null
+        private readonly ?BorgSphereRepositoryInterface $borgSphereRepository = null,
+        private readonly ?BorgAssimilationPresentation $borgAssimilationPresentation = null,
+        private readonly ?BorgAssimilationCapture $borgAssimilationCapture = null,
+        private readonly ?ShipRepositoryInterface $borgAssimilationShips = null
     ) {}
 
     public function registerGlobalVariables(): void
@@ -166,6 +174,38 @@ class TwigHelper
     private function registerBorgFunctions(): void
     {
         $this->environment->addFunction(new TwigFunction('isBorgSphere', fn (Spacecraft|SpacecraftNfsItem $target): bool => $this->borgSphereRepository?->getByShipId($target->getId())?->isFinished() === false));
+        $this->environment->addFunction(new TwigFunction('canAssimilateTarget', fn (mixed $source, mixed $target): bool => $this->canAssimilateTarget($source, $target)));
+        $emptyState = ['progress' => 0, 'active' => false, 'image' => null];
+        $this->environment->addFunction(new TwigFunction('getBorgAssimilationState', fn (mixed $target): array =>
+            $target instanceof Spacecraft || $target instanceof SpacecraftNfsItem
+                ? ($this->borgAssimilationPresentation?->getState($target) ?? $emptyState)
+                : $emptyState));
+    }
+
+    private function canAssimilateTarget(mixed $source, mixed $target): bool
+    {
+        if (!$source instanceof Ship || $this->borgAssimilationCapture === null || $this->borgAssimilationShips === null
+            || !$this->ownsAssimilationSource($source)) {
+            return false;
+        }
+        $event = $this->borgSphereRepository?->getByShip($source);
+        if ($event === null || !$this->isAssimilationEventAvailable($event, $source)) {
+            return false;
+        }
+        $ship = $target instanceof SpacecraftNfsItem ? $this->borgAssimilationShips->find($target->getId()) : $target;
+        return $ship instanceof Ship && $this->borgAssimilationCapture->canCaptureTarget($event, $source, $ship);
+    }
+
+    private function ownsAssimilationSource(Ship $source): bool
+    {
+        return $this->game->hasUser() && $source->getUser()->getId() === $this->game->getUser()->getId();
+    }
+
+    private function isAssimilationEventAvailable(BorgSphereEvent $event, Ship $source): bool
+    {
+        $configuration = $event->getConfiguration();
+        return $configuration->getUser()->getId() === $source->getUser()->getId()
+            && $configuration->isAssimilationEnabled() && $configuration->isActive($this->stuTime->time());
     }
 
     private function registerFunctions(): void

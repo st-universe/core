@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft;
 
+use Psr\Container\ContainerInterface;
+use Stu\Component\Borg\BorgAssimilationLifecycle;
+use Stu\Component\Borg\BorgAssimilationService;
+use Stu\Component\Borg\BorgCompanionSupply;
 use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Borg\BorgSphereAttackGuard;
+use Stu\Component\Borg\BorgSphereBehavior;
 use Stu\Component\Borg\BorgSphereCombat;
+use Stu\Component\Borg\BorgSphereFlight;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Extension\ExtensionHooks;
@@ -18,10 +24,12 @@ use Stu\Module\Spacecraft\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Spacecraft\Action\AddShipLog\AddShipLog;
 use Stu\Module\Spacecraft\Action\AddWormholeRestriction\AddWormholeRestriction;
 use Stu\Module\Spacecraft\Action\AssignCrewSlot\AssignCrewSlot;
+use Stu\Module\Spacecraft\Action\AttackBorgTractor\AttackBorgTractor;
 use Stu\Module\Spacecraft\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Spacecraft\Action\AttackSpacecraft\AttackSpacecraft;
 use Stu\Module\Spacecraft\Action\AwayMission\AwayMission;
 use Stu\Module\Spacecraft\Action\BoardShip\BoardShip;
+use Stu\Module\Spacecraft\Action\BorgAssimilateTarget\BorgAssimilateTarget;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeName;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequest;
 use Stu\Module\Spacecraft\Action\ChangeName\ChangeNameRequestInterface;
@@ -151,10 +159,12 @@ use Stu\Module\Spacecraft\Lib\Damage\ApplyFieldDamageInterface;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamage;
 use Stu\Module\Spacecraft\Lib\Damage\SystemDamageInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CancelTakeover;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearBorgAssimilation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoredBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CrewEvacuation;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\DiscardBorgDataNodes;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\EnhanceDestroyingCrew;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\FinishBorgSphereEvent;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\HistoryEntryCreation;
@@ -304,6 +314,15 @@ use function DI\autowire;
 use function DI\get;
 
 return [
+    BorgAssimilationLifecycle::class => fn (ContainerInterface $container): BorgAssimilationLifecycle => new BorgAssimilationLifecycle(
+        fn (): BorgAssimilationService => $container->get(BorgAssimilationService::class)
+    ),
+    BorgSphereCombat::class => autowire(BorgSphereCombat::class)
+        ->constructorParameter('assimilation', get(BorgAssimilationLifecycle::class)),
+    BorgSphereBehavior::class => autowire(BorgSphereBehavior::class)
+        ->constructorParameter('assimilation', get(BorgAssimilationService::class)),
+    BorgSphereFlight::class => autowire(BorgSphereFlight::class)
+        ->constructorParameter('companions', get(BorgCompanionSupply::class)),
     MessageFactoryInterface::class => autowire(MessageFactory::class),
     ShipMoverInterface::class => autowire(ShipMover::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
@@ -428,6 +447,7 @@ return [
         ->constructorParameter(
             'destructionHandlers',
             [
+                autowire(ClearBorgAssimilation::class),
                 autowire(FinishBorgSphereEvent::class),
                 autowire(ClearTractoredBeam::class),
                 autowire(CrewEvacuation::class),
@@ -443,6 +463,7 @@ return [
                 autowire(ResetTrackerDevices::class),
                 autowire(TradepostDestruction::class),
                 autowire(TholianWebDestruction::class),
+                autowire(DiscardBorgDataNodes::class),
                 autowire(TransformToTrumfield::class)
             ],
         ),
@@ -455,6 +476,8 @@ return [
     ],
     'SPACECRAFT_ACTIONS' => [
         CollectBorgNanites::ACTION_IDENTIFIER => autowire(CollectBorgNanites::class),
+        AttackBorgTractor::ACTION_IDENTIFIER => autowire(AttackBorgTractor::class),
+        BorgAssimilateTarget::ACTION_IDENTIFIER => autowire(BorgAssimilateTarget::class),
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
         DeleteSpacecraftLog::ACTION_IDENTIFIER => autowire(DeleteSpacecraftLog::class),
         EditSpacecraftLog::ACTION_IDENTIFIER => autowire(EditSpacecraftLog::class),

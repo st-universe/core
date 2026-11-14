@@ -7,9 +7,12 @@ namespace Stu\Module\Twig;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Asset\AssetVersioning;
 use Stu\Component\Asset\AssetVersioningInterface;
+use Stu\Component\Borg\BorgAssimilationCapture;
+use Stu\Component\Borg\BorgAssimilationPresentation;
 use Stu\Extension\ExtensionRegistry;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Repository\BorgSphereRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Twig\Environment;
 
 use function DI\autowire;
@@ -56,4 +59,7 @@ return [
     TwigPageInterface::class => autowire(TwigPage::class),
     TwigHelper::class => autowire(TwigHelper::class)
         ->constructorParameter('borgSphereRepository', get(BorgSphereRepositoryInterface::class))
+        ->constructorParameter('borgAssimilationPresentation', get(BorgAssimilationPresentation::class))
+        ->constructorParameter('borgAssimilationCapture', get(BorgAssimilationCapture::class))
+        ->constructorParameter('borgAssimilationShips', get(ShipRepositoryInterface::class))
 ];

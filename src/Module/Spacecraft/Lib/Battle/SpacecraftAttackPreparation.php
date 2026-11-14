@@ -33,7 +33,7 @@ final class SpacecraftAttackPreparation implements SpacecraftAttackPreparationIn
         if (!$isOneWay) {
             $isUndockingMandatory = $defenders->isActive();
             foreach ($defenders->getActiveMembers() as $defender) {
-                if ($defender->get()->getCondition()->isDisabled()) {
+                if ($defender->get()->getCondition()->isDisabled() || $defender->get()->isBeingAssimilated()) {
                     continue;
                 }
                 $message = $this->messageFactory->createMessage(

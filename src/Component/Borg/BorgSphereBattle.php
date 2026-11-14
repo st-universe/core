@@ -100,6 +100,7 @@ final class BorgSphereBattle
     {
         return !$target->getCondition()->isDestroyed() && !$target->getCondition()->isDisabled()
             && !$target->isCloaked() && !$target->isWarped() && !$target->getRump()->isEscapePods()
-            && !$target->isRpgModuleInvisible() && !$target->getUser()->isVacationRequestOldEnough();
+            && !$target->isRpgModuleInvisible() && !$target->getUser()->isVacationRequestOldEnough()
+            && !$target->isBeingAssimilated();
     }
 }

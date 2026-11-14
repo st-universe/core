@@ -1,4 +1,5 @@
 {% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
+{% set AVAILABLE_SHIPS = AVAILABLE_SHIPS|default([])|filter(ship => not ship.isBeingAssimilated) %}
 <form action="ship.php" method="post">
     <input type="hidden" name="fleetid" value="{{ FLEET.getId }}" />
     <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />

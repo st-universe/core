@@ -101,6 +101,14 @@ class BorgSphereConfiguration
     {
         return $this->settings[$key] ?? throw new LogicException('Missing Borg sphere setting: ' . $key);
     }
+    public function isAssimilationEnabled(): bool
+    {
+        return ($this->settings['assimilation_enabled'] ?? 0) === 1;
+    }
+    public function getDisplayName(): string
+    {
+        return $this->isAssimilationEnabled() ? 'Borg-Kubus' : 'Borg-Sphäre';
+    }
     /** @return array<string, int> */
     public function getSettings(): array
     {

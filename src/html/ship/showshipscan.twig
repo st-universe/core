@@ -1,5 +1,15 @@
 {% if TARGETWRAPPER %}
 {% set TARGETSHIP = TARGETWRAPPER.get %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
+{% set assimilation = getBorgAssimilationState(TARGETSHIP) %}
+{% if assimilation.progress > 0 or assimilation.active %}
+<div class="box">
+  <div class="box_body" style="text-align:center;">
+    {{ spacecraftImageWithoutWarp(TARGETSHIP) }}<br />
+    Assimilation: {{ assimilation.progress|number_format(1, ',', '') }}%{% if assimilation.active %} · läuft{% endif %}
+  </div>
+</div>
+{% endif %}
 <div class="box">
   <div class="box_body">
     <table class="tcal">

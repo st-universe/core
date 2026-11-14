@@ -1295,7 +1295,7 @@ function renameCrew(crew_id) {
   );
 }
 function adjustCellHeight(image) {
-  var cell = image.parentNode.parentNode;
+  var cell = image.closest("td") || image.parentNode.parentNode;
   var height = image.offsetHeight;
 
   if (height === 0) {
@@ -1311,7 +1311,7 @@ function adjustCellHeight(image) {
   });
 }
 function adjustCellWidth(image) {
-  var cell = image.parentNode.parentNode;
+  var cell = image.closest("td") || image.parentNode.parentNode;
   var width = image.offsetWidth;
 
   if (width === 0) {
@@ -2292,3 +2292,40 @@ if (document.readyState === 'loading') {
 } else {
   initializeCrewSkillRadar();
 }
+
+(function () {
+  function updateAssimilation() {
+    document.querySelectorAll('[data-assimilation-active="1"]').forEach(function (element) {
+      var data = element.dataset;
+      if (!data.assimilationClientEpoch) {
+        data.assimilationClientEpoch = String(Date.now());
+      }
+      var now = Number(data.assimilationNow) + (Date.now() - Number(data.assimilationClientEpoch)) / 1000;
+      var duration = Math.max(60, Number(data.assimilationDuration));
+      var initial = Number(data.assimilationInitial);
+      var elapsed = Math.floor(Math.max(0, now - Number(data.assimilationStart)) / 60) * 60;
+      var progress = Math.min(10000, Math.max(Number(data.assimilationProgress) * 100, initial + Math.floor(elapsed * (10000 - initial) / duration))) / 100;
+      if (!Number.isFinite(progress)) return;
+      data.assimilationProgress = String(progress);
+      var overlay = element.querySelector('.borg-assimilation-overlay');
+      if (overlay) {
+        overlay.style.clipPath = 'inset(0 0 0 ' + (100 - progress) + '%)';
+        if (progress >= 100) element.querySelector('img').style.visibility = 'hidden';
+      }
+      var value = element.querySelector('[data-assimilation-value]');
+      if (value) value.textContent = progress.toFixed(1).replace('.', ',') + '%';
+      var remaining = element.querySelector('[data-assimilation-remaining]');
+      if (remaining) {
+        var seconds = Math.max(0, Math.ceil(Number(data.assimilationStart) + duration - now));
+        remaining.textContent = Math.floor(seconds / 60) + 'm ' + (seconds % 60) + 's';
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateAssimilation);
+  } else {
+    updateAssimilation();
+  }
+  window.setInterval(updateAssimilation, 1000);
+}());

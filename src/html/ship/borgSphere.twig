@@ -1,37 +1,39 @@
 <div style="width: 420px; padding: 0 10px; box-sizing: border-box;">
     {% if INFORMATION %}{% include 'html/systeminformation.twig' %}{% endif %}
-    <div class="divbody">
-        {% if BORG_DISABLED %}
-        Die Sphäre ist kampfunfähig und regeneriert ihre Systeme
-        {% else %}
-        Die Sphäre ist aktiv
+    {% if BORG_DISABLED %}
+    {{ BORG_LABEL }} ist kampfunfähig und regeneriert die Systeme
+    {% else %}
+    {{ BORG_LABEL }} ist aktiv
+    {% endif %}
+    <br /><br />
+    <table class="tcal" style="width: 100%;">
+        <tr><th>Hülle</th><td>{{ BORG_SPHERE.getCondition.getHull }} / {{ BORG_SPHERE.getMaxHull }}</td></tr>
+        <tr><th>Schilde</th><td>{{ BORG_SPHERE.getCondition.getShield }} / {{ BORG_MAX_SHIELD }}</td></tr>
+        <tr><th>Transwarpantrieb</th><td>{{ (BORG_EVENT.getTranswarpProgress / 100)|number_format(0, ',', '.') }}%</td></tr>
+        <tr><th>Erreichte Regenerationsschwelle</th><td>{{ BORG_EVENT.getTranswarpFloor / 100 }}%</td></tr>
+        {% if BORG_EVENT.getFirstDisabledAt is not null %}
+        <tr><th>Nächste Regeneration</th><td>{{ BORG_NEXT_REGEN }}</td></tr>
         {% endif %}
-        <br /><br />
-        <table class="tcal" style="width: 100%;">
-            <tr><th>Hülle</th><td>{{ BORG_SPHERE.getCondition.getHull }} / {{ BORG_SPHERE.getMaxHull }}</td></tr>
-            <tr><th>Schilde</th><td>{{ BORG_SPHERE.getCondition.getShield }} / {{ BORG_MAX_SHIELD }}</td></tr>
-            <tr><th>Transwarpantrieb</th><td>{{ (BORG_EVENT.getTranswarpProgress / 100)|number_format(0, ',', '.') }}%</td></tr>
-            <tr><th>Erreichte Regenerationsschwelle</th><td>{{ BORG_EVENT.getTranswarpFloor / 100 }}%</td></tr>
-            {% if BORG_EVENT.getFirstDisabledAt is not null %}
-            <tr><th>Nächste Regeneration</th><td>{{ BORG_NEXT_REGEN }}</td></tr>
-            {% endif %}
-            <tr><th>Erfolgsaussicht Außenmission</th><td>{{ BORG_SUCCESS }}%</td></tr>
-            <tr><th>Benötigte freie Crew</th><td>{{ BORG_EVENT.getConfiguration.getSetting('raid_team_size') }}</td></tr>
-            <tr><th>Möglicher Gewinn</th><td>{{ BORG_EVENT.getConfiguration.getSetting('raid_reward_max') }} Naniten</td></tr>
-        </table>
-        <br />
-        {% if BORG_TEAM_SIZE == 0 %}
-        {{ BORG_CREW_REQUIREMENT }}
-        <br /><br />
-        {% endif %}
-        {% if BORG_COOLDOWN %}
-        Nächste Außenmission ab {{ BORG_COOLDOWN }}
-        {% elseif BORG_TEAM_SIZE > 0 %}
-        <button type="button" class="button" onclick="actionToInnerContent('B_COLLECT_BORG_NANITES', 'id={{ SHIP.getId }}&target={{ BORG_SPHERE.getId }}&sstr={{ SESSIONSTRING }}');">Außenteam senden</button>
-        {% endif %}
-        {% if not BORG_DISABLED %}
-        <br /><br />
-        <a class="button" href="?B_ATTACK_SPACECRAFT=1&id={{ SHIP.getId }}&target={{ BORG_SPHERE.getId }}&borg_target_system=transwarp&sstr={{ SESSIONSTRING }}">Transwarpantrieb beschießen</a>
-        {% endif %}
-    </div>
+        <tr><th>Erfolgsaussicht Außenmission</th><td>{{ BORG_SUCCESS }}%</td></tr>
+        <tr><th>Benötigte freie Crew</th><td>{{ BORG_EVENT.getConfiguration.getSetting('raid_team_size') }}</td></tr>
+        <tr><th>Möglicher Gewinn</th><td>{{ BORG_EVENT.getConfiguration.getSetting('raid_reward_max') }} Naniten</td></tr>
+    </table>
+    <br />
+    {% if BORG_CAPTURED_SHIP and BORG_CAPTURED_SHIP.isBeingAssimilated %}
+    {{ BORG_CAPTURED_SHIP.getName|bbcode }} wird assimiliert
+    <br /><br />
+    Rotierende Frequenzmodulation: {{ BORG_EVENT.getConfiguration.getSetting('tractor_rescue_chance_percent') }}% Erfolgschance pro Energiesalve
+    <br /><br />
+    <button type="button" class="button" onclick="actionToInnerContent('B_ATTACK_BORG_TRACTOR', 'id={{ SHIP.getId }}&target={{ BORG_SPHERE.getId }}&sstr={{ SESSIONSTRING }}');">Traktoremitter beschießen</button>
+    <br /><br />
+    {% endif %}
+    {% if BORG_COOLDOWN %}
+    Nächste Außenmission ab {{ BORG_COOLDOWN }}
+    {% elseif BORG_CAN_SEND_TEAM and BORG_TEAM_SIZE > 0 %}
+    <button type="button" class="button" onclick="actionToInnerContent('B_COLLECT_BORG_NANITES', 'id={{ SHIP.getId }}&target={{ BORG_SPHERE.getId }}&sstr={{ SESSIONSTRING }}');">Außenteam senden</button>
+    {% endif %}
+    {% if not BORG_DISABLED %}
+    <br /><br />
+    <button type="button" class="button" onclick="actionToInnerContent('B_ATTACK_SPACECRAFT', 'id={{ SHIP.getId }}&target={{ BORG_SPHERE.getId }}&borg_target_system=transwarp&sstr={{ SESSIONSTRING }}');">Transwarpantrieb beschießen</button>
+    {% endif %}
 </div>

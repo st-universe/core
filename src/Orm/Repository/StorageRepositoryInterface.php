@@ -22,6 +22,8 @@ interface StorageRepositoryInterface extends ObjectRepository
 
     public function delete(Storage $storage): void;
 
+    public function getCommodityAmountInPlayerStorage(int $commodityId): int;
+
     /**
      * @return list<array{commodity_id: int, amount: int}>
      */

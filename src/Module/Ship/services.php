@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
+use Stu\Component\Borg\BorgWebReaction;
 use Stu\Module\Control\GameController;
 use Stu\Module\Game\View\Overview\Overview;
 use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
@@ -83,6 +84,7 @@ use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     AstroEntryLibInterface::class => autowire(AstroEntryLib::class),
@@ -135,11 +137,13 @@ return [
         ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
         SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),
         TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class),
-        CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class),
+        CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class)
+            ->constructorParameter('borgWebReaction', get(BorgWebReaction::class)),
         CancelTholianWeb::ACTION_IDENTIFIER => autowire(CancelTholianWeb::class),
         ImplodeTholianWeb::ACTION_IDENTIFIER => autowire(ImplodeTholianWeb::class),
         RemoveTholianWeb::ACTION_IDENTIFIER => autowire(RemoveTholianWeb::class),
-        SupportTholianWeb::ACTION_IDENTIFIER => autowire(SupportTholianWeb::class),
+        SupportTholianWeb::ACTION_IDENTIFIER => autowire(SupportTholianWeb::class)
+            ->constructorParameter('borgWebReaction', get(BorgWebReaction::class)),
         UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class),
     ],
     'SHIP_VIEWS' => [

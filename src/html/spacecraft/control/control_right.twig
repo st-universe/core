@@ -1,4 +1,5 @@
 {% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
+{% from 'html/shipmacros.twig' import spacecraftImageWithoutWarp %}
 
 {% set SPACECRAFT = wrapper.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
@@ -254,9 +255,9 @@
                 <img src="/assets/buttons/dock1.png" name="docktractored" title="Gehaltenes Schiff andocken" />
             </a>
             {% endif %}
-            <img src="/assets/ships/{{ tractoredShip.getRump.getId }}.png" />
+            {{ spacecraftImageWithoutWarp(tractoredShip) }}
             {% else %}
-            <img src="/assets/ships/{{ tractoringSpacecraft.getRump.getId }}.png" />
+            {{ spacecraftImageWithoutWarp(tractoringSpacecraft) }}
             {% endif %}
         </td>
         <td>

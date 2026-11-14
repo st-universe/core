@@ -55,6 +55,7 @@ class AttackedBattlePartyTest extends StuTestCase
             ->withNoArgs()
             ->zeroOrMoreTimes()
             ->andReturn(false);
+        $this->wrapper->shouldReceive('get->isBeingAssimilated')->andReturn(false);
 
         $this->subject = new AttackedBattleParty(
             $this->wrapper,

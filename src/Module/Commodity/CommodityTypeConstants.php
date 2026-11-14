@@ -59,6 +59,7 @@ final class CommodityTypeConstants
     public const int COMMODITY_PLASMA_TORPEDO = 86;
     public const int COMMODITY_HEAVY_PLASMA_TORPEDO = 87;
     public const int COMMODITY_EASTER_EGG = 73;
+    public const int COMMODITY_BORG_DATA_NODE = 93;
     public const int COMMODITY_SPARE_PART = 10001;
     public const int COMMODITY_SYSTEM_COMPONENT = 10002;
 

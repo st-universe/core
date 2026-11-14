@@ -21,6 +21,7 @@ use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Entity\SpacecraftAssimilated;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftCondition;
 use Stu\Orm\Entity\SpacecraftRump;
@@ -198,6 +199,17 @@ final class BorgSphereBattleTest extends StuTestCase
         $this->attacks->shouldNotReceive('attack');
 
         self::assertFalse($this->subject->attackTarget($this->event, $this->sphere, $target));
+    }
+
+    public function testCapturedPlayerShipIsNotShotDuringItsAssimilation(): void
+    {
+        $target = $this->ship(2, 261);
+        new SpacecraftAssimilated()->setSpacecraft($target)->start($this->sphere, 123, 900);
+        $this->wrappers->shouldNotReceive('wrapShip');
+        $this->attacks->shouldNotReceive('attack');
+
+        self::assertFalse($this->subject->attackTarget($this->event, $this->sphere, $target));
+        self::assertTrue($target->isBeingAssimilated());
     }
 
     private function ship(int $id, int $userId): Ship

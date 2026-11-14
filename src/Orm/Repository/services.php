@@ -191,6 +191,7 @@ use function DI\autowire;
 
 return [
     BorgSphereRepositoryInterface::class => autowire(BorgSphereRepository::class),
+    BorgAssimilationRepositoryInterface::class => autowire(BorgAssimilationRepository::class),
     TechnologyRepositoryInterface::class => autowire(TechnologyRepository::class),
     UserModuleOptimizationRepositoryInterface::class => autowire(UserModuleOptimizationRepository::class),
     SpecialResearchDefinitionRepositoryInterface::class => autowire(SpecialResearchDefinitionRepository::class),

@@ -10,6 +10,7 @@ use Stu\Module\Control\StuRandom;
 use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Station;
 
 class AttackedBattleParty extends AbstractBattleParty
@@ -26,6 +27,10 @@ class AttackedBattleParty extends AbstractBattleParty
     public function getActiveMembers(bool $canFire = false, bool $filterDisabled = true): Collection
     {
         $target = $this->leader->get();
+        if ($target instanceof Ship && $target->isBeingAssimilated()) {
+            return $canFire ? new ArrayCollection() : $this->createSingleton($this->leader)
+                ->filter(static fn (SpacecraftWrapperInterface $wrapper): bool => !$wrapper->get()->getCondition()->isDestroyed());
+        }
         if (!$canFire && $this->borgSphereAttackContext?->allowsDestruction($target)) {
             return parent::getActiveMembers(false, false)->filter(fn (SpacecraftWrapperInterface $wrapper): bool =>
                 !$wrapper->get()->getCondition()->isDisabled() || $wrapper->get() === $target);

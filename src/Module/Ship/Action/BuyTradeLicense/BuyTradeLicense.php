@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use Override;
 use request;
+use Stu\Component\Borg\BorgAssimilationActionGuard;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SanityCheckException;
@@ -122,6 +123,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         if ($targetShip === null || $targetShip->getUser()->getId() !== $ship->getUser()->getId()) {
             throw new SanityCheckException('target ship belongs to someone else');
         }
+        BorgAssimilationActionGuard::assertUsable($targetShip);
         if (!$this->interactionChecker->checkPosition($tradePost->getStation(), $targetShip)) {
             throw new SanityCheckException('target ship is not at tradepost location');
         }

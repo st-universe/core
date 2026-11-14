@@ -14,6 +14,7 @@ use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -33,7 +34,9 @@ final class CommodityTransfer implements CommodityTransferInterface
         EntityWithStorageInterface $target,
         InformationInterface $information
     ): bool {
-
+        if ($this->isAssimilationBlocking($source, $target, $information)) {
+            return false;
+        }
         $sourceStorage =  $source->getStorage()[$commodityId] ?? null;
         if ($sourceStorage === null) {
             return false;
@@ -100,6 +103,17 @@ final class CommodityTransfer implements CommodityTransferInterface
     ): bool {
         return ($source instanceof Ship && $source->getDockedTo() === $target)
             || ($target instanceof Ship && $target->getDockedTo() === $source);
+    }
+
+    private function isAssimilationBlocking(EntityWithStorageInterface $source, EntityWithStorageInterface $target, InformationInterface $information): bool
+    {
+        foreach ([$source, $target] as $entity) {
+            if ($entity instanceof Spacecraft && $entity->isBeingAssimilated()) {
+                $information->addInformation('Mit dem Schiff kann während der Assimilation nicht interagiert werden');
+                return true;
+            }
+        }
+        return false;
     }
 
     private function getBeamFactor(SpacecraftWrapperInterface|Colony $subject): int

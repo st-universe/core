@@ -181,6 +181,7 @@
         {% endif %}
     </td>
     <td style="text-align: center;">
+{% if not ship.isBeingAssimilated %}
         {% if ship.getFleet %}
         {% if ship.isFleetLeader %}
         <a href="?B_DELETE_FLEET=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
@@ -203,6 +204,7 @@
         </a>
         {% endif %}
         {% endif %}
+{% endif %}
     </td>
 </tr>
 {% endmacro %}

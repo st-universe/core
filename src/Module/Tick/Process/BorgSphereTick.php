@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Override;
+use Stu\Component\Borg\BorgCompanionDeparture;
+use Stu\Component\Borg\BorgCompanionSupply;
 use Stu\Component\Borg\BorgSphereBehavior;
 use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSphereEnergy;
@@ -20,7 +22,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BorgSphereTick implements ProcessTickHandlerInterface
 {
-    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat, private BorgSphereTorpedoSupply $torpedoes) {}
+    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat, private BorgSphereTorpedoSupply $torpedoes, private ?BorgCompanionSupply $companions = null, private ?BorgCompanionDeparture $departure = null) {}
 
     #[Override]
     public function work(): void
@@ -58,6 +60,7 @@ final class BorgSphereTick implements ProcessTickHandlerInterface
         }
         $this->energy->recharge($ship);
         $this->torpedoes->refill($ship);
+        $this->companions?->refill($ship);
         $this->behavior->work($event, $ship);
         $this->events->save($event);
     }
@@ -65,6 +68,7 @@ final class BorgSphereTick implements ProcessTickHandlerInterface
     private function escape(BorgSphereEvent $event, Ship $ship): void
     {
         $event->setTranswarpProgress($event->getConfiguration()->getSetting('transwarp_escape_bp'))->setPhase(BorgSpherePhaseEnum::ESCAPED)->setShipId(null);
+        $this->departure?->depart($ship);
         $this->remover->remove($ship, true);
         $this->events->save($event);
     }

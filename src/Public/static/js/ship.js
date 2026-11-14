@@ -65,13 +65,20 @@ function refreshFleetShipImages(fleetBody) {
 }
 function joinFleetInShiplist(fleetid) {
 
-	chosenShipIdArray = [];
+	var table = $('availableShipsTable');
+	if (!table) {
+		return;
+	}
+	var chosenShipIdArray = [];
 
-	Element.select($('availableShipsTable'), '.chosenShipsCheckbox').each(function (elem) {
-		if (elem.checked) {
+	Element.select(table, '.chosenShipsCheckbox').each(function (elem) {
+		if (elem.checked && !elem.disabled) {
 			chosenShipIdArray.push(elem.value);
 		}
 	});
+	if (chosenShipIdArray.length === 0) {
+		return;
+	}
 
 	new Ajax.Updater('result', 'ship.php', {
 		method: 'post',

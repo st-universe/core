@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\ORMSetup;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Borg\BorgAssimilationDeletionListener;
+use Stu\Component\Borg\BorgAssimilationService;
 use Stu\Component\Borg\BorgSphereDeletionHandler;
 use Stu\Component\Borg\BorgSphereDeletionListener;
 use Stu\Component\Crew\CrewDeletionHandler;
@@ -47,7 +49,11 @@ return [
     ),
     EntityManagerFactoryInterface::class => autowire(EntityManagerFactory::class)
         ->constructorParameter('borgSphereDeletionListener', get(BorgSphereDeletionListener::class))
-        ->constructorParameter('crewDeletionListener', get(CrewDeletionListener::class)),
+        ->constructorParameter('crewDeletionListener', get(CrewDeletionListener::class))
+        ->constructorParameter('borgAssimilationDeletionListener', get(BorgAssimilationDeletionListener::class)),
+    BorgAssimilationDeletionListener::class => fn (ContainerInterface $c): BorgAssimilationDeletionListener => new BorgAssimilationDeletionListener(
+        fn (): BorgAssimilationService => $c->get(BorgAssimilationService::class)
+    ),
     CrewDeletionListener::class => fn (ContainerInterface $c): CrewDeletionListener => new CrewDeletionListener(
         fn (): CrewDeletionHandler => $c->get(CrewDeletionHandler::class)
     ),

@@ -20,11 +20,13 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use LogicException;
+use Override;
 use RuntimeException;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\SpacecraftTypeEnum;
 use Stu\Component\Spacecraft\Trait\SpacecrafCharacteristicsTrait;
+use Stu\Component\Spacecraft\Trait\SpacecraftAssimilationTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftCrewTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHoldingWebTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftHrefTrait;
@@ -40,6 +42,7 @@ use Stu\Component\Spacecraft\Trait\SpacecraftSystemStateTrait;
 use Stu\Component\Spacecraft\Trait\SpacecraftTorpedoTrait;
 use Stu\Lib\Interaction\EntityWithInteractionCheckInterface;
 use Stu\Lib\Map\EntityWithLocationInterface;
+use Stu\Lib\Trait\EntityOwnershipTransferTrait;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Module\Spacecraft\Lib\Crew\EntityWithCrewAssignmentsInterface;
 use Stu\Module\Spacecraft\Lib\Destruction\SpacecraftDestroyerInterface;
@@ -75,6 +78,8 @@ abstract class Spacecraft implements
     use SpacecrafCharacteristicsTrait;
     use SpacecraftStateTrait;
     use SpacecraftHrefTrait;
+    use SpacecraftAssimilationTrait;
+    use EntityOwnershipTransferTrait;
 
     public const int SYSTEM_ECOST_DOCK = 1;
 
@@ -185,7 +190,7 @@ abstract class Spacecraft implements
 
     abstract public function getFleet(): ?Fleet;
 
-    #[\Override]
+    #[Override]
     public function getId(): int
     {
         if ($this->id === null) {
@@ -207,7 +212,7 @@ abstract class Spacecraft implements
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function getUserId(): int
     {
         return $this->user_id;
@@ -218,7 +223,7 @@ abstract class Spacecraft implements
         return $this->getUser()->getName();
     }
 
-    #[\Override]
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -258,13 +263,13 @@ abstract class Spacecraft implements
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function getCrewAssignments(): Collection
     {
         return $this->crew;
     }
 
-    #[\Override]
+    #[Override]
     public function getUser(): User
     {
         return $this->user;
@@ -354,13 +359,13 @@ abstract class Spacecraft implements
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function getStorage(): Collection
     {
         return $this->storage;
     }
 
-    #[\Override]
+    #[Override]
     public function getLocation(): Map|StarSystemMap
     {
         if ($this->location instanceof Map || $this->location instanceof StarSystemMap) {

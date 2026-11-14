@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 use InvalidArgumentException;
+use Stu\Lib\Trait\EntityOwnershipTransferTrait;
 use Stu\Lib\Transfer\EntityWithStorageInterface;
 use Stu\Lib\Transfer\Storage\ModuleQualityPacket;
 use Stu\Orm\Attribute\TruncateOnGameReset;
@@ -31,6 +32,7 @@ use Stu\Orm\Repository\StorageRepository;
 #[TruncateOnGameReset]
 class Storage
 {
+    use EntityOwnershipTransferTrait;
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue(strategy: 'IDENTITY')]

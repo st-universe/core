@@ -134,7 +134,7 @@ final class ShowBorgSphereAttackConfirmationTest extends StuTestCase
         self::assertStringContainsString("actionToInnerContent('B_ATTACK_SPACECRAFT', 'id", $html);
         self::assertStringContainsString('borg_confirmation', $html);
         self::assertStringContainsString('closeAjaxWindow();', $html);
-        self::assertStringContainsString('Danach kann niemand mehr Naniten von ihr sammeln', $html);
+        self::assertStringContainsString('Danach kann niemand mehr Naniten davon sammeln', $html);
         self::assertStringContainsString('class="button"', $html);
         self::assertStringContainsString('padding: 0 10px', $html);
         self::assertStringNotContainsString('confirm(', $html);

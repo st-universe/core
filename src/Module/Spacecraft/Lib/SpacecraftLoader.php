@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib;
 
+use Override;
+use Stu\Component\Borg\BorgAssimilationActionGuard;
+use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Exception\AccessViolationException;
 use Stu\Exception\EntityLockedException;
 use Stu\Exception\SpacecraftDoesNotExistException;
@@ -37,7 +40,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         private readonly LockManagerInterface $lockManager
     ) {}
 
-    #[\Override]
+    #[Override]
     public function getByIdAndUser(
         int $spacecraftId,
         int $userId,
@@ -54,7 +57,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         )->getSource()->get();
     }
 
-    #[\Override]
+    #[Override]
     public function getWrapperByIdAndUser(
         int $spacecraftId,
         int $userId,
@@ -71,7 +74,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         )->getSource();
     }
 
-    #[\Override]
+    #[Override]
     public function getWrapperByIdAndUserAndTargetUser(
         int $spacecraftId,
         int $userId,
@@ -89,7 +92,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         )->getSource();
     }
 
-    #[\Override]
+    #[Override]
     public function getWrappersBySourceAndUserAndTarget(
         int $spacecraftId,
         int $userId,
@@ -107,7 +110,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         );
     }
 
-    #[\Override]
+    #[Override]
     public function find(int $spacecraftId, bool $checkForEntityLock = true): ?SpacecraftWrapperInterface
     {
         if ($checkForEntityLock) {
@@ -125,6 +128,9 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
         if (!in_array($spacecraft->getUser()->getId(), $userIds)) {
             return null;
+        }
+        if ($checkForEntityLock) {
+            BorgAssimilationActionGuard::assertUsable($spacecraft);
         }
 
         return $this->spacecraftWrapperFactory->wrapSpacecraft($spacecraft);
@@ -178,7 +184,7 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             throw new SpacecraftDoesNotExistException('Raumfahrzeug existiert nicht!');
         }
 
-        $this->checkViolations($sourceSpacecraft, $userId, $allowUplink);
+        $this->checkViolations($sourceSpacecraft, $userId, $allowUplink, $checkForEntityLock);
 
         $wrapper = $cachedWrapper ?? $this->spacecraftWrapperFactory->wrapSpacecraft($sourceSpacecraft);
 
@@ -234,14 +240,14 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
         }
     }
 
-    private function checkViolations(Spacecraft $spacecraft, int $userId, bool $allowUplink): void
+    private function checkViolations(Spacecraft $spacecraft, int $userId, bool $allowUplink, bool $checkForEntityLock): void
     {
         if ($spacecraft->getUser()->getId() !== $userId) {
             if ($this->crewAssignmentRepository->hasCrewmanOfUser($spacecraft, $userId)) {
                 if (!$allowUplink) {
                     throw new UnallowedUplinkOperationException(_('This Operation is not allowed via uplink!'));
                 }
-                if (!$spacecraft->getSystemState(\Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum::UPLINK)) {
+                if (!$spacecraft->getSystemState(SpacecraftSystemTypeEnum::UPLINK)) {
                     throw new UnallowedUplinkOperationException(_('Uplink is not activated!'));
                 }
                 if ($spacecraft->getUser()->isVacationRequestOldEnough()) {
@@ -250,6 +256,9 @@ final class SpacecraftLoader implements SpacecraftLoaderInterface
             } else {
                 throw new AccessViolationException(sprintf("Spacecraft owned by another user (%d)! Fool: %d", $spacecraft->getUser()->getId(), $userId));
             }
+        }
+        if ($checkForEntityLock) {
+            BorgAssimilationActionGuard::assertUsable($spacecraft, $userId);
         }
     }
 
