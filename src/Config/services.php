@@ -9,6 +9,7 @@ use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Borg\BorgAssimilationActionGuard;
 use Stu\Component\Cache\CacheProvider;
 use Stu\Component\Cache\CacheProviderInterface;
 use Stu\Component\Logging\Sql\SqlLogger;
@@ -36,6 +37,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Ubench;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     ErrorHandler::class => autowire(),
@@ -65,7 +67,8 @@ return [
         StuLogger::getLogger(LogTypeEnum::DBAL)
     ),
     GameControllerInterface::class => autowire(GameController::class)
-        ->constructorParameter('callbackExecution', autowire(CallbackExecution::class))
+        ->constructorParameter('callbackExecution', autowire(CallbackExecution::class)
+            ->constructorParameter('assimilationActionGuard', get(BorgAssimilationActionGuard::class)))
         ->constructorParameter('viewExecution', autowire(ViewExecution::class)),
     Parser::class => function (): Parser {
         $parser = new Parser();

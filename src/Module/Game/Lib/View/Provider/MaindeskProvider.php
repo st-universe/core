@@ -46,7 +46,8 @@ final class MaindeskProvider implements ViewComponentProviderInterface
         private readonly CrewLimitCalculatorInterface $crewLimitCalculator,
         private readonly CrewCountRetrieverInterface $crewCountRetriever,
         private readonly NPCQuestRepositoryInterface $npcQuestRepository,
-        private readonly NPCQuestUserRepositoryInterface $npcQuestUserRepository
+        private readonly NPCQuestUserRepositoryInterface $npcQuestUserRepository,
+        private readonly BorgDataNodeProgressProvider $borgDataNodeProgressProvider
     ) {}
 
     #[\Override]
@@ -149,7 +150,13 @@ final class MaindeskProvider implements ViewComponentProviderInterface
             $this->crewCountRetriever->getAssignedToShipsCount($user)
         );
 
+        $this->setEventInformation($game);
+    }
+
+    private function setEventInformation(ViewControllerContext $game): void
+    {
         $this->setActiveQuests($game);
+        $this->borgDataNodeProgressProvider->setTemplateVariables($game);
     }
 
     private function setPotentialEmergencies(ViewControllerContext $game): void

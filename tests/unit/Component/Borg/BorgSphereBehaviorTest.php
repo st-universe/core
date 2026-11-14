@@ -335,7 +335,7 @@ final class BorgSphereBehaviorTest extends StuTestCase
         $ship->shouldReceive('getUser')->andReturn($user);
         $ship->shouldReceive('getLocation')->andReturn($location);
         $ship->shouldReceive('getCondition')->andReturn(new SpacecraftCondition($ship));
-        $ship->shouldReceive('isCloaked', 'isRpgModuleInvisible')->andReturn(false);
+        $ship->shouldReceive('isCloaked', 'isRpgModuleInvisible', 'isBeingAssimilated')->andReturn(false);
         $ship->shouldReceive('hasEnoughCrew')->andReturn(true);
         $ship->shouldReceive('getFleetId')->andReturn(null);
         $ship->shouldReceive('getRump')->andReturn(new SpacecraftRump()->setCategoryId(SpacecraftRumpCategoryEnum::WARSHIP));

@@ -2,8 +2,9 @@
 {% set rumpid = ship.getRumpId %}
 {% set rumpname = ship.getRumpName %}
 {% set user = ship.getUser %}
+{% set assimilation = getBorgAssimilationState(ship) %}
 
-{% if ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and IS_ADMIN %}
+{% if ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and not assimilation.image and IS_ADMIN %}
 {{ _self.spacecraft3DModel(ship) }}
 {% else %}
 {% if ship.isCloaked %}
@@ -15,8 +16,12 @@
 {% endif %}
 
 <img src="/assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+{% if assimilation.image %}
+{{ _self.assimilatedShipImage(assimilation, imagesrc, rumpname, 'indexedGraphicsShips', imagestyle, true) }}
+{% else %}
 <img src="{{ imagesrc }}" class="indexedGraphicsShips" style="{{ imagestyle }}" title="{{ rumpname }}"
     onload="adjustCellHeight(this); adjustCellWidth(this);" />
+{% endif %}
 {% if ship.isWarped %}
 <img src="/assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 <img src="/assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
@@ -33,7 +38,10 @@
 {% endmacro %}
 
 {% macro spacecraftImageWithoutWarp(ship, IS_ADMIN = false) %}
-{% if ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and IS_ADMIN %}
+{% set assimilation = getBorgAssimilationState(ship) %}
+{% if assimilation.image %}
+{{ _self.assimilatedShipImage(assimilation, '/assets/ships/' ~ ship.getRumpId ~ (ship.isCloaked ? '_cloaked' : '') ~ '.png', ship.getRumpName, '', ship.isCloaked ? 'opacity:0.55;' : '') }}
+{% elseif ship.getRump.get3DModel and not ship.isCloaked and not ship.isHeldByTholianWeb and IS_ADMIN %}
 {{ _self.spacecraft3DModel(ship) }}
 {% else %}
 {% if ship.isCloaked %}
@@ -57,10 +65,27 @@
 {% endmacro %}
 
 {% macro shipimagenameastitle(ship) %}
-{% if ship.isCloaked %}
+{% set assimilation = getBorgAssimilationState(ship) %}
+{% if assimilation.image %}
+{{ _self.assimilatedShipImage(assimilation, '/assets/ships/' ~ ship.getRumpId ~ (ship.isCloaked ? '_cloaked' : '') ~ '.png', ship.getName|bbcode2txt, '', ship.isCloaked ? 'opacity:0.55;' : '') }}
+{% elseif ship.isCloaked %}
 <img src="/assets/ships/{{ ship.getRumpId }}_cloaked.png" style="opacity:0.55;" title="{{ ship.getName|bbcode2txt }}" />
 {% else %}
 <img src="/assets/ships/{{ ship.getRumpId }}.png" title="{{ ship.getName|bbcode2txt }}" />
+{% endif %}
+{% endmacro %}
+
+{% macro assimilatedShipImage(assimilation, normalImage, title, imageClass = '', imageStyle = '', adjust = false) %}
+{% if assimilation.progress >= 100 %}
+<img src="{{ assimilation.image }}" class="{{ imageClass }}" style="{{ imageStyle }}" title="{{ title }} · Assimilation: 100%"{% if adjust %} onload="adjustCellHeight(this); adjustCellWidth(this);"{% endif %} />
+{% else %}
+<span class="{{ imageClass }} borg-assimilation-image" style="{{ imageStyle }}{% if not imageClass %}position:relative;{% endif %}display:inline-block;vertical-align:middle;"
+    data-assimilation-progress="{{ assimilation.progress }}" data-assimilation-active="{{ assimilation.active ? 1 : 0 }}"
+    data-assimilation-start="{{ assimilation.started }}" data-assimilation-initial="{{ assimilation.initial }}"
+    data-assimilation-duration="{{ assimilation.duration }}" data-assimilation-now="{{ assimilation.now }}" title="{{ title }} · Assimilation: {{ assimilation.progress|number_format(1, ',', '') }}%">
+    <img src="{{ normalImage }}" style="display:block;" alt="{{ title }}"{% if adjust %} onload="adjustCellHeight(this); adjustCellWidth(this);"{% endif %} />
+    <img src="{{ assimilation.image }}" class="borg-assimilation-overlay" style="position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 0 0 {{ 100 - assimilation.progress }}%);" alt="{{ title }} · assimiliert" />
+</span>
 {% endif %}
 {% endmacro %}
 
@@ -105,7 +130,7 @@
     <tr>
         <td colspan="2">
             {{ data.getVisibleShipsCount }} Schiffe
-            {% if data.showManagement and not SPACECRAFT.getFleetId and not SPACECRAFT.isStation %}
+            {% if data.showManagement and not SPACECRAFT.getFleetId and not SPACECRAFT.isStation and not SPACECRAFT.isBeingAssimilated %}
             (<a href="?B_JOIN_FLEET_NBS=1&id={{ SPACECRAFT.getId }}&fleetid={{ data.getId }}"
                 title="Flotte beitreten">+</a>)
             {% endif %}
@@ -212,6 +237,7 @@
 {% set SPACECRAFT = WRAPPER.get %}
 {% set spacecraftId = SPACECRAFT.getId %}
 {% set targetId = nbsItem.getId %}
+{% set targetAssimilation = getBorgAssimilationState(nbsItem) %}
 {% if SPACECRAFT.displayNbsActions %}
 {% set nameWithoutMarkup = nbsItem.getName|bbcode2txt %}
 <td style="width: 30px; text-align: center;">
@@ -247,7 +273,7 @@
     <span style="width: 100%; color: #474791;">Im Warp</span>
     {% else %}
     {% if not nbsItem.isCloaked %}
-    {% if nbsItem.isTransferPossible %}
+    {% if nbsItem.isTransferPossible and not targetAssimilation.active %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showETransferWindow(this, {{ targetId }});"
             onmouseover="cp('etr_{{ targetId }}','buttons/e_trans2')"
@@ -257,7 +283,7 @@
         </a>
     </div>
     {% endif %}
-    {% if nbsItem.isTransferPossible %}
+    {% if nbsItem.isTransferPossible and not targetAssimilation.active %}
     <div style="float:left; margin-right:4px;">
         {% set sourceEntityType = SPACECRAFT.getTransferEntityType.value %}
         {% set targetEntityType = nbsItem.getTransferEntityType.value %}
@@ -287,15 +313,23 @@
         </a>
     </div>
     {% endif %}
+    {% if canAssimilateTarget(SPACECRAFT, nbsItem) %}
+    <div style="float:left; margin-right:4px;">
+        <a href="javascript:void(0);" onclick="actionToInnerContent('B_BORG_ASSIMILATE_TARGET', 'id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}');"
+            onmouseover="cp('ass_{{ targetId }}','buttons/trak2')" onmouseout="cp('ass_{{ targetId }}','buttons/trak1')">
+            <img src="/assets/buttons/trak1.png" name="ass_{{ targetId }}" title="{{ nameWithoutMarkup }} assimilieren" />
+        </a>
+    </div>
+    {% endif %}
     {% if isBorgSphere(nbsItem) and not nbsItem.isSelectable and not nbsItem.isCloaked %}
     <div style="float:left; margin-right:4px;">
         <a href="javascript:void(0);" onclick="showBorgSphereWindow(this, {{ spacecraftId }}, {{ targetId }});"
             onmouseover="cp('borg_{{ targetId }}','buttons/boa2')" onmouseout="cp('borg_{{ targetId }}','buttons/boa1')">
-            <img src="/assets/buttons/boa1.png" name="borg_{{ targetId }}" title="Außenmission zur Borg-Sphäre" />
+            <img src="/assets/buttons/boa1.png" name="borg_{{ targetId }}" title="Außenmission zum Borg-Schiff" />
         </a>
     </div>
     {% elseif nbsItem.hasCrew %}
-    {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable %}
+    {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable and not targetAssimilation.active %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_BOARD_SHIP=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('boa_{{ targetId }}','buttons/boa2')" onmouseout="cp('boa_{{ targetId }}','buttons/boa1')">
@@ -318,7 +352,7 @@
     </div>
     {% endif %}
     {% else %}
-    {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable %}
+    {% if nbsItem.isBoardingPossible and not nbsItem.isSelectable and not targetAssimilation.active %}
     <div style="float:left; margin-right:4px;">
         <a href="?B_TAKEOVER_SHIP=1&id={{ spacecraftId }}&target={{ targetId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('take_{{ targetId }}','buttons/take2')"

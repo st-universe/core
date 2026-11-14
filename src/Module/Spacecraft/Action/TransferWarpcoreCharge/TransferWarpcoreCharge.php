@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Action\TransferWarpcoreCharge;
 
+use Override;
 use request;
+use Stu\Component\Borg\BorgAssimilationActionGuard;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\SpacecraftManagement\Manager\ManageWarpcoreTransfer;
 use Stu\Lib\SpacecraftManagement\Provider\ManagerProviderSpacecraft;
@@ -18,6 +20,7 @@ use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\View\ShowSpacecraft\ShowSpacecraft;
+use Stu\Orm\Entity\Spacecraft;
 use Stu\Orm\Repository\SpacecraftRepositoryInterface;
 
 final class TransferWarpcoreCharge implements ActionControllerInterface
@@ -37,7 +40,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         private NpcLogTradeMessageLoggerInterface $npcLogTradeMessageLogger
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         $context->setView(ShowSpacecraft::VIEW_IDENTIFIER);
@@ -87,7 +90,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         ];
 
         foreach ($shipIds as $shipId) {
-            $targetShip = $this->spacecraftRepository->find((int)$shipId);
+            $targetShip = $this->getTransferTarget((int) $shipId);
             if ($targetShip === null) {
                 continue;
             }
@@ -122,13 +125,20 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         $context->getInfo()->addInformationArray($msg, true);
     }
 
-    /**
-     * @param array<int, array<string, mixed>> $transfersByUser
-     */
+    private function getTransferTarget(int $id): ?Spacecraft
+    {
+        $target = $this->spacecraftRepository->find($id);
+        if ($target !== null) {
+            BorgAssimilationActionGuard::assertUsable($target);
+        }
+        return $target;
+    }
+
+    /** @param array<int, array<string, mixed>> $transfersByUser */
     private function sendPrivateMessages(
         array $transfersByUser,
         ManagerProviderSpacecraft $managerProvider,
-        \Stu\Orm\Entity\Spacecraft $sourceSpacecraft
+        Spacecraft $sourceSpacecraft
     ): void {
         $sourceUser = $sourceSpacecraft->getUser();
 
@@ -176,7 +186,7 @@ final class TransferWarpcoreCharge implements ActionControllerInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

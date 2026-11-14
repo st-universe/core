@@ -7,6 +7,7 @@ namespace Stu\Lib\Transfer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Lib\Information\InformationWrapper;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
@@ -62,6 +63,27 @@ class CommodityTransferTest extends StuTestCase
         );
 
         $this->assertFalse($result);
+    }
+
+    /** @return iterable<string, array{bool}> */
+    public static function capturedTransferEnds(): iterable
+    {
+        yield 'captured source' => [true];
+        yield 'captured destination' => [false];
+    }
+
+    #[DataProvider('capturedTransferEnds')]
+    public function testAssimilationBlocksTransfersAtEitherEndBeforeReadingOrMutatingStorage(bool $capturedSource): void
+    {
+        $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isBeingAssimilated')->once()->andReturn(true);
+        $ship->shouldNotReceive('getStorage');
+        $colony = $this->mock(Colony::class);
+        $colony->shouldNotReceive('getStorage');
+        $this->storageManager->shouldNotReceive('transferStorage');
+        $this->informations->shouldReceive('addInformation')->once()->with('Mit dem Schiff kann während der Assimilation nicht interagiert werden');
+
+        self::assertFalse($this->subject->transferCommodity(76, 5, $colony, $capturedSource ? $ship : $colony, $capturedSource ? $colony : $ship, $this->informations));
     }
 
     public function testTransferCommodityExpectInfoWhenCommodityNotBeamable(): void
@@ -264,6 +286,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isBeingAssimilated')->andReturn(false);
         $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
@@ -342,6 +365,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isBeingAssimilated')->andReturn(false);
         $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
@@ -420,6 +444,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isBeingAssimilated')->andReturn(false);
         $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
@@ -499,6 +524,7 @@ class CommodityTransferTest extends StuTestCase
         $colony = $this->mock(Colony::class);
         $wrapper = $this->mock(ShipWrapperInterface::class);
         $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isBeingAssimilated')->andReturn(false);
         $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);
@@ -586,6 +612,7 @@ class CommodityTransferTest extends StuTestCase
     {
         $colony = $this->mock(Colony::class);
         $ship = $this->mock(Ship::class);
+        $ship->shouldReceive('isBeingAssimilated')->andReturn(false);
         $storage = new Storage()->setAmount(1000);
         $commodity = $this->mock(Commodity::class);
         $user = $this->mock(User::class);

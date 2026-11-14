@@ -6,6 +6,7 @@ namespace Stu\Module\Spacecraft\Lib;
 
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Spacecraft\Repair\RepairUtilInterface;
 use Stu\Component\Spacecraft\System\Data\EpsSystemData;
 use Stu\Component\Spacecraft\System\Data\HullSystemData;
@@ -37,11 +38,12 @@ class SpacecraftWrapperTest extends StuTestCase
 
     private SpacecraftWrapperInterface $subject;
 
-    #[\Override]
+    #[Override]
     public function setUp(): void
     {
         //injected
         $this->spacecraft = $this->mock(Ship::class);
+        $this->spacecraft->shouldReceive('isBeingAssimilated')->byDefault()->andReturn(false);
         $this->spacecraftSystemManager = $this->mock(SpacecraftSystemManagerInterface::class);
         $this->systemDataDeserializer = $this->mock(SystemDataDeserializerInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
@@ -66,12 +68,20 @@ class SpacecraftWrapperTest extends StuTestCase
             $this->stateIconAndTitle,
             $this->colonyLibFactory
         ) extends SpacecraftWrapper {
-            #[\Override]
+            #[Override]
             public function getFleetWrapper(): ?FleetWrapperInterface
             {
                 return null;
             }
         };
+    }
+
+    public function testCannotFireDuringAnActiveAssimilation(): void
+    {
+        $this->spacecraft->shouldReceive('isBeingAssimilated')->once()->andReturn(true);
+        $this->spacecraft->shouldNotReceive('getNbs', 'hasActiveWeapon');
+
+        self::assertFalse($this->subject->canFire());
     }
 
     public function testGetHullSystemData(): void

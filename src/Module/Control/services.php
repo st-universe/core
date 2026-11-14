@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Stu\Component\Borg\BorgAssimilationActionGuard;
 use Stu\Component\Game\RedirectionException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
@@ -43,6 +44,7 @@ use Stu\Module\Control\Router\Handler\UplinkFallbackHandler;
 use Stu\Module\Control\Router\Handler\UserLockedFallbackHandler;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     ContextFactoryInterface::class => autowire(ContextFactory::class),
@@ -58,7 +60,8 @@ return [
     AccessCheckInterface::class => autowire(AccessCheck::class),
     BenchmarkResultInterface::class => autowire(BenchmarkResult::class),
     ComponentSetupInterface::class => autowire(ComponentSetup::class),
-    CallbackExecutionInterface::class => autowire(CallbackExecution::class),
+    CallbackExecutionInterface::class => autowire(CallbackExecution::class)
+        ->constructorParameter('assimilationActionGuard', get(BorgAssimilationActionGuard::class)),
     GameStateInterface::class => autowire(GameState::class),
     ControllerDiscoveryInterface::class => autowire(ControllerDiscovery::class),
     GameTwigRendererInterface::class => autowire(GameTwigRenderer::class),

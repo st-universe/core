@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Tick;
 
 use Psr\Container\ContainerInterface;
+use Stu\Component\Borg\BorgCompanionDeparture;
+use Stu\Component\Borg\BorgCompanionSupply;
 use Stu\Component\Map\Effects\EffectHandlingInterface;
 use Stu\Lib\Pirate\Behaviour\PirateBehaviourInterface;
 use Stu\Lib\Pirate\Component\PirateFlight;
@@ -31,6 +33,7 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 use Stu\Module\Tick\Pirate\PirateTick;
 use Stu\Module\Tick\Pirate\PirateTickInterface;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
+use Stu\Module\Tick\Process\BorgAssimilationTick;
 use Stu\Module\Tick\Process\BorgSphereTick;
 use Stu\Module\Tick\Process\EndPirateRound;
 use Stu\Module\Tick\Process\FinishBuildJobs;
@@ -122,7 +125,10 @@ return [
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
     ProcessTickHandlerInterface::class => [
-        autowire(BorgSphereTick::class),
+        autowire(BorgAssimilationTick::class),
+        autowire(BorgSphereTick::class)
+            ->constructorParameter('companions', get(BorgCompanionSupply::class))
+            ->constructorParameter('departure', get(BorgCompanionDeparture::class)),
         autowire(FinishTechnologyJobs::class),
         autowire(FinishSpecialResearchJobs::class),
         autowire(FinishBuildJobs::class),

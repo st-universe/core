@@ -29,6 +29,7 @@ final class FinishBorgSphereEvent implements SpacecraftDestructionHandlerInterfa
         }
         $event->setPhase(BorgSpherePhaseEnum::DESTROYED)->setShipId(null);
         $this->repository->save($event);
-        $informations->addInformation('Die Borg-Sphäre wurde zerstört. Dort können keine weiteren Naniten geborgen werden');
+        $subject = $event->getConfiguration()->isAssimilationEnabled() ? 'Der Borg-Kubus' : 'Die Borg-Sphäre';
+        $informations->addInformation($subject . ' wurde zerstört. Dort können keine weiteren Naniten geborgen werden');
     }
 }

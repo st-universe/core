@@ -22,7 +22,8 @@ final class BorgSphereFlight
         private FlightRouteFactoryInterface $routes,
         private SpacecraftWrapperFactoryInterface $wrappers,
         private SpacecraftSystemManagerInterface $systems,
-        private DistributedMessageSenderInterface $messages
+        private DistributedMessageSenderInterface $messages,
+        private ?BorgCompanionSupply $companions = null
     ) {}
 
     public function move(Ship $ship, Map|StarSystemMap $destination): void
@@ -44,6 +45,7 @@ final class BorgSphereFlight
             if (!$ship->getCondition()->isDestroyed() && $ship->getWarpDriveState()) {
                 $this->systems->deactivate($wrapper, SpacecraftSystemTypeEnum::WARPDRIVE, true);
             }
+            $this->companions?->leaveWarp($ship);
         }
     }
 }

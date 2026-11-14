@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TholianWeb;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use request;
 use RuntimeException;
+use Stu\Component\Borg\BorgWebReaction;
 use Stu\Component\Spacecraft\SpacecraftStateEnum;
 use Stu\Component\Spacecraft\System\Control\ActivatorDeactivatorHelperInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -44,10 +46,11 @@ final class CreateTholianWeb implements ActionControllerInterface
         private PrivateMessageSenderInterface $privateMessageSender,
         private StuTime $stuTime,
         private SpacecraftStateChangerInterface $spacecraftStateChanger,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private ?BorgWebReaction $borgWebReaction = null
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ActionControllerContext $context): void
     {
         //TODO other web spinners in fleet should join
@@ -106,23 +109,7 @@ final class CreateTholianWeb implements ActionControllerInterface
             ->finishConfiguration()
             ->get();
 
-        //link spacecrafts to web
-        foreach ($possibleCatches as $target) {
-            $target->setHoldingWeb($web);
-            $web->getCapturedSpacecrafts()->add($target);
-
-            //notify target owner
-            $this->privateMessageSender->send(
-                $userId,
-                $target->getUser()->getId(),
-                sprintf(
-                    'In Sektor %s wird ein Energienetz um die %s errichtet',
-                    $target->getSectorString(),
-                    $target->getName()
-                ),
-                $target->getType()->getMessageFolderType()
-            );
-        }
+        $this->linkTargets($web, $possibleCatches, $userId);
 
         $this->entityManager->flush();
 
@@ -140,6 +127,22 @@ final class CreateTholianWeb implements ActionControllerInterface
             count($possibleCatches),
             $this->stuTime->transformToStuDateTime($finishedTime)
         );
+        $this->borgWebReaction?->react($web, $context->getInfo());
+    }
+
+    /** @param list<Spacecraft> $targets */
+    private function linkTargets(TholianWeb $web, array $targets, int $userId): void
+    {
+        foreach ($targets as $target) {
+            $target->setHoldingWeb($web);
+            $web->getCapturedSpacecrafts()->add($target);
+            $this->privateMessageSender->send(
+                $userId,
+                $target->getUser()->getId(),
+                sprintf('In Sektor %s wird ein Energienetz um die %s errichtet', $target->getSectorString(), $target->getName()),
+                $target->getType()->getMessageFolderType()
+            );
+        }
     }
 
     private function tryToCatch(Ship $ship, int $targetId, ActionControllerContext $context): ?Spacecraft
@@ -162,7 +165,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         return $target;
     }
 
-    #[\Override]
+    #[Override]
     public function performSessionCheck(): bool
     {
         return true;

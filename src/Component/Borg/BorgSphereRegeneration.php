@@ -40,7 +40,7 @@ final class BorgSphereRegeneration
     {
         $condition = $ship->getCondition();
         $condition->setHull($this->regenerateValue($condition->getHull(), $ship->getMaxHull(), $configuration))
-            ->setShield($this->regenerateValue($condition->getShield(), $ship->getMaxShield(true), $configuration));
+            ->setShield($this->regenerateValue($condition->getShield(), $ship->getMaxShield(true), $configuration, true));
         foreach ($ship->getSystems() as $system) {
             if ($system->getSystemType() !== SpacecraftSystemTypeEnum::TRANSWARP_COIL) {
                 $system->setStatus($this->regenerateValue($system->getStatus(), 100, $configuration));
@@ -48,9 +48,12 @@ final class BorgSphereRegeneration
         }
     }
 
-    private function regenerateValue(int $current, int $maximum, BorgSphereConfiguration $configuration): int
+    private function regenerateValue(int $current, int $maximum, BorgSphereConfiguration $configuration, bool $shield = false): int
     {
-        $percent = $this->random->rand($configuration->getSetting('normal_regen_min_percent'), $configuration->getSetting('normal_regen_max_percent'));
+        $settings = $configuration->getSettings();
+        $minimum = $shield ? $settings['shield_regen_min_percent'] ?? $configuration->getSetting('normal_regen_min_percent') : $configuration->getSetting('normal_regen_min_percent');
+        $maximumPercent = $shield ? $settings['shield_regen_max_percent'] ?? $configuration->getSetting('normal_regen_max_percent') : $configuration->getSetting('normal_regen_max_percent');
+        $percent = $this->random->rand($minimum, $maximumPercent);
         return min($maximum, $current + (int) ceil($maximum * $percent / 100));
     }
 

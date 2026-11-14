@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowAvailableShips;
 
+use Override;
 use request;
 use Stu\Exception\AccessViolationException;
 use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -17,7 +19,7 @@ final class ShowAvailableShips implements ViewControllerInterface
 
     public function __construct(private FleetRepositoryInterface $fleetRepository, private ShipRepositoryInterface $shipRepository) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ViewControllerContext $game): void
     {
         $user = $game->getUser();
@@ -32,6 +34,9 @@ final class ShowAvailableShips implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/ship/showavailableships.twig');
 
         $game->setTemplateVar('FLEET', $fleet);
-        $game->setTemplateVar('AVAILABLE_SHIPS', $this->shipRepository->getPossibleFleetMembers($fleet->getLeadShip()));
+        $game->setTemplateVar('AVAILABLE_SHIPS', array_filter(
+            $this->shipRepository->getPossibleFleetMembers($fleet->getLeadShip()),
+            static fn (Ship $ship): bool => !$ship->isBeingAssimilated()
+        ));
     }
 }

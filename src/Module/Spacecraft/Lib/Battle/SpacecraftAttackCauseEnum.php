@@ -16,6 +16,8 @@ enum SpacecraftAttackCauseEnum
     case BOARD_SHIP;
     case THOLIAN_WEB_REFLECTION;
     case TARGET_CAPTURED_IN_THOLIAN_WEB;
+    case BORG_TRACTOR_RESCUE_RESPONSE;
+    case BORG_WEB_REACTION;
 
     public function isOneWay(): bool
     {
@@ -23,7 +25,9 @@ enum SpacecraftAttackCauseEnum
             self::ACTIVATE_TRACTOR,
             self::BOARD_SHIP,
             self::THOLIAN_WEB_REFLECTION,
-            self::TARGET_CAPTURED_IN_THOLIAN_WEB => true,
+            self::TARGET_CAPTURED_IN_THOLIAN_WEB,
+            self::BORG_TRACTOR_RESCUE_RESPONSE,
+            self::BORG_WEB_REACTION => true,
             default => false
         };
     }

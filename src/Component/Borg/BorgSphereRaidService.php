@@ -26,6 +26,8 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class BorgSphereRaidService
 {
+    private BorgDataNodeReward $dataNodes;
+
     public function __construct(
         private BorgSphereRepositoryInterface $events,
         private BorgSphereRaidTeam $team,
@@ -35,7 +37,9 @@ final class BorgSphereRaidService
         private PrivateMessageSenderInterface $messages,
         private StuRandom $random,
         private StuTime $time
-    ) {}
+    ) {
+        $this->dataNodes = new BorgDataNodeReward($commodities, $storage, $random);
+    }
 
     public function getCooldownUntil(User $user, BorgSphereEvent $event): int
     {
@@ -46,6 +50,12 @@ final class BorgSphereRaidService
     public function getTeamSize(Spacecraft $ship, BorgSphereEvent $event): int
     {
         return count($this->team->select($ship, $event->getConfiguration()->getSetting('raid_team_size')));
+    }
+
+    public function canSendAwayTeam(BorgSphereEvent $event, Spacecraft $target): bool
+    {
+        return !$event->getConfiguration()->isAssimilationEnabled()
+            || ($event->getPhase() === BorgSpherePhaseEnum::REGENERATING && $target->getCondition()->isDisabled());
     }
 
     public function getCrewRequirementMessage(Spacecraft $ship): string
@@ -66,12 +76,13 @@ final class BorgSphereRaidService
             return false;
         }
         $team = $this->team->select($ship, $configuration->getSetting('raid_team_size'));
-        $commodity = $this->availableCommodity($ship, $configuration, $team, $information);
+        $dataNode = $this->dataNodes->findCommodity($configuration);
+        $commodity = $this->availableCommodity($ship, $configuration, $team, $information, $dataNode);
         if ($commodity === null) {
             return false;
         }
         $raid->setAttempts($raid->getAttempts() + 1);
-        [$success, $report] = $this->complete($wrapper, $event, $commodity, $team);
+        [$success, $report] = $this->complete($wrapper, $event, $commodity, $team, $dataNode);
         if ($success) {
             $raid->setLastAttemptAt($this->time->time());
         }
@@ -91,6 +102,10 @@ final class BorgSphereRaidService
             $information->addInformation('Diese Borg-Sphäre ist nicht mehr für eine Außenmission verfügbar');
             return null;
         }
+        if (!$this->canSendAwayTeam($event, $target)) {
+            $information->addInformation('Eine Außenmission zum Borg-Kubus ist nur möglich, solange er kampfunfähig ist');
+            return null;
+        }
         return $event;
     }
 
@@ -105,15 +120,16 @@ final class BorgSphereRaidService
     }
 
     /** @param list<CrewAssignment> $team */
-    private function availableCommodity(Spacecraft $ship, BorgSphereConfiguration $configuration, array $team, InformationInterface $information): ?Commodity
+    private function availableCommodity(Spacecraft $ship, BorgSphereConfiguration $configuration, array $team, InformationInterface $information, ?Commodity $dataNode): ?Commodity
     {
         if ($team === []) {
             $information->addInformation($this->getCrewRequirementMessage($ship));
             return null;
         }
         $commodity = $this->commodities->find($configuration->getSetting('nanite_commodity_id'));
-        if ($commodity === null || $ship->getMaxStorage() - $ship->getStorageSum() < $configuration->getSetting('raid_reward_max')) {
-            $information->addInformation(sprintf('Für die Außenmission werden %d freie Lagerplätze benötigt', $configuration->getSetting('raid_reward_max')));
+        $requiredStorage = $configuration->getSetting('raid_reward_max') + ($dataNode === null ? 0 : 1);
+        if ($commodity === null || $ship->getMaxStorage() - $ship->getStorageSum() < $requiredStorage) {
+            $information->addInformation(sprintf('Für die Außenmission werden %d freie Lagerplätze benötigt', $requiredStorage));
             return null;
         }
         return $commodity;
@@ -122,7 +138,7 @@ final class BorgSphereRaidService
     /** @param list<CrewAssignment> $team
      * @return array{bool, string}
      */
-    private function complete(SpacecraftWrapperInterface $wrapper, BorgSphereEvent $event, Commodity $commodity, array $team): array
+    private function complete(SpacecraftWrapperInterface $wrapper, BorgSphereEvent $event, Commodity $commodity, array $team, ?Commodity $dataNode): array
     {
         $configuration = $event->getConfiguration();
         $ship = $wrapper->get();
@@ -131,10 +147,13 @@ final class BorgSphereRaidService
         if ($success) {
             $amount = $this->random->rand($configuration->getSetting('raid_reward_min'), $configuration->getSetting('raid_reward_max'));
             $this->storage->upperStorage($ship, $commodity, $amount);
-            $report = sprintf('Das Außenteam ist von der Borg-Sphäre zurückgekehrt. %d %s wurden dem Lagerraum der %s hinzugefügt', $amount, $commodity->getName(), $ship->getName());
+            $origin = $configuration->isAssimilationEnabled() ? 'vom Borg-Kubus' : 'von der Borg-Sphäre';
+            $report = sprintf('Das Außenteam ist %s zurückgekehrt. %d %s wurden dem Lagerraum der %s hinzugefügt', $origin, $amount, $commodity->getName(), $ship->getName());
+            $report .= $this->dataNodes->grant($ship, $configuration, $dataNode);
         } else {
             $lost = $this->team->assimilate($team, $this->random->rand($configuration->getSetting('raid_loss_min'), $configuration->getSetting('raid_loss_max')), $wrapper);
-            $report = sprintf('Die Außenmission auf der Borg-Sphäre ist gescheitert. %d Crewmitglieder der %s wurden assimiliert und konnten nicht zurückgebeamt werden: %s', count($lost), $ship->getName(), implode(', ', $lost));
+            $destination = $configuration->isAssimilationEnabled() ? 'dem Borg-Kubus' : 'der Borg-Sphäre';
+            $report = sprintf('Die Außenmission auf %s ist gescheitert. %d Crewmitglieder der %s wurden assimiliert und konnten nicht zurückgebeamt werden: %s', $destination, count($lost), $ship->getName(), implode(', ', $lost));
         }
         return [$success, $report];
     }

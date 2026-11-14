@@ -14,7 +14,9 @@ use Stu\Module\Spacecraft\Lib\Message\MessageCollectionInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Message\MessageInterface;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\SpacecraftAssimilated;
 use Stu\Orm\Entity\SpacecraftCondition;
+use Stu\Orm\Entity\User;
 use Stu\StuTestCase;
 
 class SpacecraftAttackPreparationTest extends StuTestCase
@@ -61,6 +63,28 @@ class SpacecraftAttackPreparationTest extends StuTestCase
         $this->subject->getReady($attackers, $defenders, false, $messages);
     }
 
+    public function testAnActiveAssimilationVictimDoesNotPrepareItsWeaponsOrSystems(): void
+    {
+        $attackers = $this->mock(BattlePartyInterface::class);
+        $defenders = $this->mock(BattlePartyInterface::class);
+        $messages = $this->mock(MessageCollectionInterface::class);
+        $wrapper = $this->mock(ShipWrapperInterface::class);
+        $ship = new Ship();
+        $ship->setCondition(new SpacecraftCondition($ship));
+        $user = $this->mock(User::class);
+        $user->shouldReceive('getId')->andReturn(19);
+        $source = new Ship()->setUser($user);
+        new SpacecraftAssimilated()->setSpacecraft($ship)->start($source, 100, 900);
+        $wrapper->shouldReceive('get')->andReturn($ship);
+        $attackers->shouldReceive('getActiveMembers')->andReturn(new ArrayCollection());
+        $defenders->shouldReceive('getActiveMembers')->andReturn(new ArrayCollection([$wrapper]));
+        $defenders->shouldReceive('isActive')->andReturn(false);
+        $this->fightLib->shouldNotReceive('ready');
+        $this->messageFactory->shouldNotReceive('createMessage');
+
+        $this->subject->getReady($attackers, $defenders, false, $messages);
+    }
+
     #[DataProvider('provideGetReadyData')]
     public function testGetReady(bool $isOneWay): void
     {
@@ -79,6 +103,8 @@ class SpacecraftAttackPreparationTest extends StuTestCase
         $ship4 = $this->mock(Ship::class);
         $ship3->shouldReceive('getCondition->isDisabled')->andReturn(false);
         $ship4->shouldReceive('getCondition->isDisabled')->andReturn(false);
+        $ship3->shouldReceive('isBeingAssimilated')->andReturn(false);
+        $ship4->shouldReceive('isBeingAssimilated')->andReturn(false);
 
         $message1 = $this->mock(MessageInterface::class);
         $message2 = $this->mock(MessageInterface::class);

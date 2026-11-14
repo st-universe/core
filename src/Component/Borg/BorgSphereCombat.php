@@ -21,7 +21,8 @@ final class BorgSphereCombat
     public function __construct(
         private BorgSphereRepositoryInterface $repository,
         private BorgSphereAttackContext $context,
-        private StuTime $time
+        private StuTime $time,
+        private ?BorgAssimilationLifecycle $assimilation = null
     ) {}
 
     /** @param callable(): void $callback */
@@ -153,6 +154,7 @@ final class BorgSphereCombat
                 $system->setMode(SpacecraftSystemModeEnum::MODE_OFF);
             }
         }
+        $this->assimilation?->releaseForSource($ship);
         $this->repository->save($event);
         $this->context->stopBattleAfterDisabling($ship);
     }

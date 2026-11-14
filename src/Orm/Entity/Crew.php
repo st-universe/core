@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewTypeEnum;
 use Stu\Component\Crew\Skill\CrewSkillLevelEnum;
+use Stu\Lib\Trait\EntityOwnershipTransferTrait;
 use Stu\Orm\Attribute\TruncateOnGameReset;
 use Stu\Orm\Repository\CrewRepository;
 
@@ -24,6 +25,7 @@ use Stu\Orm\Repository\CrewRepository;
 #[TruncateOnGameReset]
 class Crew
 {
+    use EntityOwnershipTransferTrait;
     public const int CREW_GENDER_MALE = 1;
     public const int CREW_GENDER_FEMALE = 2;
 

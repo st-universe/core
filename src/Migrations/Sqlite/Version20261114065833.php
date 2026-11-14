@@ -7,7 +7,7 @@ namespace Stu\Migrations\Sqlite;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20261112114702 extends AbstractMigration
+final class Version20261114065833 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -431,6 +431,7 @@ final class Version20261112114702 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_AD2CDF3012469DE2 ON stu_rump (category_id)');
         $this->addSql('CREATE INDEX IDX_AD2CDF30B4ACC212 ON stu_rump (commodity_id)');
         $this->addSql('CREATE INDEX IDX_AD2CDF30F0AA09DB ON stu_rump (database_id)');
+        $this->addSql('CREATE TABLE stu_rump_assimilateable (rump_id INTEGER NOT NULL, PRIMARY KEY (rump_id), CONSTRAINT FK_11D114602EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_rump_base_values (evade_chance SMALLINT NOT NULL, hit_chance SMALLINT NOT NULL, module_level SMALLINT NOT NULL, base_crew SMALLINT NOT NULL, max_crew SMALLINT NOT NULL, base_eps SMALLINT NOT NULL, base_reactor SMALLINT NOT NULL, base_hull INTEGER NOT NULL, base_shield INTEGER NOT NULL, base_damage SMALLINT NOT NULL, base_sensor_range SMALLINT NOT NULL, base_warpdrive INTEGER NOT NULL, special_slots SMALLINT NOT NULL, rump_id INTEGER NOT NULL, PRIMARY KEY (rump_id), CONSTRAINT FK_C47ECAED2EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_rump_costs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, rump_id INTEGER NOT NULL, commodity_id INTEGER NOT NULL, count INTEGER NOT NULL, CONSTRAINT FK_11BE8AA4B4ACC212 FOREIGN KEY (commodity_id) REFERENCES stu_commodity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_11BE8AA42EE98D4C FOREIGN KEY (rump_id) REFERENCES stu_rump (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX rump_cost_ship_rump_idx ON stu_rump_costs (rump_id)');
@@ -485,6 +486,8 @@ final class Version20261112114702 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_4BD20E2E2EE98D4C ON stu_spacecraft (rump_id)');
         $this->addSql('CREATE INDEX IDX_4BD20E2EE899029B ON stu_spacecraft (plan_id)');
         $this->addSql('CREATE INDEX IDX_4BD20E2E64D218E ON stu_spacecraft (location_id)');
+        $this->addSql('CREATE TABLE stu_spacecraft_assimilated (progress INTEGER NOT NULL, initial_progress INTEGER NOT NULL, started_at INTEGER DEFAULT NULL, duration_seconds INTEGER NOT NULL, borg_user_id INTEGER NOT NULL, nanite_commodity_id INTEGER NOT NULL, nanite_reward_min INTEGER NOT NULL, nanite_reward_max INTEGER NOT NULL, completed_at INTEGER DEFAULT NULL, spacecraft_id INTEGER NOT NULL, source_id INTEGER DEFAULT NULL, PRIMARY KEY (spacecraft_id), CONSTRAINT FK_AE520D1C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_AE520D953C1C61 FOREIGN KEY (source_id) REFERENCES stu_spacecraft (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_AE520D953C1C61 ON stu_spacecraft_assimilated (source_id)');
         $this->addSql('CREATE TABLE stu_spacecraft_condition (hull INTEGER NOT NULL, shield INTEGER NOT NULL, is_disabled BOOLEAN NOT NULL, state SMALLINT NOT NULL, spacecraft_id INTEGER NOT NULL, PRIMARY KEY (spacecraft_id), CONSTRAINT FK_6B28914D1C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE stu_spacecraft_emergency (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, spacecraft_id INTEGER NOT NULL, text CLOB NOT NULL, date INTEGER NOT NULL, deleted INTEGER DEFAULT NULL, CONSTRAINT FK_F02308131C6AF6FD FOREIGN KEY (spacecraft_id) REFERENCES stu_spacecraft (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_F02308131C6AF6FD ON stu_spacecraft_emergency (spacecraft_id)');
@@ -813,6 +816,7 @@ final class Version20261112114702 extends AbstractMigration
         $this->addSql('DROP TABLE stu_research_dependencies');
         $this->addSql('DROP TABLE stu_researched');
         $this->addSql('DROP TABLE stu_rump');
+        $this->addSql('DROP TABLE stu_rump_assimilateable');
         $this->addSql('DROP TABLE stu_rump_base_values');
         $this->addSql('DROP TABLE stu_rump_costs');
         $this->addSql('DROP TABLE stu_rump_module_level');
@@ -832,6 +836,7 @@ final class Version20261112114702 extends AbstractMigration
         $this->addSql('DROP TABLE stu_skill_enhancement');
         $this->addSql('DROP TABLE stu_skill_enhancement_log');
         $this->addSql('DROP TABLE stu_spacecraft');
+        $this->addSql('DROP TABLE stu_spacecraft_assimilated');
         $this->addSql('DROP TABLE stu_spacecraft_condition');
         $this->addSql('DROP TABLE stu_spacecraft_emergency');
         $this->addSql('DROP TABLE stu_spacecraft_log');
