@@ -92,7 +92,8 @@ final class SpecialResearchIntegrationTest extends ActionTestCase
             [9, AwayMissionResearchEnum::IMPULSE_DRIVE, null, 89, [10401 => 20, 10402 => 10]],
             [10, AwayMissionResearchEnum::WARP_DRIVE, null, 90, [10901 => 20, 10902 => 10]],
             [11, AwayMissionResearchEnum::SENSORS, null, 91, [10601 => 20, 10602 => 10]],
-            [12, AwayMissionResearchEnum::COMPUTER, null, 92, [11901 => 20, 11902 => 10]]
+            [12, AwayMissionResearchEnum::COMPUTER, null, 92, [11901 => 20, 11902 => 10]],
+            [13, AwayMissionResearchEnum::TORPEDO_WEAPONS, null, 94, [10801 => 20, 10802 => 10]]
         ];
         $metadata = $this->em->getClassMetadata(Commodity::class);
         $generatorType = $metadata->generatorType;

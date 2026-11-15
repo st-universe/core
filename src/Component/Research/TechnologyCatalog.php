@@ -50,6 +50,7 @@ final class TechnologyCatalog
             SpacecraftModuleTypeEnum::REACTOR->value => AwayMissionResearchEnum::REACTOR,
             SpacecraftModuleTypeEnum::COMPUTER->value => AwayMissionResearchEnum::COMPUTER,
             SpacecraftModuleTypeEnum::PHASER->value => AwayMissionResearchEnum::ENERGY_WEAPONS,
+            SpacecraftModuleTypeEnum::TORPEDO->value => AwayMissionResearchEnum::TORPEDO_WEAPONS,
             SpacecraftModuleTypeEnum::SENSOR->value => AwayMissionResearchEnum::SENSORS,
             SpacecraftModuleTypeEnum::WARPDRIVE->value => AwayMissionResearchEnum::WARP_DRIVE
         ][$module->getType()->value] ?? null;

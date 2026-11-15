@@ -14,6 +14,7 @@ enum AwayMissionResearchEnum: string
     case WARP_DRIVE = 'warp_drive';
     case SENSORS = 'sensors';
     case COMPUTER = 'computer';
+    case TORPEDO_WEAPONS = 'torpedo_weapons';
 
     public function getDescription(): string
     {
@@ -25,7 +26,8 @@ enum AwayMissionResearchEnum: string
             self::IMPULSE_DRIVE => 'Impulsantrieb',
             self::WARP_DRIVE => 'Warpantrieb',
             self::SENSORS => 'Sensoren',
-            self::COMPUTER => 'Computersysteme'
+            self::COMPUTER => 'Computersysteme',
+            self::TORPEDO_WEAPONS => 'Torpedomodule'
         };
     }
 
@@ -39,7 +41,8 @@ enum AwayMissionResearchEnum: string
             self::IMPULSE_DRIVE => 89,
             self::WARP_DRIVE => 90,
             self::SENSORS => 91,
-            self::COMPUTER => 92
+            self::COMPUTER => 92,
+            self::TORPEDO_WEAPONS => 94
         };
     }
 
@@ -53,7 +56,8 @@ enum AwayMissionResearchEnum: string
             self::IMPULSE_DRIVE => 'den verbesserten Impulsantrieb',
             self::WARP_DRIVE => 'den verbesserten Warpantrieb',
             self::SENSORS => 'das verbesserte Sensorensystem',
-            self::COMPUTER => 'die verbesserten Computersysteme'
+            self::COMPUTER => 'die verbesserten Computersysteme',
+            self::TORPEDO_WEAPONS => 'die verbesserten Torpedomodule'
         };
     }
 
@@ -67,7 +71,8 @@ enum AwayMissionResearchEnum: string
             self::IMPULSE_DRIVE => 'Die Naniten stimmten die Impulsspulen laufend nach. Die Messreihen zeigen eine bessere Schubausbeute bei gleichem Brennstoffverbrauch',
             self::WARP_DRIVE => 'Die Naniten glichen Abweichungen zwischen den Warpspulen aus. So ließ sich ein gleichmäßigeres Warpfeld mit geringeren Energieverlusten aufbauen',
             self::SENSORS => 'Die Naniten korrigierten Störsignale bereits in den Sensorarrays. Schwache Kontakte ließen sich dadurch deutlicher vom Hintergrundrauschen trennen',
-            self::COMPUTER => 'Die Naniten verbanden beschädigte Verarbeitungsknoten neu und verteilten Rechenaufgaben auf freie Kapazitäten. Die Reaktionszeiten des Computers sanken deutlich'
+            self::COMPUTER => 'Die Naniten verbanden beschädigte Verarbeitungsknoten neu und verteilten Rechenaufgaben auf freie Kapazitäten. Die Reaktionszeiten des Computers sanken deutlich',
+            self::TORPEDO_WEAPONS => 'Die Naniten synchronisierten die Abschusssequenzen der Torpedorampen mit den erfassten Schildfrequenzen des Ziels. Die Versuchsreihen zeigen, dass mehr Torpedos die gegnerischen Schilde durchdrangen'
         };
     }
 }

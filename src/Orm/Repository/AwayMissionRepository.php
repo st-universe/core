@@ -7,6 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Override;
+use Stu\Module\PlayerSetting\Lib\UserConstants;
 use Stu\Orm\Entity\AwayMission;
 use Stu\Orm\Entity\AwayMissionDialogue;
 use Stu\Orm\Entity\AwayMissionField;
@@ -19,21 +21,21 @@ final class AwayMissionRepository implements AwayMissionRepositoryInterface
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[\Override]
+    #[Override]
     public function getByColony(Colony $colony): ?AwayMission
     {
         return $this->entityManager->getRepository(AwayMission::class)->findOneBy(['colony' => $colony]);
     }
 
     /** @return list<AwayMissionField> */
-    #[\Override]
+    #[Override]
     public function getFields(AwayMission $mission): array
     {
         return $this->entityManager->getRepository(AwayMissionField::class)->findBy(['mission' => $mission], ['fieldId' => 'ASC']);
     }
 
     /** @return array<int, array<int, AwayMissionDialogue>> */
-    #[\Override]
+    #[Override]
     public function getDialogue(AwayMission $mission, int $factionId): array
     {
         $entries = $this->entityManager->createQuery(
@@ -57,7 +59,7 @@ final class AwayMissionRepository implements AwayMissionRepositoryInterface
         return $pages;
     }
 
-    #[\Override]
+    #[Override]
     public function getProgress(AwayMission $mission, User $user, bool $forUpdate = false): ?AwayMissionProgress
     {
         $query = $this->entityManager->createQuery(
@@ -71,7 +73,7 @@ final class AwayMissionRepository implements AwayMissionRepositoryInterface
         return $query->getOneOrNullResult();
     }
 
-    #[\Override]
+    #[Override]
     public function initializeProgress(AwayMission $mission, User $user): AwayMissionProgress
     {
         $progress = $this->getProgress($mission, $user, true);
@@ -84,20 +86,41 @@ final class AwayMissionRepository implements AwayMissionRepositoryInterface
         return $progress;
     }
 
-    #[\Override]
+    #[Override]
+    public function lockMission(AwayMission $mission): void
+    {
+        $this->entityManager->lock($mission, LockMode::PESSIMISTIC_WRITE);
+    }
+
+    #[Override]
+    public function getResearchAssignmentCounts(AwayMission $mission): array
+    {
+        $rows = $this->entityManager->createQuery(
+            'SELECT p.researchSystem AS system, COUNT(p.id) AS assignments FROM ' . AwayMissionProgress::class . ' p
+             WHERE p.mission = :mission AND p.researchSystem IS NOT NULL AND IDENTITY(p.user) >= :firstPlayerId
+             GROUP BY p.researchSystem'
+        )->setParameters(['mission' => $mission, 'firstPlayerId' => UserConstants::USER_FIRST_ID])->getScalarResult();
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[(string) $row['system']] = (int) $row['assignments'];
+        }
+        return $counts;
+    }
+
+    #[Override]
     public function saveProgress(AwayMissionProgress $progress): void
     {
         $this->entityManager->persist($progress);
     }
 
-    #[\Override]
+    #[Override]
     public function deleteByUser(User $user): void
     {
         $this->entityManager->createQuery('DELETE FROM ' . AwayMissionProgress::class . ' p WHERE p.user = :user')
             ->setParameter('user', $user)->execute();
     }
 
-    #[\Override]
+    #[Override]
     public function deleteByQuestOwner(User $user): void
     {
         $missions = $this->entityManager->createQuery(
@@ -110,7 +133,7 @@ final class AwayMissionRepository implements AwayMissionRepositoryInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function deleteByColony(Colony $colony): void
     {
         foreach ($this->entityManager->getRepository(AwayMission::class)->findBy(['colony' => $colony]) as $mission) {
@@ -118,7 +141,7 @@ final class AwayMissionRepository implements AwayMissionRepositoryInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function deleteByQuest(NPCQuest $quest): void
     {
         foreach ($this->entityManager->getRepository(AwayMission::class)->findBy(['quest' => $quest]) as $mission) {

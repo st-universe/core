@@ -112,7 +112,7 @@ final class TechnologyOverviewTest extends StuTestCase
         $own = $this->module(2, 6, faction: 3);
         $foreign = $this->module(3, 2, faction: 2);
         $npc = $this->module(4, 3, npc: true);
-        $unsupported = $this->module(5, 4, type: SpacecraftModuleTypeEnum::TORPEDO);
+        $unsupported = $this->module(5, 4, type: SpacecraftModuleTypeEnum::HULL);
         $missingFoundation = $this->module(6, 5, type: SpacecraftModuleTypeEnum::SENSOR);
         $this->modules->shouldReceive('getStandardAndFactionByLevels')->with(3, range(1, 6))->once()->andReturn([$neutral, $own, $foreign, $npc, $unsupported, $missingFoundation]);
         $this->colony->shouldReceive('getStorage')->andReturn(new ArrayCollection());

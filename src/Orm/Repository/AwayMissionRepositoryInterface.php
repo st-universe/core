@@ -26,6 +26,11 @@ interface AwayMissionRepositoryInterface
 
     public function initializeProgress(AwayMission $mission, User $user): AwayMissionProgress;
 
+    public function lockMission(AwayMission $mission): void;
+
+    /** @return array<string, int> */
+    public function getResearchAssignmentCounts(AwayMission $mission): array;
+
     public function saveProgress(AwayMissionProgress $progress): void;
 
     public function deleteByUser(User $user): void;

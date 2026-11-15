@@ -14,6 +14,7 @@ use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Quest\AwayMission\AwayMissionResearchEnum;
 use Stu\Component\Research\ModuleOptimizationProgress;
 use Stu\Component\Research\SpecialResearchCompletion;
+use Stu\Component\Research\SpecialResearchService;
 use Stu\Component\Research\SpecialResearchStatusEnum;
 use Stu\Component\Research\TechnologyJobFactory;
 use Stu\Component\Research\TechnologyRecipeKindEnum;
@@ -31,6 +32,7 @@ use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Template\TemplateInterface;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
+use Stu\Module\Tick\Process\FinishSpecialResearchJobs;
 use Stu\Module\Tick\Process\FinishTechnologyJobs;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManagerInterface;
 use Stu\Module\Twig\TwigHelper;
@@ -51,6 +53,7 @@ use Stu\Orm\Entity\TechnologyRecipeCost;
 use Stu\Orm\Entity\TechnologyResearch;
 use Stu\Orm\Entity\UserModuleOptimization;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
+use Stu\Orm\Repository\SpecialResearchRepositoryInterface;
 use Stu\Orm\Repository\TechnologyRepositoryInterface;
 use Twig\Environment;
 
@@ -231,6 +234,78 @@ final class TechnologyResearchIntegrationTest extends ActionTestCase
         self::assertSame($before + 1, $this->colony->getStorage()->get(91)->getAmount());
         $this->process();
         self::assertSame($before + 1, $this->colony->getStorage()->get(91)->getAmount());
+    }
+
+    public function testTorpedoFoundationUnlocksDatasetCopiesAndModuleOptimizationThroughTheirCompletion(): void
+    {
+        $container = $this->getContainer();
+        $type = AwayMissionResearchEnum::TORPEDO_WEAPONS;
+        $this->seedTorpedoResearch();
+        $this->supply([94 => 1, 76 => 15, 10801 => 25, 10802 => 10, 31 => 2, 33 => 1]);
+        $module = $this->em->find(Module::class, 10801);
+        $this->em->persist(new Researched()->setUser($this->colony->getUser())->setResearch($this->em->find(Research::class, 1001))->setFinished(1));
+        $this->em->flush();
+        $before = $this->colony->getStorageSum();
+        self::assertFalse($this->start(12));
+        self::assertSame($before, $this->colony->getStorageSum());
+        $information = new InformationWrapper();
+        self::assertTrue($this->em->wrapInTransaction(fn (): bool => $container->get(SpecialResearchService::class)->start($this->colony, $this->field, $type, $information)));
+        self::assertSame($before - 36, $this->colony->getStorageSum());
+        $foundation = array_find($container->get(SpecialResearchRepositoryInterface::class)->getByUser($this->colony->getUser()), static fn (SpecialResearch $research): bool => $research->getResearchType() === $type);
+        self::assertNotNull($foundation);
+        self::assertSame(SpecialResearchStatusEnum::RUNNING, $foundation->getStatus());
+        self::assertSame(345600, $foundation->getFinishTime() - $foundation->getStartTime());
+        self::assertSame(10, $foundation->getFailureChance());
+        self::assertSame($this->field->getId(), $foundation->getFieldId());
+        self::assertFalse($this->start(12));
+        $foundation->setFailureChance(0)->setFinishTime(0);
+        $this->em->flush();
+
+        $this->em->wrapInTransaction(fn () => $container->get(FinishSpecialResearchJobs::class)->work());
+
+        self::assertSame(SpecialResearchStatusEnum::COMPLETED, $foundation->getStatus());
+        $energy = $this->colony->getChangeable()->getEps();
+        self::assertTrue($this->start(12));
+        self::assertSame($energy - 5, $this->colony->getChangeable()->getEps());
+        $copy = $this->repository->getProductionByUser($this->colony->getUser())[0];
+        self::assertSame(43200, $copy->getFinishTime() - $copy->getStartTime());
+        self::assertSame(94, $copy->getOutputCommodity()->getId());
+        $copy->setFinishTime(0);
+        $this->process();
+        self::assertSame(SpecialResearchStatusEnum::COMPLETED, $copy->getStatus());
+        self::assertSame(1, $this->colony->getStorage()->get(94)->getAmount());
+        $this->unlockProduction();
+        self::assertTrue($this->start(11, $module, 5, 10));
+        $optimization = $this->research();
+        self::assertSame($type, $optimization->getResearchType());
+        self::assertSame($module, $optimization->getModule());
+        self::assertSame(57600, $optimization->getFinishTime() - $optimization->getStartTime());
+        self::assertSame(2000, $optimization->getSuccessChance());
+        self::assertSame(0, $this->colony->getStorage()->get(94)?->getAmount() ?? 0);
+        $optimization->setSuccessChance(10000)->setFinishTime(0);
+
+        $this->process();
+
+        self::assertSame(SpecialResearchStatusEnum::COMPLETED, $optimization->getStatus());
+        self::assertSame(1, $container->get(ModuleOptimizationProgress::class)->getImprovementSteps($this->colony->getUser(), $module));
+        self::assertSame(0, $container->get(ModuleOptimizationProgress::class)->getImprovementSteps($this->colony->getUser(), $this->em->find(Module::class, 10802)));
+        self::assertSame(SpecialResearchStatusEnum::COMPLETED, $foundation->getStatus());
+    }
+
+    private function seedTorpedoResearch(): void
+    {
+        $chip = $this->commodity(94);
+        $definition = new SpecialResearchDefinition()->setId(13)->setResearchType(AwayMissionResearchEnum::TORPEDO_WEAPONS)
+            ->setDataCommodity($chip)->setDuration(345600)->setDataAmount(1)->setFailureChance(10);
+        $this->em->persist($definition);
+        foreach ([76 => 5, 10801 => 20, 10802 => 10] as $commodityId => $amount) {
+            $cost = new SpecialResearchCost()->setDefinition($definition)->setCommodity($this->commodity($commodityId))->setAmount($amount);
+            $definition->getCosts()->add($cost);
+            $this->em->persist($cost);
+        }
+        $this->recipe(12, TechnologyRecipeKindEnum::DATASET_COPY, 43200, [31 => 2, 33 => 1])
+            ->setResearchType(AwayMissionResearchEnum::TORPEDO_WEAPONS)->setOutputCommodity($chip)->setOutputAmount(1)->setEnergyCost(5)->setSettings(['max_concurrent_per_user' => 1]);
+        $this->em->flush();
     }
 
     public function testNanitesAreProducedOnlyAtTheirColonyTick(): void

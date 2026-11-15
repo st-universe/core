@@ -165,6 +165,7 @@ use Stu\Module\Spacecraft\Lib\Destruction\Handler\ClearTractoringBeam;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\ColonizationShipCheck;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\CrewEvacuation;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\DiscardBorgDataNodes;
+use Stu\Module\Spacecraft\Lib\Destruction\Handler\DropBorgAssimilationDataNode;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\EnhanceDestroyingCrew;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\FinishBorgSphereEvent;
 use Stu\Module\Spacecraft\Lib\Destruction\Handler\HistoryEntryCreation;
@@ -447,6 +448,8 @@ return [
         ->constructorParameter(
             'destructionHandlers',
             [
+                autowire(DiscardBorgDataNodes::class),
+                autowire(DropBorgAssimilationDataNode::class),
                 autowire(ClearBorgAssimilation::class),
                 autowire(FinishBorgSphereEvent::class),
                 autowire(ClearTractoredBeam::class),
@@ -463,7 +466,6 @@ return [
                 autowire(ResetTrackerDevices::class),
                 autowire(TradepostDestruction::class),
                 autowire(TholianWebDestruction::class),
-                autowire(DiscardBorgDataNodes::class),
                 autowire(TransformToTrumfield::class)
             ],
         ),
