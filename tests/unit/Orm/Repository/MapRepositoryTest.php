@@ -112,6 +112,32 @@ class MapRepositoryTest extends StuTestCase
         self::assertSame($allowed, $this->subject->getRandomPirateSpawnLocation($this->layer));
     }
 
+    public function testGraphicFieldsAreStreamedInRowOrderWithoutManagingMapEntities(): void
+    {
+        foreach ([[3, 2, 9], [2, 1, 7], [1, 1, 5]] as [$x, $y, $type]) {
+            $map = $this->createMap(new MapFieldType()->setType($type));
+            $metadata = $this->entityManager->getClassMetadata(Location::class);
+            $metadata->setFieldValue($map, 'cx', $x);
+            $metadata->setFieldValue($map, 'cy', $y);
+        }
+        $otherLayer = $this->createMap(new MapFieldType()->setType(99));
+        $this->entityManager->getClassMetadata(Location::class)->setFieldValue($otherLayer, 'layer', $this->createLayer());
+        $this->entityManager->flush();
+        $layerId = $this->layer->getId();
+        $this->entityManager->clear();
+        $layer = $this->entityManager->find(Layer::class, $layerId);
+        $managedBefore = $this->entityManager->getUnitOfWork()->size();
+
+        $fields = iterator_to_array($this->subject->iterateGraphicFields($layer), false);
+
+        self::assertSame([
+            ['x' => 1, 'y' => 1, 'type' => 5],
+            ['x' => 2, 'y' => 1, 'type' => 7],
+            ['x' => 3, 'y' => 2, 'type' => 9]
+        ], $fields);
+        self::assertSame($managedBefore, $this->entityManager->getUnitOfWork()->size());
+    }
+
     private function createLayer(): Layer
     {
         $layer = new Layer();

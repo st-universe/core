@@ -83,6 +83,17 @@ final class BorgSphereCombatTest extends StuTestCase
         self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $this->ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::EPS)->getMode());
     }
 
+    public function testDisablingUsesTheHalfHourlyIntervalForTheFirstRegeneration(): void
+    {
+        $this->event->getConfiguration()->setSettings(['tick_seconds' => 1800, 'transwarp_initial_bp' => 1000]);
+
+        $this->combat->finishHit($this->ship, new InformationWrapper());
+
+        self::assertSame(BorgSpherePhaseEnum::REGENERATING, $this->event->getPhase());
+        self::assertSame(2800, $this->event->getNextTickAt());
+        self::assertSame(1000, $this->event->getTranswarpProgress());
+    }
+
     public function testExplicitConfirmationAllowsHullDestructionOnlyForThisTarget(): void
     {
         $this->combat->finishHit($this->ship, new InformationWrapper());

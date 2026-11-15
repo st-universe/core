@@ -101,15 +101,34 @@ final class CollectBorgNanitesTest extends ActionControllerTestCase
         self::assertStringContainsString('<th>Benötigte freie Crew</th><td>5</td>', $html);
     }
 
+    /** @return iterable<string, array{int, string}> */
+    public static function transwarpValues(): iterable
+    {
+        yield 'whole ten percent' => [1000, '10%'];
+        yield 'half percentage point is not rounded up' => [1050, '10,5%'];
+        yield 'whole eleven percent' => [1100, '11%'];
+        yield 'trailing zero is removed' => [1150, '11,5%'];
+        yield 'two significant decimal places' => [1155, '11,55%'];
+        yield 'full progress' => [10000, '100%'];
+    }
+
+    #[DataProvider('transwarpValues')]
+    public function testThePopupShowsTheActualTranswarpProgressWithoutUnnecessaryTrailingZeros(int $progress, string $expected): void
+    {
+        $html = $this->renderPopup([], $progress);
+
+        self::assertStringContainsString('<th>Transwarpantrieb</th><td>' . $expected . '</td>', $html);
+    }
+
     /** @param array<string, mixed> $overrides */
-    private function renderPopup(array $overrides = []): string
+    private function renderPopup(array $overrides = [], int $transwarp = 1000): string
     {
         $event = new BorgSphereEvent()->setConfiguration(new BorgSphereConfiguration()->setSettings([
             'raid_cooldown_seconds' => 7200,
             'raid_team_size' => 5,
             'raid_reward_max' => 5,
             'tractor_rescue_chance_percent' => 25
-        ]))->setTranswarpProgress(1000);
+        ]))->setTranswarpProgress($transwarp);
         $twig = new Environment(new FilesystemLoader(dirname(__DIR__, 6) . '/src'), ['strict_variables' => true]);
         $twig->addFilter(new TwigFilter('bbcode', static fn (string $text): string => $text));
         return $twig->render('html/ship/borgSphere.twig', array_replace([

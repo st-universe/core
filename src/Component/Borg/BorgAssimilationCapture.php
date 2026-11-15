@@ -36,7 +36,7 @@ final class BorgAssimilationCapture
         }
         $this->repository->lock($source);
         $targets = $this->targets($source);
-        if ($targets === [] || $this->random->rand(1, 100) > ($event->getConfiguration()->getSettings()['assimilation_chance_percent'] ?? 33)) {
+        if ($targets === [] || $this->random->rand(1, 100) > ($event->getConfiguration()->getSettings()['assimilation_chance_percent'] ?? 60)) {
             return false;
         }
         $target = $targets[$this->random->array_rand($targets)];

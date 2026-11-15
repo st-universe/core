@@ -26,7 +26,7 @@ use Stu\Module\Database\View\Category\Wrapper\DatabaseCategoryWrapperFactoryInte
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserStateEnum;
-use Stu\Module\Spacecraft\Lib\SpacecraftLoaderInterface;
+use Stu\Module\Spacecraft\Lib\SpacecraftViewLoader;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Module\Spacecraft\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Orm\Entity\Colony;
@@ -46,11 +46,8 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
 
     private LoggerUtilInterface $loggerUtil;
 
-    /**
-     * @param SpacecraftLoaderInterface<SpacecraftWrapperInterface> $spacecraftLoader
-     */
     public function __construct(
-        private readonly SpacecraftLoaderInterface $spacecraftLoader,
+        private readonly SpacecraftViewLoader $spacecraftViewLoader,
         private readonly UserLayerRepositoryInterface $userLayerRepository,
         private readonly AnomalyRepositoryInterface $anomalyRepository,
         private readonly DatabaseCategoryWrapperFactoryInterface $databaseCategoryWrapperFactory,
@@ -75,12 +72,10 @@ final class ShowSpacecraft implements ViewControllerInterface, ViewWithTutorialI
         $this->extensions?->view('ship.view', $game);
         $spacecraftId = request::indInt('id');
 
-        $wrapper = $this->spacecraftLoader->getWrapperByIdAndUser(
-            $spacecraftId,
-            $userId,
-            true,
-            false
-        );
+        $wrapper = $this->spacecraftViewLoader->getWrapper($spacecraftId, $userId, $game);
+        if ($wrapper === null) {
+            return;
+        }
         $spacecraft = $wrapper->get();
 
         $spacecraftTypeShowStrategy = Init::getContainer()->getDefinedImplementationsOf(SpacecraftTypeShowStragegyInterface::class)->get($spacecraft->getType()->value);

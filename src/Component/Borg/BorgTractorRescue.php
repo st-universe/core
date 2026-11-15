@@ -10,6 +10,7 @@ use Stu\Lib\Information\InformationInterface;
 use Stu\Lib\Interaction\InteractionCheckerBuilderFactoryInterface;
 use Stu\Lib\Interaction\InteractionCheckType;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\Ship;
@@ -27,9 +28,10 @@ final class BorgTractorRescue
         SpacecraftSystemManagerInterface $systems,
         private InteractionCheckerBuilderFactoryInterface $checks,
         StuRandom $random,
-        private BorgTractorRescueParticipants $participants
+        private BorgTractorRescueParticipants $participants,
+        StuTime $time
     ) {
-        $this->salvos = new BorgTractorRescueSalvos($assimilation, $systems, $random);
+        $this->salvos = new BorgTractorRescueSalvos($assimilation, $systems, $random, $time);
     }
 
     public function attack(SpacecraftWrapperInterface $source, SpacecraftWrapperInterface $target, InformationInterface $information): bool
@@ -51,7 +53,7 @@ final class BorgTractorRescue
             return false;
         }
         $this->events->lockEvent($event);
-        if (!$this->isAvailable($event, $cube)) {
+        if (!$this->isAvailable($event, $cube) || !$this->salvos->isBeforeDeadline($cube, $information)) {
             return false;
         }
         $participants = $this->participants->getParticipants($source, $cube);
@@ -59,12 +61,15 @@ final class BorgTractorRescue
             $information->addInformation('Für die Frequenzmodulation werden einsatzbereite Energiewaffen, Nahbereichssensoren, ausreichend Crew und Energie benötigt');
             return false;
         }
-        $this->combat->withLockedEvent($cube, $event, function () use ($event, $participants, $target, $information, $cube, $ship): void {
-            $this->salvos->fire($event, $participants, $target, $information);
-            $this->combat->registerHit($cube);
-            $this->response->respond($event, $cube, $ship, $information);
+        $fired = false;
+        $this->combat->withLockedEvent($cube, $event, function () use ($event, $participants, $target, $information, $cube, $ship, &$fired): void {
+            $fired = $this->salvos->fire($event, $participants, $target, $information);
+            if ($fired) {
+                $this->combat->registerHit($cube);
+                $this->response->respond($event, $cube, $ship, $information);
+            }
         });
-        return true;
+        return $fired;
     }
 
     private function isAvailable(BorgSphereEvent $event, Ship $cube): bool

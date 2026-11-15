@@ -44,6 +44,7 @@ use Stu\Module\Admin\Action\Map\ResetEffects\ResetEffects;
 use Stu\Module\Admin\Action\Map\SetIonStormMovement\SetIonStormMovement;
 use Stu\Module\Admin\Action\PostNews;
 use Stu\Module\Admin\Action\RecalculateBuildplanCrewUsage;
+use Stu\Module\Admin\Action\ResetBorgTick;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\SetGameState;
@@ -104,6 +105,7 @@ return [
     ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
         SpawnBorgSphere::ACTION_IDENTIFIER => autowire(SpawnBorgSphere::class),
+        ResetBorgTick::ACTION_IDENTIFIER => autowire(ResetBorgTick::class),
         StartImpersonation::ACTION_IDENTIFIER => autowire(StartImpersonation::class),
         StopImpersonation::ACTION_IDENTIFIER => autowire(StopImpersonation::class),
         EditEffects::ACTION_IDENTIFIER => autowire(EditEffects::class),

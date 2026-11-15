@@ -21,10 +21,11 @@ final class BorgSphereRegeneration
             return;
         }
         $configuration = $event->getConfiguration();
-        for ($hour = 0; $hour < $steps; $hour++) {
+        for ($step = 0; $step < $steps; $step++) {
             $this->regenerateNormalSystems($configuration, $ship);
         }
-        $progress = min($configuration->getSetting('transwarp_escape_bp'), $event->getTranswarpProgress() + $configuration->getSetting('transwarp_regen_bp') * $steps);
+        $transwarpGain = $this->scaleHourlyAmount($configuration->getSetting('transwarp_regen_bp'), $configuration);
+        $progress = min($configuration->getSetting('transwarp_escape_bp'), $event->getTranswarpProgress() + $transwarpGain * $steps);
         $event->setTranswarpProgress($progress);
         $floorStep = $configuration->getSetting('transwarp_floor_step_bp');
         $event->setTranswarpFloor(max($event->getTranswarpFloor(), min($configuration->getSetting('transwarp_escape_bp') - $floorStep, intdiv($progress, $floorStep) * $floorStep)));
@@ -54,7 +55,14 @@ final class BorgSphereRegeneration
         $minimum = $shield ? $settings['shield_regen_min_percent'] ?? $configuration->getSetting('normal_regen_min_percent') : $configuration->getSetting('normal_regen_min_percent');
         $maximumPercent = $shield ? $settings['shield_regen_max_percent'] ?? $configuration->getSetting('normal_regen_max_percent') : $configuration->getSetting('normal_regen_max_percent');
         $percent = $this->random->rand($minimum, $maximumPercent);
-        return min($maximum, $current + (int) ceil($maximum * $percent / 100));
+        $hourlyAmount = intdiv($maximum * $percent + 99, 100);
+        return min($maximum, $current + $this->scaleHourlyAmount($hourlyAmount, $configuration));
+    }
+
+    private function scaleHourlyAmount(int $amount, BorgSphereConfiguration $configuration): int
+    {
+        $seconds = max(1, $configuration->getSettings()['tick_seconds'] ?? 3600);
+        return intdiv($amount * $seconds + 3599, 3600);
     }
 
     private function isReady(BorgSphereEvent $event, Ship $ship): bool

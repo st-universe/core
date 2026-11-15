@@ -27,6 +27,9 @@ interface MapRepositoryInterface extends ObjectRepository
      */
     public function getAllOrdered(Layer $layer): array;
 
+    /** @return iterable<array{x: int, y: int, type: int}> */
+    public function iterateGraphicFields(Layer $layer): iterable;
+
     /**
      * @return array<int, Map>
      */
