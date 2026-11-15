@@ -98,8 +98,8 @@ final class BorgAssimilationCaptureChanceTest extends StuTestCase
     /** @return iterable<string, array{?int, int, bool}> */
     public static function chances(): iterable
     {
-        yield 'default succeeds at 33' => [null, 33, true];
-        yield 'default fails at 34' => [null, 34, false];
+        yield 'default succeeds at 60' => [null, 60, true];
+        yield 'default fails at 61' => [null, 61, false];
         yield 'configured chance succeeds at its boundary' => [60, 60, true];
         yield 'configured chance fails beyond its boundary' => [60, 61, false];
         yield 'zero chance always fails' => [0, 1, false];

@@ -2317,7 +2317,9 @@ if (document.readyState === 'loading') {
       var remaining = element.querySelector('[data-assimilation-remaining]');
       if (remaining) {
         var seconds = Math.max(0, Math.ceil(Number(data.assimilationStart) + duration - now));
-        remaining.textContent = Math.floor(seconds / 60) + 'm ' + (seconds % 60) + 's';
+        var label = element.querySelector('[data-assimilation-countdown-label]');
+        if (label) label.textContent = seconds > 0 ? 'Verbleibende Zeit: ' : '';
+        remaining.textContent = seconds > 0 ? Math.floor(seconds / 60) + 'm ' + (seconds % 60) + 's' : 'Abschluss wird verarbeitet';
       }
     });
   }

@@ -179,11 +179,20 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         self::assertSame($hull, $this->sphere->getCondition()->getHull());
     }
 
-    public function testAutomaticActionsWaitUntilTheHourlyDeadlineAndDoNotRepeatWithinTheSameHour(): void
+    /** @return iterable<string, array{int}> */
+    public static function tickIntervals(): iterable
+    {
+        yield 'hourly' => [3600];
+        yield 'half hourly' => [1800];
+    }
+
+    #[DataProvider('tickIntervals')]
+    public function testAutomaticActionsWaitUntilTheDeadlineAndDoNotRepeatWithinTheSameInterval(int $interval): void
     {
         $container = $this->getContainer();
         $now = $this->now;
-        $deadline = $now + 3600;
+        $this->configuration->setSettings([...$this->configuration->getSettings(), 'tick_seconds' => $interval]);
+        $deadline = $now + $interval;
         $this->event->setPhase(BorgSpherePhaseEnum::ROAMING)->setFirstDisabledAt(null)->setNextTickAt($deadline);
         $this->sphere->getCondition()->setDisabled(false);
         $this->sphere->getBuildplan()->setCrew($this->sphere->getCrewCount());
@@ -217,15 +226,17 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         $now = $deadline;
         $this->em->wrapInTransaction(fn () => $tick->work());
         self::assertSame(1, $attempts);
-        self::assertSame($deadline + 3600, $this->event->getNextTickAt());
+        self::assertSame($deadline + $interval, $this->event->getNextTickAt());
         $this->em->wrapInTransaction(fn () => $tick->work());
         self::assertSame(1, $attempts);
     }
 
-    public function testCounterfireCannotResetHourlyRegenerationOrTranswarpProgress(): void
+    #[DataProvider('tickIntervals')]
+    public function testCounterfireCannotResetRegenerationOrTranswarpProgress(int $interval): void
     {
         $container = $this->getContainer();
-        $deadline = $this->now + 3600;
+        $this->configuration->setSettings([...$this->configuration->getSettings(), 'tick_seconds' => $interval]);
+        $deadline = $this->now + $interval;
         $now = $deadline;
         foreach ([SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::TRANSWARP_COIL] as $type) {
             if (!$this->sphere->hasSpacecraftSystem($type)) {
@@ -267,22 +278,24 @@ final class BorgSphereIntegrationTest extends ActionTestCase
             return $now;
         });
         $tick = $container->make(BorgSphereTick::class, ['behavior' => $behavior, 'regeneration' => $regeneration, 'time' => $time, 'combat' => $combat]);
+        $hullGain = (int) ceil(ceil($maxHull * 2 / 100) * $interval / 3600);
+        $shieldGain = (int) ceil(ceil($maxShield * 2 / 100) * $interval / 3600);
 
-        foreach ([1, 2] as $hour) {
-            $now = $deadline + ($hour - 1) * 3600;
+        foreach ([1, 2] as $step) {
+            $now = $deadline + ($step - 1) * $interval;
             $this->em->wrapInTransaction(fn () => $tick->work());
             $this->em->refresh($this->event);
-            self::assertSame($now + 3600, $this->event->getNextTickAt());
+            self::assertSame($now + $interval, $this->event->getNextTickAt());
             self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
-            self::assertSame(1000 + $hour * 100, $this->event->getTranswarpProgress());
-            self::assertSame($hull + $hour * (int) ceil($maxHull * 2 / 100), $this->sphere->getCondition()->getHull());
-            self::assertSame($shield + $hour * (int) ceil($maxShield * 2 / 100), $this->sphere->getCondition()->getShield());
+            self::assertSame(1000 + intdiv($step * 100 * $interval, 3600), $this->event->getTranswarpProgress());
+            self::assertSame($hull + $step * $hullGain, $this->sphere->getCondition()->getHull());
+            self::assertSame($shield + $step * $shieldGain, $this->sphere->getCondition()->getShield());
             foreach ($this->sphere->getSystems() as $system) {
-                self::assertSame(10 + $hour * ($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 1 : 2), $system->getStatus());
+                self::assertSame(10 + intdiv($step * ($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 1 : 2) * $interval, 3600), $system->getStatus());
             }
-            $now += 900;
+            $now += intdiv($interval, 4);
             $this->em->wrapInTransaction(fn () => $tick->work());
-            self::assertSame($hull + $hour * (int) ceil($maxHull * 2 / 100), $this->sphere->getCondition()->getHull());
+            self::assertSame($hull + $step * $hullGain, $this->sphere->getCondition()->getHull());
         }
     }
 

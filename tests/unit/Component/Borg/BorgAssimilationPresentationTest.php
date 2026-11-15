@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Borg;
 
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftNfsItem;
@@ -74,6 +75,30 @@ final class BorgAssimilationPresentationTest extends StuTestCase
         self::assertSame(73.33, $state['progress']);
         self::assertSame(450, $state['remaining']);
         self::assertSame(900, $state['duration']);
+    }
+
+    /** @return iterable<string, array{int, int, float}> */
+    public static function deadlineStates(): iterable
+    {
+        yield 'one second before deadline' => [1899, 1, 93.33];
+        yield 'exact deadline before process tick' => [1900, 0, 100.0];
+        yield 'waiting for the next process tick' => [1930, 0, 100.0];
+    }
+
+    #[DataProvider('deadlineStates')]
+    public function testPresentationKeepsTheExactDeadlineWithoutPretendingThatOwnershipAlreadyTransferred(int $now, int $remaining, float $progress): void
+    {
+        $owner = $this->mock(User::class);
+        $owner->shouldReceive('getId')->once()->andReturn(19);
+        $source = new Ship()->setUser($owner);
+        $ship = new Ship()->setRump(new SpacecraftRump()->setId(4203));
+        new SpacecraftAssimilated()->setSpacecraft($ship)->start($source, 1000, 900);
+
+        $state = $this->presentation(now: $now)->getState($ship);
+
+        self::assertTrue($state['active']);
+        self::assertSame($progress, $state['progress']);
+        self::assertSame($remaining, $state['remaining']);
     }
 
     private function presentation(?BorgAssimilationRepositoryInterface $repository = null, int $now = 2000): BorgAssimilationPresentation

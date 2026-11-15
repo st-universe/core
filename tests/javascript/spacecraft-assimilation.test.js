@@ -9,7 +9,7 @@ function createInterface(active = true, initial = 0) {
     const dom = new JSDOM(`<div data-assimilation-active="${active ? 1 : 0}" data-assimilation-progress="${initial / 100}"
         data-assimilation-start="1000" data-assimilation-now="1000" data-assimilation-initial="${initial}" data-assimilation-duration="900">
         <img class="normal" /><img class="borg-assimilation-overlay" />
-        <span data-assimilation-value></span><span data-assimilation-remaining></span>
+        <span data-assimilation-value></span><span data-assimilation-countdown-label></span><span data-assimilation-remaining></span>
     </div>`, { runScripts: 'outside-only' });
     let now = 1000000;
     let tick;
@@ -56,5 +56,21 @@ test('a recaptured ship continues from its existing partial assimilation across 
         assert.equal(ui.document.querySelector('[data-assimilation-remaining]').textContent, '7m 30s');
         ui.advance(450000);
         assert.equal(ui.document.querySelector('[data-assimilation-value]').textContent, '100,0%');
+    } finally { ui.close(); }
+});
+
+test('the exact deadline shows processing while the minute tick has not confirmed the transfer', () => {
+    const ui = createInterface();
+    try {
+        ui.advance(899000);
+        assert.equal(ui.document.querySelector('[data-assimilation-value]').textContent, '93,3%');
+        assert.equal(ui.document.querySelector('[data-assimilation-remaining]').textContent, '0m 1s');
+        assert.equal(ui.document.querySelector('[data-assimilation-countdown-label]').textContent, 'Verbleibende Zeit: ');
+        ui.advance(1000);
+        assert.equal(ui.document.querySelector('[data-assimilation-value]').textContent, '100,0%');
+        assert.equal(ui.document.querySelector('[data-assimilation-remaining]').textContent, 'Abschluss wird verarbeitet');
+        assert.equal(ui.document.querySelector('[data-assimilation-countdown-label]').textContent, '');
+        ui.advance(30000);
+        assert.equal(ui.document.querySelector('[data-assimilation-remaining]').textContent, 'Abschluss wird verarbeitet');
     } finally { ui.close(); }
 });

@@ -96,7 +96,9 @@ final class AttackBorgTractorTest extends ActionControllerTestCase
         $webs = $this->mock(TholianWebUtilInterface::class);
         $webs->shouldReceive('isTargetOutsideFinishedTholianWeb', 'isTargetInsideFinishedTholianWeb')->andReturn(false);
         $response = new BorgTractorRescueResponse($this->wrappers, $this->parties, $this->cycle, $messages, $fight, $context, $webs);
-        $rescue = new BorgTractorRescue($this->events, new BorgSphereCombat($this->events, $context, $this->mock(StuTime::class)), $response, new BorgAssimilationLifecycle(static fn () => throw new LogicException('No successful rescue expected')), $this->mock(SpacecraftSystemManagerInterface::class), $this->checks, $this->random, new BorgTractorRescueParticipants($this->wrappers, $webs));
+        $time = $this->mock(StuTime::class);
+        $time->shouldReceive('time')->andReturn(1000);
+        $rescue = new BorgTractorRescue($this->events, new BorgSphereCombat($this->events, $context, $time), $response, new BorgAssimilationLifecycle(static fn () => throw new LogicException('No successful rescue expected')), $this->mock(SpacecraftSystemManagerInterface::class), $this->checks, $this->random, new BorgTractorRescueParticipants($this->wrappers, $webs), $time);
         $this->subject = new AttackBorgTractor($this->ships, $rescue);
         $location = new Map();
         $this->source = $this->ship(167, 261, $location);

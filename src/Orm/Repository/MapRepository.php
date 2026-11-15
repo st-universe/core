@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Override;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Spacecraft\System\Data\RpgModuleSystemData;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
@@ -53,6 +55,21 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'layer' => $layer
             ])
             ->getResult();
+    }
+
+    #[Override]
+    public function iterateGraphicFields(Layer $layer): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT m.cx AS x, m.cy AS y, fieldType.type AS type
+                FROM %s m
+                JOIN m.mapFieldType fieldType
+                WHERE m.layer = :layer
+                ORDER BY m.cy, m.cx',
+                Map::class
+            )
+        )->setParameter('layer', $layer)->toIterable([], Query::HYDRATE_ARRAY);
     }
 
     #[\Override]

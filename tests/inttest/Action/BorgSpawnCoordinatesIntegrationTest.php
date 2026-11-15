@@ -86,6 +86,23 @@ final class BorgSpawnCoordinatesIntegrationTest extends ActionTestCase
         self::assertNotSame($this->configuration->getColony()->getStarsystemMap(), $ship->getLocation());
     }
 
+    public function testSpawnSchedulesItsFirstAutomaticActionThirtyMinutesLater(): void
+    {
+        $this->configuration->setSettings([...$this->configuration->getSettings(), 'tick_seconds' => 1800]);
+        $this->em->flush();
+        request::setMockVars(['borg_configuration_id' => '1', 'borg_spawn_layer' => '', 'borg_spawn_x' => '', 'borg_spawn_y' => '']);
+        $clock = $this->getContainer()->get(StuTime::class);
+        $before = $clock->time();
+
+        $this->spawn();
+
+        $after = $clock->time();
+        $event = $this->em->getRepository(BorgSphereEvent::class)->findOneBy(['configuration' => $this->configuration]);
+        self::assertNotNull($event);
+        self::assertGreaterThanOrEqual($before + 1800, $event->getNextTickAt());
+        self::assertLessThanOrEqual($after + 1800, $event->getNextTickAt());
+    }
+
     /** @return iterable<string, array{string, string, string}> */
     public static function invalidCoordinates(): iterable
     {

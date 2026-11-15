@@ -79,6 +79,160 @@ final class BorgSphereRegenerationTest extends StuTestCase
         self::assertSame(11, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
     }
 
+    public function testHalfHourlyTicksRoundEachSystemUpIndependentlyAndPreserveTranswarpProgress(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'tick_seconds' => 1800]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(10)->andReturn(2, 3, 5, 7, 9, 2, 3, 5, 7, 9);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(110, $ship->getCondition()->getHull());
+        self::assertSame(230, $ship->getCondition()->getShield());
+        self::assertSame(13, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(14, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus());
+        self::assertSame(15, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus());
+        self::assertSame(1050, $event->getTranswarpProgress());
+        self::assertSame(1000, $event->getTranswarpFloor());
+        self::assertSame(10, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(120, $ship->getCondition()->getHull());
+        self::assertSame(260, $ship->getCondition()->getShield());
+        self::assertSame(16, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(18, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus());
+        self::assertSame(20, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus());
+        self::assertSame(1100, $event->getTranswarpProgress());
+        self::assertSame(11, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
+    }
+
+    public function testHalfHourlyCubeShieldRatesAreHalvedSeparatelyFromHullAndSystems(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([
+            ...$event->getConfiguration()->getSettings(),
+            'tick_seconds' => 1800,
+            'assimilation_enabled' => 1,
+            'shield_regen_min_percent' => 1,
+            'shield_regen_max_percent' => 5
+        ]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(8)->andReturn(10);
+        $this->random->shouldReceive('rand')->with(1, 5)->twice()->andReturn(1, 5);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(150, $ship->getCondition()->getHull());
+        self::assertSame(210, $ship->getCondition()->getShield());
+        self::assertSame(15, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(1050, $event->getTranswarpProgress());
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(200, $ship->getCondition()->getHull());
+        self::assertSame(260, $ship->getCondition()->getShield());
+        self::assertSame(20, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(1100, $event->getTranswarpProgress());
+    }
+
+    public function testHourlyTicksPreserveThePreviousCeilingForIndivisibleMaximumValues(): void
+    {
+        $ship = $this->ship()->setMaxHull(1001)->setMaxShield(2003);
+        $event = $this->event();
+        $this->random->shouldReceive('rand')->with(2, 10)->times(5)->andReturn(3);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(131, $ship->getCondition()->getHull());
+        self::assertSame(261, $ship->getCondition()->getShield());
+        self::assertSame(13, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+    }
+
+    public function testHalfHourlyTicksRoundHullShieldAndSystemFractionsUp(): void
+    {
+        $ship = $this->ship()->setMaxHull(1001)->setMaxShield(2003);
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'tick_seconds' => 1800]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(5)->andReturn(3);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(116, $ship->getCondition()->getHull());
+        self::assertSame(231, $ship->getCondition()->getShield());
+        self::assertSame(12, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(1050, $event->getTranswarpProgress());
+    }
+
+    public function testOverdueHalfHourlyTicksRollAndRoundUpIndependently(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'tick_seconds' => 1800]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(10)->andReturn(2, 3, 5, 7, 9, 2, 3, 2, 3, 4);
+
+        $this->subject->regenerate($event, $ship, 2);
+
+        self::assertSame(120, $ship->getCondition()->getHull());
+        self::assertSame(260, $ship->getCondition()->getShield());
+        self::assertSame(14, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(16, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus());
+        self::assertSame(17, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus());
+        self::assertSame(1100, $event->getTranswarpProgress());
+    }
+
+    public function testHalvedTranswarpRateKeepsAdaptationAndEscapeCaps(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event()->setTranswarpProgress(1975);
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'tick_seconds' => 1800]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(505)->andReturn(10);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(2025, $event->getTranswarpProgress());
+        self::assertSame(2000, $event->getTranswarpFloor());
+        self::assertSame(20, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
+        $event->setTranswarpProgress(7975);
+
+        $this->subject->regenerate($event, $ship, 100);
+
+        self::assertSame(1000, $ship->getCondition()->getHull());
+        self::assertSame(2000, $ship->getCondition()->getShield());
+        self::assertSame(100, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(8000, $event->getTranswarpProgress());
+        self::assertSame(7000, $event->getTranswarpFloor());
+    }
+
+    public function testFractionalTranswarpBasisPointsRoundUpForEveryTick(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'tick_seconds' => 1800, 'transwarp_regen_bp' => 101]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(10)->andReturn(2);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(1051, $event->getTranswarpProgress());
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(1102, $event->getTranswarpProgress());
+    }
+
+    public function testOverdueTicksRoundEachTranswarpIncreaseBeforeCombiningThem(): void
+    {
+        $ship = $this->ship();
+        $event = $this->event();
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'tick_seconds' => 1800, 'transwarp_regen_bp' => 101]);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(10)->andReturn(2);
+
+        $this->subject->regenerate($event, $ship, 2);
+
+        self::assertSame(1102, $event->getTranswarpProgress());
+    }
+
     public function testOverdueHoursRollEachValueAgainRatherThanMultiplyingOneRoll(): void
     {
         $ship = $this->ship();

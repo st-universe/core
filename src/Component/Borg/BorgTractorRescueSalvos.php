@@ -8,32 +8,51 @@ use Stu\Component\Spacecraft\System\SpacecraftSystemManagerInterface;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Lib\Information\InformationInterface;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
 use Stu\Orm\Entity\BorgSphereEvent;
+use Stu\Orm\Entity\Spacecraft;
 
 final class BorgTractorRescueSalvos
 {
-    public function __construct(private BorgAssimilationLifecycle $assimilation, private SpacecraftSystemManagerInterface $systems, private StuRandom $random) {}
+    public function __construct(private BorgAssimilationLifecycle $assimilation, private SpacecraftSystemManagerInterface $systems, private StuRandom $random, private StuTime $time) {}
 
-    /** @param list<SpacecraftWrapperInterface> $participants */
-    public function fire(BorgSphereEvent $event, array $participants, SpacecraftWrapperInterface $target, InformationInterface $information): void
+    public function isBeforeDeadline(Spacecraft $cube, InformationInterface $information): bool
     {
-        foreach ($participants as $source) {
-            if ($this->fireShip($event, $source, $target, $information)) {
-                return;
-            }
+        $entry = $cube->getTractoredShip()?->getAssimilation();
+        $startedAt = $entry?->getStartedAt();
+        if ($entry === null || $startedAt === null) {
+            return false;
         }
+        if ($this->time->time() < $startedAt + $entry->getDurationSeconds()) {
+            return true;
+        }
+        $information->addInformation('Die Frist zur Befreiung ist abgelaufen. Der Assimilationsabschluss wird verarbeitet');
+        return false;
     }
 
-    private function fireShip(BorgSphereEvent $event, SpacecraftWrapperInterface $source, SpacecraftWrapperInterface $target, InformationInterface $information): bool
+    /** @param list<SpacecraftWrapperInterface> $participants */
+    public function fire(BorgSphereEvent $event, array $participants, SpacecraftWrapperInterface $target, InformationInterface $information): bool
+    {
+        $fired = false;
+        foreach ($participants as $source) {
+            if ($this->fireShip($event, $source, $target, $information, $fired)) {
+                return $fired;
+            }
+        }
+        return $fired;
+    }
+
+    private function fireShip(BorgSphereEvent $event, SpacecraftWrapperInterface $source, SpacecraftWrapperInterface $target, InformationInterface $information, bool &$fired): bool
     {
         for ($salvo = 0; $salvo < $source->get()->getRump()->getPhaserVolleys(); $salvo++) {
-            if (!$this->isStillCaptured($target)) {
+            if (!$this->isStillCaptured($target) || !$this->isBeforeDeadline($target->get(), $information)) {
                 return true;
             }
             if (($source->getEpsSystemData()?->getEps() ?? 0) < 1) {
                 return false;
             }
+            $fired = true;
             if ($this->fireSalvo($event, $source, $target, $information)) {
                 return true;
             }

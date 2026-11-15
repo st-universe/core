@@ -41,7 +41,7 @@
         data-assimilation-initial="{{ assimilation.initial }}" data-assimilation-duration="{{ assimilation.duration }}"
         data-assimilation-now="{{ assimilation.now }}">
         <span data-assimilation-value>{{ assimilation.progress|number_format(1, ',', '') }}%</span> ·
-        Verbleibende Zeit: <span data-assimilation-remaining>{{ assimilation.remaining|formatSeconds }}</span>
+        <span data-assimilation-countdown-label>{% if assimilation.remaining > 0 %}Verbleibende Zeit: {% endif %}</span><span data-assimilation-remaining>{% if assimilation.remaining > 0 %}{{ assimilation.remaining|formatSeconds }}{% else %}Abschluss wird verarbeitet{% endif %}</span>
     </div>
 </div>
 {% endif %}

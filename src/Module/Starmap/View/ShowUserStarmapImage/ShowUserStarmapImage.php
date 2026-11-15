@@ -6,6 +6,7 @@ namespace Stu\Module\Starmap\View\ShowUserStarmapImage;
 
 use GdImage;
 use InvalidArgumentException;
+use Override;
 use request;
 use RuntimeException;
 use SplFileObject;
@@ -17,7 +18,6 @@ use Stu\Module\Control\Component\View\ViewControllerContext;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\Layer;
-use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -42,7 +42,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         private PrivateCacheDirectory $cacheDirectory
     ) {}
 
-    #[\Override]
+    #[Override]
     public function handle(ViewControllerContext $game): void
     {
         $layerId = request::getIntFatal('layerid');
@@ -184,7 +184,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
 
         /** @var array<string, GdImage> $tileCache */
         $tileCache = [];
-        foreach ($this->mapRepository->getAllOrdered($layer) as $map) {
+        foreach ($this->mapRepository->iterateGraphicFields($layer) as $map) {
             $this->renderMapField($image, $layer, $map, $tileCache);
         }
 
@@ -199,60 +199,52 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         $width = $layer->getWidth() * self::CELL_SIZE;
         $height = $layer->getHeight() * self::CELL_SIZE;
 
-        if ($width < 1 || $height < 1) {
+        if (min($width, $height) < 1) {
             throw new InvalidArgumentException('Ungültige Dimensionen für die Bilderstellung');
         }
 
-        $targetImage = imagecreatetruecolor($width, $height);
-        if ($targetImage === false) {
-            throw new InvalidArgumentException('Fehler bei Erstellung von true color image');
-        }
-
-        $background = imagecolorallocate($targetImage, 0, 0, 0);
-        if ($background === false) {
-            throw new InvalidArgumentException('Fehler bei Erstellung der Hintergrundfarbe');
-        }
-        imagefill($targetImage, 0, 0, $background);
-
         $baseFile = $this->cacheDirectory->open(basename($baseCachePath));
-        $size = $baseFile->fstat()['size'];
-        if ($size < 1) {
+        if ($baseFile->fstat()['size'] < 1) {
             throw new RuntimeException('Kartengrafik ist leer');
         }
-        $bytes = $baseFile->fread($size);
-        if ($bytes === false) {
-            throw new RuntimeException('Kartengrafik kann nicht gelesen werden');
-        }
-        $baseImage = imagecreatefromstring($bytes);
-        if ($baseImage === false) {
-            throw new RuntimeException('Kartengrafik kann nicht geladen werden');
-        }
+        $image = $this->createImageFromPng($baseFile->getPathname());
+        $this->hideUnseenFields($image, $layer, $runs);
+        $this->saveImage($image, $targetFile);
+    }
+
+    /** @param array<int, array{y: int, startX: int, endX: int}> $runs */
+    private function hideUnseenFields(GdImage $image, Layer $layer, array $runs): void
+    {
+        $x = 1;
+        $y = 1;
         foreach ($runs as $run) {
-            $sourceX = ($run['startX'] - 1) * self::CELL_SIZE;
-            $sourceY = ($run['y'] - 1) * self::CELL_SIZE;
-            $copyWidth = ($run['endX'] - $run['startX'] + 1) * self::CELL_SIZE;
-
-            imagecopy(
-                $targetImage,
-                $baseImage,
-                $sourceX,
-                $sourceY,
-                $sourceX,
-                $sourceY,
-                $copyWidth,
-                self::CELL_SIZE
-            );
+            if ($run['y'] !== $y) {
+                $this->hideRectangle($image, $x, $y, $layer->getWidth(), $y);
+                $this->hideRectangle($image, 1, $y + 1, $layer->getWidth(), $run['y'] - 1);
+                $x = 1;
+                $y = $run['y'];
+            }
+            $this->hideRectangle($image, $x, $y, $run['startX'] - 1, $y);
+            $x = $run['endX'] + 1;
         }
+        $this->hideRectangle($image, $x, $y, $layer->getWidth(), $y);
+        $this->hideRectangle($image, 1, $y + 1, $layer->getWidth(), $layer->getHeight());
+    }
 
-        $this->saveImage($targetImage, $targetFile);
+    private function hideRectangle(GdImage $image, int $startX, int $startY, int $endX, int $endY): void
+    {
+        if ($startX <= $endX && $startY <= $endY) {
+            imagefilledrectangle($image, ($startX - 1) * self::CELL_SIZE, ($startY - 1) * self::CELL_SIZE, $endX * self::CELL_SIZE - 1, $endY * self::CELL_SIZE - 1, 0);
+        }
     }
 
     /**
+     * @param array{x: int, y: int, type: int} $map
      * @param array<string, GdImage> $tileCache
      */
-    private function renderMapField(\GdImage $targetImage, Layer $layer, Map $map, array &$tileCache): void
+    private function renderMapField(GdImage $targetImage, Layer $layer, array $map, array &$tileCache): void
     {
-        $imagePath = $this->getMapGraphicPath($layer, $map->getFieldType()->getType());
+        $imagePath = $this->getMapGraphicPath($layer, $map['type']);
         if (!is_file($imagePath)) {
             $imagePath = $this->getFallbackImagePath();
         }
@@ -262,8 +254,8 @@ final class ShowUserStarmapImage implements ViewControllerInterface
             ? ($tileCache[$imagePath] ??= $this->createImageFromPng($imagePath))
             : $this->createImageFromPng($imagePath);
 
-        $targetX = ($map->getX() - 1) * self::CELL_SIZE;
-        $targetY = ($map->getY() - 1) * self::CELL_SIZE;
+        $targetX = ($map['x'] - 1) * self::CELL_SIZE;
+        $targetY = ($map['y'] - 1) * self::CELL_SIZE;
         $sourceWidth = imagesx($tile);
         $sourceHeight = imagesy($tile);
 
@@ -286,7 +278,7 @@ final class ShowUserStarmapImage implements ViewControllerInterface
         );
     }
 
-    private function createImageFromPng(string $path): \GdImage
+    private function createImageFromPng(string $path): GdImage
     {
         $image = imagecreatefrompng($path);
         if ($image === false) {
