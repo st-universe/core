@@ -10,11 +10,12 @@ use Stu\Module\Control\StuRandom;
 use Stu\Orm\Entity\AwayMissionProgress;
 use Stu\Orm\Entity\CrewAssignment;
 use Stu\Orm\Entity\Spacecraft;
+use Stu\Orm\Repository\AwayMissionRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class AwayMissionChoices
 {
-    public function __construct(private StuRandom $random, private FactionRepositoryInterface $factionRepository) {}
+    public function __construct(private StuRandom $random, private FactionRepositoryInterface $factionRepository, private AwayMissionRepositoryInterface $missionRepository) {}
 
     public function initialize(AwayMissionProgress $progress, Spacecraft $ship): void
     {
@@ -22,8 +23,9 @@ final class AwayMissionChoices
             return;
         }
 
-        $systems = AwayMissionResearchEnum::cases();
-        $progress->setResearchSystem($progress->getResearchSystem() ?? $systems[$this->random->rand(0, count($systems) - 1)]);
+        if ($progress->getResearchSystem() === null) {
+            $this->initializeResearchSystem($progress);
+        }
         $factions = array_values(array_filter(
             $this->factionRepository->getByChooseable(true),
             static fn ($faction): bool => $faction->getId() !== $ship->getUser()->getFactionId()
@@ -39,6 +41,18 @@ final class AwayMissionChoices
         if ($crewmen !== []) {
             $progress->setReportingCrewId($crewmen[$this->random->rand(0, count($crewmen) - 1)]->getCrew()->getId());
         }
+    }
+
+    private function initializeResearchSystem(AwayMissionProgress $progress): void
+    {
+        $mission = $progress->getMission();
+        $this->missionRepository->lockMission($mission);
+        $counts = $this->missionRepository->getResearchAssignmentCounts($mission);
+        $systems = AwayMissionResearchEnum::cases();
+        $minimum = min(array_map(static fn (AwayMissionResearchEnum $system): int => $counts[$system->value] ?? 0, $systems));
+        $leastAssigned = array_values(array_filter($systems, static fn (AwayMissionResearchEnum $system): bool => ($counts[$system->value] ?? 0) === $minimum));
+        $progress->setResearchSystem($leastAssigned[$this->random->rand(0, count($leastAssigned) - 1)]
+            ?? throw new RuntimeException('Keine Forschungszuweisung für die Außenmission verfügbar'));
     }
 
     public function getReportingCrew(AwayMissionProgress $progress, Spacecraft $ship): ?CrewAssignment
