@@ -22,7 +22,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: >-
-            phpstan:2.3.1,
+            phpstan/phpstan:2.3.1,
             phpstan/extension-installer:1.4.3,
             phpstan/phpstan-doctrine:2.0.28,
             phpstan/phpstan-deprecation-rules:2.0.5
@@ -48,21 +48,5 @@ jobs:
       - name: Run PHPStan
         shell: bash
         run: |
-          global_vendor="$(composer global config home --absolute)/vendor"
-          test -r "$global_vendor/phpstan/phpstan-doctrine/extension.neon"
-          test -r "$global_vendor/phpstan/phpstan-doctrine/rules.neon"
-          test -r "$global_vendor/phpstan/phpstan-deprecation-rules/rules.neon"
-          test -r "$global_vendor/autoload.php"
-
-          cat > phpstan-ci.neon <<EOF
-          includes:
-            - $global_vendor/phpstan/phpstan-doctrine/extension.neon
-            - $global_vendor/phpstan/phpstan-doctrine/rules.neon
-            - $global_vendor/phpstan/phpstan-deprecation-rules/rules.neon
-            - phpstan.neon
-          parameters:
-            bootstrapFiles:
-              - $global_vendor/autoload.php
-          EOF
-
-          phpstan analyse --configuration=phpstan-ci.neon
+          phpstan --version
+          phpstan analyse --configuration=phpstan.neon

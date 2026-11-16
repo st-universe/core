@@ -51,7 +51,7 @@ final class CancelRetrofit implements CancelRetrofitInterface
             $withinFirstQuarter = $currentTime <= $firstQuarter;
 
 
-            if ($oldBuildplan != null && $newBuildplan != null) {
+            if ($oldBuildplan !== null) {
                 foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
                     $newModules = $newBuildplan->getModulesByType($moduleType)->toArray();
 
