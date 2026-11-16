@@ -8,6 +8,7 @@ use Psr\Container\ContainerInterface;
 use Stu\Component\Borg\BorgAssimilationLifecycle;
 use Stu\Component\Borg\BorgAssimilationService;
 use Stu\Component\Borg\BorgCompanionSupply;
+use Stu\Component\Borg\BorgCubeBattery;
 use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Borg\BorgSphereAttackGuard;
 use Stu\Component\Borg\BorgSphereBehavior;
@@ -343,7 +344,8 @@ return [
     SpacecraftAttackCoreInterface::class => autowire(SpacecraftAttackCore::class),
     SpacecraftAttackPreparationInterface::class => autowire(SpacecraftAttackPreparation::class),
     SpacecraftAttackCycleInterface::class => autowire(SpacecraftAttackCycle::class)
-        ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
+        ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class))
+        ->constructorParameter('borgCubeBattery', get(BorgCubeBattery::class)),
     BattlePartyFactoryInterface::class => autowire(BattlePartyFactory::class)
         ->constructorParameter('borgSphereAttackContext', get(BorgSphereAttackContext::class)),
     SkipDetectionInterface::class => autowire(SkipDetection::class),
@@ -371,7 +373,8 @@ return [
         ->constructorParameter('stateIconAndTitle', autowire(StateIconAndTitle::class)),
     SpacecraftStateChangerInterface::class => autowire(SpacecraftStateChanger::class),
     ShipTakeoverManagerInterface::class => autowire(ShipTakeoverManager::class),
-    AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
+    AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class)
+        ->constructorParameter('borgCubeBattery', get(BorgCubeBattery::class)),
     AttackMatchupInterface::class => autowire(AttackMatchup::class),
     AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),
     FlightSignatureCreatorInterface::class => autowire(FlightSignatureCreator::class),
