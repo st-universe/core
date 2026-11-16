@@ -248,23 +248,100 @@ final class BorgSphereRegenerationTest extends StuTestCase
         self::assertSame(12, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
     }
 
-    public function testTheFirstHourWakesWeaponsButKeepsWarpAndTractorOff(): void
+    public function testTheFirstHourWakesSensorsAndWeaponsButKeepsWarpAndTractorOff(): void
     {
         $ship = $this->ship();
-        foreach ([SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::IMPULSEDRIVE] as $type) {
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::IMPULSEDRIVE] as $type) {
             $ship->getSystems()->set($type->value, new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type)->setStatus(10)->setMode(SpacecraftSystemModeEnum::MODE_OFF));
         }
         $event = $this->event();
-        $this->random->shouldReceive('rand')->with(2, 10)->times(8)->andReturn(2);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(9)->andReturn(2);
         $this->subject->regenerate($event, $ship, 1);
         self::assertFalse($ship->getCondition()->isDisabled());
         self::assertSame(BorgSpherePhaseEnum::ROAMING, $event->getPhase());
         self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getMode());
         self::assertTrue($ship->hasActiveWeapon());
+        self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::NBS)->getMode());
         self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TORPEDO)->getMode());
         self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::IMPULSEDRIVE)->getMode());
         self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getMode());
         self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getMode());
+    }
+
+    /** @return iterable<string, array{BorgSpherePhaseEnum, bool}> */
+    public static function repairedShipPhases(): iterable
+    {
+        yield 'first activation after regeneration' => [BorgSpherePhaseEnum::REGENERATING, true];
+        yield 'repair after the ship already resumed roaming' => [BorgSpherePhaseEnum::ROAMING, false];
+    }
+
+    #[DataProvider('repairedShipPhases')]
+    public function testFullyDestroyedSensorsAndWeaponsReactivateWhenRepaired(BorgSpherePhaseEnum $phase, bool $disabled): void
+    {
+        $ship = $this->ship();
+        $ship->getCondition()->setDisabled($disabled);
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::CLOAK] as $type) {
+            $ship->getSystems()->set($type->value, new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type)->setStatus(0)->setMode(SpacecraftSystemModeEnum::MODE_OFF));
+        }
+        $event = $this->event()->setPhase($phase);
+        $this->random->shouldReceive('rand')->with(2, 10)->andReturn(2);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertFalse($ship->getCondition()->isDisabled());
+        self::assertSame(BorgSpherePhaseEnum::ROAMING, $event->getPhase());
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            self::assertSame(2, $ship->getSpacecraftSystem($type)->getStatus());
+            self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $ship->getSpacecraftSystem($type)->getMode());
+        }
+        foreach ([SpacecraftSystemTypeEnum::WARPDRIVE, SpacecraftSystemTypeEnum::CLOAK, SpacecraftSystemTypeEnum::TRACTOR_BEAM, SpacecraftSystemTypeEnum::TRANSWARP_COIL] as $type) {
+            self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $ship->getSpacecraftSystem($type)->getMode());
+        }
+    }
+
+    public function testSystemsStillAtZeroPercentRemainOffOnAnActiveShip(): void
+    {
+        $ship = $this->ship();
+        $ship->getCondition()->setDisabled(false);
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            $ship->getSystems()->set($type->value, new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type)->setStatus(0)->setMode(SpacecraftSystemModeEnum::MODE_OFF));
+        }
+        $event = $this->event()->setPhase(BorgSpherePhaseEnum::ROAMING);
+        $event->getConfiguration()->setSettings([...$event->getConfiguration()->getSettings(), 'normal_regen_min_percent' => 0, 'normal_regen_max_percent' => 0]);
+        $this->random->shouldReceive('rand')->with(0, 0)->andReturn(0);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            self::assertSame(0, $ship->getSpacecraftSystem($type)->getStatus());
+            self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $ship->getSpacecraftSystem($type)->getMode());
+        }
+    }
+
+    /** @return iterable<string, array{SpacecraftSystemModeEnum}> */
+    public static function preservedModes(): iterable
+    {
+        yield 'permanently disabled system' => [SpacecraftSystemModeEnum::MODE_ALWAYS_OFF];
+        yield 'permanently enabled system' => [SpacecraftSystemModeEnum::MODE_ALWAYS_ON];
+        yield 'already enabled system' => [SpacecraftSystemModeEnum::MODE_ON];
+    }
+
+    #[DataProvider('preservedModes')]
+    public function testRegenerationPreservesPermanentAndAlreadyActiveModes(SpacecraftSystemModeEnum $mode): void
+    {
+        $ship = $this->ship();
+        $ship->getCondition()->setDisabled(false);
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::IMPULSEDRIVE] as $type) {
+            $ship->getSystems()->set($type->value, new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type)->setStatus(10)->setMode($mode));
+        }
+        $this->random->shouldReceive('rand')->with(2, 10)->andReturn(2);
+
+        $this->subject->regenerate($this->event()->setPhase(BorgSpherePhaseEnum::ROAMING), $ship, 1);
+
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::IMPULSEDRIVE] as $type) {
+            self::assertSame(12, $ship->getSpacecraftSystem($type)->getStatus());
+            self::assertSame($mode, $ship->getSpacecraftSystem($type)->getMode());
+        }
     }
 
     public function testLongCatchupCapsStatsAndEscapeProgress(): void
@@ -321,12 +398,15 @@ final class BorgSphereRegenerationTest extends StuTestCase
     public function testBelowTenOnlyTheRolledAmountIsRestoredAndTranswarpAloneCannotWake(): void
     {
         $ship = $this->ship();
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            $ship->getSystems()->set($type->value, new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type)->setMode(SpacecraftSystemModeEnum::MODE_OFF));
+        }
         $ship->getCondition()->setHull(0)->setShield(0);
         foreach ($ship->getSystems() as $system) {
             $system->setStatus(0);
         }
         $event = $this->event();
-        $this->random->shouldReceive('rand')->with(2, 10)->times(5)->andReturn(2);
+        $this->random->shouldReceive('rand')->with(2, 10)->times(8)->andReturn(2);
         $this->subject->regenerate($event, $ship, 1);
         self::assertSame(20, $ship->getCondition()->getHull());
         self::assertSame(40, $ship->getCondition()->getShield());
@@ -334,6 +414,10 @@ final class BorgSphereRegenerationTest extends StuTestCase
         self::assertSame(11, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRANSWARP_COIL)->getStatus());
         self::assertTrue($ship->getCondition()->isDisabled());
         self::assertSame(BorgSpherePhaseEnum::REGENERATING, $event->getPhase());
+        foreach ([SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            self::assertSame(2, $ship->getSpacecraftSystem($type)->getStatus());
+            self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $ship->getSpacecraftSystem($type)->getMode());
+        }
     }
 
     private function event(): BorgSphereEvent

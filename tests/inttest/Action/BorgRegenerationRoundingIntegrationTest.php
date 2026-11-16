@@ -7,12 +7,17 @@ namespace Stu\Action;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\ActionTestCase;
+use Stu\Component\Borg\BorgSphereAttackContext;
+use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgSphereRegeneration;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
+use Stu\Lib\Information\InformationWrapper;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Spacecraft\Lib\Damage\SystemDamage;
+use Stu\Module\Spacecraft\Lib\SpacecraftWrapperFactoryInterface;
 use Stu\Orm\Entity\BorgSphereConfiguration;
 use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\Colony;
@@ -111,6 +116,53 @@ final class BorgRegenerationRoundingIntegrationTest extends ActionTestCase
         self::assertSame(100, $this->ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
         self::assertSame(8000, $this->event->getTranswarpProgress());
         self::assertSame(7000, $this->event->getTranswarpFloor());
+    }
+
+    public function testRepeatedlyDestroyedSensorsAndWeaponsReactivateOnAnAlreadyActiveCubeAcrossReloads(): void
+    {
+        $container = $this->getContainer();
+        $types = [SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO];
+        foreach ($types as $type) {
+            if (!$this->ship->hasSpacecraftSystem($type)) {
+                $system = new SpacecraftSystem()->setSpacecraft($this->ship)->setSystemType($type);
+                $this->ship->getSystems()->set($type->value, $system);
+                $this->em->persist($system);
+            }
+        }
+        $this->ship->getCondition()->setDisabled(false);
+        $this->event->setPhase(BorgSpherePhaseEnum::ROAMING);
+        $context = new BorgSphereAttackContext();
+        $combat = $container->make(BorgSphereCombat::class, ['context' => $context]);
+        $damage = $container->make(SystemDamage::class, ['borgSphereCombat' => $combat]);
+
+        for ($attempt = 0; $attempt < 2; $attempt++) {
+            $wrapper = $container->get(SpacecraftWrapperFactoryInterface::class)->wrapShip($this->ship);
+            $context->begin($this->ship, true, false);
+            try {
+                $this->em->wrapInTransaction(fn () => $combat->withLockedEvent($this->ship, $this->event, function () use ($damage, $wrapper, $types): void {
+                    foreach ($types as $type) {
+                        $damage->damageShipSystem($wrapper, $this->ship->getSpacecraftSystem($type), 100, new InformationWrapper());
+                    }
+                }));
+            } finally {
+                $context->clear();
+            }
+            $this->reload();
+            foreach ($types as $type) {
+                self::assertSame(0, $this->ship->getSpacecraftSystem($type)->getStatus());
+                self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $this->ship->getSpacecraftSystem($type)->getMode());
+            }
+
+            $this->regeneration->regenerate($this->event, $this->ship, 1);
+            $this->reload();
+
+            self::assertFalse($this->ship->getCondition()->isDisabled());
+            self::assertSame(BorgSpherePhaseEnum::ROAMING, $this->event->getPhase());
+            foreach ($types as $type) {
+                self::assertSame(3, $this->ship->getSpacecraftSystem($type)->getStatus());
+                self::assertSame(SpacecraftSystemModeEnum::MODE_ON, $this->ship->getSpacecraftSystem($type)->getMode());
+            }
+        }
     }
 
     private function reload(): void

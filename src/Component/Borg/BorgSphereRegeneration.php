@@ -33,6 +33,8 @@ final class BorgSphereRegeneration
         if ($event->getPhase() === BorgSpherePhaseEnum::REGENERATING && $this->isReady($event, $ship)) {
             $ship->getCondition()->setDisabled(false);
             $event->setPhase(BorgSpherePhaseEnum::ROAMING);
+        }
+        if (!$ship->getCondition()->isDisabled() && !$ship->getCondition()->isDestroyed()) {
             $this->wake($ship);
         }
     }
@@ -82,7 +84,7 @@ final class BorgSphereRegeneration
     private function wake(Ship $ship): void
     {
         foreach ($ship->getSystems() as $system) {
-            if ($system->getMode() === SpacecraftSystemModeEnum::MODE_OFF && in_array($system->getSystemType(), [SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::IMPULSEDRIVE], true)) {
+            if ($system->getStatus() > 0 && $system->getMode() === SpacecraftSystemModeEnum::MODE_OFF && in_array($system->getSystemType(), [SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO, SpacecraftSystemTypeEnum::SHIELDS, SpacecraftSystemTypeEnum::IMPULSEDRIVE], true)) {
                 $system->setMode(SpacecraftSystemModeEnum::MODE_ON);
             }
         }
