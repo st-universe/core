@@ -9,6 +9,7 @@ use Override;
 use request;
 use Stu\ActionTestCase;
 use Stu\Component\Borg\BorgAssimilationCapture;
+use Stu\Component\Borg\BorgSphereActivityPolicy;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
@@ -48,7 +49,7 @@ final class BorgManualAssimilationIntegrationTest extends ActionTestCase
         parent::setUp();
         $container = $this->getContainer();
         $this->em = $container->get(EntityManagerInterface::class);
-        $this->now = $container->get(StuTime::class)->time();
+        $this->now = strtotime('2026-11-16 09:03:00');
         $this->cube = $this->entity(Ship::class, 77);
         $this->first = $this->entity(Ship::class, 42);
         $this->selected = $this->entity(Ship::class, 78);
@@ -91,8 +92,10 @@ final class BorgManualAssimilationIntegrationTest extends ActionTestCase
         $random->shouldNotReceive('rand', 'array_rand');
         $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
         $relations->shouldReceive('isFriend')->andReturn(false);
-        $capture = $container->make(BorgAssimilationCapture::class, ['random' => $random, 'relations' => $relations]);
-        $this->action = $container->make(BorgAssimilateTarget::class, ['assimilation' => $capture]);
+        $clock = $this->mock(StuTime::class);
+        $clock->shouldReceive('time')->andReturn($this->now);
+        $capture = $container->make(BorgAssimilationCapture::class, ['random' => $random, 'relations' => $relations, 'time' => $clock, 'activity' => new BorgSphereActivityPolicy($clock)]);
+        $this->action = $container->make(BorgAssimilateTarget::class, ['assimilation' => $capture, 'time' => $clock]);
         request::setMockVars([BorgAssimilateTarget::ACTION_IDENTIFIER => 1, 'id' => $this->cube->getId(), 'target' => $this->selected->getId()]);
     }
 

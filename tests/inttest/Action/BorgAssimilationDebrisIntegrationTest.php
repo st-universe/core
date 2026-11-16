@@ -60,7 +60,7 @@ final class BorgAssimilationDebrisIntegrationTest extends ActionTestCase
     /** @return iterable<string, array{string, int, int}> */
     public static function destructionStates(): iterable
     {
-        yield 'active partial assimilation uses current progress' => ['active', 60, 2];
+        yield 'active partial assimilation uses current second progress' => ['active', 59, 2];
         yield 'completed assimilation yields full nanites' => ['complete', 900, 30];
         yield 'zero progress yields an empty nanite cargo' => ['active', 0, 0];
         yield 'released ship retains its previously granted cargo only' => ['frozen', 300, 5];

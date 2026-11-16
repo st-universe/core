@@ -47,18 +47,20 @@ use Stu\StuTestCase;
 final class BorgAssimilationTest extends StuTestCase
 {
     /** @return iterable<string, array{int, int}> */
-    public static function elapsedMinutes(): iterable
+    public static function elapsedSeconds(): iterable
     {
+        yield 'before start' => [-1, 0];
         yield 'not started' => [0, 0];
-        yield 'first minute pending' => [59, 0];
+        yield 'first second' => [1, 11];
+        yield 'before first full minute' => [59, 655];
         yield 'first full minute' => [60, 666];
-        yield 'fourteen minutes' => [899, 9333];
+        yield 'one second before completion' => [899, 9988];
         yield 'completed after fifteen minutes' => [900, 10000];
         yield 'late tick' => [1800, 10000];
     }
 
-    #[DataProvider('elapsedMinutes')]
-    public function testProgressAdvancesOnlyForFullMinutesAndCannotExceedOneHundredPercent(int $elapsed, int $progress): void
+    #[DataProvider('elapsedSeconds')]
+    public function testProgressAdvancesEverySecondAndCannotExceedOneHundredPercent(int $elapsed, int $progress): void
     {
         $entry = new SpacecraftAssimilated()->start($this->ship(19), 1000, 900);
 
@@ -77,7 +79,7 @@ final class BorgAssimilationTest extends StuTestCase
         $entry->start($this->ship(19), 10000, 900);
         self::assertSame(3333, $entry->getInitialProgress());
         self::assertSame(3777, $entry->getProgressAt(10060));
-        self::assertSame(9555, $entry->getProgressAt(10899));
+        self::assertSame(9992, $entry->getProgressAt(10899));
         self::assertSame(10000, $entry->getProgressAt(10900));
         $entry->complete(11000);
         self::assertTrue($entry->isComplete());
@@ -113,16 +115,16 @@ final class BorgAssimilationTest extends StuTestCase
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->once()->with(1, 30)->andReturn(30);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
-        $messages->shouldReceive('send')->once()->with(19, 261, Mockery::pattern('/6,66%.*2 Borg-Naniten/'), PrivateMessageFolderTypeEnum::SPECIAL_SHIP, $ship);
+        $messages->shouldReceive('send')->once()->with(19, 261, Mockery::pattern('/6,55%.*2 Borg-Naniten/'), PrivateMessageFolderTypeEnum::SPECIAL_SHIP, $ship);
         $events = $this->mock(BorgSphereRepositoryInterface::class);
         $events->shouldReceive('getByShip')->once()->with($source)->andReturnNull();
         $release = new BorgAssimilationRelease($repository, $commodities, $storage, $messages, $random, $events);
 
-        $release->release($entry, 1060);
+        $release->release($entry, 1059);
         $release->release($entry, 2000);
 
         self::assertSame(261, $ship->getUser()->getId());
-        self::assertSame(666, $entry->getProgress());
+        self::assertSame(655, $entry->getProgress());
         self::assertNull($source->getTractoredShip());
         self::assertNull($ship->getTractoringSpacecraft());
         self::assertFalse($source->getSystemState(SpacecraftSystemTypeEnum::TRACTOR_BEAM));
@@ -162,7 +164,7 @@ final class BorgAssimilationTest extends StuTestCase
         $time = $this->mock(StuTime::class);
         $time->shouldReceive('time')->once()->andReturn(1000);
         $event = new BorgSphereEvent()->setConfiguration(new BorgSphereConfiguration()->setSettings(['assimilation_enabled' => 1, 'nanite_commodity_id' => 76]));
-        $capture = new BorgAssimilationCapture($repository, $relations, $fleets, $messages, $random, $time);
+        $capture = new BorgAssimilationCapture($repository, $relations, $fleets, $messages, $random, $time, $this->dayActivity());
 
         self::assertTrue($capture->tryCapture($event, $source));
 
@@ -206,7 +208,7 @@ final class BorgAssimilationTest extends StuTestCase
         $fleets->shouldNotReceive('leaveFleet');
         $messages = $this->mock(PrivateMessageSenderInterface::class);
         $messages->shouldNotReceive('send');
-        $capture = new BorgAssimilationCapture($repository, $this->mock(PlayerRelationDeterminatorInterface::class), $fleets, $messages, $random, $this->mock(StuTime::class));
+        $capture = new BorgAssimilationCapture($repository, $this->mock(PlayerRelationDeterminatorInterface::class), $fleets, $messages, $random, $this->mock(StuTime::class), $this->dayActivity());
         $event = new BorgSphereEvent()->setConfiguration(new BorgSphereConfiguration()->setSettings(['assimilation_enabled' => 1]));
 
         self::assertFalse($capture->tryCapture($event, $source));
@@ -289,7 +291,7 @@ final class BorgAssimilationTest extends StuTestCase
         $events = $this->mock(BorgSphereRepositoryInterface::class);
         $events->shouldReceive('getByShip')->once()->with($source)->andReturnNull();
         $release = new BorgAssimilationRelease($repository, $commodities, $storage, $messages, $random, $events);
-        $capture = new BorgAssimilationCapture($repository, $this->mock(PlayerRelationDeterminatorInterface::class), $this->mock(LeaveFleetInterface::class), $messages, $random, $clock);
+        $capture = new BorgAssimilationCapture($repository, $this->mock(PlayerRelationDeterminatorInterface::class), $this->mock(LeaveFleetInterface::class), $messages, $random, $clock, $this->dayActivity());
         $wrappers = $this->mock(SpacecraftWrapperFactoryInterface::class);
         $torpedoes = new BorgSphereTorpedoSupply($wrappers, $this->mock(ShipTorpedoManagerInterface::class), $this->mock(TorpedoTypeRepositoryInterface::class), $this->mock(TorpedoStorageRepositoryInterface::class), $random);
         $completion = new BorgAssimilationCompletion($repository, $this->mock(FleetRepositoryInterface::class), $this->mock(StorageRepositoryInterface::class), $this->mock(EntryCreatorInterface::class), $messages, new BorgSphereEnergy($wrappers), $torpedoes);
@@ -306,6 +308,13 @@ final class BorgAssimilationTest extends StuTestCase
         self::assertFalse($entry->isActive());
         self::assertSame(1333, $entry->getProgress());
         self::assertSame(261, $ship->getUser()->getId());
+    }
+
+    private function dayActivity(): BorgSphereActivityPolicy
+    {
+        $clock = $this->mock(StuTime::class);
+        $clock->shouldReceive('time')->andReturn(strtotime('2026-11-16 12:00:00'));
+        return new BorgSphereActivityPolicy($clock);
     }
 
     private function ship(int $userId): Ship

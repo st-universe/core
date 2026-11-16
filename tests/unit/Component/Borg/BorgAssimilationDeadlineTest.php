@@ -66,7 +66,9 @@ final class BorgAssimilationDeadlineTest extends StuTestCase
         $messages->shouldReceive('send');
         $clock = $this->mock(StuTime::class);
         $clock->shouldReceive('time')->andReturnUsing(fn (): int => $this->now);
-        $capture = new BorgAssimilationCapture($this->repository, $this->mock(PlayerRelationDeterminatorInterface::class), $this->mock(LeaveFleetInterface::class), $messages, $random, $clock);
+        $activityClock = $this->mock(StuTime::class);
+        $activityClock->shouldReceive('time')->andReturn(strtotime('2026-11-16 12:00:00'));
+        $capture = new BorgAssimilationCapture($this->repository, $this->mock(PlayerRelationDeterminatorInterface::class), $this->mock(LeaveFleetInterface::class), $messages, $random, $clock, new BorgSphereActivityPolicy($activityClock));
         $commodities = $this->mock(CommodityRepositoryInterface::class);
         $commodities->shouldReceive('find')->with(76)->andReturnNull();
         $events = $this->mock(BorgSphereRepositoryInterface::class);
@@ -92,7 +94,7 @@ final class BorgAssimilationDeadlineTest extends StuTestCase
 
         $this->service->process();
 
-        self::assertSame(9333, $this->entry->getProgress());
+        self::assertSame(9922, $this->entry->getProgress());
         self::assertTrue($this->entry->isActive());
         self::assertFalse($this->entry->isComplete());
         self::assertSame(261, $this->target->getUser()->getId());
@@ -140,7 +142,7 @@ final class BorgAssimilationDeadlineTest extends StuTestCase
         $this->service->process();
 
         self::assertSame($frozenProgress, $this->entry->getProgress());
-        self::assertSame(9333, $frozenProgress);
+        self::assertSame(9988, $frozenProgress);
         self::assertFalse($this->entry->isComplete());
         self::assertFalse($this->entry->isActive());
         self::assertSame(261, $this->target->getUser()->getId());

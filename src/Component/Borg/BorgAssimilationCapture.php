@@ -26,12 +26,13 @@ final class BorgAssimilationCapture
         private LeaveFleetInterface $fleets,
         private PrivateMessageSenderInterface $messages,
         private StuRandom $random,
-        private StuTime $time
+        private StuTime $time,
+        private BorgSphereActivityPolicy $activity
     ) {}
 
     public function tryCapture(BorgSphereEvent $event, Ship $source): bool
     {
-        if (!$this->canCapture($event, $source)) {
+        if (!$this->canCapture($event, $source) || !$this->activity->canHunt()) {
             return false;
         }
         $this->repository->lock($source);
@@ -45,7 +46,7 @@ final class BorgAssimilationCapture
 
     public function hasTargets(BorgSphereEvent $event, Ship $source): bool
     {
-        return $this->canCapture($event, $source) && $this->targets($source) !== [];
+        return $this->canCapture($event, $source) && $this->activity->canHunt() && $this->targets($source) !== [];
     }
 
     public function captureTarget(BorgSphereEvent $event, Ship $source, Ship $target): bool

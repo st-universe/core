@@ -2303,7 +2303,7 @@ if (document.readyState === 'loading') {
       var now = Number(data.assimilationNow) + (Date.now() - Number(data.assimilationClientEpoch)) / 1000;
       var duration = Math.max(60, Number(data.assimilationDuration));
       var initial = Number(data.assimilationInitial);
-      var elapsed = Math.floor(Math.max(0, now - Number(data.assimilationStart)) / 60) * 60;
+      var elapsed = Math.floor(Math.max(0, now - Number(data.assimilationStart)));
       var progress = Math.min(10000, Math.max(Number(data.assimilationProgress) * 100, initial + Math.floor(elapsed * (10000 - initial) / duration))) / 100;
       if (!Number.isFinite(progress)) return;
       data.assimilationProgress = String(progress);
