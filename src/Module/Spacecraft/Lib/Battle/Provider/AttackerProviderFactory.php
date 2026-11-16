@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
+use Stu\Component\Borg\BorgCubeBattery;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -17,7 +18,8 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
         private ShipTorpedoManagerInterface $shipTorpedoManager,
         private ModuleRepositoryInterface $moduleRepository,
         private StorageManagerInterface $storageManager,
-        private StuRandom $stuRandom
+        private StuRandom $stuRandom,
+        private ?BorgCubeBattery $borgCubeBattery = null
     ) {}
 
     #[\Override]
@@ -27,7 +29,8 @@ class AttackerProviderFactory implements AttackerProviderFactoryInterface
             $wrapper,
             $this->shipTorpedoManager,
             $isAttackingShieldsOnly,
-            $this->stuRandom
+            $this->stuRandom,
+            $this->borgCubeBattery
         );
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle\Provider;
 
 use RuntimeException;
+use Stu\Component\Borg\BorgCubeBattery;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
 use Stu\Module\Spacecraft\Lib\SpacecraftWrapperInterface;
@@ -20,7 +21,8 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
         private SpacecraftWrapperInterface $wrapper,
         private ShipTorpedoManagerInterface $shipTorpedoManager,
         private bool $isAttackingShieldsOnly,
-        StuRandom $stuRandom
+        StuRandom $stuRandom,
+        private ?BorgCubeBattery $borgCubeBattery = null
     ) {
         parent::__construct($stuRandom);
     }
@@ -86,6 +88,7 @@ class SpacecraftAttacker extends AbstractEnergyAttacker implements ProjectileAtt
             return;
         }
         $epsSystemData->lowerEps($amount)->update();
+        $this->borgCubeBattery?->discharge($this->wrapper);
     }
 
     #[\Override]

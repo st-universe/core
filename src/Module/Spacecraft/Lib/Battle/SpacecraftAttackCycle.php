@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Spacecraft\Lib\Battle;
 
 use RuntimeException;
+use Stu\Component\Borg\BorgCubeBattery;
 use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyFactoryInterface;
 use Stu\Module\Spacecraft\Lib\Battle\Party\BattlePartyInterface;
@@ -24,7 +25,8 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         private BattlePartyFactoryInterface $battlePartyFactory,
         private SpacecraftAttackPreparationInterface $spacecraftAttackPreparation,
         private MessageFactoryInterface $messageFactory,
-        private ?BorgSphereAttackContext $borgSphereAttackContext = null
+        private ?BorgSphereAttackContext $borgSphereAttackContext = null,
+        private ?BorgCubeBattery $borgCubeBattery = null
     ) {}
 
     #[\Override]
@@ -35,7 +37,8 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
     ): MessageCollectionInterface {
         $this->borgSphereAttackContext?->beginBattle();
         try {
-            return $this->executeCycle($attackers, $defenders, $attackCause);
+            $cycle = fn (): MessageCollectionInterface => $this->executeCycle($attackers, $defenders, $attackCause);
+            return $this->borgCubeBattery?->withDefense($defenders, $attackCause, $cycle) ?? $cycle();
         } finally {
             $this->borgSphereAttackContext?->endBattle();
         }
@@ -50,6 +53,7 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         $isOneWay = $attackCause->isOneWay();
 
         $this->spacecraftAttackPreparation->getReady($attackers, $defenders, $isOneWay, $messages);
+        $this->borgCubeBattery?->rechargeDefenders();
 
         $firstStrike = true;
 
@@ -60,6 +64,7 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
         $matchupCount = 0;
 
         while ($this->borgSphereAttackContext?->isBattleStopped() !== true) {
+            $this->borgCubeBattery?->rechargeDefenders();
             $matchup = $this->attackMatchup->getMatchup(
                 $attackersRoundBasedBattleParty,
                 $defendersRoundBasedBattleParty,
@@ -72,34 +77,25 @@ final class SpacecraftAttackCycle implements SpacecraftAttackCycleInterface
             $matchupCount++;
             $this->checkMatchupLimit($matchupCount, $maxMatchups, $attackCause, $attackers, $defenders);
 
-            $targetBattleParty = $matchup->getDefenders();
             $firstStrike = false;
-
-            $spacecraftAttacker = $this->attackerProviderFactory->createSpacecraftAttacker(
-                $matchup->getAttacker(),
-                $matchup->isAttackingShieldsOnly()
-            );
-
-            $this->energyWeaponPhase->fire(
-                $spacecraftAttacker,
-                $targetBattleParty,
-                $attackCause,
-                $messages
-            );
-
-            if ($this->borgSphereAttackContext?->isBattleStopped()) {
-                break;
-            }
-
-            $this->projectileWeaponPhase->fire(
-                $spacecraftAttacker,
-                $targetBattleParty,
-                $attackCause,
-                $messages
-            );
+            $this->fireMatchup($matchup, $attackCause, $messages);
         }
 
         return $messages;
+    }
+
+    private function fireMatchup(Matchup $matchup, SpacecraftAttackCauseEnum $attackCause, MessageCollectionInterface $messages): void
+    {
+        $targetBattleParty = $matchup->getDefenders();
+        $spacecraftAttacker = $this->attackerProviderFactory->createSpacecraftAttacker(
+            $matchup->getAttacker(),
+            $matchup->isAttackingShieldsOnly()
+        );
+        $this->energyWeaponPhase->fire($spacecraftAttacker, $targetBattleParty, $attackCause, $messages);
+        if ($this->borgSphereAttackContext?->isBattleStopped()) {
+            return;
+        }
+        $this->projectileWeaponPhase->fire($spacecraftAttacker, $targetBattleParty, $attackCause, $messages);
     }
 
     private function checkMatchupLimit(int $count, int $maximum, SpacecraftAttackCauseEnum $cause, BattlePartyInterface $attackers, BattlePartyInterface $defenders): void
