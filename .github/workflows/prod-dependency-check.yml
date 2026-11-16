@@ -48,6 +48,7 @@ jobs:
       - name: Run PHPStan
         shell: bash
         run: |
+          composer global install --no-interaction --no-progress
           global_vendor="$(composer global config vendor-dir --absolute)"
           php "$global_vendor/phpstan/phpstan/phpstan" --version
           php "$global_vendor/phpstan/phpstan/phpstan" diagnose --configuration=phpstan.neon
