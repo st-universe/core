@@ -13,6 +13,7 @@ use Stu\Component\Borg\BorgAssimilationLifecycle;
 use Stu\Component\Borg\BorgAssimilationRelease;
 use Stu\Component\Borg\BorgAssimilationService;
 use Stu\Component\Borg\BorgCompanionDeparture;
+use Stu\Component\Borg\BorgSphereActivityPolicy;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgTractorRescue;
 use Stu\Component\Borg\BorgTractorRescueResponse;
@@ -65,6 +66,7 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
     private Ship $target;
     private User $owner;
     private int $now;
+    private StuTime $time;
 
     #[Override]
     public function setUp(): void
@@ -73,7 +75,7 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
         $container = $this->getContainer();
         $this->em = $container->get(EntityManagerInterface::class);
         $this->repository = $container->get(BorgAssimilationRepositoryInterface::class);
-        $this->now = $container->get(StuTime::class)->time();
+        $this->now = strtotime('2026-11-16 12:00:00');
         $this->target = $this->em->find(Ship::class, 42);
         $this->target->getRump()->setCategoryId(SpacecraftRumpCategoryEnum::CRUISER);
         $this->cube = $this->em->find(Ship::class, 77);
@@ -105,17 +107,17 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
         $this->em->persist($configuration);
         $this->em->persist($this->event);
         $this->em->persist(new RumpAssimilateable()->setRump($this->target->getRump()));
-        $clock = $this->mock(StuTime::class);
-        $clock->shouldReceive('time')->andReturnUsing(fn (): int => $this->now);
+        $this->time = $this->mock(StuTime::class);
+        $this->time->shouldReceive('time')->andReturnUsing(fn (): int => $this->now);
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('array_rand')->andReturn(0);
         $random->shouldReceive('rand')->with(1, 100)->andReturn(1);
         $random->shouldReceive('rand')->with(1, 30)->andReturn(30);
         $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
         $relations->shouldReceive('isFriend')->andReturn(false);
-        $capture = $container->make(BorgAssimilationCapture::class, ['time' => $clock, 'random' => $random, 'relations' => $relations]);
+        $capture = $container->make(BorgAssimilationCapture::class, ['time' => $this->time, 'activity' => new BorgSphereActivityPolicy($this->time), 'random' => $random, 'relations' => $relations]);
         $release = $container->make(BorgAssimilationRelease::class, ['random' => $random]);
-        $this->service = $container->make(BorgAssimilationService::class, ['capture' => $capture, 'release' => $release, 'time' => $clock]);
+        $this->service = $container->make(BorgAssimilationService::class, ['capture' => $capture, 'release' => $release, 'time' => $this->time]);
         $this->em->flush();
     }
 
@@ -161,7 +163,7 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
         $startedAt = $this->now;
         $this->capture();
         $tick = new BorgAssimilationTick($this->service);
-        foreach ([59 => 0, 60 => 666, 120 => 1333, 899 => 9333] as $seconds => $expected) {
+        foreach ([1 => 11, 59 => 655, 60 => 666, 120 => 1333, 899 => 9988] as $seconds => $expected) {
             $this->now = $startedAt + $seconds;
             $this->em->wrapInTransaction(fn () => $tick->work());
             self::assertSame($expected, $this->repository->getBySpacecraft($this->target)->getProgress());
@@ -204,18 +206,38 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
         self::assertCount(1, array_filter($this->em->getRepository(History::class)->findAll(), static fn (History $entry): bool => str_contains($entry->getText(), ' assimiliert')));
     }
 
-    public function testReleaseFreezesScarringAndRoundsNanitesUpExactlyOnce(): void
+    public function testPendingAssimilationContinuesAndCompletesAfterQuietHoursBegin(): void
+    {
+        $this->now = strtotime('2026-11-16 00:09:59');
+        $this->event->getConfiguration()->getQuest()->setStart($this->now - 100);
+        $this->capture();
+        $this->now += 60;
+
+        $this->em->wrapInTransaction(fn () => $this->service->process());
+
+        self::assertSame(666, $this->target->getAssimilation()->getProgress());
+        self::assertTrue($this->target->isBeingAssimilated());
+        self::assertSame($this->owner, $this->target->getUser());
+        $this->now += 840;
+
+        $this->em->wrapInTransaction(fn () => $this->service->process());
+
+        self::assertTrue($this->target->getAssimilation()->isComplete());
+        self::assertSame($this->cube->getUser(), $this->target->getUser());
+    }
+
+    public function testReleaseWithoutAProcessTickFreezesCurrentSecondProgressAndRoundsNanitesUpExactlyOnce(): void
     {
         $before = $this->amount();
         $startedAt = $this->now;
         $this->capture();
         self::assertSame($before, $this->amount());
-        $this->now = $startedAt + 60;
+        $this->now = $startedAt + 59;
 
         $this->em->wrapInTransaction(fn () => $this->service->releaseForSource($this->cube));
 
         $entry = $this->repository->getBySpacecraft($this->target);
-        self::assertSame(666, $entry->getProgress());
+        self::assertSame(655, $entry->getProgress());
         self::assertFalse($entry->isActive());
         self::assertSame($before + 2, $this->amount());
         self::assertSame($this->owner, $this->target->getUser());
@@ -226,7 +248,7 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
             $this->service->releaseForSource($this->cube);
             $this->service->process();
         });
-        self::assertSame(666, $entry->getProgress());
+        self::assertSame(655, $entry->getProgress());
         self::assertSame($before + 2, $this->amount());
     }
 
@@ -435,7 +457,7 @@ final class BorgCubeAssimilationIntegrationTest extends ActionTestCase
         $lifecycle = new BorgAssimilationLifecycle(fn (): BorgAssimilationService => $this->service);
         $tractor = $container->make(TractorBeamShipSystem::class, ['assimilation' => $lifecycle]);
         $systems = new SpacecraftSystemManager([SpacecraftSystemTypeEnum::TRACTOR_BEAM->value => $tractor], $container->get(StuTime::class));
-        $rescue = $container->make(BorgTractorRescue::class, ['random' => $random, 'assimilation' => $lifecycle, 'systems' => $systems, 'response' => $response]);
+        $rescue = $container->make(BorgTractorRescue::class, ['random' => $random, 'assimilation' => $lifecycle, 'systems' => $systems, 'response' => $response, 'time' => $this->time]);
         $source = $container->get(SpacecraftWrapperFactoryInterface::class)->wrapShip($rescuer);
         $target = $container->get(SpacecraftWrapperFactoryInterface::class)->wrapShip($this->cube);
         $report = new InformationWrapper();

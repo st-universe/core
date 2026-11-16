@@ -39,6 +39,7 @@ final class BorgAssimilationCaptureChanceTest extends StuTestCase
     private BorgSphereEvent $event;
     private Ship $source;
     private Ship $target;
+    private int $serverTime;
 
     #[Override]
     protected function setUp(): void
@@ -56,9 +57,12 @@ final class BorgAssimilationCaptureChanceTest extends StuTestCase
         $this->messages = $this->mock(PrivateMessageSenderInterface::class);
         $this->random = $this->mock(StuRandom::class);
         $this->time = $this->mock(StuTime::class);
+        $this->serverTime = strtotime('2026-11-16 12:00:00');
+        $activityClock = $this->mock(StuTime::class);
+        $activityClock->shouldReceive('time')->andReturnUsing(fn (): int => $this->serverTime);
         $relations = $this->mock(PlayerRelationDeterminatorInterface::class);
         $relations->shouldReceive('isFriend')->andReturn(false);
-        $this->capture = new BorgAssimilationCapture($this->repository, $relations, $this->fleets, $this->messages, $this->random, $this->time);
+        $this->capture = new BorgAssimilationCapture($this->repository, $relations, $this->fleets, $this->messages, $this->random, $this->time, new BorgSphereActivityPolicy($activityClock));
     }
 
     /** @return iterable<string, array{SpacecraftRumpCategoryEnum, bool}> */
@@ -143,8 +147,41 @@ final class BorgAssimilationCaptureChanceTest extends StuTestCase
         self::assertFalse($this->capture->tryCapture($this->event, $this->source));
     }
 
-    public function testExplicitCaptureUsesTheChosenTargetWithoutAChanceRoll(): void
+    /** @return iterable<string, array{string, bool}> */
+    public static function automaticCaptureTimes(): iterable
     {
+        yield 'before rest' => ['00:09:59', true];
+        yield 'start of rest' => ['00:10:00', false];
+        yield 'reported morning assimilation' => ['09:03:00', false];
+        yield 'end of rest' => ['09:59:59', false];
+        yield 'resumes at ten' => ['10:00:00', true];
+    }
+
+    #[DataProvider('automaticCaptureTimes')]
+    public function testAutomaticCaptureUsesTheServerRestPeriod(string $time, bool $allowed): void
+    {
+        $this->serverTime = strtotime('2026-11-16 ' . $time);
+        if ($allowed) {
+            $this->repository->shouldReceive('isAssimilateable')->times(3)->with($this->target->getRump())->andReturn(true);
+            $this->repository->shouldReceive('lock')->once()->with($this->source);
+            $this->random->shouldReceive('rand')->once()->with(1, 100)->andReturn(1);
+            $this->random->shouldReceive('array_rand')->once()->andReturn(0);
+            $this->expectCapture();
+        } else {
+            $this->repository->shouldNotReceive('isAssimilateable', 'lock');
+            $this->random->shouldNotReceive('rand', 'array_rand');
+            $this->expectNoMutation();
+        }
+
+        self::assertSame($allowed, $this->capture->hasTargets($this->event, $this->source));
+        self::assertSame($allowed, $this->capture->tryCapture($this->event, $this->source));
+        self::assertSame($allowed, $this->target->isBeingAssimilated());
+        self::assertSame($allowed ? $this->target : null, $this->source->getTractoredShip());
+    }
+
+    public function testExplicitCaptureDuringRestUsesTheChosenTargetWithoutAChanceRoll(): void
+    {
+        $this->serverTime = strtotime('2026-11-16 09:03:00');
         $settings = $this->event->getConfiguration()->getSettings();
         $settings['assimilation_chance_percent'] = 0;
         $this->event->getConfiguration()->setSettings($settings);
@@ -164,7 +201,7 @@ final class BorgAssimilationCaptureChanceTest extends StuTestCase
         $this->repository->shouldReceive('save')->once()->with(Mockery::type(SpacecraftAssimilated::class));
         $this->fleets->shouldReceive('leaveFleet')->once()->with($this->target)->andReturn(false);
         $this->messages->shouldReceive('send')->once();
-        $this->time->shouldReceive('time')->once()->andReturn(1000);
+        $this->time->shouldReceive('time')->once()->andReturnUsing(fn (): int => $this->serverTime);
     }
 
     private function expectNoMutation(): void

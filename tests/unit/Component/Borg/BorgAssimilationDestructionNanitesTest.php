@@ -20,11 +20,12 @@ final class BorgAssimilationDestructionNanitesTest extends StuTestCase
     /** @return iterable<string, array{string, int, int, int}> */
     public static function states(): iterable
     {
-        yield 'partial uses current minute instead of last saved progress' => ['active', 60, 30, 2];
+        yield 'partial uses current second instead of last saved progress' => ['active', 59, 30, 2];
+        yield 'the first second already yields rounded proportional nanites' => ['active', 1, 30, 1];
         yield 'a single nanite rounds up at partial progress' => ['active', 60, 1, 1];
         yield 'full assimilation yields the complete random amount' => ['complete', 900, 30, 30];
         yield 'elapsed active assimilation also yields the complete amount' => ['active', 900, 13, 13];
-        yield 'zero progress yields no nanites' => ['active', 59, 0, 0];
+        yield 'zero progress yields no nanites' => ['active', 0, 0, 0];
         yield 'released scarring was already rewarded' => ['frozen', 300, 0, 0];
         yield 'ordinary spacecraft yields no nanites' => ['none', 0, 0, 0];
     }

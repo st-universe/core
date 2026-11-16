@@ -11,6 +11,7 @@ use ReflectionProperty;
 use request;
 use Stu\ActionControllerTestCase;
 use Stu\Component\Borg\BorgAssimilationCapture;
+use Stu\Component\Borg\BorgSphereActivityPolicy;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Player\Relation\PlayerRelationDeterminatorInterface;
 use Stu\Component\Spacecraft\SpacecraftRumpCategoryEnum;
@@ -74,7 +75,9 @@ final class BorgAssimilateTargetTest extends ActionControllerTestCase
         $random->shouldNotReceive('rand', 'array_rand');
         $time = $this->mock(StuTime::class);
         $time->shouldReceive('time')->andReturn(1000);
-        $capture = new BorgAssimilationCapture($this->assimilations, $relations, $this->fleets, $this->messages, $random, $time);
+        $activityClock = $this->mock(StuTime::class);
+        $activityClock->shouldReceive('time')->andReturn(strtotime('2026-11-16 09:03:00'));
+        $capture = new BorgAssimilationCapture($this->assimilations, $relations, $this->fleets, $this->messages, $random, $time, new BorgSphereActivityPolicy($activityClock));
         $this->selection = new SourceAndTargetWrappers($this->wrapper($this->source));
         $this->selection->setTarget($this->wrapper($this->target));
         $ships = $this->mock(ShipLoaderInterface::class);

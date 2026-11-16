@@ -93,7 +93,7 @@ class SpacecraftAssimilated
         if (!$this->isActive()) {
             return $this->progress;
         }
-        $elapsed = intdiv(max(0, $now - $this->startedAt), 60) * 60;
+        $elapsed = max(0, $now - $this->startedAt);
         return min(10000, max($this->progress, $this->initialProgress + intdiv($elapsed * (10000 - $this->initialProgress), max(1, $this->durationSeconds))));
     }
 

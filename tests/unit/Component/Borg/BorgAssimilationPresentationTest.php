@@ -42,7 +42,7 @@ final class BorgAssimilationPresentationTest extends StuTestCase
         self::assertNull($state['image']);
     }
 
-    public function testNbsSummariesResolveTheSameMinuteBasedProgressAsTheShipPage(): void
+    public function testNbsSummariesResolveTheSameSecondBasedProgressAsTheShipPage(): void
     {
         $target = $this->mock(SpacecraftNfsItem::class);
         $target->shouldReceive('getId')->once()->andReturn(77);
@@ -54,11 +54,11 @@ final class BorgAssimilationPresentationTest extends StuTestCase
         $repository = $this->mock(BorgAssimilationRepositoryInterface::class);
         $repository->shouldReceive('getBySpacecraftId')->once()->with(77)->andReturn($assimilation);
 
-        $state = $this->presentation($repository, 1120)->getState($target);
+        $state = $this->presentation($repository, 1121)->getState($target);
 
-        self::assertSame(13.33, $state['progress']);
+        self::assertSame(13.44, $state['progress']);
         self::assertTrue($state['active']);
-        self::assertSame(780, $state['remaining']);
+        self::assertSame(779, $state['remaining']);
         self::assertSame(1000, $state['started']);
     }
 
@@ -72,7 +72,7 @@ final class BorgAssimilationPresentationTest extends StuTestCase
 
         $state = $this->presentation(now: 1450)->getState($ship);
 
-        self::assertSame(73.33, $state['progress']);
+        self::assertSame(75.0, $state['progress']);
         self::assertSame(450, $state['remaining']);
         self::assertSame(900, $state['duration']);
     }
@@ -80,7 +80,7 @@ final class BorgAssimilationPresentationTest extends StuTestCase
     /** @return iterable<string, array{int, int, float}> */
     public static function deadlineStates(): iterable
     {
-        yield 'one second before deadline' => [1899, 1, 93.33];
+        yield 'one second before deadline' => [1899, 1, 99.88];
         yield 'exact deadline before process tick' => [1900, 0, 100.0];
         yield 'waiting for the next process tick' => [1930, 0, 100.0];
     }

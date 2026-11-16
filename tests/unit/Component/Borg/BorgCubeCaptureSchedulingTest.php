@@ -216,7 +216,7 @@ final class BorgCubeCaptureSchedulingTest extends StuTestCase
         $relations->shouldReceive('isFriend')->andReturn(false);
         $fleets = $this->mock(LeaveFleetInterface::class);
         $messages = $this->mock(PrivateMessageSenderInterface::class);
-        $capture = new BorgAssimilationCapture($repository, $relations, $fleets, $messages, $random, $clock);
+        $capture = new BorgAssimilationCapture($repository, $relations, $fleets, $messages, $random, $clock, new BorgSphereActivityPolicy($clock));
         $wrappers = $this->mock(SpacecraftWrapperFactoryInterface::class);
         $cubeWrapper = $this->mock(ShipWrapperInterface::class);
         $cubeWrapper->shouldReceive('get')->andReturn($cube);
