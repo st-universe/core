@@ -7,6 +7,7 @@ namespace Stu\Action;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Stu\ActionTestCase;
+use Stu\Component\Borg\BorgSphereActivityPolicy;
 use Stu\Component\Borg\BorgSphereAttackContext;
 use Stu\Component\Borg\BorgSphereCombat;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
@@ -78,7 +79,9 @@ final class BorgRegenerationRoundingIntegrationTest extends ActionTestCase
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->with(2, 10)->andReturn(5);
         $random->shouldReceive('rand')->with(1, 5)->andReturn(1);
-        $this->regeneration = new BorgSphereRegeneration($random);
+        $clock = $this->mock(StuTime::class);
+        $clock->shouldReceive('time')->andReturn(strtotime('2026-11-16 12:00:00'));
+        $this->regeneration = new BorgSphereRegeneration($random, new BorgSphereActivityPolicy($clock));
     }
 
     public function testEveryTickRoundsUpIndependentlyAcrossDatabaseReloads(): void

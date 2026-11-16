@@ -272,7 +272,7 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         $behavior = $container->make(BorgSphereBehavior::class, ['battle' => $battle]);
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->with(2, 10)->times(2 * (count($this->sphere->getSystems()) + 1))->andReturn(2);
-        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random]);
+        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random, 'activity' => $this->activityAt('12:00:00')]);
         $time = $this->mock(StuTime::class);
         $time->shouldReceive('time')->andReturnUsing(static function () use (&$now): int {
             return $now;
@@ -336,7 +336,7 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         });
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->with(2, 10)->andReturn(2);
-        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random]);
+        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random, 'activity' => $this->activityAt('12:00:00')]);
         $tick = $container->make(BorgSphereTick::class, ['regeneration' => $regeneration, 'time' => $time]);
         for ($hour = 1; $hour <= 2; $hour++) {
             if ($empty || $hour === 2) {
@@ -407,7 +407,7 @@ final class BorgSphereIntegrationTest extends ActionTestCase
         $this->em->flush();
         $random = $this->mock(StuRandom::class);
         $random->shouldReceive('rand')->with(2, 10)->times(count($rolls))->andReturn(...$rolls);
-        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random]);
+        $regeneration = $container->make(BorgSphereRegeneration::class, ['random' => $random, 'activity' => $this->activityAt('12:00:00')]);
         $tick = $container->make(BorgSphereTick::class, ['regeneration' => $regeneration]);
 
         $this->em->wrapInTransaction(fn () => $tick->work());

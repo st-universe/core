@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Stu\Component\Spacecraft\System\SpacecraftSystemModeEnum;
 use Stu\Component\Spacecraft\System\SpacecraftSystemTypeEnum;
 use Stu\Module\Control\StuRandom;
+use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\BorgSphereConfiguration;
 use Stu\Orm\Entity\BorgSphereEvent;
 use Stu\Orm\Entity\Module;
@@ -22,13 +23,17 @@ final class BorgSphereRegenerationTest extends StuTestCase
 {
     private StuRandom&MockInterface $random;
     private BorgSphereRegeneration $subject;
+    private int $now;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->random = $this->mock(StuRandom::class);
-        $this->subject = new BorgSphereRegeneration($this->random);
+        $this->now = strtotime('2026-11-16 12:00:00');
+        $clock = $this->mock(StuTime::class);
+        $clock->shouldReceive('time')->andReturnUsing(fn (): int => $this->now);
+        $this->subject = new BorgSphereRegeneration($this->random, new BorgSphereActivityPolicy($clock));
     }
 
     public function testDoesNotRegenerateBeforeFirstDisable(): void
@@ -418,6 +423,124 @@ final class BorgSphereRegenerationTest extends StuTestCase
             self::assertSame(2, $ship->getSpacecraftSystem($type)->getStatus());
             self::assertSame(SpacecraftSystemModeEnum::MODE_OFF, $ship->getSpacecraftSystem($type)->getMode());
         }
+    }
+
+    /** @return iterable<string, array{string, int, int, int, int}> */
+    public static function nightlyRegenerationBoundaries(): iterable
+    {
+        yield 'before quiet hours' => ['00:09:59', 420, 840, 42, 3350];
+        yield 'quiet hours start' => ['00:10:00', 330, 660, 33, 3300];
+        yield 'last second of quiet hours' => ['09:59:59', 330, 660, 33, 3300];
+        yield 'quiet hours end' => ['10:00:00', 420, 840, 42, 3350];
+    }
+
+    #[DataProvider('nightlyRegenerationBoundaries')]
+    public function testNightlyLimitUsesTheExistingServerTimeBoundaries(string $time, int $hull, int $shields, int $status, int $transwarp): void
+    {
+        $this->now = strtotime('2026-11-16 ' . $time);
+        $ship = $this->ship();
+        foreach ([SpacecraftSystemTypeEnum::EPS, SpacecraftSystemTypeEnum::NBS, SpacecraftSystemTypeEnum::PHASER, SpacecraftSystemTypeEnum::TORPEDO] as $type) {
+            $ship->getSystems()->set($type->value, new SpacecraftSystem()->setSpacecraft($ship)->setSystemType($type)->setMode(SpacecraftSystemModeEnum::MODE_OFF));
+        }
+        $ship->getCondition()->setHull(320)->setShield(640);
+        foreach ($ship->getSystems() as $system) {
+            $system->setStatus(32);
+        }
+        $event = $this->event()->setTranswarpProgress(3250)->setTranswarpFloor(3000);
+        $this->random->shouldReceive('rand')->with(2, 10)->andReturn(10);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame($hull, $ship->getCondition()->getHull());
+        self::assertSame($shields, $ship->getCondition()->getShield());
+        foreach ($ship->getSystems() as $system) {
+            self::assertSame($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? intdiv($transwarp, 100) : $status, $system->getStatus());
+        }
+        self::assertSame($transwarp, $event->getTranswarpProgress());
+        self::assertSame(3000, $event->getTranswarpFloor());
+    }
+
+    public function testNightlyHullAndShieldCapsRoundDownToStayWithinThirtyThreePercent(): void
+    {
+        $this->now = strtotime('2026-11-16 04:00:00');
+        $ship = $this->ship()->setMaxHull(1001)->setMaxShield(2003);
+        $ship->getCondition()->setHull(329)->setShield(659);
+        $this->random->shouldReceive('rand')->with(2, 10)->andReturn(10);
+
+        $this->subject->regenerate($this->event(), $ship, 1);
+
+        self::assertSame(330, $ship->getCondition()->getHull());
+        self::assertSame(660, $ship->getCondition()->getShield());
+        self::assertLessThanOrEqual(1001 * 33, $ship->getCondition()->getHull() * 100);
+        self::assertLessThanOrEqual(2003 * 33, $ship->getCondition()->getShield() * 100);
+    }
+
+    public function testNightlyLimitPreservesTheNormalIndependentRegenerationRatesBelowTheCap(): void
+    {
+        $this->now = strtotime('2026-11-16 04:00:00');
+        $ship = $this->ship();
+        $event = $this->event();
+        $this->random->shouldReceive('rand')->with(2, 10)->times(5)->andReturn(2, 3, 4, 5, 6);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(120, $ship->getCondition()->getHull());
+        self::assertSame(260, $ship->getCondition()->getShield());
+        self::assertSame(14, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::SHIELDS)->getStatus());
+        self::assertSame(15, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::WARPDRIVE)->getStatus());
+        self::assertSame(16, $ship->getSpacecraftSystem(SpacecraftSystemTypeEnum::TRACTOR_BEAM)->getStatus());
+        self::assertSame(1100, $event->getTranswarpProgress());
+    }
+
+    public function testAlreadyHigherValuesRemainUntouchedAtNightAndContinueAfterTen(): void
+    {
+        $this->now = strtotime('2026-11-16 09:59:59');
+        $ship = $this->ship();
+        $ship->getCondition()->setHull(550)->setShield(1200);
+        foreach ($ship->getSystems() as $system) {
+            $system->setStatus($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 50 : 60);
+        }
+        $event = $this->event()->setTranswarpProgress(5000)->setTranswarpFloor(5000);
+        $this->random->shouldReceive('rand')->with(2, 10)->andReturn(10);
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(550, $ship->getCondition()->getHull());
+        self::assertSame(1200, $ship->getCondition()->getShield());
+        foreach ($ship->getSystems() as $system) {
+            self::assertSame($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 50 : 60, $system->getStatus());
+        }
+        self::assertSame(5000, $event->getTranswarpProgress());
+        self::assertSame(5000, $event->getTranswarpFloor());
+        $this->now = strtotime('2026-11-16 10:00:00');
+
+        $this->subject->regenerate($event, $ship, 1);
+
+        self::assertSame(650, $ship->getCondition()->getHull());
+        self::assertSame(1400, $ship->getCondition()->getShield());
+        foreach ($ship->getSystems() as $system) {
+            self::assertSame($system->getSystemType() === SpacecraftSystemTypeEnum::TRANSWARP_COIL ? 51 : 70, $system->getStatus());
+        }
+        self::assertSame(5100, $event->getTranswarpProgress());
+        self::assertSame(5000, $event->getTranswarpFloor());
+    }
+
+    public function testMultipleDueStepsCannotRegeneratePastTheNightlyCap(): void
+    {
+        $this->now = strtotime('2026-11-16 04:00:00');
+        $ship = $this->ship();
+        $event = $this->event();
+        $this->random->shouldReceive('rand')->with(2, 10)->andReturn(10);
+
+        $this->subject->regenerate($event, $ship, 100);
+
+        self::assertSame(330, $ship->getCondition()->getHull());
+        self::assertSame(660, $ship->getCondition()->getShield());
+        foreach ($ship->getSystems() as $system) {
+            self::assertSame(33, $system->getStatus());
+        }
+        self::assertSame(3300, $event->getTranswarpProgress());
+        self::assertSame(3000, $event->getTranswarpFloor());
     }
 
     private function event(): BorgSphereEvent

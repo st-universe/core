@@ -13,7 +13,7 @@ use Stu\Orm\Entity\Ship;
 
 final class BorgSphereRegeneration
 {
-    public function __construct(private StuRandom $random) {}
+    public function __construct(private StuRandom $random, private BorgSphereActivityPolicy $activity) {}
 
     public function regenerate(BorgSphereEvent $event, Ship $ship, int $steps): void
     {
@@ -21,11 +21,13 @@ final class BorgSphereRegeneration
             return;
         }
         $configuration = $event->getConfiguration();
+        $capPercent = $this->activity->canHunt() ? 100 : 33;
         for ($step = 0; $step < $steps; $step++) {
-            $this->regenerateNormalSystems($configuration, $ship);
+            $this->regenerateNormalSystems($configuration, $ship, $capPercent);
         }
         $transwarpGain = $this->scaleHourlyAmount($configuration->getSetting('transwarp_regen_bp'), $configuration);
-        $progress = min($configuration->getSetting('transwarp_escape_bp'), $event->getTranswarpProgress() + $transwarpGain * $steps);
+        $maximumProgress = min($configuration->getSetting('transwarp_escape_bp'), max($event->getTranswarpProgress(), $capPercent * 100));
+        $progress = min($maximumProgress, $event->getTranswarpProgress() + $transwarpGain * $steps);
         $event->setTranswarpProgress($progress);
         $floorStep = $configuration->getSetting('transwarp_floor_step_bp');
         $event->setTranswarpFloor(max($event->getTranswarpFloor(), min($configuration->getSetting('transwarp_escape_bp') - $floorStep, intdiv($progress, $floorStep) * $floorStep)));
@@ -39,26 +41,27 @@ final class BorgSphereRegeneration
         }
     }
 
-    private function regenerateNormalSystems(BorgSphereConfiguration $configuration, Ship $ship): void
+    private function regenerateNormalSystems(BorgSphereConfiguration $configuration, Ship $ship, int $capPercent): void
     {
         $condition = $ship->getCondition();
-        $condition->setHull($this->regenerateValue($condition->getHull(), $ship->getMaxHull(), $configuration))
-            ->setShield($this->regenerateValue($condition->getShield(), $ship->getMaxShield(true), $configuration, true));
+        $condition->setHull($this->regenerateValue($condition->getHull(), $ship->getMaxHull(), $configuration, $capPercent))
+            ->setShield($this->regenerateValue($condition->getShield(), $ship->getMaxShield(true), $configuration, $capPercent, true));
         foreach ($ship->getSystems() as $system) {
             if ($system->getSystemType() !== SpacecraftSystemTypeEnum::TRANSWARP_COIL) {
-                $system->setStatus($this->regenerateValue($system->getStatus(), 100, $configuration));
+                $system->setStatus($this->regenerateValue($system->getStatus(), 100, $configuration, $capPercent));
             }
         }
     }
 
-    private function regenerateValue(int $current, int $maximum, BorgSphereConfiguration $configuration, bool $shield = false): int
+    private function regenerateValue(int $current, int $maximum, BorgSphereConfiguration $configuration, int $capPercent, bool $shield = false): int
     {
         $settings = $configuration->getSettings();
         $minimum = $shield ? $settings['shield_regen_min_percent'] ?? $configuration->getSetting('normal_regen_min_percent') : $configuration->getSetting('normal_regen_min_percent');
         $maximumPercent = $shield ? $settings['shield_regen_max_percent'] ?? $configuration->getSetting('normal_regen_max_percent') : $configuration->getSetting('normal_regen_max_percent');
         $percent = $this->random->rand($minimum, $maximumPercent);
         $hourlyAmount = intdiv($maximum * $percent + 99, 100);
-        return min($maximum, $current + $this->scaleHourlyAmount($hourlyAmount, $configuration));
+        $ceiling = min($maximum, max($current, intdiv($maximum * $capPercent, 100)));
+        return min($ceiling, $current + $this->scaleHourlyAmount($hourlyAmount, $configuration));
     }
 
     private function scaleHourlyAmount(int $amount, BorgSphereConfiguration $configuration): int

@@ -9,6 +9,7 @@ use Stu\Component\Borg\BorgCompanionDeparture;
 use Stu\Component\Borg\BorgCompanionSupply;
 use Stu\Component\Borg\BorgSphereBehavior;
 use Stu\Component\Borg\BorgSphereCombat;
+use Stu\Component\Borg\BorgSphereCrew;
 use Stu\Component\Borg\BorgSphereEnergy;
 use Stu\Component\Borg\BorgSpherePhaseEnum;
 use Stu\Component\Borg\BorgSphereRegeneration;
@@ -22,7 +23,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BorgSphereTick implements ProcessTickHandlerInterface
 {
-    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat, private BorgSphereTorpedoSupply $torpedoes, private ?BorgCompanionSupply $companions = null, private ?BorgCompanionDeparture $departure = null) {}
+    public function __construct(private BorgSphereRepositoryInterface $events, private ShipRepositoryInterface $ships, private BorgSphereRegeneration $regeneration, private BorgSphereBehavior $behavior, private BorgSphereEnergy $energy, private SpacecraftRemoverInterface $remover, private StuTime $time, private BorgSphereCombat $combat, private BorgSphereTorpedoSupply $torpedoes, private BorgSphereCrew $crew, private ?BorgCompanionSupply $companions = null, private ?BorgCompanionDeparture $departure = null) {}
 
     #[Override]
     public function work(): void
@@ -50,6 +51,7 @@ final class BorgSphereTick implements ProcessTickHandlerInterface
             $this->escape($event, $ship);
             return;
         }
+        $this->crew->refill($ship);
         $interval = $configuration->getSetting('tick_seconds');
         $steps = max(1, intdiv($now - $event->getNextTickAt(), $interval) + 1);
         $event->setNextTickAt($event->getNextTickAt() + $steps * $interval);
