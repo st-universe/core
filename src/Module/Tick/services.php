@@ -13,6 +13,7 @@ use Stu\Lib\Pirate\Component\PirateFlight;
 use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
@@ -71,6 +72,7 @@ use Stu\Module\Tick\Spacecraft\SpacecraftTickInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManager;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickManagerInterface;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 use function DI\autowire;
 use function DI\create;
@@ -151,7 +153,9 @@ return [
     ProcessTickRunner::class => create(ProcessTickRunner::class)
         ->constructor(
             get(TransactionTickRunnerInterface::class),
-            get(ProcessTickHandlerInterface::class)
+            get(ProcessTickHandlerInterface::class),
+            get(UserRepositoryInterface::class),
+            get(StuConfigInterface::class)
         ),
     SpacecraftTickRunner::class => autowire(),
     PirateTickInterface::class => autowire(PirateTick::class)->lazy()->constructorParameter(
