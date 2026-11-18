@@ -154,7 +154,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         Colony|Spacecraft $host,
         SpacecraftRump $rump,
         User $user,
-        ?SpacecraftBuildplan $buildplan = null
+        ?SpacecraftBuildplan $buildplan = null,
+        bool $isFixedBuildplan = false
     ): ModuleSelector {
 
         $addon = $this->moduleSelectorAddonFactory->createModuleSelectorAddon($moduleType);
@@ -168,7 +169,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $rump,
             $user,
             $addon,
-            $buildplan
+            $buildplan,
+            $isFixedBuildplan
         );
     }
 

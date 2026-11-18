@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use request;
 use Stu\Component\Building\BuildingFunctionEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
@@ -12,20 +14,25 @@ use Stu\Component\Spacecraft\Buildplan\BuildplanSignatureCreationInterface;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Lib\Information\InformationWrapper;
+use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\Transfer\Storage\StorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\Component\Action\ActionControllerContext;
 use Stu\Module\Control\ViewContextMetadataTypeEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyChangeable;
+use Stu\Orm\Entity\ColonyShipQueue;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
 use Stu\Orm\Entity\SpacecraftBuildplan;
 use Stu\Orm\Entity\SpacecraftRump;
 use Stu\Orm\Entity\SpacecraftRumpBaseValues;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -39,7 +46,15 @@ use Stu\StuTestCase;
 
 class BuildShipTest extends StuTestCase
 {
-    public function testHandleUsesNpcGiftCrewForSignature(): void
+    public static function npcGiftBuildplans(): iterable
+    {
+        yield 'exhausted' => [0, 'npc-signature'];
+        yield 'buildable' => [1, 'npc-signature'];
+        yield 'modified' => [1, 'modified-signature'];
+    }
+
+    #[DataProvider('npcGiftBuildplans')]
+    public function testHandleUsesNpcGiftCrewForSignature(int $remainingCount, string $submittedSignature): void
     {
         $userId = 123;
         $colonyId = 456;
@@ -198,9 +213,38 @@ class BuildShipTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('npc-signature');
+
+        $queue = new ColonyShipQueue();
+        if ($remainingCount > 0 && $submittedSignature === 'npc-signature') {
+            $commodity = new Commodity();
+            $module->shouldReceive('getCommodityId')->andReturn($moduleId);
+            $module->shouldReceive('getCommodity')->andReturn($commodity);
+            $module->shouldReceive('getType')->andReturn(SpacecraftModuleTypeEnum::HULL);
+            $colony->shouldReceive('getStorage')->andReturn(new ArrayCollection([
+                $moduleId => new Storage()->setAmount(1)
+            ]));
+            $selector = $this->mock(ModuleSelector::class);
+            $selector->shouldReceive('getAvailableModules')->once()->andReturn([$moduleId => true]);
+            $colonyLibFactory->shouldReceive('createModuleSelector')
+                ->with(SpacecraftModuleTypeEnum::HULL, $colony, $rump, $user, $plan, true)
+                ->once()->andReturn($selector);
+            $storageManager->shouldReceive('removeStorage')->with($colony, $commodity, 1, 0)->once();
+            $context->shouldReceive('setView')->with(ShowColony::VIEW_IDENTIFIER)->once();
+            $plan->shouldReceive('getName')->andReturn('NPC-Geschenk');
+            $plan->shouldReceive('getBuildtime')->andReturn(24000);
+            $plan->shouldReceive('setCount')->with(0)->once();
+            $rump->shouldReceive('getName')->andReturn('Sovereign');
+            $colonyShipQueueRepository->shouldReceive('prototype')->once()->andReturn($queue);
+            $changeable->shouldReceive('lowerEps')->with(10)->once();
+            $colonyRepository->shouldReceive('save')->with($colony)->once();
+            $colonyShipQueueRepository->shouldReceive('save')->with($queue)->once();
+        } else {
+            $storageManager->shouldNotReceive('removeStorage');
+            $colonyShipQueueRepository->shouldNotReceive('save');
+        }
         $plan->shouldReceive('getCount')
             ->withNoArgs()
-            ->andReturn(0);
+            ->andReturn($remainingCount);
 
         $buildplanSignatureCreation->shouldReceive('createSignature')
             ->with(
@@ -208,7 +252,7 @@ class BuildShipTest extends StuTestCase
                 7
             )
             ->once()
-            ->andReturn('npc-signature');
+            ->andReturn($submittedSignature);
 
         $subject = new BuildShip(
             $colonyFunctionManager,
@@ -229,6 +273,13 @@ class BuildShipTest extends StuTestCase
 
         $subject->handle($context);
 
-        $this->assertSame(['Dieser Bauplan ist nicht mehr baubar'], $informationWrapper->getInformations());
+        if ($submittedSignature !== 'npc-signature') {
+            self::assertSame(['Du kannst diesen Bauplan nicht ändern'], $informationWrapper->getInformations());
+        } elseif ($remainingCount === 0) {
+            self::assertSame(['Dieser Bauplan ist nicht mehr baubar'], $informationWrapper->getInformations());
+        } else {
+            self::assertSame($plan, $queue->getSpacecraftBuildplan());
+            self::assertSame(24000, $queue->getBuildtime());
+        }
     }
 }

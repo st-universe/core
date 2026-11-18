@@ -1,9 +1,10 @@
 {% set baseCrew = RUMP.getBaseValues.getBaseCrew %}
 {% set maxCrew = MAX_CREW_COUNT %}
 {% set specialSlots = RUMP.getBaseValues.getSpecialSlots %}
+{% set fixedCrew = not SHIP and PLAN and PLAN.getNpcGift ? PLAN.getCrew : null %}
 <form action="colony.php" method="post" name="colmanform">
   <script>
-      setFixValues({{ baseCrew }}, {{ maxCrew }}, {{ specialSlots }});
+      setFixValues({{ baseCrew }}, {{ maxCrew }}, {{ specialSlots }}, {{ fixedCrew is not null ? fixedCrew : 'null' }});
   </script>
   <input type="hidden" name="id" value="{{ COLONY.getId }}" />
   <input type="hidden" name="rumpid" value="{{ RUMP.getId }}" />
@@ -131,7 +132,7 @@
         <div class="box_body">
           <div style="width: 100%;">
             <div id="crewdisplay">
-              <div id="crewSum">Benötigte Crew: {{ baseCrew }}</div>
+              <div id="crewSum">Benötigte Crew: {{ fixedCrew is not null ? fixedCrew : baseCrew }}</div>
               <div id="crewMax">Maximale Crew: {{ maxCrew }}</div>
               <div id="crewerr" style="display: none; color:tomato">Crewbedarf &gt; {{ maxCrew }} - Nicht baubar</div>
             </div>

@@ -37,7 +37,8 @@ class ModuleSelector implements ModuleSelectorInterface
         private SpacecraftRump $rump,
         private User $user,
         private ?ModuleSelectorAddonInterface $addon,
-        private ?SpacecraftBuildplan $buildplan = null
+        private ?SpacecraftBuildplan $buildplan = null,
+        private bool $isFixedBuildplan = false
     ) {}
 
     #[\Override]
@@ -134,7 +135,9 @@ class ModuleSelector implements ModuleSelectorInterface
             $modules = [];
 
             $host = $this->getHost();
-            if ($this->getModuleType()->isSpecialSystemType()) {
+            if ($this->isFixedBuildplan && $this->buildplan !== null) {
+                $modules = $this->buildplan->getModulesByType($this->getModuleType())->getValues();
+            } elseif ($this->getModuleType()->isSpecialSystemType()) {
                 $modules = $this->moduleRepository->getBySpecialTypeAndRump(
                     $host,
                     $this->getModuleType(),
@@ -161,7 +164,8 @@ class ModuleSelector implements ModuleSelectorInterface
                     $this->getHost(),
                     $this->user,
                     $this->moduleRepository,
-                    $this->getBuildplan()
+                    $this->getBuildplan(),
+                    $this->isFixedBuildplan
                 );
             }
         }

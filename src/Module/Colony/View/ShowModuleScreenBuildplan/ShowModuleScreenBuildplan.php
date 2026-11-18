@@ -55,7 +55,8 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                 $colony,
                 $rump,
                 $user,
-                $plan
+                $plan,
+                $plan->getNpcGift() === true
             );
         }
 

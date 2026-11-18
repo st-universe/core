@@ -428,14 +428,16 @@ function toggleSpecialModuleDisplay(type, module_id, module_crew, amount) {
 var maxCrew;
 var baseCrew;
 var specialSlots;
+var fixedCrew;
 function resetCrewType() {
 	crew_type = new Hash();
 }
-function setFixValues(base_crew, max_crew, special_slots) {
+function setFixValues(base_crew, max_crew, special_slots, fixed_crew = null) {
 	resetCrewType();
 	baseCrew = base_crew;
 	maxCrew = max_crew;
 	specialSlots = special_slots;
+	fixedCrew = fixed_crew;
 }
 var crew_type = new Hash();
 function updateCrewCount(type, module_crew) {
@@ -446,12 +448,14 @@ function updateCrewCount(type, module_crew) {
 	}
 }
 function checkCrewCount() {
-	crewSum = baseCrew;
-	crew_type.each(function (pair) {
-		if (pair.value >= 0) {
-			crewSum += pair.value;
-		}
-	});
+	crewSum = fixedCrew ?? baseCrew;
+	if (fixedCrew === null) {
+		crew_type.each(function (pair) {
+			if (pair.value >= 0) {
+				crewSum += pair.value;
+			}
+		});
+	}
 	$('crewdisplay').select('div').each(function (elem) {
 		elem.hide();
 	});
