@@ -172,7 +172,8 @@ final class BuildShip implements ActionControllerInterface
         }
 
         $submittedPlan = $this->getSubmittedBuildplan($userId, $rump->getId());
-        $crewUsage = $submittedPlan?->getNpcGift() === true
+        $isFixedBuildplan = $submittedPlan?->getNpcGift() === true;
+        $crewUsage = $isFixedBuildplan
             ? $submittedPlan->getCrew()
             : $this->shipCrewCalculator->getCrewUsage($modules, $rump, $user);
 
@@ -183,16 +184,12 @@ final class BuildShip implements ActionControllerInterface
 
         [$qualities, $signature] = ModuleQualitySelection::signature($this->buildplanSignatureCreation, $modules, $crewUsage, $submittedPlan);
 
-        if (
-            $submittedPlan !== null
-            && $submittedPlan->getNpcGift() === true
-            && $submittedPlan->getSignature() !== $signature
-        ) {
+        if ($submittedPlan !== null && $isFixedBuildplan && $submittedPlan->getSignature() !== $signature) {
             $context->getInfo()->addInformation(_('Du kannst diesen Bauplan nicht ändern'));
             return;
         }
 
-        $plan = $submittedPlan?->getNpcGift() === true
+        $plan = $isFixedBuildplan
             ? $submittedPlan
             : $this->spacecraftBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan !== null && $plan->getCount() !== null && $plan->getCount() <= 0) {
@@ -212,7 +209,7 @@ final class BuildShip implements ActionControllerInterface
                 $rump,
                 $user,
                 $submittedPlan,
-                $submittedPlan?->getNpcGift() === true
+                $isFixedBuildplan
             );
             if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
                 return;
