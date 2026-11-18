@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Spacecraft\Crew\SpacecraftCrewCalculatorInterface;
 use Stu\Component\Spacecraft\SpacecraftModuleTypeEnum;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
@@ -47,18 +48,17 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $rump = $plan->getRump();
 
-        $moduleSelectors = [];
-        foreach (SpacecraftModuleTypeEnum::getModuleSelectorOrder() as $moduleType) {
-
-            $moduleSelectors[] = $this->colonyLibFactory->createModuleSelector(
+        $moduleSelectors = array_map(
+            fn (SpacecraftModuleTypeEnum $moduleType): ModuleSelector => $this->colonyLibFactory->createModuleSelector(
                 $moduleType,
                 $colony,
                 $rump,
                 $user,
                 $plan,
                 $plan->getNpcGift() === true
-            );
-        }
+            ),
+            SpacecraftModuleTypeEnum::getModuleSelectorOrder()
+        );
 
         $game->appendNavigationPart(
             'colony.php',
