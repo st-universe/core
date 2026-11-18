@@ -59,7 +59,8 @@ interface ColonyLibFactoryInterface
         Colony|Spacecraft $host,
         SpacecraftRump $rump,
         User $user,
-        ?SpacecraftBuildplan $buildplan = null
+        ?SpacecraftBuildplan $buildplan = null,
+        bool $isFixedBuildplan = false
     ): ModuleSelector;
 
     public function createColonyProduction(

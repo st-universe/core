@@ -210,7 +210,9 @@ final class BuildShip implements ActionControllerInterface
                 $module->getType(),
                 $colony,
                 $rump,
-                $user
+                $user,
+                $submittedPlan,
+                $submittedPlan?->getNpcGift() === true
             );
             if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
                 return;

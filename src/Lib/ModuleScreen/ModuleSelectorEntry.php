@@ -28,7 +28,8 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
         private Colony|Spacecraft $host,
         private User $user,
         private ModuleRepositoryInterface $moduleRepository,
-        private ?SpacecraftBuildplan $buildplan = null
+        private ?SpacecraftBuildplan $buildplan = null,
+        private bool $isFixedBuildplan = false
     ) {}
 
 
@@ -36,7 +37,7 @@ final class ModuleSelectorEntry implements ModuleSelectorEntryInterface
     public function isChosen(): bool
     {
         if ($this->buildplan !== null) {
-            if ($this->module->getType()->isSpecialSystemType()) {
+            if ($this->module->getType()->isSpecialSystemType() && !$this->isFixedBuildplan) {
                 $allModulesWithSameName = $this->moduleRepository->findBy(['name' => $this->module->getName()]);
 
                 $modules = $this->buildplan->getModules();
