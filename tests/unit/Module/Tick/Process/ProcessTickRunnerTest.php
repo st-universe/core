@@ -6,8 +6,11 @@ namespace Stu\Module\Tick\Process;
 
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use RuntimeException;
+use Stu\Component\Game\GameStateEnum;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
@@ -22,9 +25,11 @@ class ProcessTickRunnerTest extends StuTestCase
 
     private MockInterface&StuConfigInterface $config;
 
+    private MockInterface&GameStateInterface $gameState;
+
     private ProcessTickRunner $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         $this->transactionTickRunner = $this->mock(TransactionTickRunnerInterface::class);
@@ -32,6 +37,8 @@ class ProcessTickRunnerTest extends StuTestCase
         $this->handler = $this->mock(ProcessTickHandlerInterface::class);
         $this->users = $this->mock(UserRepositoryInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
+        $this->gameState = $this->mock(GameStateInterface::class);
+        $this->gameState->shouldReceive('getGameState')->byDefault()->andReturn(GameStateEnum::ONLINE);
 
         $this->subject = new ProcessTickRunner(
             $this->transactionTickRunner,
@@ -39,7 +46,8 @@ class ProcessTickRunnerTest extends StuTestCase
                 $this->handler
             ],
             $this->users,
-            $this->config
+            $this->config,
+            $this->gameState
         );
     }
 
@@ -95,6 +103,23 @@ class ProcessTickRunnerTest extends StuTestCase
             ->with(Mockery::type('callable'), 'processtick', 1, 1)->once();
 
         $this->subject->run(1, 1);
+    }
+
+    public function testOnlyTheFirstRunAfterMaintenanceOpensATransaction(): void
+    {
+        $states = array_fill(0, 5, GameStateEnum::MAINTENANCE);
+        $states[] = GameStateEnum::ONLINE;
+        $this->gameState->shouldReceive('getGameState')->times(6)->andReturn(...$states);
+        $this->config->shouldReceive('getDbSettings->useSqlite')->once()->andReturn(false);
+        $this->users->shouldReceive('lockAllUsersForUpdate')->once()->globally()->ordered();
+        $this->handler->shouldReceive('work')->once()->globally()->ordered();
+        $this->transactionTickRunner->shouldReceive('runWithResetCheck')
+            ->with(Mockery::type('callable'), 'processtick', 1, 1)->once()
+            ->andReturnUsing(static fn (callable $callback) => $callback());
+
+        for ($minute = 0; $minute < 6; $minute++) {
+            $this->subject->run(1, 1);
+        }
     }
 
     public function testLockFailurePreventsHandlersFromTakingOtherLocks(): void

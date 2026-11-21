@@ -8,10 +8,13 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
+use Override;
 use Stu\Component\Game\GameStateEnum;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 class MaintenanceTickRunnerTest extends StuTestCase
@@ -24,9 +27,13 @@ class MaintenanceTickRunnerTest extends StuTestCase
 
     private MockInterface&MaintenanceHandlerInterface $maintenanceHandler;
 
+    private MockInterface&UserRepositoryInterface $users;
+
+    private MockInterface&StuConfigInterface $config;
+
     private MaintenanceTickRunner $subject;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);
@@ -34,6 +41,8 @@ class MaintenanceTickRunnerTest extends StuTestCase
         $this->connection = $this->mock(Connection::class);
 
         $this->maintenanceHandler = $this->mock(MaintenanceHandlerInterface::class);
+        $this->users = $this->mock(UserRepositoryInterface::class);
+        $this->config = $this->mock(StuConfigInterface::class);
 
         $this->subject = new MaintenanceTickRunner(
             $this->gameConfigRepository,
@@ -41,11 +50,13 @@ class MaintenanceTickRunnerTest extends StuTestCase
             $this->connection,
             [
                 $this->maintenanceHandler,
-            ]
+            ],
+            $this->users,
+            $this->config
         );
     }
 
-    public function testRunErrorsOnInternalError(): void
+    public function testRunRestoresOnlineStateAndPropagatesAnError(): void
     {
         $errorMessage = 'some-error';
         $error = new Exception($errorMessage);
@@ -55,11 +66,15 @@ class MaintenanceTickRunnerTest extends StuTestCase
 
         $this->gameConfigRepository->shouldReceive('updateGameState')
             ->with(GameStateEnum::MAINTENANCE, $this->connection)
-            ->once();
+            ->once()->globally()->ordered();
 
         $this->transactionTickRunner->shouldReceive('runWithResetCheck')
-            ->once()
+            ->once()->globally()->ordered()
             ->andThrow($error);
+
+        $this->gameConfigRepository->shouldReceive('updateGameState')
+            ->with(GameStateEnum::ONLINE, $this->connection)
+            ->once()->globally()->ordered();
 
         $this->subject->run(1, 1);
     }
@@ -76,9 +91,12 @@ class MaintenanceTickRunnerTest extends StuTestCase
             ->with(GameStateEnum::ONLINE, $this->connection)
             ->once();
 
+        $this->config->shouldReceive('getDbSettings->useSqlite')->once()->andReturn(false);
+        $this->users->shouldReceive('lockAllUsersForUpdate')->withNoArgs()->once()->globally()->ordered();
+
         $this->maintenanceHandler->shouldReceive('handle')
             ->withNoArgs()
-            ->once();
+            ->once()->globally()->ordered();
 
         $this->transactionTickRunner->shouldReceive('runWithResetCheck')
             ->with(
@@ -96,5 +114,19 @@ class MaintenanceTickRunnerTest extends StuTestCase
             ->once();
 
         $this->subject->run($batchGroup, $batchGroupCount);
+    }
+
+    public function testSqliteExecutesHandlersWithoutRowLocks(): void
+    {
+        $this->gameConfigRepository->shouldReceive('updateGameState')->with(GameStateEnum::MAINTENANCE, $this->connection)->once();
+        $this->gameConfigRepository->shouldReceive('updateGameState')->with(GameStateEnum::ONLINE, $this->connection)->once();
+        $this->config->shouldReceive('getDbSettings->useSqlite')->once()->andReturn(true);
+        $this->users->shouldNotReceive('lockAllUsersForUpdate');
+        $this->maintenanceHandler->shouldReceive('handle')->withNoArgs()->once();
+        $this->transactionTickRunner->shouldReceive('runWithResetCheck')
+            ->with(Mockery::type('callable'), 'maintenancetick', 1, 1)->once()
+            ->andReturnUsing(static fn (callable $callback) => $callback());
+
+        $this->subject->run(1, 1);
     }
 }
