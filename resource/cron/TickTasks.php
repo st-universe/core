@@ -13,15 +13,15 @@ use Stu\Module\Tick\Manager\TickManagerRunner;
 use Stu\Module\Tick\Pirate\PirateTickRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Spacecraft\SpacecraftTickRunner;
+use Symfony\Component\Lock\Store\FlockStore;
 
 $schedule = new Schedule();
 
 //split colony tick into groups
-$colonyTickGroupCount = Init::getContainer()
+$gameSettings = Init::getContainer()
     ->get(StuConfigInterface::class)
-    ->getGameSettings()
-    ->getColonySettings()
-    ->getTickWorker();
+    ->getGameSettings();
+$colonyTickGroupCount = $gameSettings->getColonySettings()->getTickWorker();
 
 for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
     $schedule
@@ -71,6 +71,11 @@ $schedule
         });
     })
     ->everyMinute()
+    ->preventOverlapping(new FlockStore(sprintf(
+        '%s/crunz-%s',
+        $gameSettings->getTempDir(),
+        hash('sha256', dirname(__DIR__, 2))
+    )))
     ->description('ProcessTick');
 
 $schedule

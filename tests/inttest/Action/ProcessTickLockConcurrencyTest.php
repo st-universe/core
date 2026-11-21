@@ -21,10 +21,14 @@ use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Maintenance\MaintenanceHandlerInterface;
+use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\TransactionTickRunner;
+use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Repository\GameConfigRepository;
 use Stu\Orm\Repository\UserRepository;
 use Throwable;
 
@@ -36,6 +40,18 @@ final class ProcessTickLockConcurrencyTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testProcessTickWaitsBeforeLockingBorgStateAndCanInsertUserReferences(): void
     {
+        $this->checkTickWaitsForUserLocks(false);
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testMaintenanceTickWaitsBeforeRunningHandlersAndCanInsertUserReferences(): void
+    {
+        $this->checkTickWaitsForUserLocks(true);
+    }
+
+    private function checkTickWaitsForUserLocks(bool $maintenance): void
+    {
         $this->source = Init::getContainer(ConfigStageEnum::DEVELOPMENT)->get(EntityManagerInterface::class);
         $connection = $this->source->getConnection();
         $this->requireLocalPostgres($connection);
@@ -44,13 +60,15 @@ final class ProcessTickLockConcurrencyTest extends TestCase
         try {
             $setup = $this->manager($schema)->getConnection();
             $setup->executeStatement('CREATE TABLE stu_user (id INTEGER PRIMARY KEY)');
+            $setup->executeStatement('CREATE TABLE stu_game_config (option INTEGER PRIMARY KEY, value INTEGER NOT NULL)');
+            $setup->insert('stu_game_config', ['option' => GameStateInterface::CONFIG_GAMESTATE, 'value' => GameStateEnum::ONLINE->value]);
             $setup->executeStatement('CREATE TABLE borg_tick_event (id INTEGER PRIMARY KEY, changes INTEGER NOT NULL)');
             $setup->executeStatement('CREATE TABLE borg_tick_notice (user_id INTEGER NOT NULL REFERENCES stu_user (id))');
             $setup->executeStatement('INSERT INTO stu_user (id) VALUES (19), (261)');
             $setup->executeStatement('INSERT INTO borg_tick_event (id, changes) VALUES (1, 0)');
             $setup->close();
             $connection->close();
-            $this->checkConcurrentTick($schema);
+            $this->checkConcurrentTick($schema, $maintenance);
         } finally {
             $connection->executeStatement('DROP SCHEMA ' . $connection->quoteIdentifier($schema) . ' CASCADE');
             $connection->close();
@@ -81,7 +99,7 @@ final class ProcessTickLockConcurrencyTest extends TestCase
         return new EntityManager($connection, $this->source->getConfiguration());
     }
 
-    private function checkConcurrentTick(string $schema): void
+    private function checkConcurrentTick(string $schema, bool $maintenance): void
     {
         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
         self::assertIsArray($sockets);
@@ -92,7 +110,7 @@ final class ProcessTickLockConcurrencyTest extends TestCase
         self::assertNotSame(-1, $pid);
         if ($pid === 0) {
             fclose($sockets[0]);
-            $this->runWorker($schema, $sockets[1]);
+            $this->runWorker($schema, $sockets[1], $maintenance);
         }
         fclose($sockets[1]);
         $connection = $this->manager($schema)->getConnection();
@@ -114,6 +132,12 @@ final class ProcessTickLockConcurrencyTest extends TestCase
             self::assertSame(['finished' => true], json_decode($result, true, 512, JSON_THROW_ON_ERROR), $result);
             self::assertSame(8, (int) $connection->fetchOne('SELECT changes FROM borg_tick_event WHERE id = 1'));
             self::assertSame(2, (int) $connection->fetchOne('SELECT COUNT(*) FROM borg_tick_notice'));
+            if ($maintenance) {
+                self::assertSame(
+                    GameStateEnum::ONLINE->value,
+                    (int) $connection->fetchOne('SELECT value FROM stu_game_config WHERE option = ?', [GameStateInterface::CONFIG_GAMESTATE])
+                );
+            }
             self::assertSame($pid, pcntl_waitpid($pid, $status));
             self::assertTrue(pcntl_wifexited($status));
             self::assertSame(0, pcntl_wexitstatus($status));
@@ -130,26 +154,39 @@ final class ProcessTickLockConcurrencyTest extends TestCase
     }
 
     /** @param resource $socket */
-    private function runWorker(string $schema, mixed $socket): never
+    private function runWorker(string $schema, mixed $socket, bool $maintenance): never
     {
         try {
             $em = $this->manager($schema);
             fwrite($socket, json_encode(['pid' => (int) $em->getConnection()->fetchOne('SELECT pg_backend_pid()')], JSON_THROW_ON_ERROR) . "\n");
             self::assertSame('go', trim((string) fgets($socket)));
-            $handler = $this->createMock(ProcessTickHandlerInterface::class);
-            $handler->expects(self::once())->method('work')->willReturnCallback(function () use ($em): void {
+            $handler = $maintenance
+                ? $this->createMock(MaintenanceHandlerInterface::class)
+                : $this->createMock(ProcessTickHandlerInterface::class);
+            $handler->expects(self::once())->method($maintenance ? 'handle' : 'work')->willReturnCallback(function () use ($em): void {
                 $connection = $em->getConnection();
                 $changes = (int) $connection->fetchOne('SELECT changes FROM borg_tick_event WHERE id = 1 FOR UPDATE');
                 $connection->executeStatement('UPDATE borg_tick_event SET changes = changes + 1 WHERE id = 1');
                 $connection->executeStatement('INSERT INTO borg_tick_notice (user_id) VALUES (19), (261)');
                 self::assertSame(7, $changes);
             });
-            $runner = new ProcessTickRunner(
-                $this->transactions($em),
-                [$handler],
-                new UserRepository($em, $em->getClassMetadata(User::class)),
-                Init::getContainer(ConfigStageEnum::DEVELOPMENT)->get(StuConfigInterface::class)
-            );
+            $users = new UserRepository($em, $em->getClassMetadata(User::class));
+            $config = Init::getContainer(ConfigStageEnum::DEVELOPMENT)->get(StuConfigInterface::class);
+            $state = $this->createStub(GameStateInterface::class);
+            $state->method('getGameState')->willReturn(GameStateEnum::ONLINE);
+            $transactions = $this->transactions($em, $state);
+            if ($handler instanceof MaintenanceHandlerInterface) {
+                $runner = new MaintenanceTickRunner(
+                    new GameConfigRepository($em, $em->getClassMetadata(GameConfig::class)),
+                    $transactions,
+                    $this->manager($schema)->getConnection(),
+                    [$handler],
+                    $users,
+                    $config
+                );
+            } else {
+                $runner = new ProcessTickRunner($transactions, [$handler], $users, $config, $state);
+            }
             $runner->run(1, 1);
             $em->getConnection()->close();
             fwrite($socket, json_encode(['finished' => true], JSON_THROW_ON_ERROR) . "\n");
@@ -162,10 +199,8 @@ final class ProcessTickLockConcurrencyTest extends TestCase
         }
     }
 
-    private function transactions(EntityManagerInterface $em): TransactionTickRunner
+    private function transactions(EntityManagerInterface $em, GameStateInterface $state): TransactionTickRunner
     {
-        $state = $this->createMock(GameStateInterface::class);
-        $state->method('getGameState')->willReturn(GameStateEnum::ONLINE);
         $logger = $this->createMock(LoggerUtilFactoryInterface::class);
         $logger->method('getLoggerUtil')->willReturn($this->createStub(LoggerUtilInterface::class));
         return new TransactionTickRunner($this->createStub(FailureEmailSenderInterface::class), $state, $em, $logger);
@@ -181,6 +216,6 @@ final class ProcessTickLockConcurrencyTest extends TestCase
             }
             usleep(10000);
         } while (microtime(true) < $deadline);
-        self::fail('Der Process-Tick muss vor dem Sperren des Borg-Eintrags auf die Benutzersperre warten');
+        self::fail('Der Tick muss vor dem Sperren des Borg-Eintrags auf die Benutzersperre warten');
     }
 }

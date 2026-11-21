@@ -14,6 +14,7 @@ use Stu\Lib\Pirate\Component\PirateFlightInterface;
 use Stu\Lib\Pirate\PirateCreation;
 use Stu\Lib\Pirate\PirateCreationInterface;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\GameStateInterface;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
@@ -155,7 +156,8 @@ return [
             get(TransactionTickRunnerInterface::class),
             get(ProcessTickHandlerInterface::class),
             get(UserRepositoryInterface::class),
-            get(StuConfigInterface::class)
+            get(StuConfigInterface::class),
+            get(GameStateInterface::class)
         ),
     SpacecraftTickRunner::class => autowire(),
     PirateTickInterface::class => autowire(PirateTick::class)->lazy()->constructorParameter(
